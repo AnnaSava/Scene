@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Framework.User.DataService\Framework.User.DataService.csproj" />
+    <ProjectReference Include="..\Framework.User.Helpers\Framework.User.Helpers.csproj" />
+  </ItemGroup>
+
+</Project>

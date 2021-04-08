@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29920.165
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Base", "Base", "{F3ED38F2-950E-4390-8A1E-65530E264E7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Base.DataService", "Base\Framework.Base.DataService\Framework.Base.DataService.csproj", "{F410D21A-C6D7-4272-8BA0-CB1D3DD7A081}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F410D21A-C6D7-4272-8BA0-CB1D3DD7A081}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F410D21A-C6D7-4272-8BA0-CB1D3DD7A081}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F410D21A-C6D7-4272-8BA0-CB1D3DD7A081}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F410D21A-C6D7-4272-8BA0-CB1D3DD7A081}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F410D21A-C6D7-4272-8BA0-CB1D3DD7A081} = {F3ED38F2-950E-4390-8A1E-65530E264E7D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {40C8CC53-6F5F-42D6-972E-B0C0D5EFB35C}
+	EndGlobalSection
+EndGlobal
