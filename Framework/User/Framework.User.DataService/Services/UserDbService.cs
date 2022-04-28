@@ -1,95 +1,60 @@
 ﻿using AutoMapper;
 using Framework.Base.Exceptions;
+using Framework.Base.Types.ModelTypes;
 using Framework.User.DataService.Contract.Interfaces;
-using Framework.User.DataService.Exceptions;
-using Microsoft.AspNetCore.Identity;
+using Framework.User.DataService.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace Framework.User.DataService.Services
 {
-    public class UserDbService<TUserEntity, TUserModel> : IUserDbService<TUserModel>
-        where TUserEntity : IdentityUser<long>
+    public class UserDbService<TUserEntity>
+        where TUserEntity : BaseUser
     {
-        protected readonly UserManager<TUserEntity> _userManager;
-        protected readonly SignInManager<TUserEntity> _signInManager;
+        protected readonly IUserContext<TUserEntity> _dbContext;
+        protected IUserManagerAdapter<TUserEntity> _userManagerAdapter;
         protected readonly IMapper _mapper;
 
-        public UserDbService(
-            UserManager<TUserEntity> userManager,
-            SignInManager<TUserEntity> signInManager,
-            IMapper mapper,
-            string serviceName
-            )
+        public UserDbService(IUserContext<TUserEntity> dbContext, IUserManagerAdapter<TUserEntity> userManagerAdapter, IMapper mapper)
         {
-            _userManager = userManager ?? throw new ProjectArgumentException(
-                GetType(),
-                serviceName,
-                nameof(userManager),
-                null);
+            _dbContext = dbContext;
 
-            _signInManager = signInManager ?? throw new ProjectArgumentException(
-               GetType(),
-               serviceName,
-               nameof(signInManager),
-               null);
+            _userManagerAdapter = userManagerAdapter;
 
             _mapper = mapper ?? throw new ProjectArgumentException(
                 GetType(),
-                serviceName,
+                nameof(UserDbService<TUserEntity>),
                 nameof(mapper),
                 null);
         }
 
-        public async Task<TUserModel> CreateAsync(TUserModel model, string password)
+        public async Task<TUserModel> Create<TUserModel>(TUserModel model, string password)
         {
-            var entity = _mapper.Map<TUserEntity>(model);
-            IdentityResult identityResult = await _userManager.CreateAsync(entity, password);
-
-            if (!identityResult.Succeeded)
-            {
-                throw new Exception(identityResult.Errors.First().Description);
-            }
-
-            return _mapper.Map<TUserModel>(entity);
+            return await _userManagerAdapter.CreateUser<TUserEntity, TUserModel, TUserModel>(model, password, _mapper);
         }
 
-        public async Task<SignInResult> SignIn(string email, string password, bool rememberMe)
+        public async Task<TUserModelOut> Create<TUserModelIn, TUserModelOut>(TUserModelIn model, string password)
         {
-            return await _signInManager.PasswordSignInAsync(email, password, rememberMe, false);
+            return await _userManagerAdapter.CreateUser<TUserEntity, TUserModelIn, TUserModelOut>(model, password, _mapper);
         }
 
-        public async Task SignIn(TUserModel user, bool rememberMe)
+        public async Task<TUserModelOut> Update<TUserModelIn, TUserModelOut>(TUserModelIn model)
+            where TUserModelIn : IModel<long>
         {
-            await _signInManager.SignInAsync(_mapper.Map<TUserEntity>(user), rememberMe);
+            return await _userManagerAdapter.UpdateUser<TUserEntity, TUserModelIn, TUserModelOut>(model, _dbContext, _mapper);
         }
 
-        public async Task SignOut()
+        public async Task<TUserModelOut> Delete<TUserModelOut>(long id)
         {
-            await _signInManager.SignOutAsync();
+            return await _userManagerAdapter.Delete<TUserEntity, TUserModelOut>(id, _dbContext, _mapper);
         }
 
-        public async Task<TUserModel> GetOneByEmail(string email)
+        public async Task<TUserModelOut> Restore<TUserModelOut>(long id)
         {
-            var entity = await _userManager.FindByEmailAsync(email);
-
-            if (entity == null)
-                throw new UserNotFoundException(
-                          GetType(),
-                          nameof(GetOneByEmail),
-                          email);
-
-            return _mapper.Map<TUserModel>(entity);
-        }
-
-        public async Task<SignInResult> CheckPasswordSignIn(TUserModel model, string password)
-        {
-            var entity = _mapper.Map<TUserEntity>(model);
-            return await _signInManager.CheckPasswordSignInAsync(entity, password, false);
+            return await _userManagerAdapter.Restore<TUserEntity, TUserModelOut>(id, _dbContext, _mapper);
         }
     }
 }

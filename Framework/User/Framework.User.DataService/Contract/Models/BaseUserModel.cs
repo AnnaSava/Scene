@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Framework.User.DataService.Contract.Models
 {
-    public abstract class BaseUserModel
+    public abstract class BaseUserModel : IdentityUserModel, IUserModel
     {
-        public long Id { get; set; }
+        public DateTime LastUpdated { get; set; }
 
-        public string UserName { get; set; }
+        public bool IsDeleted { get; set; }       
     }
 }

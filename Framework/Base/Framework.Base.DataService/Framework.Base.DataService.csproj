@@ -1,17 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <Configurations>Debug;Release;Staging</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="10.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.3" />
-    <PackageReference Include="X.PagedList" Version="8.0.7" />
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
+    <PackageReference Include="X.PagedList" Version="8.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Framework.Base.Exceptions\Framework.Base.Exceptions.csproj" />
+    <ProjectReference Include="..\..\Helpers\Framework.Helpers\Framework.Helpers.csproj" />
+    <ProjectReference Include="..\Framework.Base.Types\Framework.Base.Types.csproj" />
   </ItemGroup>
 
 </Project>

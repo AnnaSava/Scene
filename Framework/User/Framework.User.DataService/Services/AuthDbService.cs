@@ -5,19 +5,16 @@ using Framework.User.DataService.Contract.Models;
 using Framework.User.DataService.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Framework.User.DataService.Services
 {
     public class AuthDbService : IAuthDbService
     {
-        protected readonly IAuthContext _dbContext;
+        protected readonly IAuthTokenContext _dbContext;
         protected readonly IMapper _mapper;
 
-        public AuthDbService(IAuthContext dbContext, IMapper mapper)
+        public AuthDbService(IAuthTokenContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext ?? throw new ProjectArgumentException(
                 GetType(),

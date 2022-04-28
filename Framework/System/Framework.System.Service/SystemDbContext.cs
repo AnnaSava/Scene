@@ -1,0 +1,21 @@
+﻿using Framework.Base.DataService.Contract.Interfaces;
+using Framework.System.Service.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Framework.System.Service
+{
+    public class SystemDbContext : DbContext, IDbContext
+    {
+        public DbSet<EmailTemplate> EmailTemplates { get; set; }
+
+        public SystemDbContext(DbContextOptions<SystemDbContext> options)
+           : base(options)
+        {
+        }
+    }
+}

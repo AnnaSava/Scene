@@ -6,6 +6,8 @@ namespace Framework.User.DataService.Contract.Models
 {
     public class AuthTokenModel
     {
+        public long Id { get; set; }
+
         public long UserId { get; set; }
 
         public string AuthJti { get; set; }
