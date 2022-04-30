@@ -2,10 +2,22 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Scene.Manage.UI.MudBlazorServer.Data;
 using MudBlazor.Services;
+using Scene.Manage.UI.MudBlazorServer;
+using Framework.User.DataService.Services;
+using Microsoft.EntityFrameworkCore;
+using Framework.User.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddMapper();
+
+builder.Services.AddDbContext<FrameworkUserDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("IdentityConnection"), b => b.MigrationsAssembly("Scene.Migrations.PostgreSql")));
+
+builder.Services.AddFrameworkUser(builder.Configuration);
+
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();

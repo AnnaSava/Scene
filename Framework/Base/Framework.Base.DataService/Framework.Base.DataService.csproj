@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Framework.Base.Types\Framework.Base.Types.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mapper\" />
+  </ItemGroup>
+
 </Project>

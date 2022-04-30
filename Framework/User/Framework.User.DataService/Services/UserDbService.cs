@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Framework.User.DataService.Services
 {
+    // TODO Подумать о вынесении в отдельную сборку
     public class UserDbService<TUserEntity>
         where TUserEntity : BaseUser
     {

@@ -7,7 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="MudBlazor" Version="6.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Base\Framework.Base.Service\Framework.Base.Service.csproj" />
+    <ProjectReference Include="..\..\Framework\User\Framework.User.DataService\Framework.User.DataService.csproj" />
+    <ProjectReference Include="..\..\Framework\User\Framework.User.Service\Framework.User.Service.csproj" />
   </ItemGroup>
 
 </Project>

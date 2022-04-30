@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace Framework.User.DataService.Services
 {
+    // TODO Подумать о вынесении в отдельную сборку
     public abstract class RoleDbService<TRoleEntity, TRoleClaimEntity, TRoleModel, TFilterModel>
         where TRoleEntity : BaseRole
         where TRoleClaimEntity: IdentityRoleClaim<long>, new()

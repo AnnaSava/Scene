@@ -4,6 +4,7 @@ using System;
 
 namespace Framework.User.DataService.Entities
 {
+    // TODO Подумать о вынесении в отдельную сборку
     public abstract class BaseUser : IdentityUser<long>, IEntityRestorable, IEntity<long>
     {
         public DateTime RegDate { get; set; }
