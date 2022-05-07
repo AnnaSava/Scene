@@ -16,6 +16,8 @@ builder.Services.AddMapper();
 builder.Services.AddDbContext<FrameworkUserDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("IdentityConnection"), b => b.MigrationsAssembly("Scene.Migrations.PostgreSql")));
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 builder.Services.AddFrameworkUser(builder.Configuration);
 
 builder.Services.AddRazorPages();

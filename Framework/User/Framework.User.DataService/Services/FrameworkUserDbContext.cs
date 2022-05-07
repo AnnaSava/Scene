@@ -23,6 +23,12 @@ namespace Framework.User.DataService.Services
         IAuthTokenContext,
         IPermissionContext
     {
+        public FrameworkUserDbContext(DbContextOptions<FrameworkUserDbContext> options)
+            : base(options)
+        {
+            //Database.EnsureCreated();
+        }
+
         public DbSet<Permission> Permissions { get; set; }
 
         public DbSet<PermissionCulture> PermissionCultures { get; set; }

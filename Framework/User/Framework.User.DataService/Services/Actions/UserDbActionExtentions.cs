@@ -100,5 +100,12 @@ namespace Framework.User.DataService.Services
             if (string.IsNullOrEmpty(login)) return false;
             return await dbContext.Set<TUserEntity>().AnyAsync(m => m.NormalizedUserName == login.ToUpper());
         }
+
+        public static async Task<bool> CheckRoleNameExists<TRoleEntity>(this IDbContext dbContext, string name)
+            where TRoleEntity : BaseRole
+        {
+            if (string.IsNullOrEmpty(name)) return false;
+            return await dbContext.Set<TRoleEntity>().AnyAsync(m => m.NormalizedName == name.ToUpper());
+        }
     }
 }
