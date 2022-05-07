@@ -1,0 +1,46 @@
+﻿@page "/users"
+@using Framework.Base.Service.ListView
+@using Framework.User.Service.Contract.Interfaces
+@using Framework.User.Service.Contract.Models
+@inject IFrameworkUserService _userService
+
+<PageTitle>Пользователи</PageTitle>
+
+@if (Users == null)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+    <MudTable Items="Users" Hover="true" SortLabel="Sort By" Elevation="0">
+        <HeaderContent>
+            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<FrameworkUserFilterViewModel, object>(x=>x.Id)">Id</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<FrameworkUserFilterViewModel, object>(x=>x.Login)">Login</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<FrameworkUserFilterViewModel, object>(x=>x.Email)">Email</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<FrameworkUserFilterViewModel, object>(x=>x.IsBanned!)">IsBanned</MudTableSortLabel></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Date">@context.Id</MudTd>
+            <MudTd DataLabel="Temp. (C)">@context.Login</MudTd>
+            <MudTd DataLabel="Temp. (F)">@context.Email</MudTd>
+            <MudTd DataLabel="Summary">@context.IsBanned</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+        </PagerContent>
+    </MudTable>
+}
+
+@code {
+    private List<FrameworkUserViewModel>? Users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var filter = new FrameworkUserFilterViewModel { };
+
+        var pageInfo = new ListPageInfoViewModel { Page = 1, Rows = 10 };
+
+        var result = await _userService.GetAll(filter, pageInfo);
+        Users = result.Items.ToList();
+    }
+}
