@@ -1,0 +1,62 @@
+﻿@page "/reservednames"
+@using Framework.Base.Service.ListView
+@using Framework.User.Service.Contract.Interfaces
+@using Framework.User.Service.Contract.Models
+@inject IReservedNameService _reservedNameService
+
+<PageTitle>Reserved names</PageTitle>
+
+<MudBreadcrumbs Items="breadCrumbs"></MudBreadcrumbs>
+
+<MudTable ServerData="@(new Func<TableState, Task<TableData<ReservedNameViewModel>>>(ServerReload))"
+    Hover="true" @ref="table">
+
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Reserved names</MudText>
+        <MudSpacer />
+        <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<ReservedNameViewModel, object>(x=>x.Text)">Text</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<ReservedNameViewModel, object>(x=>x.IncludePlural)">Include plural</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Text">@context.Text</MudTd>
+        <MudTd DataLabel="IncludePlural">@context.IncludePlural</MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager/>
+    </PagerContent>
+</MudTable>
+
+@code {
+    private List<BreadcrumbItem> breadCrumbs = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem("Home", href: "/"),
+        new BreadcrumbItem("Reserved names", href: null, disabled: true)
+    };
+
+    private List<ReservedNameViewModel>? ReservedNames;
+    private MudTable<ReservedNameViewModel>? table;
+
+    private string searchString = string.Empty;
+
+    private async Task<TableData<ReservedNameViewModel>> ServerReload(TableState state)
+    {
+        var filter = new ReservedNameFilterViewModel { Text =  "contains|" + searchString };
+
+        var pageInfo = new ListPageInfoViewModel { Page = state.Page + 1, Rows = state.PageSize };
+
+        var result = await _reservedNameService.GetAll(filter, pageInfo);
+        ReservedNames = result.Items.ToList();
+
+        return new TableData<ReservedNameViewModel>() {TotalItems = (int)result.TotalRows, Items = ReservedNames};
+    }
+
+    private void OnSearch(string text)
+    {
+        searchString = text;
+        table?.ReloadServerData();
+    }
+}

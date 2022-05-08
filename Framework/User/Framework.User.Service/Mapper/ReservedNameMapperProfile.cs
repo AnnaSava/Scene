@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Framework.Base.Service.ListView;
 using Framework.User.DataService.Contract.Models;
 using Framework.User.Service.Contract.Models;
 using System;
@@ -15,6 +16,9 @@ namespace Framework.User.Service.Mapper
         {
             CreateMap<ReservedNameViewModel, ReservedNameModel>();
             CreateMap<ReservedNameModel, ReservedNameViewModel>();
+
+            CreateMap<ReservedNameFilterViewModel, ReservedNameFilterModel>(MemberList.None)
+                .ForMember(x => x.Text, y => y.MapFrom(s => s.Text.ToWordListFilterField()));
         }
     }
 }
