@@ -44,6 +44,10 @@ namespace Framework.Helpers.TypeHelpers
             {
                 // use reflection (not ComponentModel) to mirror LINQ
                 PropertyInfo pi = type.GetProperty(prop, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+                if(pi == null)
+                {
+                    throw new Exception($"The type of \"{type}\" doesn't contain a property of \"{prop}\".");
+                }
                 expr = Expression.Property(expr, pi);
                 type = pi.PropertyType;
             }

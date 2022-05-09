@@ -1,5 +1,4 @@
 ﻿@page "/reservednames"
-@using Framework.Base.Service.ListView
 @using Framework.User.Service.Contract.Interfaces
 @using Framework.User.Service.Contract.Models
 @inject IReservedNameService _reservedNameService
@@ -18,8 +17,8 @@
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
-        <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<ReservedNameViewModel, object>(x=>x.Text)">Text</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<ReservedNameViewModel, object>(x=>x.IncludePlural)">Include plural</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="text" T="ReservedNameViewModel">Text</MudTableSortLabel></MudTh>
+        <MudTh>Include plural</MudTh>
         <MudTh></MudTh>
         <MudTh></MudTh>
     </HeaderContent>
@@ -33,18 +32,13 @@
         <MudTablePager/>
     </PagerContent>
 </MudTable>
-e vtyz 
+
 @code {
     private List<BreadcrumbItem> breadCrumbs = new List<BreadcrumbItem>
     {
         new BreadcrumbItem("Home", href: "/"),
         new BreadcrumbItem("Reserved names", href: null, disabled: true)
     };
-
-    [Parameter]
-    public EventCallback<ReservedNameViewModel> OnCheckedCallback { get; set; }
-
-    private List<ReservedNameViewModel>? ReservedNames;
     private MudTable<ReservedNameViewModel>? table;
 
     private string searchString = string.Empty;
@@ -53,12 +47,9 @@ e vtyz
     {
         var filter = new ReservedNameFilterViewModel { Text =  "contains|" + searchString };
 
-        var pageInfo = new ListPageInfoViewModel { Page = state.Page + 1, Rows = state.PageSize };
+        var result = await _reservedNameService.GetAll(filter, PageHelper.GetPageInfo(state));
 
-        var result = await _reservedNameService.GetAll(filter, pageInfo);
-        ReservedNames = result.Items.ToList();
-
-        return new TableData<ReservedNameViewModel>() {TotalItems = (int)result.TotalRows, Items = ReservedNames};
+        return PageHelper.GetTableData<ReservedNameViewModel>(result);
     }
 
     private void OnSearch(string text)

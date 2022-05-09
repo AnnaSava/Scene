@@ -1,5 +1,4 @@
 ﻿@page "/users"
-@using Framework.Base.Service.ListView
 @using Framework.User.Service.Contract.Interfaces
 @using Framework.User.Service.Contract.Models
 @inject IFrameworkUserService _userService
@@ -18,10 +17,10 @@
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
-        <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<FrameworkUserFilterViewModel, object>(x=>x.Id)">Id</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<FrameworkUserFilterViewModel, object>(x=>x.Login)">Login</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<FrameworkUserFilterViewModel, object>(x=>x.Email)">Email</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<FrameworkUserFilterViewModel, object>(x=>x.IsBanned!)">IsBanned</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="id" T="FrameworkUserViewModel">Id</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="login" T="FrameworkUserViewModel">Login</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="email" T="FrameworkUserViewModel">Email</MudTableSortLabel></MudTh>
+        <MudTh>IsBanned</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id">@context.Id</MudTd>
@@ -36,8 +35,6 @@
 
 
 @code {
-    private List<FrameworkUserViewModel>? Users;
-
     private MudTable<FrameworkUserViewModel>? table;
 
     private string searchString = string.Empty;
@@ -48,21 +45,13 @@
         new BreadcrumbItem("Users", href: null, disabled: true)
     };
 
-    protected override async Task OnInitializedAsync()
-    {
-
-    }
-
     private async Task<TableData<FrameworkUserViewModel>> ServerReload(TableState state)
     {
         var filter = new FrameworkUserFilterViewModel { Login =  "contains|" + searchString };
 
-        var pageInfo = new ListPageInfoViewModel { Page = state.Page + 1, Rows = state.PageSize };
+        var result = await _userService.GetAll(filter, PageHelper.GetPageInfo(state));
 
-        var result = await _userService.GetAll(filter, pageInfo);
-        Users = result.Items.ToList();
-
-        return new TableData<FrameworkUserViewModel>() {TotalItems = (int)result.TotalRows, Items = Users};
+        return PageHelper.GetTableData<FrameworkUserViewModel>(result);
     }
 
     private void OnSearch(string text)

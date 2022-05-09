@@ -17,6 +17,11 @@ namespace Framework.User.DataService.Services
 {
     public class FrameworkUserDbService : UserDbService<FrameworkUser>, IFrameworkUserDbService
     {
+        private readonly Dictionary<string, string> FieldNamesDiff = new Dictionary<string, string>
+        {
+            { "login", "username" }
+        };
+
         public FrameworkUserDbService(FrameworkUserDbContext dbContext, IUserManagerAdapter<FrameworkUser> userManagerAdapter, IMapper mapper)
             : base(dbContext, userManagerAdapter, mapper)
         {
@@ -91,6 +96,8 @@ namespace Framework.User.DataService.Services
             {
                 list = list.ApplyFilters(filter);
             }
+
+            query.PageInfo.Sort = GetChangedSortFields(query.PageInfo.Sort, FieldNamesDiff);
 
             return await _dbContext.GetAll<FrameworkUser, FrameworkUserModel, FrameworkUserFilterModel>(query, ApplyFilters, _mapper);
         }

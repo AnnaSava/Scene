@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Framework.Base.DataService.Contract.Models;
 using Framework.Base.Exceptions;
 using Framework.Base.Types.ModelTypes;
 using Framework.User.DataService.Contract.Interfaces;
@@ -56,6 +57,27 @@ namespace Framework.User.DataService.Services
         public async Task<TUserModelOut> Restore<TUserModelOut>(long id)
         {
             return await _userManagerAdapter.Restore<TUserEntity, TUserModelOut>(id, _dbContext, _mapper);
+        }
+
+        // TODO подумать, куда перенести, т.к. в теории может пригодиться не только для пользователей
+        protected IEnumerable<ListSortModel> GetChangedSortFields(IEnumerable<ListSortModel> sortList, Dictionary<string, string> diff)
+        {
+            if (sortList == null) return null;
+
+            var newSortList = new List<ListSortModel>();
+
+            foreach (var sort in sortList)
+            {
+                var newSort = sort;
+                var fieldName = sort.FieldName.ToLower();
+                if (diff.ContainsKey(fieldName))
+                {
+                    newSort.FieldName = diff[fieldName];
+                }
+
+                newSortList.Add(newSort);
+            }
+            return newSortList;
         }
     }
 }
