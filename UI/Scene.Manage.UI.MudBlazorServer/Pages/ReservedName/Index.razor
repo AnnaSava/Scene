@@ -20,22 +20,29 @@
     <HeaderContent>
         <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<ReservedNameViewModel, object>(x=>x.Text)">Text</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<ReservedNameViewModel, object>(x=>x.IncludePlural)">Include plural</MudTableSortLabel></MudTh>
+        <MudTh></MudTh>
+        <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Text">@context.Text</MudTd>
         <MudTd DataLabel="IncludePlural">@context.IncludePlural</MudTd>
+        <MudTd><MudCheckBox T="bool" Checked="@context.IncludePlural" CheckedChanged="@(c=> HandleCheckedChanged(context, c))"></MudCheckBox></MudTd>
+        <MudTd><MudButton OnClick="@(()=> DemoAction(context))">Clickme</MudButton></MudTd>
     </RowTemplate>
     <PagerContent>
         <MudTablePager/>
     </PagerContent>
 </MudTable>
-
+e vtyz 
 @code {
     private List<BreadcrumbItem> breadCrumbs = new List<BreadcrumbItem>
     {
         new BreadcrumbItem("Home", href: "/"),
         new BreadcrumbItem("Reserved names", href: null, disabled: true)
     };
+
+    [Parameter]
+    public EventCallback<ReservedNameViewModel> OnCheckedCallback { get; set; }
 
     private List<ReservedNameViewModel>? ReservedNames;
     private MudTable<ReservedNameViewModel>? table;
@@ -58,5 +65,17 @@
     {
         searchString = text;
         table?.ReloadServerData();
+    }
+
+    private void DemoAction(ReservedNameViewModel item)
+    {
+
+    }
+
+    private async Task HandleCheckedChanged (ReservedNameViewModel item, bool isChecked)
+    {
+        var model = new ReservedNameFormViewModel { IncludePlural = isChecked };
+        await _reservedNameService.Update(item.Text, model);
+        item.IncludePlural = isChecked;
     }
 }

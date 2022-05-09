@@ -19,6 +19,8 @@ namespace Framework.User.Service.Mapper
 
             CreateMap<ReservedNameFilterViewModel, ReservedNameFilterModel>(MemberList.None)
                 .ForMember(x => x.Text, y => y.MapFrom(s => s.Text.ToWordListFilterField()));
+
+            CreateMap<ReservedNameFormViewModel, ReservedNameModel>(MemberList.None);
         }
     }
 }
