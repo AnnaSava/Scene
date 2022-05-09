@@ -17,8 +17,8 @@ namespace Scene.Manage.UI.MudBlazorServer
                 mc.AddProfile(new BaseServiceAutoMapperProfile());
                 mc.AddProfile(new FrameworkUserDataMapperProfile());
                 mc.AddProfile(new FrameworkUserMapperProfile());
-                mc.AddProfile(new ReservedNameDataMapperProfile());
-                mc.AddProfile(new ReservedNameMapperProfile());
+                mc.AddProfile(new CommonDataMapperProfile());
+                mc.AddProfile(new CommonMapperProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();

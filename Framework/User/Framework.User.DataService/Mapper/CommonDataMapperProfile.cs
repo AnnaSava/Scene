@@ -9,10 +9,13 @@ using System.Threading.Tasks;
 
 namespace Framework.User.DataService.Mapper
 {
-    public class PermissionDataMapperProfile : Profile
+    public class CommonDataMapperProfile : Profile
     {
-        public PermissionDataMapperProfile()
+        public CommonDataMapperProfile()
         {
+            CreateMap<ReservedName, ReservedNameModel>();
+            CreateMap<ReservedNameModel, ReservedName>();
+
             CreateMap<Permission, PermissionModel>();
             CreateMap<PermissionModel, Permission>();
         }

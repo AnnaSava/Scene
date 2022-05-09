@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Framework.User.Service.Mapper
 {
-    public class ReservedNameMapperProfile : Profile
+    public class CommonMapperProfile : Profile
     {
-        public ReservedNameMapperProfile()
+        public CommonMapperProfile()
         {
             CreateMap<ReservedNameViewModel, ReservedNameModel>();
             CreateMap<ReservedNameModel, ReservedNameViewModel>();
@@ -21,6 +21,13 @@ namespace Framework.User.Service.Mapper
                 .ForMember(x => x.Text, y => y.MapFrom(s => s.Text.ToWordListFilterField()));
 
             CreateMap<ReservedNameFormViewModel, ReservedNameModel>(MemberList.None);
+
+
+            CreateMap<PermissionFilterViewModel, PermissionFilterModel>(MemberList.None)
+                .ForMember(x => x.Name, y => y.MapFrom(s => s.Name.ToWordListFilterField()));
+
+            CreateMap<PermissionViewModel, PermissionModel>();
+            CreateMap<PermissionModel, PermissionViewModel>();
         }
     }
 }
