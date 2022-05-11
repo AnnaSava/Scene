@@ -13,6 +13,9 @@ namespace Framework.User.DataService.Mapper
     {
         public CommonDataMapperProfile()
         {
+            CreateMap<LegalDocument, LegalDocumentModel>();
+            CreateMap<LegalDocumentModel, LegalDocument>();
+
             CreateMap<ReservedName, ReservedNameModel>();
             CreateMap<ReservedNameModel, ReservedName>();
 

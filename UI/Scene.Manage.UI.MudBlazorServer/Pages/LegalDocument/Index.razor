@@ -1,0 +1,62 @@
+﻿@page "/legaldocuments"
+@using Framework.User.Service.Contract.Interfaces
+@using Framework.User.Service.Contract.Models
+@inject ILegalDocumentService _legalDocumentService
+
+<PageTitle>Documents</PageTitle>
+
+<MudBreadcrumbs Items="breadCrumbs"></MudBreadcrumbs>
+
+<MudTable ServerData="@(new Func<TableState, Task<TableData<LegalDocumentViewModel>>>(ServerReload))"
+    Hover="true" @ref="table">
+
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Documents</MudText>
+        <MudSpacer />
+        <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortLabel="id" T="LegalDocumentViewModel">Id</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="permname" T="LegalDocumentViewModel">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="title" T="LegalDocumentViewModel">Title</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="culture" T="LegalDocumentViewModel">Culture</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="PermName">@context.PermName</MudTd>
+        <MudTd DataLabel="PermName">@context.Title</MudTd>
+        <MudTd DataLabel="PermName">@context.Culture</MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager/>
+    </PagerContent>
+</MudTable>
+
+
+@code {
+    private MudTable<LegalDocumentViewModel>? table;
+
+    private string searchString = string.Empty;
+
+    private List<BreadcrumbItem> breadCrumbs = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem("Home", href: "/"),
+        new BreadcrumbItem("Documents", href: null, disabled: true)
+    };
+
+    private async Task<TableData<LegalDocumentViewModel>> ServerReload(TableState state)
+    {
+        var filter = new LegalDocumentFilterViewModel { PermName =  "contains|" + searchString, Culture = "equals|" + searchString };
+
+        var result = await _legalDocumentService.GetAll(filter, PageHelper.GetPageInfo(state));
+
+        return PageHelper.GetTableData<LegalDocumentViewModel>(result);
+    }
+
+    private void OnSearch(string text)
+    {
+        searchString = text;
+        table?.ReloadServerData();
+    }
+}

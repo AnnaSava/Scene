@@ -1,0 +1,99 @@
+﻿using AutoMapper;
+using Framework.Base.DataService.Contract.Models;
+using Framework.Base.Service.ListView;
+using Framework.User.DataService.Contract.Interfaces;
+using Framework.User.DataService.Contract.Models;
+using Framework.User.Service.Contract.Interfaces;
+using Framework.User.Service.Contract.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Framework.User.Service.Services
+{
+    public class LegalDocumentService : ILegalDocumentService
+    {
+        private readonly ILegalDocumentDbService _legalDocumentDbService;
+        private readonly IMapper _mapper;
+
+        public LegalDocumentService(ILegalDocumentDbService legalDocumentNameDbService, IMapper mapper)
+        {
+            _legalDocumentDbService = legalDocumentNameDbService;
+            _mapper = mapper;
+        }
+
+        public async Task<LegalDocumentViewModel> GetOne(int id)
+        {
+            var model = await _legalDocumentDbService.GetOne(id);
+            return _mapper.Map<LegalDocumentViewModel>(model);
+        }
+
+        public async Task<LegalDocumentViewModel> Create(LegalDocumentViewModel model)
+        {
+            var entity = _mapper.Map<LegalDocumentModel>(model);
+            var created = await _legalDocumentDbService.Create(entity);
+            return _mapper.Map<LegalDocumentViewModel>(created);
+        }
+
+        public async Task<LegalDocumentViewModel> Update(LegalDocumentViewModel model)
+        {
+            var newModel = _mapper.Map<LegalDocumentModel>(model);
+
+            var currentModel = await _legalDocumentDbService.GetOne(model.Id);
+            LegalDocumentModel resultModel;
+
+            //if (await _legalDocumentDbService.IsLast(model.Id) || await _legalDocumentDbService.IsActual(model.Id))
+            //{
+            //    if (currentModel.IsApproved)
+            //    {
+            //        resultModel = await _legalDocumentDbService.Create(newModel);
+            //    }
+            //    else
+            //    {
+            //        resultModel = await _legalDocumentDbService.Update(newModel);
+            //    }
+            //}
+            //else
+            //{
+            //    throw new Exception("Cannot update archived legalDocument.");
+            //}
+
+            //return _mapper.Map<LegalDocumentViewModel>(resultModel);
+
+            return null;
+        }
+
+        public async Task<LegalDocumentViewModel> Delete(int id)
+        {
+            var resultModel = await _legalDocumentDbService.Delete(id);
+            return _mapper.Map<LegalDocumentViewModel>(resultModel);
+        }
+
+        public async Task<LegalDocumentViewModel> Restore(int id)
+        {
+            var resultModel = await _legalDocumentDbService.Restore(id);
+            return _mapper.Map<LegalDocumentViewModel>(resultModel);
+        }
+
+        public async Task<ListPageViewModel<LegalDocumentViewModel>> GetAll(LegalDocumentFilterViewModel filter, ListPageInfoViewModel pageInfo)
+        {
+            var filterModel = _mapper.Map<LegalDocumentFilterModel>(filter);
+
+            var pageInfoModel = _mapper.Map<PageInfoModel>(pageInfo);
+
+            var list = await _legalDocumentDbService.GetAll(new ListQueryModel<LegalDocumentFilterModel> { Filter = filterModel, PageInfo = pageInfoModel });
+
+            var vm = new ListPageViewModel<LegalDocumentViewModel>()
+            {
+                Items = list.Items.Select(m => _mapper.Map<LegalDocumentModel, LegalDocumentViewModel>(m)),
+                Page = list.Page,
+                TotalPages = list.TotalPages,
+                TotalRows = list.TotalRows
+            };
+
+            return vm;
+        }
+    }
+}

@@ -21,13 +21,16 @@ namespace Framework.User.DataService.Services
         IReservedNameContext,
         IConsentContext,
         IAuthTokenContext,
-        IPermissionContext
+        IPermissionContext,
+        ILegalDocumentContext
     {
         public FrameworkUserDbContext(DbContextOptions<FrameworkUserDbContext> options)
             : base(options)
         {
             //Database.EnsureCreated();
         }
+
+        public DbSet<LegalDocument> LegalDocuments { get; set; }
 
         public DbSet<Permission> Permissions { get; set; }
 

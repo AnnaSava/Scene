@@ -70,6 +70,7 @@ namespace Scene.DataSeeder
             await SeedReservedNames(context);
             await SeedConsent(context);
             await SeedPermissions(context);
+            await SeedLegalDocument(context);
         }
 
         private static async Task SeedPermissions(FrameworkUserDbContext context)
@@ -118,6 +119,40 @@ namespace Scene.DataSeeder
             var consent = new Consent { Text = "Edit this text for you.", Comment = "Initial user consent", Created = DateTime.Now, LastUpdated = DateTime.Now };
 
             context.Consents.Add(consent);
+
+            await context.SaveChangesAsync();
+        }
+
+        private static async Task SeedLegalDocument(FrameworkUserDbContext context)
+        {
+            if (context.LegalDocuments.Any()) return;
+
+            var en = LegalDocumentData.LegalDocumentEnCulture
+                .Select(m => new LegalDocument
+                {
+                    PermName = m.Key,
+                    Title = m.Value,
+                    Text = "This is a new document. Edit this text as you wish.",
+                    Created = DateTime.Now,
+                    LastUpdated = DateTime.Now,
+                    IsApproved = false,
+                    Culture = "en"                    
+                });
+
+            var ru = LegalDocumentData.LegalDocumentRuCulture
+                .Select(m => new LegalDocument
+                {
+                    PermName = m.Key,
+                    Title = m.Value,
+                    Text = "Это новый документ. Отредактиуйте его так, как вам нужно.",
+                    Created = DateTime.Now,
+                    LastUpdated = DateTime.Now,
+                    IsApproved = false,
+                    Culture = "ru"
+                });
+
+            context.LegalDocuments.AddRange(en);
+            context.LegalDocuments.AddRange(ru);
 
             await context.SaveChangesAsync();
         }

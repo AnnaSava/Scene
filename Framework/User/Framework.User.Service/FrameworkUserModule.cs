@@ -82,6 +82,14 @@ namespace Framework.User.Service
             services.AddScoped<IConsentService>(s => new ConsentService(
                 s.GetService<IConsentDbService>(),
                 s.GetService<IMapper>()));
+
+            services.AddScoped<ILegalDocumentDbService>(s => new LegalDocumentDbService(
+                s.GetService<FrameworkUserDbContext>(),
+                s.GetService<IMapper>()));
+
+            services.AddScoped<ILegalDocumentService>(s => new LegalDocumentService(
+                s.GetService<ILegalDocumentDbService>(),
+                s.GetService<IMapper>()));
         }
     }
 }

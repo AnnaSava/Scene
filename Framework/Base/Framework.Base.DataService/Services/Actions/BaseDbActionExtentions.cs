@@ -159,6 +159,17 @@ namespace Framework.Base.DataService.Services
             return mapper.Map<TModel>(entity);
         }
 
+        public static async Task<TModel> Delete<TEntity, TModel>(this IDbContext dbContext, long id, IMapper mapper)
+            where TEntity : class, IEntity<long>, IEntityRestorable
+        {
+            var entity = await dbContext.GetEntityForUpdate<TEntity>(id);
+
+            entity.IsDeleted = true;
+            await dbContext.SaveChangesAsync();
+
+            return mapper.Map<TModel>(entity);
+        }
+
         public static async Task<TModel> Restore<TEntity, TModel>(this IDbContext dbContext, int id, IMapper mapper)
             where TEntity : class, IEntity<int>, IEntityRestorable
         {
