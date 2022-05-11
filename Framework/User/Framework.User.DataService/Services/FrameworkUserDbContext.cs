@@ -19,7 +19,6 @@ namespace Framework.User.DataService.Services
         IUserContext<FrameworkUser>,
         IRoleContext<FrameworkRole, RoleClaim>,
         IReservedNameContext,
-        IConsentContext,
         IAuthTokenContext,
         IPermissionContext,
         ILegalDocumentContext
@@ -37,8 +36,6 @@ namespace Framework.User.DataService.Services
         public DbSet<PermissionCulture> PermissionCultures { get; set; }
 
         public DbSet<ReservedName> ReservedNames { get; set; }
-
-        public DbSet<Consent> Consents { get; set; }
 
         public DbSet<AuthToken> AuthTokens { get; set; }
 

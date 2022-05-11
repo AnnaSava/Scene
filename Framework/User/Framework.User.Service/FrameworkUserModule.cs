@@ -75,14 +75,6 @@ namespace Framework.User.Service
                 s.GetService<IReservedNameDbService>(),
                 s.GetService<IMapper>()));
 
-            services.AddScoped<IConsentDbService>(s => new ConsentDbService(
-                s.GetService<FrameworkUserDbContext>(),
-                s.GetService<IMapper>()));
-
-            services.AddScoped<IConsentService>(s => new ConsentService(
-                s.GetService<IConsentDbService>(),
-                s.GetService<IMapper>()));
-
             services.AddScoped<ILegalDocumentDbService>(s => new LegalDocumentDbService(
                 s.GetService<FrameworkUserDbContext>(),
                 s.GetService<IMapper>()));

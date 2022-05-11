@@ -25,7 +25,7 @@ namespace Framework.Tests.Base
 
         public ReservedNameDbServiceTests()
         {
-            _mapper = new MapperConfiguration(opts => { opts.AddProfile<ReservedNameDataMapperProfile>(); }).CreateMapper();
+            _mapper = new MapperConfiguration(opts => { opts.AddProfile<CommonDataMapperProfile>(); }).CreateMapper();
             _context = GetContext();
             _reservedNameDbService = new ReservedNameDbService(_context, _mapper);
             FillContextWithTestData(_context, TestData.GetReservedNames());

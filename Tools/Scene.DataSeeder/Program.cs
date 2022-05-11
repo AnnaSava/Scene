@@ -68,7 +68,6 @@ namespace Scene.DataSeeder
             if (!editorRole) roleMgr.CreateAsync(new FrameworkRole { Name = "editor", LastUpdated = DateTime.Now }).GetAwaiter().GetResult();
 
             await SeedReservedNames(context);
-            await SeedConsent(context);
             await SeedPermissions(context);
             await SeedLegalDocument(context);
         }
@@ -108,17 +107,6 @@ namespace Scene.DataSeeder
 
             context.AddRange(withS);
             context.AddRange(withoutS);
-
-            await context.SaveChangesAsync();
-        }
-
-        private static async Task SeedConsent(FrameworkUserDbContext context)
-        {
-            if (context.Consents.Any()) return;
-
-            var consent = new Consent { Text = "Edit this text for you.", Comment = "Initial user consent", Created = DateTime.Now, LastUpdated = DateTime.Now };
-
-            context.Consents.Add(consent);
 
             await context.SaveChangesAsync();
         }

@@ -18,7 +18,7 @@ namespace Framework.User.DataService.Services
     public class LegalDocumentDbService : BaseEntityService<LegalDocument, LegalDocumentModel>, ILegalDocumentDbService
     {
         public LegalDocumentDbService(ILegalDocumentContext dbContext, IMapper mapper)
-            : base(dbContext as IDbContext, mapper, nameof(ConsentDbService))
+            : base(dbContext as IDbContext, mapper, nameof(LegalDocumentDbService))
         {
 
         }

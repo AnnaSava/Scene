@@ -25,7 +25,7 @@ namespace Framework.Tests.Base
 
         public PermissionDbServiceTests()
         {
-            _mapper = new MapperConfiguration(opts => { opts.AddProfile<PermissionDataMapperProfile>(); }).CreateMapper();
+            _mapper = new MapperConfiguration(opts => { opts.AddProfile<CommonDataMapperProfile>(); }).CreateMapper();
             _context = GetContext();
             _permissionDbService = new PermissionDbService(_context, _mapper);
             FillContextWithTestData(_context, TestData.GetPermissions());
