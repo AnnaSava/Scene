@@ -9,7 +9,13 @@ namespace Framework.User.DataService.Contract.Interfaces
     {
         Task<LegalDocumentModel> Create(LegalDocumentModel model);
 
+        Task<LegalDocumentModel> CreateTranslation(LegalDocumentModel model);
+
         Task<LegalDocumentModel> Update(LegalDocumentModel model);
+
+        Task Approve(long id);
+
+        Task<LegalDocumentModel> CreateVersion(LegalDocumentModel model);
 
         Task<LegalDocumentModel> Delete(long id);
 
@@ -18,5 +24,9 @@ namespace Framework.User.DataService.Contract.Interfaces
         Task<LegalDocumentModel> GetOne(long id);
 
         Task<PageListModel<LegalDocumentModel>> GetAll(ListQueryModel<LegalDocumentFilterModel> query);
+
+        Task<bool> CheckDocumentExisis(string permName);
+
+        Task<bool> CheckTranslationExisis(string permName, string culture);
     }
 }

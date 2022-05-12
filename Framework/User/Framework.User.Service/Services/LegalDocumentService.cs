@@ -37,32 +37,30 @@ namespace Framework.User.Service.Services
             return _mapper.Map<LegalDocumentViewModel>(created);
         }
 
+        public async Task<LegalDocumentViewModel> CreateTranslation(LegalDocumentViewModel model)
+        {
+            var entity = _mapper.Map<LegalDocumentModel>(model);
+            var created = await _legalDocumentDbService.CreateTranslation(entity);
+            return _mapper.Map<LegalDocumentViewModel>(created);
+        }
+
         public async Task<LegalDocumentViewModel> Update(LegalDocumentViewModel model)
         {
             var newModel = _mapper.Map<LegalDocumentModel>(model);
+            var resultModel = await _legalDocumentDbService.Update(newModel);
+            return _mapper.Map<LegalDocumentViewModel>(resultModel);
+        }
 
-            var currentModel = await _legalDocumentDbService.GetOne(model.Id);
-            LegalDocumentModel resultModel;
+        public async Task Approve(long id)
+        {
+            await _legalDocumentDbService.Approve(id);
+        }
 
-            //if (await _legalDocumentDbService.IsLast(model.Id) || await _legalDocumentDbService.IsActual(model.Id))
-            //{
-            //    if (currentModel.IsApproved)
-            //    {
-            //        resultModel = await _legalDocumentDbService.Create(newModel);
-            //    }
-            //    else
-            //    {
-            //        resultModel = await _legalDocumentDbService.Update(newModel);
-            //    }
-            //}
-            //else
-            //{
-            //    throw new Exception("Cannot update archived legalDocument.");
-            //}
-
-            //return _mapper.Map<LegalDocumentViewModel>(resultModel);
-
-            return null;
+        public async Task<LegalDocumentViewModel> CreateVersion(LegalDocumentViewModel model)
+        {
+            var entity = _mapper.Map<LegalDocumentModel>(model);
+            var created = await _legalDocumentDbService.CreateVersion(entity);
+            return _mapper.Map<LegalDocumentViewModel>(created);
         }
 
         public async Task<LegalDocumentViewModel> Delete(int id)
@@ -94,6 +92,16 @@ namespace Framework.User.Service.Services
             };
 
             return vm;
+        }
+
+        public async Task<bool> CheckDocumentExisis(string permName)
+        {
+            return await _legalDocumentDbService.CheckDocumentExisis(permName);
+        }
+
+        public async Task<bool> CheckTranslationExisis(string permName, string culture)
+        {
+            return await _legalDocumentDbService.CheckTranslationExisis(permName, culture);
         }
     }
 }

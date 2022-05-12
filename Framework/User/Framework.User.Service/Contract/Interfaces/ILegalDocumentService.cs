@@ -15,12 +15,22 @@ namespace Framework.User.Service.Contract.Interfaces
 
         Task<LegalDocumentViewModel> Create(LegalDocumentViewModel model);
 
+        Task<LegalDocumentViewModel> CreateTranslation(LegalDocumentViewModel model);
+
         Task<LegalDocumentViewModel> Update(LegalDocumentViewModel model);
+
+        Task Approve(long id);
+
+        Task<LegalDocumentViewModel> CreateVersion(LegalDocumentViewModel model);
 
         Task<LegalDocumentViewModel> Delete(int id);
 
         Task<LegalDocumentViewModel> Restore(int id);
 
         Task<ListPageViewModel<LegalDocumentViewModel>> GetAll(LegalDocumentFilterViewModel filter, ListPageInfoViewModel pageInfo);
+
+        Task<bool> CheckDocumentExisis(string permName);
+
+        Task<bool> CheckTranslationExisis(string permName, string culture);
     }
 }
