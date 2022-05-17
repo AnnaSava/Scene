@@ -12,6 +12,17 @@
 
     <ToolBarContent>
         <MudText Typo="Typo.h6">Documents</MudText>
+        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary">Add</MudButton>
+        <MudSelect @bind-Value="searchCulture" T="string" Label="Culture" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(s=>OnCultureSearch(s))">
+            <MudSelectItem Value="@("All")" />
+            <MudSelectItem Value="@("En")" />
+            <MudSelectItem Value="@("Ru")" />
+        </MudSelect>
+        <MudSelect T="string" Label="Approved" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(s=>OnApprovedSearch(s))">
+            <MudSelectItem Value="@("All")" />
+            <MudSelectItem Value="@("True")" />
+            <MudSelectItem Value="@("False")" />
+        </MudSelect>
         <MudSpacer />
         <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
@@ -21,12 +32,14 @@
         <MudTh><MudTableSortLabel SortLabel="permname" T="LegalDocumentViewModel">Name</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="title" T="LegalDocumentViewModel">Title</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="culture" T="LegalDocumentViewModel">Culture</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="isapproved" T="LegalDocumentViewModel">Is approved</MudTableSortLabel></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id">@context.Id</MudTd>
         <MudTd DataLabel="PermName">@context.PermName</MudTd>
-        <MudTd DataLabel="PermName">@context.Title</MudTd>
-        <MudTd DataLabel="PermName">@context.Culture</MudTd>
+        <MudTd DataLabel="Title">@context.Title</MudTd>
+        <MudTd DataLabel="Culture">@context.Culture</MudTd>
+        <MudTd DataLabel="IsApproved">@context.IsApproved</MudTd>
     </RowTemplate>
     <PagerContent>
         <MudTablePager/>
@@ -38,6 +51,8 @@
     private MudTable<LegalDocumentViewModel>? table;
 
     private string searchString = string.Empty;
+    private string searchCulture = string.Empty;
+    private bool? searchApproved;
 
     private List<BreadcrumbItem> breadCrumbs = new List<BreadcrumbItem>
     {
@@ -47,7 +62,12 @@
 
     private async Task<TableData<LegalDocumentViewModel>> ServerReload(TableState state)
     {
-        var filter = new LegalDocumentFilterViewModel { PermName =  "contains|" + searchString, Culture = "equals|" + searchString };
+        var filter = new LegalDocumentFilterViewModel 
+        { 
+            PermName =  "contains|" + searchString, 
+            Culture = "equals|" + searchCulture,
+            IsApproved = searchApproved
+        };
 
         var result = await _legalDocumentService.GetAll(filter, PageHelper.GetPageInfo(state));
 
@@ -57,6 +77,20 @@
     private void OnSearch(string text)
     {
         searchString = text;
+        table?.ReloadServerData();
+    }
+
+    private void OnCultureSearch(IEnumerable<string> selectedCultures)
+    {
+        var selectedCulture = selectedCultures?.FirstOrDefault() ?? string.Empty;
+        searchCulture = selectedCulture == "All" ? string.Empty : selectedCulture.ToLower();
+        table?.ReloadServerData();
+    }
+
+    private void OnApprovedSearch(IEnumerable<string> selectedOptions)
+    {
+        var selectedOption = selectedOptions?.FirstOrDefault() ?? string.Empty;
+        searchApproved = selectedOption == "All" ? null : bool.Parse(selectedOption.ToLower());
         table?.ReloadServerData();
     }
 }

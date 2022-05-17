@@ -21,7 +21,9 @@ namespace Framework.User.DataService.Services
                 .ApplyIsDeletedFilter(filter)
                 .ApplyIdFilter(filter)
                 .ApplyIsApprovedFilter(filter)
-                .ApplyPermNameFilter(filter);
+                .ApplyPermNameFilter(filter)
+                .ApplyCultureFilter(filter)
+                .ApplyTitleFilter(filter);
         }
 
         private static IQueryable<LegalDocument> ApplyIsApprovedFilter(this IQueryable<LegalDocument> list, LegalDocumentFilterModel filter)
