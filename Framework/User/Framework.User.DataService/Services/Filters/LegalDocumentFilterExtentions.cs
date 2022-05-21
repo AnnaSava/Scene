@@ -20,17 +20,17 @@ namespace Framework.User.DataService.Services
             return list
                 .ApplyIsDeletedFilter(filter)
                 .ApplyIdFilter(filter)
-                .ApplyIsApprovedFilter(filter)
+                .ApplyStatusFilter(filter)
                 .ApplyPermNameFilter(filter)
                 .ApplyCultureFilter(filter)
                 .ApplyTitleFilter(filter);
         }
 
-        private static IQueryable<LegalDocument> ApplyIsApprovedFilter(this IQueryable<LegalDocument> list, LegalDocumentFilterModel filter)
+        private static IQueryable<LegalDocument> ApplyStatusFilter(this IQueryable<LegalDocument> list, LegalDocumentFilterModel filter)
         {
-            if (filter.IsApproved != null)
+            if (filter.Status != null)
             {
-                list = list.Where(m => m.IsApproved == filter.IsApproved);
+                list = list.Where(m => m.Status == filter.Status);
             }
             return list;
         }

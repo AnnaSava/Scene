@@ -1,4 +1,5 @@
 ﻿using Framework.Base.DataService.Entities;
+using Framework.Base.Types.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,6 @@ namespace Framework.User.DataService.Entities
 
         public DateTime Created { get; set; }
 
-        public bool IsApproved { get; set; }
+        public DocumentStatus Status  { get; set; }
     }
 }

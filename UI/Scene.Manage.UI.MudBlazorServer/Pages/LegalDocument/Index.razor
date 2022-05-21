@@ -1,4 +1,5 @@
 ﻿@page "/legaldocuments"
+@using Framework.Base.Types.Enums
 @using Framework.User.Service.Contract.Interfaces
 @using Framework.User.Service.Contract.Models
 @inject ILegalDocumentService _legalDocumentService
@@ -18,10 +19,11 @@
             <MudSelectItem Value="@("En")" />
             <MudSelectItem Value="@("Ru")" />
         </MudSelect>
-        <MudSelect T="string" Label="Approved" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(s=>OnApprovedSearch(s))">
+        <MudSelect T="string" Label="Status" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(s=>OnStatusSearch(s))">
             <MudSelectItem Value="@("All")" />
-            <MudSelectItem Value="@("True")" />
-            <MudSelectItem Value="@("False")" />
+            <MudSelectItem Value="@("Draft")" />
+            <MudSelectItem Value="@("Published")" />
+            <MudSelectItem Value="@("Outdated")" />
         </MudSelect>
         <MudSpacer />
         <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
@@ -32,14 +34,14 @@
         <MudTh><MudTableSortLabel SortLabel="permname" T="LegalDocumentViewModel">Name</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="title" T="LegalDocumentViewModel">Title</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="culture" T="LegalDocumentViewModel">Culture</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="isapproved" T="LegalDocumentViewModel">Is approved</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="status" T="LegalDocumentViewModel">Status</MudTableSortLabel></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id">@context.Id</MudTd>
         <MudTd DataLabel="PermName">@context.PermName</MudTd>
         <MudTd DataLabel="Title">@context.Title</MudTd>
         <MudTd DataLabel="Culture">@context.Culture</MudTd>
-        <MudTd DataLabel="IsApproved">@context.IsApproved</MudTd>
+        <MudTd DataLabel="Status">@context.Status.ToString()</MudTd>
     </RowTemplate>
     <PagerContent>
         <MudTablePager/>
@@ -52,7 +54,7 @@
 
     private string searchString = string.Empty;
     private string searchCulture = string.Empty;
-    private bool? searchApproved;
+    private DocumentStatus? searchStatus;
 
     private List<BreadcrumbItem> breadCrumbs = new List<BreadcrumbItem>
     {
@@ -66,7 +68,7 @@
         { 
             PermName =  "contains|" + searchString, 
             Culture = "equals|" + searchCulture,
-            IsApproved = searchApproved
+            Status = searchStatus
         };
 
         var result = await _legalDocumentService.GetAll(filter, PageHelper.GetPageInfo(state));
@@ -87,10 +89,18 @@
         table?.ReloadServerData();
     }
 
-    private void OnApprovedSearch(IEnumerable<string> selectedOptions)
+    private void OnStatusSearch(IEnumerable<string> selectedOptions)
     {
         var selectedOption = selectedOptions?.FirstOrDefault() ?? string.Empty;
-        searchApproved = selectedOption == "All" ? null : bool.Parse(selectedOption.ToLower());
+
+        switch(selectedOption)
+        {
+            case "Draft": searchStatus = DocumentStatus.Draft; break;
+            case "Outdated": searchStatus = DocumentStatus.Outdated; break;
+            case "Published": searchStatus = DocumentStatus.Published; break;
+            default: searchStatus = null; break;
+        }
+
         table?.ReloadServerData();
     }
 }

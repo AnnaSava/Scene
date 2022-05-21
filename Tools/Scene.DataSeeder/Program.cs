@@ -123,7 +123,7 @@ namespace Scene.DataSeeder
                     Text = "This is a new document. Edit this text as you wish.",
                     Created = DateTime.Now,
                     LastUpdated = DateTime.Now,
-                    IsApproved = false,
+                    Status = Framework.Base.Types.Enums.DocumentStatus.Draft,
                     Culture = "en"                    
                 });
 
@@ -135,7 +135,7 @@ namespace Scene.DataSeeder
                     Text = "Это новый документ. Отредактиуйте его так, как вам нужно.",
                     Created = DateTime.Now,
                     LastUpdated = DateTime.Now,
-                    IsApproved = false,
+                    Status = Framework.Base.Types.Enums.DocumentStatus.Draft,
                     Culture = "ru"
                 });
 

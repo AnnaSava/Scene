@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Framework.Base.Types.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +25,6 @@ namespace Framework.User.Service.Contract.Models
 
         public DateTime Created { get; set; }
 
-        public bool IsApproved { get; set; }
+        public DocumentStatus Status { get; set; }
     }
 }

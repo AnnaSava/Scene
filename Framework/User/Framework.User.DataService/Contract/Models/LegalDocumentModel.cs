@@ -1,4 +1,5 @@
 ﻿using Framework.Base.DataService.Contract.Models;
+using Framework.Base.Types.Enums;
 using Framework.Base.Types.ModelTypes;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,6 @@ namespace Framework.User.DataService.Contract.Models
 
         public DateTime Created { get; set; }
 
-        public bool IsApproved { get; set; }
+        public DocumentStatus Status { get; set; }
     }
 }

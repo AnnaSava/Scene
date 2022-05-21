@@ -53,7 +53,7 @@ namespace Framework.User.DataService.Services
             var currentEntity = await _dbContext.GetEntityForUpdate<LegalDocument>(model.Id);
 
             // TODO бросать исключение? возвращать доп. код ошибки?
-            if (currentEntity.IsApproved)
+            if (currentEntity.Status != Base.Types.Enums.DocumentStatus.Draft)
             {
                 //return _mapper.Map<LegalDocumentModel>(currentEntity);
                 throw new Exception($"Document {model.PermName} Id={model.Id} is already approved and cannot be updated.");
@@ -73,7 +73,7 @@ namespace Framework.User.DataService.Services
         public async Task Approve(long id)
         {
             var currentEntity = await _dbContext.GetEntityForUpdate<LegalDocument>(id);
-            currentEntity.IsApproved = true;
+            currentEntity.Status = Base.Types.Enums.DocumentStatus.Published;
             await _dbContext.SaveChangesAsync();
         }
 

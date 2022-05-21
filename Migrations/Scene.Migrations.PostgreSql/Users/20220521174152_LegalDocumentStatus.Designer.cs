@@ -3,17 +3,19 @@ using System;
 using Framework.User.DataService.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Scene.Migrations.PostgreSql.User
+namespace Scene.Migrations.PostgreSql.Users
 {
     [DbContext(typeof(FrameworkUserDbContext))]
-    partial class FrameworkUserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220521174152_LegalDocumentStatus")]
+    partial class LegalDocumentStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

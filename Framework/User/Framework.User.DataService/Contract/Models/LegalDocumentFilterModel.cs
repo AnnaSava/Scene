@@ -1,4 +1,5 @@
 ﻿using Framework.Base.DataService.Contract.Models;
+using Framework.Base.Types.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,6 @@ namespace Framework.User.DataService.Contract.Models
 
         public WordFilterField Culture { get; set; }
 
-        public bool? IsApproved { get; set; }
+        public DocumentStatus? Status { get; set; }
     }
 }
