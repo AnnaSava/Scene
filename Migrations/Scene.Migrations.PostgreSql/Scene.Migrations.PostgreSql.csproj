@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Mail\Framework.MailTemplate.Data\Framework.MailTemplate.Data.csproj" />
     <ProjectReference Include="..\..\Framework\User\Framework.User.DataService\Framework.User.DataService.csproj" />
   </ItemGroup>
 

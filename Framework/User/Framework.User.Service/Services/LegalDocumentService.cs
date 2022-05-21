@@ -18,9 +18,9 @@ namespace Framework.User.Service.Services
         private readonly ILegalDocumentDbService _legalDocumentDbService;
         private readonly IMapper _mapper;
 
-        public LegalDocumentService(ILegalDocumentDbService legalDocumentNameDbService, IMapper mapper)
+        public LegalDocumentService(ILegalDocumentDbService legalDocumentDbService, IMapper mapper)
         {
-            _legalDocumentDbService = legalDocumentNameDbService;
+            _legalDocumentDbService = legalDocumentDbService;
             _mapper = mapper;
         }
 

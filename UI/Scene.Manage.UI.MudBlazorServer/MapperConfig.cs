@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Framework.Base.Service.Mapper;
+using Framework.MailTemplate.Data.Mapper;
+using Framework.MailTemplate.Service.Mapper;
 using Framework.User.DataService.Mapper;
 using Framework.User.Service.Mapper;
 
@@ -19,6 +21,8 @@ namespace Scene.Manage.UI.MudBlazorServer
                 mc.AddProfile(new FrameworkUserMapperProfile());
                 mc.AddProfile(new CommonDataMapperProfile());
                 mc.AddProfile(new CommonMapperProfile());
+                mc.AddProfile(new MailTemplateDataMapperProfile());
+                mc.AddProfile(new MailTemplateMapperProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();

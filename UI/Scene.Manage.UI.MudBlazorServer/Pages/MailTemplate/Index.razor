@@ -1,0 +1,105 @@
+﻿@page "/mailtemplates"
+@using Framework.Base.Types.Enums
+@using Framework.MailTemplate
+@inject IMailTemplateService _mailTemplateService
+
+<PageTitle>Templates</PageTitle>
+
+<MudBreadcrumbs Items="breadCrumbs"></MudBreadcrumbs>
+
+<MudTable ServerData="@(new Func<TableState, Task<TableData<MailTemplateViewModel>>>(ServerReload))"
+    Hover="true" @ref="table">
+
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Templates</MudText>
+        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary">Add</MudButton>
+        <MudSelect @bind-Value="searchCulture" T="string" Label="Culture" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(s=>OnCultureSearch(s))">
+            <MudSelectItem Value="@("All")" />
+            <MudSelectItem Value="@("En")" />
+            <MudSelectItem Value="@("Ru")" />
+        </MudSelect>
+        <MudSelect T="string" Label="Status" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(s=>OnStatusSearch(s))">
+            <MudSelectItem Value="@("All")" />
+            <MudSelectItem Value="@("Draft")" />
+            <MudSelectItem Value="@("Published")" />
+            <MudSelectItem Value="@("Outdated")" />
+        </MudSelect>
+        <MudSpacer />
+        <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortLabel="id" T="MailTemplateViewModel">Id</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="permname" T="MailTemplateViewModel">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="title" T="MailTemplateViewModel">Title</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="culture" T="MailTemplateViewModel">Culture</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="status" T="MailTemplateViewModel">Status</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="PermName">@context.PermName</MudTd>
+        <MudTd DataLabel="Title">@context.Title</MudTd>
+        <MudTd DataLabel="Culture">@context.Culture</MudTd>
+        <MudTd DataLabel="Status">@context.Status.ToString()</MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager/>
+    </PagerContent>
+</MudTable>
+
+
+@code {
+    private MudTable<MailTemplateViewModel>? table;
+
+    private string searchString = string.Empty;
+    private string searchCulture = string.Empty;
+    private DocumentStatus? searchStatus;
+
+    private List<BreadcrumbItem> breadCrumbs = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem("Home", href: "/"),
+        new BreadcrumbItem("Templates", href: null, disabled: true)
+    };
+
+    private async Task<TableData<MailTemplateViewModel>> ServerReload(TableState state)
+    {
+        var filter = new MailTemplateFilterViewModel 
+        { 
+            PermName =  "contains|" + searchString, 
+            Culture = "equals|" + searchCulture,
+            Status = searchStatus
+        };
+
+        var result = await _mailTemplateService.GetAll(filter, PageHelper.GetPageInfo(state));
+
+        return PageHelper.GetTableData<MailTemplateViewModel>(result);
+    }
+
+    private void OnSearch(string text)
+    {
+        searchString = text;
+        table?.ReloadServerData();
+    }
+
+    private void OnCultureSearch(IEnumerable<string> selectedCultures)
+    {
+        var selectedCulture = selectedCultures?.FirstOrDefault() ?? string.Empty;
+        searchCulture = selectedCulture == "All" ? string.Empty : selectedCulture.ToLower();
+        table?.ReloadServerData();
+    }
+
+    private void OnStatusSearch(IEnumerable<string> selectedOptions)
+    {
+        var selectedOption = selectedOptions?.FirstOrDefault() ?? string.Empty;
+
+        switch(selectedOption)
+        {
+            case "Draft": searchStatus = DocumentStatus.Draft; break;
+            case "Outdated": searchStatus = DocumentStatus.Outdated; break;
+            case "Published": searchStatus = DocumentStatus.Published; break;
+            default: searchStatus = null; break;
+        }
+
+        table?.ReloadServerData();
+    }
+}
