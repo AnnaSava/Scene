@@ -1,0 +1,48 @@
+﻿@page "/legaldocuments/create"
+@using Framework.User.Service.Contract.Interfaces
+@using Framework.User.Service.Contract.Models
+@inject ILegalDocumentService _legalDocumentService
+
+<h3>Create</h3>
+
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator/>
+
+    <MudTextField Label="Permanent name" @bind-Value="model.PermName" For="@(() => model.PermName)"/>
+        
+    <MudSelect T="string" Label="Culture" @bind-Value="model.Culture" AnchorOrigin="Origin.BottomCenter">
+        <MudSelectItem Value="@("En")" />
+        <MudSelectItem Value="@("Ru")" />
+    </MudSelect>
+
+    <MudTextField Label="Title" @bind-Value="model.Title" For="@(() => model.Title)"/>
+
+    <MudTextField T="string" @bind-Value="model.Info" Label="Info" Variant="Variant.Text" Lines="5" />
+
+    <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+        <MudTabPanel Text="Text">
+            <MudTextField T="string" @bind-Value="model.Text" Label="Text" Variant="Variant.Text" Lines="20" />
+        </MudTabPanel>
+        <MudTabPanel Text="Comment">
+            <MudTextField T="string" @bind-Value="model.Comment" Label="Comment" Variant="Variant.Text" Lines="20" />
+        </MudTabPanel>
+    </MudTabs>
+
+    <MudCardActions>
+        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Save</MudButton>
+    </MudCardActions>
+
+</EditForm>
+
+@code {
+    LegalDocumentFormViewModel model = new LegalDocumentFormViewModel();
+    bool success;
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        await _legalDocumentService.Create(model);
+
+        success = true;
+        StateHasChanged();
+    }
+}

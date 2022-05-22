@@ -31,6 +31,9 @@ namespace Framework.User.Service.Mapper
             CreateMap<LegalDocumentViewModel, LegalDocumentModel>();
             CreateMap<LegalDocumentModel, LegalDocumentViewModel>();
 
+            CreateMap<LegalDocumentFormViewModel, LegalDocumentModel>();
+            CreateMap<LegalDocumentModel, LegalDocumentFormViewModel>();
+
             CreateMap<LegalDocumentFilterViewModel, LegalDocumentFilterModel>(MemberList.None)
                 .ForMember(x => x.PermName, y => y.MapFrom(s => s.PermName.ToWordListFilterField()))
                 .ForMember(x => x.Title, y => y.MapFrom(s => s.Title.ToWordListFilterField()))

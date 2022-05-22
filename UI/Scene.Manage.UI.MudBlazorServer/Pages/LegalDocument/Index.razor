@@ -13,7 +13,7 @@
 
     <ToolBarContent>
         <MudText Typo="Typo.h6">Documents</MudText>
-        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary">Add</MudButton>
+        <MudButton Href="/legaldocuments/create" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary">Add</MudButton>
         <MudSelect @bind-Value="searchCulture" T="string" Label="Culture" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(s=>OnCultureSearch(s))">
             <MudSelectItem Value="@("All")" />
             <MudSelectItem Value="@("En")" />
@@ -35,6 +35,7 @@
         <MudTh><MudTableSortLabel SortLabel="title" T="LegalDocumentViewModel">Title</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="culture" T="LegalDocumentViewModel">Culture</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="status" T="LegalDocumentViewModel">Status</MudTableSortLabel></MudTh>
+        <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id">@context.Id</MudTd>
@@ -42,6 +43,17 @@
         <MudTd DataLabel="Title">@context.Title</MudTd>
         <MudTd DataLabel="Culture">@context.Culture</MudTd>
         <MudTd DataLabel="Status">@context.Status.ToString()</MudTd>
+        <MudTd>
+            <MudButton Href="@("/legaldocuments/"+ context.PermName + "/createtranslation")" Variant="Variant.Outlined" Color="Color.Primary">+ transl</MudButton>
+            @if(context.Status == DocumentStatus.Published)
+            {
+                <MudButton Href="@("/legaldocuments/"+ context.PermName + "/" + context.Culture.ToLower() + "/createversion")" Variant="Variant.Outlined" Color="Color.Primary">+ vers</MudButton>
+            } 
+            else if(context.Status == DocumentStatus.Draft)
+            {
+                <MudButton Href="@("/legaldocuments/update/" + context.Id)" Variant="Variant.Outlined" Color="Color.Primary">Update</MudButton>
+            }
+        </MudTd>
     </RowTemplate>
     <PagerContent>
         <MudTablePager/>

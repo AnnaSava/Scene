@@ -34,6 +34,9 @@ namespace Framework.User.DataService.Services
                 throw new Exception($"Document {model.PermName} already exists.");
             }
 
+            model.Status = Base.Types.Enums.DocumentStatus.Draft;
+            model.Created = DateTime.Now;
+
             return await _dbContext.Create<LegalDocument, LegalDocumentModel>(model, _mapper, OnAdding);
         }
 
@@ -90,6 +93,15 @@ namespace Framework.User.DataService.Services
         public async Task<LegalDocumentModel> GetOne(long id)
         {
             return await _dbContext.GetOne<LegalDocument, LegalDocumentModel>(m => m.Id == id, _mapper);
+        }
+
+        public async Task<LegalDocumentModel> GetActual(string permName, string culture)
+        {
+            var entity = await _dbContext.Set<LegalDocument>()
+                .Where(m => m.PermName == permName && m.Culture == culture && m.Status == Base.Types.Enums.DocumentStatus.Published && m.IsDeleted == false)
+                .FirstOrDefaultAsync();
+
+            return _mapper.Map<LegalDocumentModel>(entity);
         }
 
         public async Task<PageListModel<LegalDocumentModel>> GetAll(ListQueryModel<LegalDocumentFilterModel> query)

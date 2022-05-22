@@ -11,17 +11,19 @@ namespace Framework.User.Service.Contract.Interfaces
 {
     public interface ILegalDocumentService
     {
-        Task<LegalDocumentViewModel> GetOne(int id);
+        Task<TResult> GetOne<TResult>(long id);
 
-        Task<LegalDocumentViewModel> Create(LegalDocumentViewModel model);
+        Task<TResult> GetActual<TResult>(string permName, string culture);
 
-        Task<LegalDocumentViewModel> CreateTranslation(LegalDocumentViewModel model);
+        Task<LegalDocumentViewModel> Create(LegalDocumentFormViewModel model);
 
-        Task<LegalDocumentViewModel> Update(LegalDocumentViewModel model);
+        Task<LegalDocumentViewModel> CreateTranslation(LegalDocumentFormViewModel model);
+
+        Task<LegalDocumentViewModel> Update(long id, LegalDocumentFormViewModel model);
 
         Task Approve(long id);
 
-        Task<LegalDocumentViewModel> CreateVersion(LegalDocumentViewModel model);
+        Task<LegalDocumentViewModel> CreateVersion(LegalDocumentFormViewModel model);
 
         Task<LegalDocumentViewModel> Delete(int id);
 

@@ -23,6 +23,8 @@ namespace Framework.User.DataService.Contract.Interfaces
 
         Task<LegalDocumentModel> GetOne(long id);
 
+        Task<LegalDocumentModel> GetActual(string permName, string culture);
+
         Task<PageListModel<LegalDocumentModel>> GetAll(ListQueryModel<LegalDocumentFilterModel> query);
 
         Task<bool> CheckDocumentExisis(string permName);

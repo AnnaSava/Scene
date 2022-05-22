@@ -43,9 +43,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scene.Migrations.PostgreSql
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mail", "Mail", "{74BCDE5F-941F-48F4-9753-5EB306F50A9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.MailTemplate.Data", "Framework\Mail\Framework.MailTemplate.Data\Framework.MailTemplate.Data.csproj", "{34EC8A21-E102-459F-896F-14DEA2E73D84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.MailTemplate.Data", "Framework\Mail\Framework.MailTemplate.Data\Framework.MailTemplate.Data.csproj", "{34EC8A21-E102-459F-896F-14DEA2E73D84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.MailTemplate", "Framework\Mail\Framework.MailTemplate\Framework.MailTemplate.csproj", "{4279FAB0-97CA-411F-8135-40628438C629}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.MailTemplate", "Framework\Mail\Framework.MailTemplate\Framework.MailTemplate.csproj", "{4279FAB0-97CA-411F-8135-40628438C629}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

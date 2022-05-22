@@ -24,29 +24,38 @@ namespace Framework.User.Service.Services
             _mapper = mapper;
         }
 
-        public async Task<LegalDocumentViewModel> GetOne(int id)
+        public async Task<TResult> GetOne<TResult>(long id)
         {
             var model = await _legalDocumentDbService.GetOne(id);
-            return _mapper.Map<LegalDocumentViewModel>(model);
+            return _mapper.Map<TResult>(model);
         }
 
-        public async Task<LegalDocumentViewModel> Create(LegalDocumentViewModel model)
+        public async Task<TResult> GetActual<TResult>(string permName, string culture)
+        {
+            var model = await _legalDocumentDbService.GetActual(permName, culture);
+            return _mapper.Map<TResult>(model);
+        }
+
+        public async Task<LegalDocumentViewModel> Create(LegalDocumentFormViewModel model)
         {
             var entity = _mapper.Map<LegalDocumentModel>(model);
+            entity.Culture = entity.Culture.ToLower();
             var created = await _legalDocumentDbService.Create(entity);
             return _mapper.Map<LegalDocumentViewModel>(created);
         }
 
-        public async Task<LegalDocumentViewModel> CreateTranslation(LegalDocumentViewModel model)
+        public async Task<LegalDocumentViewModel> CreateTranslation(LegalDocumentFormViewModel model)
         {
             var entity = _mapper.Map<LegalDocumentModel>(model);
+            entity.Culture = entity.Culture.ToLower();
             var created = await _legalDocumentDbService.CreateTranslation(entity);
             return _mapper.Map<LegalDocumentViewModel>(created);
         }
 
-        public async Task<LegalDocumentViewModel> Update(LegalDocumentViewModel model)
+        public async Task<LegalDocumentViewModel> Update(long id, LegalDocumentFormViewModel model)
         {
             var newModel = _mapper.Map<LegalDocumentModel>(model);
+            newModel.Id = id;
             var resultModel = await _legalDocumentDbService.Update(newModel);
             return _mapper.Map<LegalDocumentViewModel>(resultModel);
         }
@@ -56,9 +65,10 @@ namespace Framework.User.Service.Services
             await _legalDocumentDbService.Approve(id);
         }
 
-        public async Task<LegalDocumentViewModel> CreateVersion(LegalDocumentViewModel model)
+        public async Task<LegalDocumentViewModel> CreateVersion(LegalDocumentFormViewModel model)
         {
             var entity = _mapper.Map<LegalDocumentModel>(model);
+            entity.Culture = entity.Culture.ToLower();
             var created = await _legalDocumentDbService.CreateVersion(entity);
             return _mapper.Map<LegalDocumentViewModel>(created);
         }
