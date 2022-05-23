@@ -1,4 +1,5 @@
-﻿@page "/legaldocuments"
+﻿@page "/legaldocuments2"
+@using Framework.Base.Service.ListView
 @using Framework.Base.Types.Enums
 @using Framework.User.Service.Contract.Interfaces
 @using Framework.User.Service.Contract.Models
@@ -8,8 +9,7 @@
 
 <MudBreadcrumbs Items="breadCrumbs"></MudBreadcrumbs>
 
-<MudTable ServerData="@(new Func<TableState, Task<TableData<LegalDocumentViewModel>>>(ServerReload))"
-    Hover="true" @ref="table">
+<MudTable Items="@Elements" Filter="new Func<LegalDocumentViewModel,bool>(FilterFunc)" Hover="true">
 
     <ToolBarContent>
         <MudText Typo="Typo.h6">Documents</MudText>
@@ -44,10 +44,7 @@
         <MudTd DataLabel="Culture">@context.Culture</MudTd>
         <MudTd DataLabel="Status">@context.Status.ToString()</MudTd>
         <MudTd>
-            @if (context.HasAllTranslations == false)
-            {
-                <MudButton Href="@("/legaldocuments/"+ context.PermName + "/createtranslation")" Variant="Variant.Outlined" Color="Color.Primary">+ transl</MudButton>
-            }
+            <MudButton Href="@("/legaldocuments/"+ context.PermName + "/createtranslation")" Variant="Variant.Outlined" Color="Color.Primary">+ transl</MudButton>
             @if(context.Status == DocumentStatus.Published)
             {
                 <MudButton Href="@("/legaldocuments/"+ context.PermName + "/" + context.Culture.ToLower() + "/createversion")" Variant="Variant.Outlined" Color="Color.Primary">+ vers</MudButton>
@@ -71,6 +68,14 @@
     private string searchString = string.Empty;
     private string searchCulture = string.Empty;
     private DocumentStatus? searchStatus;
+    private List<LegalDocumentViewModel> Elements = new List<LegalDocumentViewModel>();
+    private LegalDocumentFilterViewModel filter = new LegalDocumentFilterViewModel();
+    private ListPageInfoViewModel pageInfo = new ListPageInfoViewModel
+            {
+                Page = 1,
+                Rows = 10,
+                Sort = null
+            };
 
     private List<BreadcrumbItem> breadCrumbs = new List<BreadcrumbItem>
     {
@@ -92,20 +97,23 @@
         return PageHelper.GetTableData<LegalDocumentViewModel>(result);
     }
 
-    private void OnSearch(string text)
+    private async Task OnSearch(string text)
     {
-        searchString = text;
-        table?.ReloadServerData();
+        filter.PermName = "contains|" + text;
+
+        await LoadData();
     }
 
-    private void OnCultureSearch(IEnumerable<string> selectedCultures)
+    private async Task OnCultureSearch(IEnumerable<string> selectedCultures)
     {
         var selectedCulture = selectedCultures?.FirstOrDefault() ?? string.Empty;
         searchCulture = selectedCulture == "All" ? string.Empty : selectedCulture.ToLower();
-        table?.ReloadServerData();
+        filter.Culture = "equals|" + searchCulture;
+
+        await LoadData();
     }
 
-    private void OnStatusSearch(IEnumerable<string> selectedOptions)
+    private async Task OnStatusSearch(IEnumerable<string> selectedOptions)
     {
         var selectedOption = selectedOptions?.FirstOrDefault() ?? string.Empty;
 
@@ -117,12 +125,39 @@
             default: searchStatus = null; break;
         }
 
-        table?.ReloadServerData();
+        filter.Status = searchStatus;
+
+        await LoadData();
     }
 
     private async Task OnClickPublish(LegalDocumentViewModel el)
     {
         await _legalDocumentService.Publish(el.Id);
-        table?.ReloadServerData();
+        el.Status = DocumentStatus.Published;
+        StateHasChanged();
+        //var t = Elements.FirstOrDefault(m=>m.Id==el.Id);
+        //t.Status = DocumentStatus.Published;
+
+
+        //var newEls = Elements.Where(m => m.Id != el.Id).ToList();
+        //newEls.Add(t);
+        //Elements = newEls;
+    }
+
+    private bool FilterFunc(LegalDocumentViewModel el)
+    {
+        return true;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        var result = await _legalDocumentService.GetAll(filter, pageInfo);
+
+        Elements = result.Items.ToList();
     }
 }

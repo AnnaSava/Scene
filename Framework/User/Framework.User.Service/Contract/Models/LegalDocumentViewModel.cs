@@ -26,5 +26,7 @@ namespace Framework.User.Service.Contract.Models
         public DateTime Created { get; set; }
 
         public DocumentStatus Status { get; set; }
+
+        public bool HasAllTranslations { get; set; }
     }
 }

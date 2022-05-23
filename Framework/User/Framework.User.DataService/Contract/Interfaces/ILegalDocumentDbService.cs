@@ -13,7 +13,7 @@ namespace Framework.User.DataService.Contract.Interfaces
 
         Task<LegalDocumentModel> Update(LegalDocumentModel model);
 
-        Task Approve(long id);
+        Task Publish(long id);
 
         Task<LegalDocumentModel> CreateVersion(LegalDocumentModel model);
 
@@ -30,5 +30,7 @@ namespace Framework.User.DataService.Contract.Interfaces
         Task<bool> CheckDocumentExisis(string permName);
 
         Task<bool> CheckTranslationExisis(string permName, string culture);
+
+        Task<bool> CheckHasAllTranslations(string permName);
     }
 }

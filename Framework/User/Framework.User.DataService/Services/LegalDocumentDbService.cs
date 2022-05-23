@@ -18,6 +18,9 @@ namespace Framework.User.DataService.Services
 {
     public class LegalDocumentDbService : BaseEntityService<LegalDocument, LegalDocumentModel>, ILegalDocumentDbService
     {
+        //TODO вынести в настройки проекта appsettings
+        private readonly string[] Cultures = { "en", "ru" };
+
         private readonly ILegalDocumentContext _legalDocumentContext;
 
         public LegalDocumentDbService(ILegalDocumentContext dbContext, IMapper mapper)
@@ -73,10 +76,20 @@ namespace Framework.User.DataService.Services
             return await _dbContext.Create<LegalDocument, LegalDocumentModel>(model, _mapper, OnAdding);
         }
 
-        public async Task Approve(long id)
+        public async Task Publish(long id)
         {
             var currentEntity = await _dbContext.GetEntityForUpdate<LegalDocument>(id);
             currentEntity.Status = Base.Types.Enums.DocumentStatus.Published;
+
+            var publishedEntities = await _dbContext.Set<LegalDocument>()
+                .Where(m => m.PermName == currentEntity.PermName && m.Culture == currentEntity.Culture && m.Status == Base.Types.Enums.DocumentStatus.Published && m.IsDeleted == false)
+                .ToListAsync();
+
+            foreach (var publishedEntity in publishedEntities)
+            {
+                publishedEntity.Status = Base.Types.Enums.DocumentStatus.Outdated;
+            }
+
             await _dbContext.SaveChangesAsync();
         }
 
@@ -117,6 +130,18 @@ namespace Framework.User.DataService.Services
         public async Task<bool> CheckTranslationExisis(string permName, string culture)
         {
             return await _legalDocumentContext.LegalDocuments.AnyAsync(m => m.PermName == permName && m.Culture == culture);
+        }
+
+        public async Task<bool> CheckHasAllTranslations(string permName)
+        {
+            var existingCultures = await _dbContext.Set<LegalDocument>()
+                .Where(m => m.PermName == permName)
+                .Select(m => m.Culture)
+                .Distinct()
+                .ToListAsync();
+
+            var intersect = Cultures.Intersect(existingCultures);
+            return intersect.Count() == Cultures.Count();
         }
 
         protected void ApplyFilters(ref IQueryable<LegalDocument> list, LegalDocumentFilterModel filter)

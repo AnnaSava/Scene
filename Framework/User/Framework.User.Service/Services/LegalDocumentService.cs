@@ -60,9 +60,9 @@ namespace Framework.User.Service.Services
             return _mapper.Map<LegalDocumentViewModel>(resultModel);
         }
 
-        public async Task Approve(long id)
+        public async Task Publish(long id)
         {
-            await _legalDocumentDbService.Approve(id);
+            await _legalDocumentDbService.Publish(id);
         }
 
         public async Task<LegalDocumentViewModel> CreateVersion(LegalDocumentFormViewModel model)
@@ -93,9 +93,13 @@ namespace Framework.User.Service.Services
 
             var list = await _legalDocumentDbService.GetAll(new ListQueryModel<LegalDocumentFilterModel> { Filter = filterModel, PageInfo = pageInfoModel });
 
+            var items = list.Items.Select(m => _mapper.Map<LegalDocumentModel, LegalDocumentViewModel>(m)).ToList();
+
+            await FillHasAllTranslations(items);
+
             var vm = new ListPageViewModel<LegalDocumentViewModel>()
             {
-                Items = list.Items.Select(m => _mapper.Map<LegalDocumentModel, LegalDocumentViewModel>(m)),
+                Items = items,
                 Page = list.Page,
                 TotalPages = list.TotalPages,
                 TotalRows = list.TotalRows
@@ -112,6 +116,19 @@ namespace Framework.User.Service.Services
         public async Task<bool> CheckTranslationExisis(string permName, string culture)
         {
             return await _legalDocumentDbService.CheckTranslationExisis(permName, culture);
+        }
+
+        private async Task FillHasAllTranslations(List<LegalDocumentViewModel> items)
+        {
+            var permNames = items.Select(m => m.PermName);
+            foreach (var permName in permNames)
+            {
+                var has = await _legalDocumentDbService.CheckHasAllTranslations(permName);
+                foreach (var item in items.Where(m => m.PermName == permName))
+                {
+                    item.HasAllTranslations = has;
+                }
+            }
         }
     }
 }

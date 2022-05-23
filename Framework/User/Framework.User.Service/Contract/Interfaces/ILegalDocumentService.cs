@@ -21,7 +21,7 @@ namespace Framework.User.Service.Contract.Interfaces
 
         Task<LegalDocumentViewModel> Update(long id, LegalDocumentFormViewModel model);
 
-        Task Approve(long id);
+        Task Publish(long id);
 
         Task<LegalDocumentViewModel> CreateVersion(LegalDocumentFormViewModel model);
 
