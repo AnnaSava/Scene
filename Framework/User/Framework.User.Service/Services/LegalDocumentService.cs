@@ -118,6 +118,8 @@ namespace Framework.User.Service.Services
             return await _legalDocumentDbService.CheckTranslationExisis(permName, culture);
         }
 
+        public async Task<IEnumerable<string>> GetMissingCultures(string permName) => await _legalDocumentDbService.GetMissingCultures(permName);
+
         private async Task FillHasAllTranslations(List<LegalDocumentViewModel> items)
         {
             var permNames = items.Select(m => m.PermName);

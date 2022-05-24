@@ -67,6 +67,8 @@
     {
         var model = new ReservedNameFormViewModel { IncludePlural = isChecked };
         await _reservedNameService.Update(item.Text, model);
-        item.IncludePlural = isChecked;
+        //item.IncludePlural = isChecked;
+        //StateHasChanged();
+        table?.ReloadServerData();
     }
 }

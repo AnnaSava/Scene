@@ -11,8 +11,10 @@
     <MudTextField Label="Permanent name" @bind-Value="model.PermName" For="@(() => model.PermName)" Disabled="true"/>
         
     <MudSelect T="string" Label="Culture" @bind-Value="model.Culture" AnchorOrigin="Origin.BottomCenter">
-        <MudSelectItem Value="@("En")" />
-        <MudSelectItem Value="@("Ru")" />
+        @foreach(var culture in Cultures)
+        {
+            <MudSelectItem Value="@culture" />
+        }
     </MudSelect>
 
     <MudTextField Label="Title" @bind-Value="model.Title" For="@(() => model.Title)"/>
@@ -40,10 +42,12 @@
 
     LegalDocumentFormViewModel model = new LegalDocumentFormViewModel();
     bool success;
+    IEnumerable<string> Cultures = new List<string>();
 
     protected override async Task OnInitializedAsync()
     {
         model.PermName = PermName;
+        Cultures = await _legalDocumentService.GetMissingCultures(PermName);
     }
 
     private async Task OnValidSubmit(EditContext context)

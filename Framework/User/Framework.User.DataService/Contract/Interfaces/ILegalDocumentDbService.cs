@@ -1,6 +1,7 @@
 ﻿using Framework.Base.DataService.Contract.Models;
 using Framework.Base.DataService.Contract.Models.ListView;
 using Framework.User.DataService.Contract.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Framework.User.DataService.Contract.Interfaces
@@ -32,5 +33,7 @@ namespace Framework.User.DataService.Contract.Interfaces
         Task<bool> CheckTranslationExisis(string permName, string culture);
 
         Task<bool> CheckHasAllTranslations(string permName);
+
+        Task<IEnumerable<string>> GetMissingCultures(string permName);
     }
 }

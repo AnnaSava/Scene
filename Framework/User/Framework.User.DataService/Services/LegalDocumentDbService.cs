@@ -144,6 +144,17 @@ namespace Framework.User.DataService.Services
             return intersect.Count() == Cultures.Count();
         }
 
+        public async Task<IEnumerable<string>> GetMissingCultures(string permName)
+        {
+            var existingCultures = await _dbContext.Set<LegalDocument>()
+                .Where(m => m.PermName == permName)
+                .Select(m => m.Culture)
+                .Distinct()
+                .ToListAsync();
+
+            return Cultures.Except(existingCultures);
+        }
+
         protected void ApplyFilters(ref IQueryable<LegalDocument> list, LegalDocumentFilterModel filter)
         {
             list = list.ApplyFilters(filter);

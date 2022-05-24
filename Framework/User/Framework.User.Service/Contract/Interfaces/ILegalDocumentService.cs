@@ -34,5 +34,7 @@ namespace Framework.User.Service.Contract.Interfaces
         Task<bool> CheckDocumentExisis(string permName);
 
         Task<bool> CheckTranslationExisis(string permName, string culture);
+
+        Task<IEnumerable<string>> GetMissingCultures(string permName);
     }
 }
