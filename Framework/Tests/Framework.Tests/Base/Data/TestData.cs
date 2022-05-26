@@ -223,6 +223,19 @@ namespace Framework.Tests.Base.Data
                     Info = "Info 2",
                     IsDeleted = false
                 },
+                // Deleted
+                new LegalDocument
+                {
+                    Id = 9,
+                    Culture = "en",
+                    Status = DocumentStatus.Draft,
+                    PermName= "doc3",
+                    Title = "Doc 3",
+                    Text = "This is a document 3",
+                    Comment = "Comment 3",
+                    Info = "Info 3",
+                    IsDeleted = true
+                },
             };
         }
     }

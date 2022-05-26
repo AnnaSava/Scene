@@ -34,11 +34,11 @@ namespace Framework.User.DataService.Services
             var exists = await CheckDocumentExisis(model.PermName);
             if(exists)
             {
-                throw new Exception($"Document {model.PermName} already exists.");
+                throw new InvalidOperationException($"Document {model.PermName} already exists.");
             }
 
             model.Status = Base.Types.Enums.DocumentStatus.Draft;
-            model.Created = DateTime.Now;
+            model.Created = model.LastUpdated = DateTime.Now;            
 
             return await _dbContext.Create<LegalDocument, LegalDocumentModel>(model, _mapper, OnAdding);
         }
@@ -48,8 +48,11 @@ namespace Framework.User.DataService.Services
             var exists = await CheckTranslationExisis(model.PermName, model.Culture);
             if (exists)
             {
-                throw new Exception($"Document {model.PermName} with culture {model.Culture} already exists.");
+                throw new InvalidOperationException($"Document {model.PermName} with culture {model.Culture} already exists.");
             }
+
+            model.Status = Base.Types.Enums.DocumentStatus.Draft;
+            model.Created = model.LastUpdated = DateTime.Now;
 
             return await _dbContext.Create<LegalDocument, LegalDocumentModel>(model, _mapper, OnAdding);
         }
