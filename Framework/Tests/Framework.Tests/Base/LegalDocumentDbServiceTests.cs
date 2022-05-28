@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Framework.Base.DataService.Exceptions;
 using Framework.Base.Types.Enums;
 using Framework.Tests.Base.Data;
 using Framework.User.DataService.Contract.Models;
@@ -148,6 +149,10 @@ namespace Framework.Tests.Base
         public async Task Update_Ok(LegalDocumentModel legalDocumentModel)
         {
             // Arrange
+            legalDocumentModel.Comment = "Comment";
+            legalDocumentModel.Info = "Info";
+            legalDocumentModel.Title = "Title";
+            legalDocumentModel.Text = "Text";
             var testStartDate = DateTime.Now;
             var createdDate = new DateTime(2000, 1, 1, 0, 0, 0);
             var oldModel = _context.LegalDocuments.AsNoTracking().First(m => m.Id == legalDocumentModel.Id);
@@ -169,6 +174,81 @@ namespace Framework.Tests.Base
             Assert.Equal(legalDocumentModel.Text, model.Text);
             Assert.Equal(legalDocumentModel.Comment, model.Comment);
             Assert.Equal(legalDocumentModel.Info, model.Info);
+        }
+
+        [Theory]
+        [MemberData(nameof(Data_UpdateNotExists))]
+        public async Task Update_NotExists(long id)
+        {
+            // Arrange
+            var legalDocumentModel = new LegalDocumentModel { Id = id, Title = "Title", Text = "Text", Comment = "Comment", Info = "Info" };
+
+            // Act
+            async Task action() => await _legalDocumentDbService.Update(legalDocumentModel);
+
+            // Assert
+            await Assert.ThrowsAsync<EntityNotFoundException>(action);
+        }
+
+        [Theory]
+        [MemberData(nameof(Data_UpdateErrorStatus))]
+        public async Task Update_ErrorStatus(long id)
+        {
+            // Arrange
+            var legalDocumentModel = new LegalDocumentModel { Id = id, Title = "Title", Text = "Text", Comment = "Comment", Info = "Info" };
+
+            // Act
+            async Task action() => await _legalDocumentDbService.Update(legalDocumentModel);
+
+            // Assert
+            await Assert.ThrowsAsync<Exception>(action);
+        }
+
+        [Fact]
+        public async Task Publish_Ok()
+        {
+            // Arrange
+            var id = 3;
+
+            // Act
+            await _legalDocumentDbService.Publish(id);
+
+            // Assert
+            var entity = _context.LegalDocuments.First(m => m.Id == id);
+            Assert.Equal(DocumentStatus.Published, entity.Status);
+            Assert.Equal(0, _context
+                .LegalDocuments
+                .Count(m => m.PermName == entity.PermName 
+                    && m.Culture == entity.Culture 
+                    && m.Status == DocumentStatus.Published 
+                    && m.IsDeleted == false 
+                    && m.Id != id));
+        }
+
+        [Theory]
+        [MemberData(nameof(Data_PublishErrorStatus))]
+        public async Task Publish_ErrorStatus(long id)
+        {
+            // Arrange
+
+            // Act
+            async Task action() => await _legalDocumentDbService.Publish(id);
+
+            // Assert
+            await Assert.ThrowsAsync<Exception>(action);
+        }
+
+        [Theory]
+        [MemberData(nameof(Data_UpdateNotExists))]
+        public async Task Publish_ErrorNotExists(long id)
+        {
+            // Arrange
+
+            // Act
+            async Task action() => await _legalDocumentDbService.Publish(id);
+
+            // Assert
+            await Assert.ThrowsAsync<EntityNotFoundException>(action);
         }
 
         private void FillContextWithTestData(LegalDocumentTestDbContext context, IEnumerable<LegalDocument> data)
@@ -212,10 +292,30 @@ namespace Framework.Tests.Base
 
         public static IEnumerable<object[]> Data_UpdateOk => new List<object[]>
         {
-            //new object[] { new LegalDocumentModel { Id = 3, Title = "Title", Text = "Text", Comment = "Comment", Info = "Info" } },
-            new object[] { new LegalDocumentModel { Id = 3, Culture = "ru", Title = "Title", Text = "Text", Comment = "Comment", Info = "Info", PermName = "doc99", Status = DocumentStatus.Published } },
-            //new object[] { new LegalDocumentModel { Id = 3, Culture = "ru", Title = "Title", Text = "Text", Comment = "Comment", Info = "Info", Created = new DateTime(2001,1,1), LastUpdated = new DateTime(2001,1,1) } },
-            //new object[] { new LegalDocumentModel { Id = 3, Culture = "ru", Title = "Title", Text = "Text", Comment = "Comment", Info = "Info", IsDeleted = true } },
+            new object[] { new LegalDocumentModel { Id = 3 } },
+            new object[] { new LegalDocumentModel { Id = 3, Culture = "ru", PermName = "doc99", Status = DocumentStatus.Published } },
+            new object[] { new LegalDocumentModel { Id = 3, Culture = "ru", Created = new DateTime(2001,1,1), LastUpdated = new DateTime(2001,1,1) } },
+            new object[] { new LegalDocumentModel { Id = 3, Culture = "ru", IsDeleted = true } },
+        };
+
+        public static IEnumerable<object[]> Data_UpdateNotExists => new List<object[]>
+        {
+            new object[] { 99 },
+            new object[] { 9 }
+        };
+
+        public static IEnumerable<object[]> Data_UpdateErrorStatus => new List<object[]>
+        {
+            new object[] { 11 },
+            new object[] { 12 },
+            new object[] { 13 }
+        };
+
+        public static IEnumerable<object[]> Data_PublishErrorStatus => new List<object[]>
+        {
+            new object[] { 11 },
+            new object[] { 12 },
+            new object[] { 13 }
         };
     }
 }

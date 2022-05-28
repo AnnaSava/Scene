@@ -84,6 +84,11 @@ namespace Framework.User.DataService.Services
         public async Task Publish(long id)
         {
             var currentEntity = await _dbContext.GetEntityForUpdate<LegalDocument>(id);
+            if (currentEntity.Status != DocumentStatus.Draft)
+            {
+                throw new Exception($"Document {currentEntity.PermName} Id={currentEntity.Id} is already {currentEntity.Status.ToString().ToLower()}.");
+            }
+
             currentEntity.Status = DocumentStatus.Published;
 
             var publishedEntities = await _dbContext.Set<LegalDocument>()
