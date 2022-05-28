@@ -160,7 +160,8 @@ namespace Framework.Tests.Base.Data
                     Text = "This is a document 1 second updated",
                     Comment = "Comment 1",
                     Info = "Info 1",
-                    IsDeleted = false
+                    IsDeleted = false,
+                    Created = new DateTime(2000, 1, 1, 0, 0, 0)
                 },
                 new LegalDocument
                 {
@@ -235,6 +236,57 @@ namespace Framework.Tests.Base.Data
                     Comment = "Comment 3",
                     Info = "Info 3",
                     IsDeleted = true
+                },
+                // Published
+                new LegalDocument
+                {
+                    Id = 10,
+                    Culture = "en",
+                    Status = DocumentStatus.Published,
+                    PermName= "doc4",
+                    Title = "Doc 4",
+                    Text = "This is a document 4",
+                    Comment = "Comment 4",
+                    Info = "Info 4",
+                    IsDeleted = false
+                },
+                // Outdated and published
+                new LegalDocument
+                {
+                    Id = 11,
+                    Culture = "en",
+                    Status = DocumentStatus.Outdated,
+                    PermName= "doc5",
+                    Title = "Doc 5",
+                    Text = "This is a document 5",
+                    Comment = "Comment 5",
+                    Info = "Info 5",
+                    IsDeleted = false
+                },
+                new LegalDocument
+                {
+                    Id = 12,
+                    Culture = "en",
+                    Status = DocumentStatus.Published,
+                    PermName= "doc5",
+                    Title = "Doc 5",
+                    Text = "This is a document 5 first updated",
+                    Comment = "Comment 5",
+                    Info = "Info 5",
+                    IsDeleted = false
+                },
+                // Outdated
+                new LegalDocument
+                {
+                    Id = 13,
+                    Culture = "en",
+                    Status = DocumentStatus.Outdated,
+                    PermName= "doc6",
+                    Title = "Doc 6",
+                    Text = "This is a document 6",
+                    Comment = "Comment 6",
+                    Info = "Info 6",
+                    IsDeleted = false
                 },
             };
         }

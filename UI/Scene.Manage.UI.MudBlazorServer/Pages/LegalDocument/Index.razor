@@ -8,6 +8,8 @@
 
 <MudBreadcrumbs Items="breadCrumbs"></MudBreadcrumbs>
 
+<MudSwitch T="bool" Checked="@showDeleted" CheckedChanged="@(c=>OnDeletedCheckedChanged(c))" />
+
 <MudTable ServerData="@(new Func<TableState, Task<TableData<LegalDocumentViewModel>>>(ServerReload))"
     Hover="true" @ref="table">
 
@@ -44,18 +46,26 @@
         <MudTd DataLabel="Culture">@context.Culture</MudTd>
         <MudTd DataLabel="Status">@context.Status.ToString()</MudTd>
         <MudTd>
-            @if (context.HasAllTranslations == false)
+            @if(context.IsDeleted)
             {
-                <MudButton Href="@("/legaldocuments/"+ context.PermName + "/createtranslation")" Variant="Variant.Outlined" Color="Color.Primary">+ transl</MudButton>
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="(() => OnClickRestore(context))">Restore</MudButton>  
             }
-            @if(context.Status == DocumentStatus.Published)
+            else
             {
-                <MudButton Href="@("/legaldocuments/"+ context.PermName + "/" + context.Culture.ToLower() + "/createversion")" Variant="Variant.Outlined" Color="Color.Primary">+ vers</MudButton>
-            } 
-            else if(context.Status == DocumentStatus.Draft)
-            {
-                <MudButton Href="@("/legaldocuments/update/" + context.Id)" Variant="Variant.Outlined" Color="Color.Primary">Update</MudButton>
-                <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="(() => OnClickPublish(context))">Publish</MudButton>
+                @if (context.HasAllTranslations == false)
+                {
+                    <MudButton Href="@("/legaldocuments/"+ context.PermName + "/createtranslation")" Variant="Variant.Outlined" Color="Color.Primary">+ transl</MudButton>
+                }
+                @if(context.Status == DocumentStatus.Published)
+                {
+                    <MudButton Href="@("/legaldocuments/"+ context.PermName + "/" + context.Culture.ToLower() + "/createversion")" Variant="Variant.Outlined" Color="Color.Primary">+ vers</MudButton>
+                } 
+                else if(context.Status == DocumentStatus.Draft)
+                {
+                    <MudButton Href="@("/legaldocuments/update/" + context.Id)" Variant="Variant.Outlined" Color="Color.Primary">Update</MudButton>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="(() => OnClickPublish(context))">Publish</MudButton>
+                }
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="(() => OnClickDelete(context))">Delete</MudButton>
             }
         </MudTd>
     </RowTemplate>
@@ -71,6 +81,7 @@
     private string searchString = string.Empty;
     private string searchCulture = string.Empty;
     private DocumentStatus? searchStatus;
+    private bool showDeleted = false;
 
     private List<BreadcrumbItem> breadCrumbs = new List<BreadcrumbItem>
     {
@@ -84,7 +95,8 @@
         { 
             PermName =  "contains|" + searchString, 
             Culture = "equals|" + searchCulture,
-            Status = searchStatus
+            Status = searchStatus,
+            IsDeleted = showDeleted
         };
 
         var result = await _legalDocumentService.GetAll(filter, PageHelper.GetPageInfo(state));
@@ -123,6 +135,24 @@
     private async Task OnClickPublish(LegalDocumentViewModel el)
     {
         await _legalDocumentService.Publish(el.Id);
+        table?.ReloadServerData();
+    }
+
+    private void OnDeletedCheckedChanged(bool isChecked)
+    { 
+        showDeleted = isChecked;
+        table?.ReloadServerData();
+    }
+
+    private async Task OnClickDelete(LegalDocumentViewModel el)
+    {
+        await _legalDocumentService.Delete(el.Id);
+        table?.ReloadServerData();
+    }
+
+    private async Task OnClickRestore(LegalDocumentViewModel el)
+    {
+        await _legalDocumentService.Restore(el.Id);
         table?.ReloadServerData();
     }
 }

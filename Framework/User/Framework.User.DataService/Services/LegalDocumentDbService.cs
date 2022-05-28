@@ -3,6 +3,7 @@ using Framework.Base.DataService.Contract.Interfaces;
 using Framework.Base.DataService.Contract.Models;
 using Framework.Base.DataService.Contract.Models.ListView;
 using Framework.Base.DataService.Services;
+using Framework.Base.Types.Enums;
 using Framework.User.DataService.Contract.Interfaces;
 using Framework.User.DataService.Contract.Interfaces.Context;
 using Framework.User.DataService.Contract.Models;
@@ -37,9 +38,6 @@ namespace Framework.User.DataService.Services
                 throw new InvalidOperationException($"Document {model.PermName} already exists.");
             }
 
-            model.Status = Base.Types.Enums.DocumentStatus.Draft;
-            model.Created = model.LastUpdated = DateTime.Now;            
-
             return await _dbContext.Create<LegalDocument, LegalDocumentModel>(model, _mapper, OnAdding);
         }
 
@@ -51,9 +49,6 @@ namespace Framework.User.DataService.Services
                 throw new InvalidOperationException($"Document {model.PermName} with culture {model.Culture} already exists.");
             }
 
-            model.Status = Base.Types.Enums.DocumentStatus.Draft;
-            model.Created = model.LastUpdated = DateTime.Now;
-
             return await _dbContext.Create<LegalDocument, LegalDocumentModel>(model, _mapper, OnAdding);
         }
 
@@ -62,10 +57,9 @@ namespace Framework.User.DataService.Services
             var currentEntity = await _dbContext.GetEntityForUpdate<LegalDocument>(model.Id);
 
             // TODO бросать исключение? возвращать доп. код ошибки?
-            if (currentEntity.Status != Base.Types.Enums.DocumentStatus.Draft)
+            if (currentEntity.Status != DocumentStatus.Draft)
             {
-                //return _mapper.Map<LegalDocumentModel>(currentEntity);
-                throw new Exception($"Document {model.PermName} Id={model.Id} is already approved and cannot be updated.");
+                throw new Exception($"Document {currentEntity.PermName} Id={currentEntity.Id} is already approved and cannot be updated.");
             }
 
             _mapper.Map(model, currentEntity);
@@ -76,21 +70,29 @@ namespace Framework.User.DataService.Services
 
         public async Task<LegalDocumentModel> CreateVersion(LegalDocumentModel model)
         {
+            var hasDraft = _dbContext.Set<LegalDocument>()
+                .Any(m => m.PermName == model.PermName && m.Culture == model.Culture && m.Status == DocumentStatus.Draft && m.IsDeleted == false);
+
+            if (hasDraft)
+            {
+                throw new InvalidOperationException($"Draft for document {model.PermName} with culture {model.Culture} already exists.");
+            }
+
             return await _dbContext.Create<LegalDocument, LegalDocumentModel>(model, _mapper, OnAdding);
         }
 
         public async Task Publish(long id)
         {
             var currentEntity = await _dbContext.GetEntityForUpdate<LegalDocument>(id);
-            currentEntity.Status = Base.Types.Enums.DocumentStatus.Published;
+            currentEntity.Status = DocumentStatus.Published;
 
             var publishedEntities = await _dbContext.Set<LegalDocument>()
-                .Where(m => m.PermName == currentEntity.PermName && m.Culture == currentEntity.Culture && m.Status == Base.Types.Enums.DocumentStatus.Published && m.IsDeleted == false)
+                .Where(m => m.PermName == currentEntity.PermName && m.Culture == currentEntity.Culture && m.Status == DocumentStatus.Published && m.IsDeleted == false)
                 .ToListAsync();
 
             foreach (var publishedEntity in publishedEntities)
             {
-                publishedEntity.Status = Base.Types.Enums.DocumentStatus.Outdated;
+                publishedEntity.Status = DocumentStatus.Outdated;
             }
 
             await _dbContext.SaveChangesAsync();
@@ -161,6 +163,14 @@ namespace Framework.User.DataService.Services
         protected void ApplyFilters(ref IQueryable<LegalDocument> list, LegalDocumentFilterModel filter)
         {
             list = list.ApplyFilters(filter);
+        }
+
+        protected override void OnAdding(LegalDocument entity)
+        {
+            base.OnAdding(entity);
+
+            entity.Status = DocumentStatus.Draft;
+            entity.Created = entity.LastUpdated = DateTime.Now;
         }
     }
 }

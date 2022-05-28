@@ -27,6 +27,9 @@ namespace Framework.User.Service.Contract.Models
 
         public DocumentStatus Status { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         public bool HasAllTranslations { get; set; }
+
     }
 }

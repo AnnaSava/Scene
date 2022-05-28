@@ -73,13 +73,13 @@ namespace Framework.User.Service.Services
             return _mapper.Map<LegalDocumentViewModel>(created);
         }
 
-        public async Task<LegalDocumentViewModel> Delete(int id)
+        public async Task<LegalDocumentViewModel> Delete(long id)
         {
             var resultModel = await _legalDocumentDbService.Delete(id);
             return _mapper.Map<LegalDocumentViewModel>(resultModel);
         }
 
-        public async Task<LegalDocumentViewModel> Restore(int id)
+        public async Task<LegalDocumentViewModel> Restore(long id)
         {
             var resultModel = await _legalDocumentDbService.Restore(id);
             return _mapper.Map<LegalDocumentViewModel>(resultModel);

@@ -25,9 +25,9 @@ namespace Framework.User.Service.Contract.Interfaces
 
         Task<LegalDocumentViewModel> CreateVersion(LegalDocumentFormViewModel model);
 
-        Task<LegalDocumentViewModel> Delete(int id);
+        Task<LegalDocumentViewModel> Delete(long id);
 
-        Task<LegalDocumentViewModel> Restore(int id);
+        Task<LegalDocumentViewModel> Restore(long id);
 
         Task<ListPageViewModel<LegalDocumentViewModel>> GetAll(LegalDocumentFilterViewModel filter, ListPageInfoViewModel pageInfo);
 
