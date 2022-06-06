@@ -288,6 +288,79 @@ namespace Framework.Tests.Base.Data
                     Info = "Info 6",
                     IsDeleted = false
                 },
+                // Deleted
+                new LegalDocument
+                {
+                    Id = 14,
+                    Culture = "en",
+                    Status = DocumentStatus.Draft,
+                    PermName= "doc7",
+                    Title = "Doc 7",
+                    Text = "This is a document 7",
+                    Comment = "Comment 7",
+                    Info = "Info 7",
+                    IsDeleted = true
+                },
+                new LegalDocument
+                {
+                    Id = 15,
+                    Culture = "en",
+                    Status = DocumentStatus.Outdated,
+                    PermName= "doc7",
+                    Title = "Doc 7",
+                    Text = "This is a document 7",
+                    Comment = "Comment 7",
+                    Info = "Info 7",
+                    IsDeleted = true
+                },
+                new LegalDocument
+                {
+                    Id = 16,
+                    Culture = "en",
+                    Status = DocumentStatus.Published,
+                    PermName= "doc7",
+                    Title = "Doc 7",
+                    Text = "This is a document 7",
+                    Comment = "Comment 7",
+                    Info = "Info 7",
+                    IsDeleted = true
+                },
+                new LegalDocument
+                {
+                    Id = 17,
+                    Culture = "en",
+                    Status = DocumentStatus.Draft,
+                    PermName= "doc7",
+                    Title = "Doc 7",
+                    Text = "This is a document 7",
+                    Comment = "Comment 7",
+                    Info = "Info 7",
+                    IsDeleted = false
+                },
+                new LegalDocument
+                {
+                    Id = 18,
+                    Culture = "en",
+                    Status = DocumentStatus.Published,
+                    PermName= "doc8",
+                    Title = "Doc 8",
+                    Text = "This is a document 8",
+                    Comment = "Comment 8",
+                    Info = "Info 8",
+                    IsDeleted = true
+                },
+                new LegalDocument
+                {
+                    Id = 19,
+                    Culture = "en",
+                    Status = DocumentStatus.Published,
+                    PermName= "doc8",
+                    Title = "Doc 8",
+                    Text = "This is a document 8",
+                    Comment = "Comment 8",
+                    Info = "Info 8",
+                    IsDeleted = false
+                },
             };
         }
     }

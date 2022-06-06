@@ -251,6 +251,97 @@ namespace Framework.Tests.Base
             await Assert.ThrowsAsync<EntityNotFoundException>(action);
         }
 
+        [Theory]
+        [MemberData(nameof(Data_DeleteOk))]
+        public async Task Delete_Ok(long id)
+        {
+            // Arrange
+
+            // Act
+            await _legalDocumentDbService.Delete(id);
+
+            // Assert
+            Assert.True(_context.LegalDocuments.Any(m => m.Id == id && m.IsDeleted));
+        }
+
+        [Theory]
+        [MemberData(nameof(Data_UpdateNotExists))]
+        public async Task Delete_NotExists(long id)
+        {
+            // Arrange
+
+            // Act
+            async Task action() => await _legalDocumentDbService.Delete(id);
+
+            // Assert
+            await Assert.ThrowsAsync<EntityNotFoundException>(action);
+        }
+
+        [Theory]
+        [MemberData(nameof(Data_RestoreOk))]
+        public async Task Restore_Ok(long id)
+        {
+            // Arrange
+
+            // Act
+            await _legalDocumentDbService.Restore(id);
+
+            // Assert
+            Assert.True(_context.LegalDocuments.Any(m => m.Id == id && m.IsDeleted == false));
+        }
+
+        [Fact]
+        public async Task Restore_NotExists()
+        {
+            // Arrange
+            var id = 99;
+
+            // Act
+            async Task action() => await _legalDocumentDbService.Restore(id);
+
+            // Assert
+            await Assert.ThrowsAsync<EntityNotFoundException>(action);
+        }
+
+        [Fact]
+        public async Task Restore_NotDeleted()
+        {
+            // Arrange
+            var id = 17;
+
+            // Act
+            async Task action() => await _legalDocumentDbService.Restore(id);
+
+            // Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(action);
+        }
+
+        [Fact]
+        public async Task Restore_NotSingleDraft()
+        {
+            // Arrange
+            var id = 14;
+
+            // Act
+            async Task action() => await _legalDocumentDbService.Restore(id);
+
+            // Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(action);
+        }
+
+        [Fact]
+        public async Task Restore_NotSinglePublished()
+        {
+            // Arrange
+            var id = 18;
+
+            // Act
+            async Task action() => await _legalDocumentDbService.Restore(id);
+
+            // Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(action);
+        }
+
         private void FillContextWithTestData(LegalDocumentTestDbContext context, IEnumerable<LegalDocument> data)
         {
             context.Database.EnsureCreated();
@@ -316,6 +407,20 @@ namespace Framework.Tests.Base
             new object[] { 11 },
             new object[] { 12 },
             new object[] { 13 }
+        };
+
+        public static IEnumerable<object[]> Data_DeleteOk => new List<object[]>
+        {
+            new object[] { 3 }, // Draft
+            new object[] { 2 }, // Published
+            new object[] { 1 }, // Outdated
+        };
+
+        public static IEnumerable<object[]> Data_RestoreOk => new List<object[]>
+        {
+            new object[] { 9 }, // Single Draft
+            new object[] { 15 }, // Outdated
+            new object[] { 16 }, // Single Published
         };
     }
 }

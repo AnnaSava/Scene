@@ -110,6 +110,33 @@ namespace Framework.User.DataService.Services
 
         public async Task<LegalDocumentModel> Restore(long id)
         {
+            // TODO отрефакторить, пишется под тест. В частности, два раза вызывается GetEntityForRestore;
+            var entity = await _dbContext.GetEntityForRestore<LegalDocument>(id);
+            
+            // TODO я не очень уверена, что это нужно, но пока пусть будет, потому что зачем нам делать лишний запрос к БД на апдейт?
+            if(entity.IsDeleted == false)
+            {
+                throw new InvalidOperationException($"Cannot restore Legal document id={id} name={entity.PermName}. Legal document is not deleted");
+            }
+
+            // TODO здесь, возможно, нужно заменять содержимое или удалять более поздний черновик, но пока пусть будет ошибка
+            if (entity.Status == DocumentStatus.Draft)
+            {
+                if (await _dbContext.Set<LegalDocument>().AnyAsync(m => m.PermName == entity.PermName && m.Status == DocumentStatus.Draft && m.IsDeleted == false))
+                {
+                    throw new InvalidOperationException($"Cannot restore Legal document id={id} name={entity.PermName} status=Draft. Draft already exists.");
+                }
+            }
+
+            // TODO здесь, возможно, нужно менять статус на Outdated, но пока пусть будет ошибка
+            if (entity.Status == DocumentStatus.Published)
+            {
+                if (await _dbContext.Set<LegalDocument>().AnyAsync(m => m.PermName == entity.PermName && m.Status == DocumentStatus.Published && m.IsDeleted == false))
+                {
+                    throw new InvalidOperationException($"Cannot restore Legal document id={id} name={entity.PermName} status=Published. Published document already exists.");
+                }
+            }
+
             return await _dbContext.Restore<LegalDocument, LegalDocumentModel>(id, _mapper);
         }
 
