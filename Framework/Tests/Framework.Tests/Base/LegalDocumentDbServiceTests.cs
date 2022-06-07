@@ -342,6 +342,197 @@ namespace Framework.Tests.Base
             await Assert.ThrowsAsync<InvalidOperationException>(action);
         }
 
+        [Theory]
+        [MemberData(nameof(Data_DeleteOk))]
+        public async Task GetOne_Ok(long id)
+        {
+            // Arrange
+
+            // Act
+            var model = await _legalDocumentDbService.GetOne(id);
+
+            // Assert
+            Assert.NotNull(model);
+        }
+
+        [Fact]
+        public async Task GetOne_DeletedOk()
+        {
+            // Arrange
+            var id = 9;
+
+            // Act
+            var model = await _legalDocumentDbService.GetOne(id);
+
+            // Assert
+            Assert.NotNull(model);
+        }
+
+        [Fact]
+        public async Task GetOne_NotExists()
+        {
+            // Arrange
+            var id = 99;
+
+            // Act
+            var model = await _legalDocumentDbService.GetOne(id);
+
+            // Assert
+            Assert.Null(model);
+        }
+
+        [Theory]
+        [MemberData(nameof(Data_GetActualOk))]
+        public async Task GetActual_Ok(string permName)
+        {
+            // Arrange
+            var culture = "en";
+
+            // Act
+            var model = await _legalDocumentDbService.GetActual(permName, culture);
+
+            // Assert
+            Assert.NotNull(model);
+            Assert.Equal(DocumentStatus.Published, model.Status);
+            Assert.False(model.IsDeleted);
+        }
+
+        [Theory]
+        [MemberData(nameof(Data_GetActual_None))]
+        public async Task GetActual_None(string permName)
+        {
+            // Arrange
+            var culture = "en";
+
+            // Act
+            var model = await _legalDocumentDbService.GetActual(permName, culture);
+
+            // Assert
+            Assert.Null(model);
+        }
+
+        [Theory]
+        [MemberData(nameof(Data_CheckDocumentExisis_True))]
+        public async Task CheckDocumentExists_True(string permName)
+        {
+            // Arrange
+
+            // Act
+            var result = await _legalDocumentDbService.CheckDocumentExists(permName);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task CheckDocumentExists_False()
+        {
+            // Arrange
+            string permName = "doc999";
+
+            // Act
+            var result = await _legalDocumentDbService.CheckDocumentExists(permName);
+
+            // Assert
+            Assert.False(result);
+        }
+
+        [Fact]
+        public async Task CheckTraslationExists_True()
+        {
+            // Arrange
+            string permName = "doc1";
+            var culture = "en";
+
+            // Act
+            var result = await _legalDocumentDbService.CheckTranslationExists(permName, culture);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task CheckTraslationExists_False()
+        {
+            // Arrange
+            string permName = "doc2";
+            var culture = "ru";
+
+            // Act
+            var result = await _legalDocumentDbService.CheckTranslationExists(permName, culture);
+
+            // Assert
+            Assert.False(result);
+        }
+
+        [Fact]
+        public async Task CheckHasAllTraslations_True()
+        {
+            // Arrange
+            string permName = "doc1";
+
+            // Act
+            var result = await _legalDocumentDbService.CheckHasAllTranslations(permName);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task CheckHasAllTraslations_False()
+        {
+            // Arrange
+            string permName = "doc2";
+
+            // Act
+            var result = await _legalDocumentDbService.CheckHasAllTranslations(permName);
+
+            // Assert
+            Assert.False(result);
+        }
+
+        [Fact]
+        public async Task GetMissingCultures_Ok()
+        {
+            // Arrange
+            string permName = "doc2";
+
+            // Act
+            var result = await _legalDocumentDbService.GetMissingCultures(permName);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(new string[] { "ru" }, result);
+        }
+
+        [Fact]
+        public async Task GetMissingCultures_NotExists()
+        {
+            // Arrange
+            string permName = "doc999";
+
+            // Act
+            var result = await _legalDocumentDbService.GetMissingCultures(permName);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(new string[] { "en", "ru" }, result);
+        }
+
+        [Fact]
+        public async Task GetMissingCultures_Full()
+        {
+            // Arrange
+            string permName = "doc1";
+
+            // Act
+            var result = await _legalDocumentDbService.GetMissingCultures(permName);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Empty(result);
+        }
+
         private void FillContextWithTestData(LegalDocumentTestDbContext context, IEnumerable<LegalDocument> data)
         {
             context.Database.EnsureCreated();
@@ -421,6 +612,24 @@ namespace Framework.Tests.Base
             new object[] { 9 }, // Single Draft
             new object[] { 15 }, // Outdated
             new object[] { 16 }, // Single Published
+        };
+
+        public static IEnumerable<object[]> Data_GetActualOk => new List<object[]>
+        {
+            new object[] { "doc8" },
+        };
+
+        public static IEnumerable<object[]> Data_GetActual_None => new List<object[]>
+        {
+            new object[] { "doc3" },
+            new object[] { "doc7" },
+        };
+
+        public static IEnumerable<object[]> Data_CheckDocumentExisis_True => new List<object[]>
+        {
+            new object[] { "doc1" },
+            new object[] { "doc2" },
+            new object[] { "doc3" },
         };
     }
 }

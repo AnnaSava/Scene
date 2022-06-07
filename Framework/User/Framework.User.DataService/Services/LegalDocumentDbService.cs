@@ -32,7 +32,7 @@ namespace Framework.User.DataService.Services
 
         public override async Task<LegalDocumentModel> Create(LegalDocumentModel model)
         {
-            var exists = await CheckDocumentExisis(model.PermName);
+            var exists = await CheckDocumentExists(model.PermName);
             if(exists)
             {
                 throw new InvalidOperationException($"Document {model.PermName} already exists.");
@@ -43,7 +43,7 @@ namespace Framework.User.DataService.Services
 
         public async Task<LegalDocumentModel> CreateTranslation(LegalDocumentModel model)
         {
-            var exists = await CheckTranslationExisis(model.PermName, model.Culture);
+            var exists = await CheckTranslationExists(model.PermName, model.Culture);
             if (exists)
             {
                 throw new InvalidOperationException($"Document {model.PermName} with culture {model.Culture} already exists.");
@@ -148,7 +148,7 @@ namespace Framework.User.DataService.Services
         public async Task<LegalDocumentModel> GetActual(string permName, string culture)
         {
             var entity = await _dbContext.Set<LegalDocument>()
-                .Where(m => m.PermName == permName && m.Culture == culture && m.Status == Base.Types.Enums.DocumentStatus.Published && m.IsDeleted == false)
+                .Where(m => m.PermName == permName && m.Culture == culture && m.Status == DocumentStatus.Published && m.IsDeleted == false)
                 .FirstOrDefaultAsync();
 
             return _mapper.Map<LegalDocumentModel>(entity);
@@ -159,12 +159,12 @@ namespace Framework.User.DataService.Services
             return await _dbContext.GetAll<LegalDocument, LegalDocumentModel, LegalDocumentFilterModel>(query, ApplyFilters, _mapper);
         }
 
-        public async Task<bool> CheckDocumentExisis(string permName)
+        public async Task<bool> CheckDocumentExists(string permName)
         {
             return await _legalDocumentContext.LegalDocuments.AnyAsync(m => m.PermName == permName);
         }
 
-        public async Task<bool> CheckTranslationExisis(string permName, string culture)
+        public async Task<bool> CheckTranslationExists(string permName, string culture)
         {
             return await _legalDocumentContext.LegalDocuments.AnyAsync(m => m.PermName == permName && m.Culture == culture);
         }

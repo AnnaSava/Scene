@@ -31,9 +31,9 @@ namespace Framework.User.Service.Contract.Interfaces
 
         Task<ListPageViewModel<LegalDocumentViewModel>> GetAll(LegalDocumentFilterViewModel filter, ListPageInfoViewModel pageInfo);
 
-        Task<bool> CheckDocumentExisis(string permName);
+        Task<bool> CheckDocumentExists(string permName);
 
-        Task<bool> CheckTranslationExisis(string permName, string culture);
+        Task<bool> CheckTranslationExists(string permName, string culture);
 
         Task<IEnumerable<string>> GetMissingCultures(string permName);
     }

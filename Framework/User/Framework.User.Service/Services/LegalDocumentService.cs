@@ -108,14 +108,14 @@ namespace Framework.User.Service.Services
             return vm;
         }
 
-        public async Task<bool> CheckDocumentExisis(string permName)
+        public async Task<bool> CheckDocumentExists(string permName)
         {
-            return await _legalDocumentDbService.CheckDocumentExisis(permName);
+            return await _legalDocumentDbService.CheckDocumentExists(permName);
         }
 
-        public async Task<bool> CheckTranslationExisis(string permName, string culture)
+        public async Task<bool> CheckTranslationExists(string permName, string culture)
         {
-            return await _legalDocumentDbService.CheckTranslationExisis(permName, culture);
+            return await _legalDocumentDbService.CheckTranslationExists(permName, culture);
         }
 
         public async Task<IEnumerable<string>> GetMissingCultures(string permName) => await _legalDocumentDbService.GetMissingCultures(permName);
