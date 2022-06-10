@@ -21,12 +21,13 @@ namespace Framework.Tests.Base
         private IMapper _mapper;
         private LegalDocumentTestDbContext _context;
         private LegalDocumentDbService _legalDocumentDbService;
+        private readonly string[] _cultures = new string[] { "en", "ru" };
 
         public LegalDocumentDbServiceTests()
         {
             _mapper = new MapperConfiguration(opts => { opts.AddProfile<CommonDataMapperProfile>(); }).CreateMapper();
             _context = Infrastructure.GetContext<LegalDocumentTestDbContext>(x => new LegalDocumentTestDbContext(x));
-            _legalDocumentDbService = new LegalDocumentDbService(_context, _mapper);
+            _legalDocumentDbService = new LegalDocumentDbService(_context, _cultures, _mapper);
             FillContextWithTestData(_context, TestData.GetLegalDocuments());
         }
 

@@ -20,14 +20,15 @@ namespace Framework.User.DataService.Services
     public class LegalDocumentDbService : BaseEntityService<LegalDocument, LegalDocumentModel>, ILegalDocumentDbService
     {
         //TODO вынести в настройки проекта appsettings
-        private readonly string[] Cultures = { "en", "ru" };
+        private readonly IEnumerable<string> _availableCultures;
 
         private readonly ILegalDocumentContext _legalDocumentContext;
 
-        public LegalDocumentDbService(ILegalDocumentContext dbContext, IMapper mapper)
+        public LegalDocumentDbService(ILegalDocumentContext dbContext, IEnumerable<string> availableCultures, IMapper mapper)
             : base(dbContext as IDbContext, mapper, nameof(LegalDocumentDbService))
         {
             _legalDocumentContext = dbContext;
+            _availableCultures = availableCultures;
         }
 
         public override async Task<LegalDocumentModel> Create(LegalDocumentModel model)
@@ -177,8 +178,8 @@ namespace Framework.User.DataService.Services
                 .Distinct()
                 .ToListAsync();
 
-            var intersect = Cultures.Intersect(existingCultures);
-            return intersect.Count() == Cultures.Count();
+            var intersect = _availableCultures.Intersect(existingCultures);
+            return intersect.Count() == _availableCultures.Count();
         }
 
         public async Task<IEnumerable<string>> GetMissingCultures(string permName)
@@ -189,7 +190,7 @@ namespace Framework.User.DataService.Services
                 .Distinct()
                 .ToListAsync();
 
-            return Cultures.Except(existingCultures);
+            return _availableCultures.Except(existingCultures);
         }
 
         protected void ApplyFilters(ref IQueryable<LegalDocument> list, LegalDocumentFilterModel filter)

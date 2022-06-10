@@ -75,8 +75,11 @@ namespace Framework.User.Service
                 s.GetService<IReservedNameDbService>(),
                 s.GetService<IMapper>()));
 
+            var cultures = config["Cultures"].Split(',');
+
             services.AddScoped<ILegalDocumentDbService>(s => new LegalDocumentDbService(
                 s.GetService<FrameworkUserDbContext>(),
+                cultures,
                 s.GetService<IMapper>()));
 
             services.AddScoped<ILegalDocumentService>(s => new LegalDocumentService(
