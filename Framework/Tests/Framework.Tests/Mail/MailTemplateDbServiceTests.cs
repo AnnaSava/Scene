@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using Framework.Base.DataService.Exceptions;
 using Framework.Base.Types.Enums;
+using Framework.MailTemplate.Data.Contract.Models;
+using Framework.MailTemplate.Data.Mapper;
+using Framework.MailTemplate.Data.Services;
 using Framework.Tests.Base.Data;
-using Framework.User.DataService.Contract.Models;
-using Framework.User.DataService.Entities;
-using Framework.User.DataService.Mapper;
-using Framework.User.DataService.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,48 +13,48 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Framework.Tests.Base
+namespace Framework.Tests.Mail
 {
-    public class LegalDocumentDbServiceTests : IDisposable
+    public class MailTemplateDbServiceTests : IDisposable
     {
         private IMapper _mapper;
-        private LegalDocumentTestDbContext _context;
-        private LegalDocumentDbService _legalDocumentDbService;
+        private MailTemplateTestDbContext _context;
+        private MailTemplateDbService _mailTemplateDbService;
         private readonly string[] _cultures = new string[] { "en", "ru" };
 
-        public LegalDocumentDbServiceTests()
+        public MailTemplateDbServiceTests()
         {
-            _mapper = new MapperConfiguration(opts => { opts.AddProfile<CommonDataMapperProfile>(); }).CreateMapper();
-            _context = Infrastructure.GetContext<LegalDocumentTestDbContext>(x => new LegalDocumentTestDbContext(x));
-            _legalDocumentDbService = new LegalDocumentDbService(_context, _cultures, _mapper);
-            FillContextWithTestData(_context, TestData.GetLegalDocuments());
+            _mapper = new MapperConfiguration(opts => { opts.AddProfile<MailTemplateDataMapperProfile>(); }).CreateMapper();
+            _context = Infrastructure.GetContext<MailTemplateTestDbContext>(x => new MailTemplateTestDbContext(x));
+            _mailTemplateDbService = new MailTemplateDbService(_context, _cultures, _mapper);
+            FillContextWithTestData(_context, TestData.GetMailTemplates());
         }
 
         public void Dispose()
         {
             _mapper = null;
             _context = null;
-            _legalDocumentDbService = null;
+            _mailTemplateDbService = null;
         }
 
         [Fact]
         public async Task Create_Ok()
         {
             // Arrange
-            var legalDocumentModel = new LegalDocumentModel() { PermName = "doc99", Culture = "en" };
+            var mailTemplateModel = new MailTemplateModel() { PermName = "doc99", Culture = "en" };
             var testStartDate = DateTime.Now;
 
             // Act
-            var model = await _legalDocumentDbService.Create(legalDocumentModel);
+            var model = await _mailTemplateDbService.Create(mailTemplateModel);
 
             // Assert
-            Assert.IsType<LegalDocumentModel>(model);
-            Assert.Equal(legalDocumentModel.PermName, model.PermName);
+            Assert.IsType<MailTemplateModel>(model);
+            Assert.Equal(mailTemplateModel.PermName, model.PermName);
             Assert.Equal(DocumentStatus.Draft, model.Status);
             Assert.False(model.IsDeleted);
-            Assert.Equal(1, _context.LegalDocuments.Count(m => m.PermName == model.PermName));
-            Assert.True(_context.LegalDocuments.First(m => m.Id == model.Id).Created > testStartDate);
-            Assert.True(_context.LegalDocuments.First(m => m.Id == model.Id).LastUpdated > testStartDate);
+            Assert.Equal(1, _context.MailTemplates.Count(m => m.PermName == model.PermName));
+            Assert.True(_context.MailTemplates.First(m => m.Id == model.Id).Created > testStartDate);
+            Assert.True(_context.MailTemplates.First(m => m.Id == model.Id).LastUpdated > testStartDate);
         }
 
         [Theory]
@@ -63,10 +62,10 @@ namespace Framework.Tests.Base
         public async Task Create_PermNameExists(string permName, string culture)
         {
             // Arrange
-            var legalDocumentModel = new LegalDocumentModel() { PermName = permName, Culture = culture };
+            var mailTemplateModel = new MailTemplateModel() { PermName = permName, Culture = culture };
 
             // Act
-            async Task action() => await _legalDocumentDbService.Create(legalDocumentModel);
+            async Task action() => await _mailTemplateDbService.Create(mailTemplateModel);
 
             // Assert
             await Assert.ThrowsAsync<InvalidOperationException>(action);
@@ -77,21 +76,21 @@ namespace Framework.Tests.Base
         public async Task CreateTranslation_Ok(string permName, string culture)
         {
             // Arrange
-            var legalDocumentModel = new LegalDocumentModel() { PermName = permName, Culture = culture };
+            var mailTemplateModel = new MailTemplateModel() { PermName = permName, Culture = culture };
             var testStartDate = DateTime.Now;
 
             // Act
-            var model = await _legalDocumentDbService.CreateTranslation(legalDocumentModel);
+            var model = await _mailTemplateDbService.CreateTranslation(mailTemplateModel);
 
             // Assert
-            Assert.IsType<LegalDocumentModel>(model);
-            Assert.Equal(legalDocumentModel.PermName, model.PermName);
-            Assert.Equal(legalDocumentModel.Culture, model.Culture);
+            Assert.IsType<MailTemplateModel>(model);
+            Assert.Equal(mailTemplateModel.PermName, model.PermName);
+            Assert.Equal(mailTemplateModel.Culture, model.Culture);
             Assert.Equal(DocumentStatus.Draft, model.Status);
             Assert.False(model.IsDeleted);
-            Assert.Equal(1, _context.LegalDocuments.Count(m => m.PermName == model.PermName && m.Culture == model.Culture));
-            Assert.True(_context.LegalDocuments.First(m => m.Id == model.Id).Created > testStartDate);
-            Assert.True(_context.LegalDocuments.First(m => m.Id == model.Id).LastUpdated > testStartDate);
+            Assert.Equal(1, _context.MailTemplates.Count(m => m.PermName == model.PermName && m.Culture == model.Culture));
+            Assert.True(_context.MailTemplates.First(m => m.Id == model.Id).Created > testStartDate);
+            Assert.True(_context.MailTemplates.First(m => m.Id == model.Id).LastUpdated > testStartDate);
         }
 
         [Theory]
@@ -99,10 +98,10 @@ namespace Framework.Tests.Base
         public async Task CreateTranslation_Exists(string permName, string culture)
         {
             // Arrange
-            var legalDocumentModel = new LegalDocumentModel() { PermName = permName, Culture = culture };
+            var mailTemplateModel = new MailTemplateModel() { PermName = permName, Culture = culture };
 
             // Act
-            async Task action() => await _legalDocumentDbService.CreateTranslation(legalDocumentModel);
+            async Task action() => await _mailTemplateDbService.CreateTranslation(mailTemplateModel);
 
             // Assert
             await Assert.ThrowsAsync<InvalidOperationException>(action);
@@ -113,21 +112,21 @@ namespace Framework.Tests.Base
         public async Task CreateVersion_Ok(string permName, string culture)
         {
             // Arrange
-            var legalDocumentModel = new LegalDocumentModel() { PermName = permName, Culture = culture };
+            var mailTemplateModel = new MailTemplateModel() { PermName = permName, Culture = culture };
             var testStartDate = DateTime.Now;
 
             // Act
-            var model = await _legalDocumentDbService.CreateVersion(legalDocumentModel);
+            var model = await _mailTemplateDbService.CreateVersion(mailTemplateModel);
 
             // Assert
-            Assert.IsType<LegalDocumentModel>(model);
-            Assert.Equal(legalDocumentModel.PermName, model.PermName);
-            Assert.Equal(legalDocumentModel.Culture, model.Culture);
+            Assert.IsType<MailTemplateModel>(model);
+            Assert.Equal(mailTemplateModel.PermName, model.PermName);
+            Assert.Equal(mailTemplateModel.Culture, model.Culture);
             Assert.Equal(DocumentStatus.Draft, model.Status);
             Assert.False(model.IsDeleted);
-            Assert.Equal(1, _context.LegalDocuments.Count(m => m.PermName == model.PermName && m.Culture == model.Culture && m.Status == DocumentStatus.Draft && m.IsDeleted == false));
-            Assert.True(_context.LegalDocuments.First(m => m.Id == model.Id).Created > testStartDate);
-            Assert.True(_context.LegalDocuments.First(m => m.Id == model.Id).LastUpdated > testStartDate);
+            Assert.Equal(1, _context.MailTemplates.Count(m => m.PermName == model.PermName && m.Culture == model.Culture && m.Status == DocumentStatus.Draft && m.IsDeleted == false));
+            Assert.True(_context.MailTemplates.First(m => m.Id == model.Id).Created > testStartDate);
+            Assert.True(_context.MailTemplates.First(m => m.Id == model.Id).LastUpdated > testStartDate);
         }
 
         [Theory]
@@ -135,11 +134,11 @@ namespace Framework.Tests.Base
         public async Task CreateVersion_DraftExists(string permName, string culture)
         {
             // Arrange
-            var legalDocumentModel = new LegalDocumentModel() { PermName = permName, Culture = culture };
+            var mailTemplateModel = new MailTemplateModel() { PermName = permName, Culture = culture };
             var testStartDate = DateTime.Now;
 
             // Act
-            async Task action() => await _legalDocumentDbService.CreateVersion(legalDocumentModel);
+            async Task action() => await _mailTemplateDbService.CreateVersion(mailTemplateModel);
 
             // Assert
             await Assert.ThrowsAsync<InvalidOperationException>(action);
@@ -147,34 +146,30 @@ namespace Framework.Tests.Base
 
         [Theory]
         [MemberData(nameof(Data_UpdateOk))]
-        public async Task Update_Ok(LegalDocumentModel legalDocumentModel)
+        public async Task Update_Ok(MailTemplateModel mailTemplateModel)
         {
             // Arrange
-            legalDocumentModel.Comment = "Comment";
-            legalDocumentModel.Info = "Info";
-            legalDocumentModel.Title = "Title";
-            legalDocumentModel.Text = "Text";
+            mailTemplateModel.Title = "Title";
+            mailTemplateModel.Text = "Text";
             var testStartDate = DateTime.Now;
             var createdDate = new DateTime(2000, 1, 1, 0, 0, 0);
-            var oldModel = _context.LegalDocuments.AsNoTracking().First(m => m.Id == legalDocumentModel.Id);
+            var oldModel = _context.MailTemplates.AsNoTracking().First(m => m.Id == mailTemplateModel.Id);
 
             // Act
-            var model = await _legalDocumentDbService.Update(legalDocumentModel);
+            var model = await _mailTemplateDbService.Update(mailTemplateModel);
 
             // Assert
-            Assert.IsType<LegalDocumentModel>(model);
+            Assert.IsType<MailTemplateModel>(model);
             Assert.Equal(oldModel.PermName, model.PermName);
             Assert.Equal(oldModel.Culture, model.Culture);
             Assert.Equal(DocumentStatus.Draft, model.Status);
             Assert.False(model.IsDeleted);
-            Assert.Equal(1, _context.LegalDocuments.Count(m => m.PermName == model.PermName && m.Culture == model.Culture && m.Status == DocumentStatus.Draft && m.IsDeleted == false));
-            Assert.True(_context.LegalDocuments.First(m => m.Id == model.Id).Created == createdDate);
-            Assert.True(_context.LegalDocuments.First(m => m.Id == model.Id).LastUpdated > testStartDate);
+            Assert.Equal(1, _context.MailTemplates.Count(m => m.PermName == model.PermName && m.Culture == model.Culture && m.Status == DocumentStatus.Draft && m.IsDeleted == false));
+            Assert.True(_context.MailTemplates.First(m => m.Id == model.Id).Created == createdDate);
+            Assert.True(_context.MailTemplates.First(m => m.Id == model.Id).LastUpdated > testStartDate);
 
-            Assert.Equal(legalDocumentModel.Title, model.Title);
-            Assert.Equal(legalDocumentModel.Text, model.Text);
-            Assert.Equal(legalDocumentModel.Comment, model.Comment);
-            Assert.Equal(legalDocumentModel.Info, model.Info);
+            Assert.Equal(mailTemplateModel.Title, model.Title);
+            Assert.Equal(mailTemplateModel.Text, model.Text);
         }
 
         [Theory]
@@ -182,10 +177,10 @@ namespace Framework.Tests.Base
         public async Task Update_NotExists(long id)
         {
             // Arrange
-            var legalDocumentModel = new LegalDocumentModel { Id = id, Title = "Title", Text = "Text", Comment = "Comment", Info = "Info" };
+            var mailTemplateModel = new MailTemplateModel { Id = id, Title = "Title", Text = "Text"};
 
             // Act
-            async Task action() => await _legalDocumentDbService.Update(legalDocumentModel);
+            async Task action() => await _mailTemplateDbService.Update(mailTemplateModel);
 
             // Assert
             await Assert.ThrowsAsync<EntityNotFoundException>(action);
@@ -196,10 +191,10 @@ namespace Framework.Tests.Base
         public async Task Update_ErrorStatus(long id)
         {
             // Arrange
-            var legalDocumentModel = new LegalDocumentModel { Id = id, Title = "Title", Text = "Text", Comment = "Comment", Info = "Info" };
+            var mailTemplateModel = new MailTemplateModel { Id = id, Title = "Title", Text = "Text" };
 
             // Act
-            async Task action() => await _legalDocumentDbService.Update(legalDocumentModel);
+            async Task action() => await _mailTemplateDbService.Update(mailTemplateModel);
 
             // Assert
             await Assert.ThrowsAsync<Exception>(action);
@@ -212,17 +207,17 @@ namespace Framework.Tests.Base
             var id = 3;
 
             // Act
-            await _legalDocumentDbService.Publish(id);
+            await _mailTemplateDbService.Publish(id);
 
             // Assert
-            var entity = _context.LegalDocuments.First(m => m.Id == id);
+            var entity = _context.MailTemplates.First(m => m.Id == id);
             Assert.Equal(DocumentStatus.Published, entity.Status);
             Assert.Equal(0, _context
-                .LegalDocuments
-                .Count(m => m.PermName == entity.PermName 
-                    && m.Culture == entity.Culture 
-                    && m.Status == DocumentStatus.Published 
-                    && m.IsDeleted == false 
+                .MailTemplates
+                .Count(m => m.PermName == entity.PermName
+                    && m.Culture == entity.Culture
+                    && m.Status == DocumentStatus.Published
+                    && m.IsDeleted == false
                     && m.Id != id));
         }
 
@@ -233,7 +228,7 @@ namespace Framework.Tests.Base
             // Arrange
 
             // Act
-            async Task action() => await _legalDocumentDbService.Publish(id);
+            async Task action() => await _mailTemplateDbService.Publish(id);
 
             // Assert
             await Assert.ThrowsAsync<Exception>(action);
@@ -246,7 +241,7 @@ namespace Framework.Tests.Base
             // Arrange
 
             // Act
-            async Task action() => await _legalDocumentDbService.Publish(id);
+            async Task action() => await _mailTemplateDbService.Publish(id);
 
             // Assert
             await Assert.ThrowsAsync<EntityNotFoundException>(action);
@@ -259,10 +254,10 @@ namespace Framework.Tests.Base
             // Arrange
 
             // Act
-            await _legalDocumentDbService.Delete(id);
+            await _mailTemplateDbService.Delete(id);
 
             // Assert
-            Assert.True(_context.LegalDocuments.Any(m => m.Id == id && m.IsDeleted));
+            Assert.True(_context.MailTemplates.Any(m => m.Id == id && m.IsDeleted));
         }
 
         [Theory]
@@ -272,7 +267,7 @@ namespace Framework.Tests.Base
             // Arrange
 
             // Act
-            async Task action() => await _legalDocumentDbService.Delete(id);
+            async Task action() => await _mailTemplateDbService.Delete(id);
 
             // Assert
             await Assert.ThrowsAsync<EntityNotFoundException>(action);
@@ -285,10 +280,10 @@ namespace Framework.Tests.Base
             // Arrange
 
             // Act
-            await _legalDocumentDbService.Restore(id);
+            await _mailTemplateDbService.Restore(id);
 
             // Assert
-            Assert.True(_context.LegalDocuments.Any(m => m.Id == id && m.IsDeleted == false));
+            Assert.True(_context.MailTemplates.Any(m => m.Id == id && m.IsDeleted == false));
         }
 
         [Fact]
@@ -298,7 +293,7 @@ namespace Framework.Tests.Base
             var id = 99;
 
             // Act
-            async Task action() => await _legalDocumentDbService.Restore(id);
+            async Task action() => await _mailTemplateDbService.Restore(id);
 
             // Assert
             await Assert.ThrowsAsync<EntityNotFoundException>(action);
@@ -311,7 +306,7 @@ namespace Framework.Tests.Base
             var id = 17;
 
             // Act
-            async Task action() => await _legalDocumentDbService.Restore(id);
+            async Task action() => await _mailTemplateDbService.Restore(id);
 
             // Assert
             await Assert.ThrowsAsync<InvalidOperationException>(action);
@@ -324,7 +319,7 @@ namespace Framework.Tests.Base
             var id = 14;
 
             // Act
-            async Task action() => await _legalDocumentDbService.Restore(id);
+            async Task action() => await _mailTemplateDbService.Restore(id);
 
             // Assert
             await Assert.ThrowsAsync<InvalidOperationException>(action);
@@ -337,7 +332,7 @@ namespace Framework.Tests.Base
             var id = 18;
 
             // Act
-            async Task action() => await _legalDocumentDbService.Restore(id);
+            async Task action() => await _mailTemplateDbService.Restore(id);
 
             // Assert
             await Assert.ThrowsAsync<InvalidOperationException>(action);
@@ -350,7 +345,7 @@ namespace Framework.Tests.Base
             // Arrange
 
             // Act
-            var model = await _legalDocumentDbService.GetOne(id);
+            var model = await _mailTemplateDbService.GetOne(id);
 
             // Assert
             Assert.NotNull(model);
@@ -363,7 +358,7 @@ namespace Framework.Tests.Base
             var id = 9;
 
             // Act
-            var model = await _legalDocumentDbService.GetOne(id);
+            var model = await _mailTemplateDbService.GetOne(id);
 
             // Assert
             Assert.NotNull(model);
@@ -376,7 +371,7 @@ namespace Framework.Tests.Base
             var id = 99;
 
             // Act
-            var model = await _legalDocumentDbService.GetOne(id);
+            var model = await _mailTemplateDbService.GetOne(id);
 
             // Assert
             Assert.Null(model);
@@ -390,7 +385,7 @@ namespace Framework.Tests.Base
             var culture = "en";
 
             // Act
-            var model = await _legalDocumentDbService.GetActual(permName, culture);
+            var model = await _mailTemplateDbService.GetActual(permName, culture);
 
             // Assert
             Assert.NotNull(model);
@@ -406,7 +401,7 @@ namespace Framework.Tests.Base
             var culture = "en";
 
             // Act
-            var model = await _legalDocumentDbService.GetActual(permName, culture);
+            var model = await _mailTemplateDbService.GetActual(permName, culture);
 
             // Assert
             Assert.Null(model);
@@ -419,7 +414,7 @@ namespace Framework.Tests.Base
             // Arrange
 
             // Act
-            var result = await _legalDocumentDbService.CheckPermNameExists(permName);
+            var result = await _mailTemplateDbService.CheckPermNameExists(permName);
 
             // Assert
             Assert.True(result);
@@ -432,7 +427,7 @@ namespace Framework.Tests.Base
             string permName = "doc999";
 
             // Act
-            var result = await _legalDocumentDbService.CheckPermNameExists(permName);
+            var result = await _mailTemplateDbService.CheckPermNameExists(permName);
 
             // Assert
             Assert.False(result);
@@ -446,7 +441,7 @@ namespace Framework.Tests.Base
             var culture = "en";
 
             // Act
-            var result = await _legalDocumentDbService.CheckTranslationExists(permName, culture);
+            var result = await _mailTemplateDbService.CheckTranslationExists(permName, culture);
 
             // Assert
             Assert.True(result);
@@ -460,7 +455,7 @@ namespace Framework.Tests.Base
             var culture = "ru";
 
             // Act
-            var result = await _legalDocumentDbService.CheckTranslationExists(permName, culture);
+            var result = await _mailTemplateDbService.CheckTranslationExists(permName, culture);
 
             // Assert
             Assert.False(result);
@@ -473,7 +468,7 @@ namespace Framework.Tests.Base
             string permName = "doc1";
 
             // Act
-            var result = await _legalDocumentDbService.CheckHasAllTranslations(permName);
+            var result = await _mailTemplateDbService.CheckHasAllTranslations(permName);
 
             // Assert
             Assert.True(result);
@@ -486,7 +481,7 @@ namespace Framework.Tests.Base
             string permName = "doc2";
 
             // Act
-            var result = await _legalDocumentDbService.CheckHasAllTranslations(permName);
+            var result = await _mailTemplateDbService.CheckHasAllTranslations(permName);
 
             // Assert
             Assert.False(result);
@@ -499,7 +494,7 @@ namespace Framework.Tests.Base
             string permName = "doc2";
 
             // Act
-            var result = await _legalDocumentDbService.GetMissingCultures(permName);
+            var result = await _mailTemplateDbService.GetMissingCultures(permName);
 
             // Assert
             Assert.NotNull(result);
@@ -513,7 +508,7 @@ namespace Framework.Tests.Base
             string permName = "doc999";
 
             // Act
-            var result = await _legalDocumentDbService.GetMissingCultures(permName);
+            var result = await _mailTemplateDbService.GetMissingCultures(permName);
 
             // Assert
             Assert.NotNull(result);
@@ -527,17 +522,17 @@ namespace Framework.Tests.Base
             string permName = "doc1";
 
             // Act
-            var result = await _legalDocumentDbService.GetMissingCultures(permName);
+            var result = await _mailTemplateDbService.GetMissingCultures(permName);
 
             // Assert
             Assert.NotNull(result);
             Assert.Empty(result);
         }
 
-        private void FillContextWithTestData(LegalDocumentTestDbContext context, IEnumerable<LegalDocument> data)
+        private void FillContextWithTestData(MailTemplateTestDbContext context, IEnumerable<MailTemplate.Data.Entities.MailTemplate> data)
         {
             context.Database.EnsureCreated();
-            context.LegalDocuments.AddRange(data);
+            context.MailTemplates.AddRange(data);
             context.SaveChanges();
         }
 
@@ -575,10 +570,10 @@ namespace Framework.Tests.Base
 
         public static IEnumerable<object[]> Data_UpdateOk => new List<object[]>
         {
-            new object[] { new LegalDocumentModel { Id = 3 } },
-            new object[] { new LegalDocumentModel { Id = 3, Culture = "ru", PermName = "doc99", Status = DocumentStatus.Published } },
-            new object[] { new LegalDocumentModel { Id = 3, Culture = "ru", Created = new DateTime(2001,1,1), LastUpdated = new DateTime(2001,1,1) } },
-            new object[] { new LegalDocumentModel { Id = 3, Culture = "ru", IsDeleted = true } },
+            new object[] { new MailTemplateModel { Id = 3 } },
+            new object[] { new MailTemplateModel { Id = 3, Culture = "ru", PermName = "doc99", Status = DocumentStatus.Published } },
+            new object[] { new MailTemplateModel { Id = 3, Culture = "ru", Created = new DateTime(2001,1,1), LastUpdated = new DateTime(2001,1,1) } },
+            new object[] { new MailTemplateModel { Id = 3, Culture = "ru", IsDeleted = true } },
         };
 
         public static IEnumerable<object[]> Data_UpdateNotExists => new List<object[]>

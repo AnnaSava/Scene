@@ -12,6 +12,9 @@ namespace Framework.MailTemplate.Service.Mapper
             CreateMap<MailTemplateViewModel, MailTemplateModel>();
             CreateMap<MailTemplateModel, MailTemplateViewModel>();
 
+            CreateMap<MailTemplateFormViewModel, MailTemplateModel>();
+            CreateMap<MailTemplateModel, MailTemplateFormViewModel>();
+
             CreateMap<MailTemplateFilterViewModel, MailTemplateFilterModel>(MemberList.None)
                 .ForMember(x => x.PermName, y => y.MapFrom(s => s.PermName.ToWordListFilterField()))
                 .ForMember(x => x.Title, y => y.MapFrom(s => s.Title.ToWordListFilterField()))

@@ -16,13 +16,16 @@ namespace Framework.MailTemplate
 {
     public static class MailTemplateModule
     {
-        public static void AddMailTemplate(this IServiceCollection services, string connection, string migrationsAssembly)
+        public static void AddMailTemplate(this IServiceCollection services, string connection, string migrationsAssembly, IConfiguration config)
         {
             services.AddDbContext<MailTemplateContext>(options =>
                 options.UseNpgsql(connection, b => b.MigrationsAssembly(migrationsAssembly)));
 
+            var cultures = config["Cultures"].Split(',');
+
             services.AddScoped<IMailTemplateDbService>(s => new MailTemplateDbService(
                 s.GetService<MailTemplateContext>(),
+                cultures,
                 s.GetService<IMapper>()));
 
             services.AddScoped<IMailTemplateService>(s => new MailTemplateService(

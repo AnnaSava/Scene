@@ -28,7 +28,7 @@ namespace Framework.User.DataService.Contract.Interfaces
 
         Task<PageListModel<LegalDocumentModel>> GetAll(ListQueryModel<LegalDocumentFilterModel> query);
 
-        Task<bool> CheckDocumentExists(string permName);
+        Task<bool> CheckPermNameExists(string permName);
 
         Task<bool> CheckTranslationExists(string permName, string culture);
 

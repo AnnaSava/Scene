@@ -17,7 +17,7 @@ builder.Services.AddMapper();
 builder.Services.AddDbContext<FrameworkUserDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("IdentityConnection"), b => b.MigrationsAssembly("Scene.Migrations.PostgreSql")));
 
-builder.Services.AddMailTemplate(builder.Configuration.GetConnectionString("IdentityConnection"), "Scene.Migrations.PostgreSql");
+builder.Services.AddMailTemplate(builder.Configuration.GetConnectionString("IdentityConnection"), "Scene.Migrations.PostgreSql", builder.Configuration);
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 

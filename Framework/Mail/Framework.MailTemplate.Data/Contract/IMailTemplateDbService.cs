@@ -11,10 +11,32 @@ namespace Framework.MailTemplate.Data.Contract
 {
     public interface IMailTemplateDbService
     {
+        Task<MailTemplateModel> Create(MailTemplateModel model);
+
+        Task<MailTemplateModel> CreateTranslation(MailTemplateModel model);
+
+        Task<MailTemplateModel> Update(MailTemplateModel model);
+
+        Task Publish(long id);
+
+        Task<MailTemplateModel> CreateVersion(MailTemplateModel model);
+
+        Task<MailTemplateModel> Delete(long id);
+
+        Task<MailTemplateModel> Restore(long id);
+
+        Task<MailTemplateModel> GetOne(long id);
+
+        Task<MailTemplateModel> GetActual(string permName, string culture);
+
         Task<PageListModel<MailTemplateModel>> GetAll(ListQueryModel<MailTemplateFilterModel> query);
 
-        Task<bool> CheckDocumentExisis(string permName);
+        Task<bool> CheckPermNameExists(string permName);
 
-        Task<bool> CheckTranslationExisis(string permName, string culture);
+        Task<bool> CheckTranslationExists(string permName, string culture);
+
+        Task<bool> CheckHasAllTranslations(string permName);
+
+        Task<IEnumerable<string>> GetMissingCultures(string permName);
     }
 }

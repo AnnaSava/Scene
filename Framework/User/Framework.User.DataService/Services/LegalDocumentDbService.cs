@@ -33,7 +33,7 @@ namespace Framework.User.DataService.Services
 
         public override async Task<LegalDocumentModel> Create(LegalDocumentModel model)
         {
-            var exists = await CheckDocumentExists(model.PermName);
+            var exists = await CheckPermNameExists(model.PermName);
             if(exists)
             {
                 throw new InvalidOperationException($"Document {model.PermName} already exists.");
@@ -160,7 +160,7 @@ namespace Framework.User.DataService.Services
             return await _dbContext.GetAll<LegalDocument, LegalDocumentModel, LegalDocumentFilterModel>(query, ApplyFilters, _mapper);
         }
 
-        public async Task<bool> CheckDocumentExists(string permName)
+        public async Task<bool> CheckPermNameExists(string permName)
         {
             return await _legalDocumentContext.LegalDocuments.AnyAsync(m => m.PermName == permName);
         }

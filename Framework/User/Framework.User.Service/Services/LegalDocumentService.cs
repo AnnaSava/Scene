@@ -108,9 +108,9 @@ namespace Framework.User.Service.Services
             return vm;
         }
 
-        public async Task<bool> CheckDocumentExists(string permName)
+        public async Task<bool> CheckPermNameExists(string permName)
         {
-            return await _legalDocumentDbService.CheckDocumentExists(permName);
+            return await _legalDocumentDbService.CheckPermNameExists(permName);
         }
 
         public async Task<bool> CheckTranslationExists(string permName, string culture)

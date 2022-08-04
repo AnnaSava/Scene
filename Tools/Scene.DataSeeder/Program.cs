@@ -22,7 +22,6 @@ namespace Scene.DataSeeder
 
         static async Task Main(string[] args)
         {
-
             Console.WriteLine("Scene Data seeder started!");
 
             IConfigurationRoot config = null;
@@ -32,7 +31,7 @@ namespace Scene.DataSeeder
             services.AddDbContext<FrameworkUserDbContext>(options =>
               options.UseNpgsql(DbConnection));
 
-            services.AddMailTemplate(DbConnection, "Scene.Migrations.PostgreSql");
+            services.AddMailTemplate(DbConnection, "Scene.Migrations.PostgreSql", config);
 
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 

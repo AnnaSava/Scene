@@ -15,9 +15,9 @@ namespace Framework.MailTemplate.Data.Contract.Models
 
         public string Culture { get; set; }
 
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
-        public string Text { get; set; }
+        public string Text { get; set; } = string.Empty;
 
         public DateTime Created { get; set; }
 

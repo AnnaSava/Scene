@@ -26,6 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Base\Framework.Base.DataService\Framework.Base.DataService.csproj" />
     <ProjectReference Include="..\..\Helpers\Framework.Helpers\Framework.Helpers.csproj" />
+    <ProjectReference Include="..\..\Mail\Framework.MailTemplate.Data\Framework.MailTemplate.Data.csproj" />
     <ProjectReference Include="..\..\User\Framework.User.DataService\Framework.User.DataService.csproj" />
   </ItemGroup>
 

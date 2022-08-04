@@ -9,10 +9,30 @@ namespace Framework.MailTemplate
 {
     public interface IMailTemplateService
     {
+        Task<TResult> GetOne<TResult>(long id);
+
+        Task<TResult> GetActual<TResult>(string permName, string culture);
+
+        Task<MailTemplateViewModel> Create(MailTemplateFormViewModel model);
+
+        Task<MailTemplateViewModel> CreateTranslation(MailTemplateFormViewModel model);
+
+        Task<MailTemplateViewModel> Update(long id, MailTemplateFormViewModel model);
+
+        Task Publish(long id);
+
+        Task<MailTemplateViewModel> CreateVersion(MailTemplateFormViewModel model);
+
+        Task<MailTemplateViewModel> Delete(long id);
+
+        Task<MailTemplateViewModel> Restore(long id);
+
         Task<ListPageViewModel<MailTemplateViewModel>> GetAll(MailTemplateFilterViewModel filter, ListPageInfoViewModel pageInfo);
 
-        Task<bool> CheckDocumentExisis(string permName);
+        Task<bool> CheckPermNameExists(string permName);
 
-        Task<bool> CheckTranslationExisis(string permName, string culture);
+        Task<bool> CheckTranslationExists(string permName, string culture);
+
+        Task<IEnumerable<string>> GetMissingCultures(string permName);
     }
 }
