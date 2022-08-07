@@ -7,12 +7,14 @@
 
 <MudBreadcrumbs Items="breadCrumbs"></MudBreadcrumbs>
 
+<MudSwitch T="bool" Checked="@showDeleted" CheckedChanged="@(c=>OnDeletedCheckedChanged(c))" />
+
 <MudTable ServerData="@(new Func<TableState, Task<TableData<MailTemplateViewModel>>>(ServerReload))"
     Hover="true" @ref="table">
 
     <ToolBarContent>
         <MudText Typo="Typo.h6">Templates</MudText>
-        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary">Add</MudButton>
+        <MudButton Href="/mailtemplates/create" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary">Add</MudButton>
         <MudSelect @bind-Value="searchCulture" T="string" Label="Culture" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(s=>OnCultureSearch(s))">
             <MudSelectItem Value="@("All")" />
             <MudSelectItem Value="@("En")" />
@@ -34,6 +36,7 @@
         <MudTh><MudTableSortLabel SortLabel="title" T="MailTemplateViewModel">Title</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="culture" T="MailTemplateViewModel">Culture</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="status" T="MailTemplateViewModel">Status</MudTableSortLabel></MudTh>
+        <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id">@context.Id</MudTd>
@@ -41,6 +44,29 @@
         <MudTd DataLabel="Title">@context.Title</MudTd>
         <MudTd DataLabel="Culture">@context.Culture</MudTd>
         <MudTd DataLabel="Status">@context.Status.ToString()</MudTd>
+        <MudTd>
+            @if(context.IsDeleted)
+            {
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="(() => OnClickRestore(context))">Restore</MudButton>  
+            }
+            else
+            {
+                @if (context.HasAllTranslations == false)
+                {
+                    <MudButton Href="@("/mailtemplates/"+ context.PermName + "/createtranslation")" Variant="Variant.Outlined" Color="Color.Primary">+ transl</MudButton>
+                }
+                @if(context.Status == DocumentStatus.Published)
+                {
+                    <MudButton Href="@("/mailtemplates/"+ context.PermName + "/" + context.Culture.ToLower() + "/createversion")" Variant="Variant.Outlined" Color="Color.Primary">+ vers</MudButton>
+                } 
+                else if(context.Status == DocumentStatus.Draft)
+                {
+                    <MudButton Href="@("/mailtemplates/update/" + context.Id)" Variant="Variant.Outlined" Color="Color.Primary">Update</MudButton>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="(() => OnClickPublish(context))">Publish</MudButton>
+                }
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="(() => OnClickDelete(context))">Delete</MudButton>
+            }
+    </MudTd>
     </RowTemplate>
     <PagerContent>
         <MudTablePager/>
@@ -54,6 +80,7 @@
     private string searchString = string.Empty;
     private string searchCulture = string.Empty;
     private DocumentStatus? searchStatus;
+    private bool showDeleted = false;
 
     private List<BreadcrumbItem> breadCrumbs = new List<BreadcrumbItem>
     {
@@ -100,6 +127,30 @@
             default: searchStatus = null; break;
         }
 
+        table?.ReloadServerData();
+    }
+
+    private async Task OnClickPublish(MailTemplateViewModel el)
+    {
+        await _mailTemplateService.Publish(el.Id);
+        table?.ReloadServerData();
+    }
+
+    private void OnDeletedCheckedChanged(bool isChecked)
+    { 
+        showDeleted = isChecked;
+        table?.ReloadServerData();
+    }
+
+    private async Task OnClickDelete(MailTemplateViewModel el)
+    {
+        await _mailTemplateService.Delete(el.Id);
+        table?.ReloadServerData();
+    }
+
+    private async Task OnClickRestore(MailTemplateViewModel el)
+    {
+        await _mailTemplateService.Restore(el.Id);
         table?.ReloadServerData();
     }
 }

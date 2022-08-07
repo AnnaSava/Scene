@@ -91,9 +91,13 @@ namespace Framework.MailTemplate.Services
 
             var list = await _mailTemplateDbService.GetAll(new ListQueryModel<MailTemplateFilterModel> { Filter = filterModel, PageInfo = pageInfoModel });
 
+            var items = list.Items.Select(m => _mapper.Map<MailTemplateModel, MailTemplateViewModel>(m)).ToList();
+
+            await FillHasAllTranslations(items);
+
             var vm = new ListPageViewModel<MailTemplateViewModel>()
             {
-                Items = list.Items.Select(m => _mapper.Map<MailTemplateModel, MailTemplateViewModel>(m)),
+                Items = items,
                 Page = list.Page,
                 TotalPages = list.TotalPages,
                 TotalRows = list.TotalRows
