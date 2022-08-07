@@ -4,6 +4,7 @@ using Framework.User.DataService.Entities;
 using Framework.User.DataService.Services;
 using Framework.User.Service.Contract.Interfaces;
 using Framework.User.Service.Services;
+using Framework.User.Service.Taskers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,6 +48,7 @@ namespace Framework.User.Service
                 s.GetService<IFrameworkUserDbService>(),
                 s.GetService<ISignInManagerAdapter>(),
                 s.GetService<IReservedNameDbService>(),
+                s.GetService<RegisterTasker>(),
                 s.GetService<IMapper>()));
 
             services.AddScoped<IPermissionDbService>(s => new PermissionDbService(s.GetService<FrameworkUserDbContext>(), s.GetService<IMapper>()));

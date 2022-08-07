@@ -7,8 +7,12 @@ using Framework.User.DataService.Services;
 using Microsoft.EntityFrameworkCore;
 using Framework.User.Service;
 using Framework.MailTemplate;
+using Framework.User.Service.Contract;
+using Framework.User.Service.Taskers;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<RabbitMqConfiguration>(builder.Configuration.GetSection("RabbitMq"));
 
 // Add services to the container.
 
@@ -16,6 +20,9 @@ builder.Services.AddMapper();
 
 builder.Services.AddDbContext<FrameworkUserDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("IdentityConnection"), b => b.MigrationsAssembly("Scene.Migrations.PostgreSql")));
+
+builder.Services.AddTransient<RegisterTasker>();
+
 
 builder.Services.AddMailTemplate(builder.Configuration.GetConnectionString("IdentityConnection"), "Scene.Migrations.PostgreSql", builder.Configuration);
 

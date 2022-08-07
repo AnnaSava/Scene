@@ -6,6 +6,7 @@ using Framework.User.DataService.Contract.Interfaces;
 using Framework.User.DataService.Contract.Models;
 using Framework.User.Service.Contract.Interfaces;
 using Framework.User.Service.Contract.Models;
+using Framework.User.Service.Taskers;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -23,16 +24,19 @@ namespace Framework.User.Service.Services
         private readonly IFrameworkUserDbService _userDbService;
         private readonly ISignInManagerAdapter _signInManagerAdapter;
         private readonly IReservedNameDbService _reservedNameDbService;
+        private readonly RegisterTasker _registerTasker;
         private readonly IMapper _mapper;
 
         public FrameworkUserService(IFrameworkUserDbService userDbService,
             ISignInManagerAdapter signInManagerAdapter,
             IReservedNameDbService reservedNameDbService,
+            RegisterTasker registerTasker,
             IMapper mapper)
         {
             _userDbService = userDbService;
             _signInManagerAdapter = signInManagerAdapter;
             _reservedNameDbService = reservedNameDbService;
+            _registerTasker = registerTasker;
             _mapper = mapper;
         }
 
@@ -139,6 +143,7 @@ namespace Framework.User.Service.Services
                 throw new Exception("Registration error");
 
             // TODO отправлять письмо с подтверждением
+            _registerTasker.Send(resultModel.Email);
 
             return _mapper.Map<FrameworkUserViewModel>(resultModel);
         }
