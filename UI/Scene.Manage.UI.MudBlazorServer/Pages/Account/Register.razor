@@ -1,0 +1,35 @@
+﻿@page "/account/register"
+@using Framework.User.Service.Contract.Interfaces
+@using Framework.User.Service.Contract.Models
+@inject IFrameworkUserService _frameworkUserService
+@inject ILegalDocumentService _legalDocumentService
+@inject NavigationManager _navigationManager
+
+<h3>Register</h3>
+
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+    <MudTextField Label="Login" @bind-Value="model.Login" For="@(() => model.Login)"/>
+    <MudTextField Label="Email" @bind-Value="model.Email" For="@(() => model.Email)"/>
+    <MudTextField InputType="@InputType.Password" Label="Password" @bind-Value="model.Password" For="@(() => model.Password)"/>
+    <MudTextField InputType="@InputType.Password" Label="Confirm password" @bind-Value="model.PasswordConfirm" For="@(() => model.PasswordConfirm)"/>
+    <MudTextField T="string" @bind-Value="consent" Variant="Variant.Text" Lines="20" Disabled />
+    <MudCheckBox T="bool" Required="true" Label="I accept user consent" />
+    <MudButton  ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+</EditForm>
+
+@code {
+    FrameworkRegisterViewModel model = new FrameworkRegisterViewModel();
+    string consent;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var consentModel = await _legalDocumentService.GetActual<LegalDocumentViewModel>("terms", "en");
+        consent = consentModel?.Text;
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        await _frameworkUserService.Register(model);
+        _navigationManager.NavigateTo("/");
+    }
+}
