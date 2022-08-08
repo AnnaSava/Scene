@@ -1,4 +1,5 @@
-﻿using RabbitMQ.Client;
+﻿using Microsoft.Extensions.DependencyInjection;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,6 @@ namespace Framework.Worker.Register
     {
         private readonly string hostName;
         private readonly string queueName;
-        const string LoggerExchangeName = "logger";
-        const string ResultExchangeName = "result";
 
         public Work(string hostName, string queueName)
         {
@@ -21,7 +20,7 @@ namespace Framework.Worker.Register
             this.queueName = queueName;
         }
 
-        public void Execute(Action<string> callbackAction)
+        public void Execute(Action<string, IServiceCollection> callbackAction,IServiceCollection services)
         {
             var factory = new ConnectionFactory() { HostName = hostName };
             using (var connection = factory.CreateConnection())
@@ -40,7 +39,7 @@ namespace Framework.Worker.Register
 
                                 try
                                 {
-                                    callbackAction(message);
+                                    callbackAction(message, services);
                                     channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
                                 }
                                 catch (Exception e)
