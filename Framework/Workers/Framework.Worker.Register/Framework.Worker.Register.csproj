@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Mail\Framework.Mailer\Framework.Mailer.csproj" />
+    <ProjectReference Include="..\..\Mail\Framework.MailTemplate\Framework.MailTemplate.csproj" />
   </ItemGroup>
 
 </Project>

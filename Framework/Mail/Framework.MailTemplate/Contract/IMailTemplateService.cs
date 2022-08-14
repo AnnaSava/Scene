@@ -34,5 +34,7 @@ namespace Framework.MailTemplate
         Task<bool> CheckTranslationExists(string permName, string culture);
 
         Task<IEnumerable<string>> GetMissingCultures(string permName);
+
+        Task<MailViewModel> FormatMail(string permName, string culture, IDictionary<string, string> vars);
     }
 }

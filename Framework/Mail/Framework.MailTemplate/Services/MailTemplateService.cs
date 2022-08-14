@@ -118,6 +118,32 @@ namespace Framework.MailTemplate.Services
 
         public async Task<IEnumerable<string>> GetMissingCultures(string permName) => await _mailTemplateDbService.GetMissingCultures(permName);
 
+        public async Task<MailViewModel> FormatMail(string permName, string culture, IDictionary<string, string> vars)
+        {
+            var template = await _mailTemplateDbService.GetActual(permName, culture);
+
+            var mail = new MailViewModel
+            {
+                Title = template.Title,
+                Body = FormatBody()
+            };
+
+            string FormatBody()
+            {
+                var body = template.Text;
+
+                // TODO может, регулярку сюда?
+                foreach (var keyVal in vars)
+                {
+                    body = body.Replace(keyVal.Key, keyVal.Value);
+                }
+
+                return body;
+            }
+
+            return mail;
+        }
+
         private async Task FillHasAllTranslations(List<MailTemplateViewModel> items)
         {
             var permNames = items.Select(m => m.PermName);

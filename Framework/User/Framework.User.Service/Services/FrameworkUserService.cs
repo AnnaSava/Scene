@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Framework.Base.DataService.Contract.Models;
 using Framework.Base.Service.ListView;
+using Framework.Base.Types.ModelTypes;
 using Framework.Base.Types.Validation;
 using Framework.User.DataService.Contract.Interfaces;
 using Framework.User.DataService.Contract.Models;
@@ -12,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Framework.User.Service.Services
@@ -142,8 +144,27 @@ namespace Framework.User.Service.Services
             if (resultModel == null || resultModel.Id == 0)
                 throw new Exception("Registration error");
 
+            // TODO генерировать confirmUrl
+            var confirmUrl = string.Empty;
+
             // TODO отправлять письмо с подтверждением
-            _registerTasker.Send(resultModel.Email);
+            // TODO отрефакторить
+            var mailData = new MailDataModel
+            {
+                Email = resultModel.Email,
+                TemplatePermName = "registration",
+                Culture = "en",
+                Variables = new List<MailVariableModel>
+                {
+                    new MailVariableModel{ Name = "<%Email%>", Value=resultModel.Email },
+                    new MailVariableModel{ Name = "<%UserName%>", Value = resultModel.Login },
+                    new MailVariableModel{ Name = "<%ConfirmUrl%>", Value = confirmUrl}
+                }
+            };
+
+            var jsonMessage = JsonSerializer.Serialize(mailData);
+
+            _registerTasker.Send(jsonMessage);
 
             return _mapper.Map<FrameworkUserViewModel>(resultModel);
         }
