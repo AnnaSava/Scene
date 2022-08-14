@@ -1,0 +1,25 @@
+﻿@page "/account/confirmemail"
+@using Framework.User.Service.Contract.Interfaces
+@inject IFrameworkUserService _frameworkUserService
+
+<h3>ConfirmEmail</h3>
+
+<h1>@isConfirmed</h1>
+
+@code {
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "email")]
+    public string Email { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "code")]
+    public string Code { get; set; }
+
+    public bool isConfirmed { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        isConfirmed = await _frameworkUserService.ConfirmEmail(Email, Code);
+    }
+}

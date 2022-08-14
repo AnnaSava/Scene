@@ -55,7 +55,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workers", "Workers", "{AEB7
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Worker.Register", "Framework\Workers\Framework.Worker.Register\Framework.Worker.Register.csproj", "{DFD854A6-D675-439F-9BC2-7B69A425C888}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Mailer", "Framework\Mail\Framework.Mailer\Framework.Mailer.csproj", "{0F1D1C72-BE12-47D4-AA44-D8B0562C115F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Mailer", "Framework\Mail\Framework.Mailer\Framework.Mailer.csproj", "{0F1D1C72-BE12-47D4-AA44-D8B0562C115F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -38,5 +38,9 @@ namespace Framework.User.DataService.Contract.Interfaces
         Task AddRoles(UserRolesModel model);
 
         Task RemoveRoles(UserRolesModel model);
+
+        Task<string> GenerateEmailConfirmationToken(string email);
+
+        Task<bool> ConfirmEmail(string email, string token);
     }
 }

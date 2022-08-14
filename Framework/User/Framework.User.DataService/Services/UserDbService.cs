@@ -59,6 +59,16 @@ namespace Framework.User.DataService.Services
             return await _userManagerAdapter.Restore<TUserEntity, TUserModelOut>(id, _dbContext, _mapper);
         }
 
+        public async Task<string> GenerateEmailConfirmationToken(string email)
+        {
+            return await _userManagerAdapter.GenerateEmailConfirmationToken(email);
+        }
+
+        public async Task<bool> ConfirmEmail(string email, string token)
+        {
+            return await _userManagerAdapter.ConfirmEmail(email, token);
+        }
+
         // TODO подумать, куда перенести, т.к. в теории может пригодиться не только для пользователей
         protected IEnumerable<ListSortModel> GetChangedSortFields(IEnumerable<ListSortModel> sortList, Dictionary<string, string> diff)
         {

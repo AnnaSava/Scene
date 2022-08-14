@@ -20,5 +20,9 @@ namespace Framework.User.DataService.Contract.Interfaces
         Task RemoveFromRolesAsync(long userId, IEnumerable<string> roleNames);
 
         Task<TUserEntity> GetOneByEmail(string email);
+
+        Task<string> GenerateEmailConfirmationToken(string email);
+
+        Task<bool> ConfirmEmail(string email, string token);
     }
 }

@@ -62,6 +62,21 @@ namespace Framework.User.DataService.Services
             return await _userManager.FindByEmailAsync(email);
         }
 
+        public async Task<string> GenerateEmailConfirmationToken(string email)
+        {
+            var user = await GetOneByEmail(email);
+            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
+
+        public async Task<bool> ConfirmEmail(string email, string token)
+        {
+            var user = await GetOneByEmail(email);
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            HandleResult(result);
+
+            return user.EmailConfirmed;
+        }
+
         private async Task<TUserEntity> FindForUpdate(long userId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());

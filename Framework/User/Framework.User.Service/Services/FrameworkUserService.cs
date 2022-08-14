@@ -9,6 +9,7 @@ using Framework.User.Service.Contract.Interfaces;
 using Framework.User.Service.Contract.Models;
 using Framework.User.Service.Taskers;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -144,8 +145,11 @@ namespace Framework.User.Service.Services
             if (resultModel == null || resultModel.Id == 0)
                 throw new Exception("Registration error");
 
-            // TODO генерировать confirmUrl
-            var confirmUrl = string.Empty;
+            var token = await _userDbService.GenerateEmailConfirmationToken(resultModel.Email);
+            byte[] tokenGeneratedBytes = Encoding.UTF8.GetBytes(token);
+            var codeEncoded = WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
+            // TODO прокидывать сюда из настроек урл для подтверждения
+            var confirmUrl = $"https://localhost:5001/account/confirmemail?email={resultModel.Email}&code={codeEncoded}";
 
             // TODO отправлять письмо с подтверждением
             // TODO отрефакторить
@@ -167,6 +171,14 @@ namespace Framework.User.Service.Services
             _registerTasker.Send(jsonMessage);
 
             return _mapper.Map<FrameworkUserViewModel>(resultModel);
+        }
+
+        public async Task<bool> ConfirmEmail(string email, string token)
+        {
+            var codeDecodedBytes = WebEncoders.Base64UrlDecode(token);
+            var codeDecoded = Encoding.UTF8.GetString(codeDecodedBytes);
+
+            return await _userDbService.ConfirmEmail(email, codeDecoded);
         }
 
         public async Task<SignInResult> SignIn(string identifier, string password, bool rememberMe)

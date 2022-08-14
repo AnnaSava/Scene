@@ -38,6 +38,8 @@ namespace Framework.User.Service.Contract.Interfaces
 
         Task<FrameworkUserViewModel> Register(FrameworkRegisterViewModel model);
 
+        Task<bool> ConfirmEmail(string email, string token);
+
         Task<FieldValidationResult> ValidateField(string name, string value);
 
         Task AddRoles(long id, UserRolesFormViewModel form);
