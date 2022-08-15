@@ -11,7 +11,7 @@ namespace Framework.User.Service.Taskers
 {
     public class RegisterTasker
     {
-        private const string ComponentName = "app:rmqscene component:register";
+        private const string ComponentName = "app:rmqscene component:mail";
 
         private readonly string _hostname;
         private readonly string _queuename;
@@ -20,25 +20,9 @@ namespace Framework.User.Service.Taskers
         public RegisterTasker(IOptions<RabbitMqConfiguration> rabbitMqOptions)
         {
             _hostname = rabbitMqOptions.Value.Hostname;
-            _queuename = "registrations";
+            _queuename = "mailsdata";
 
             CreateConnection();
-        }
-
-        public void SendMailTask(string message, string queueName)
-        {
-            if (ConnectionExists())
-            {
-                using (var channel = _connection.CreateModel())
-                {
-                    channel.QueueDeclare(queue: queueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
-
-                    channel.BasicPublish(exchange: "",
-                                         routingKey: queueName,
-                                         basicProperties: null,
-                                         body: Encoding.UTF8.GetBytes(message));
-                }
-            }
         }
 
         public void Send(string message)

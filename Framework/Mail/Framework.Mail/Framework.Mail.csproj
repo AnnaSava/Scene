@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Base\Framework.Base.Service\Framework.Base.Service.csproj" />
-    <ProjectReference Include="..\..\Base\Framework.Base.Types\Framework.Base.Types.csproj" />
     <ProjectReference Include="..\Framework.MailTemplate.Data\Framework.MailTemplate.Data.csproj" />
   </ItemGroup>
 

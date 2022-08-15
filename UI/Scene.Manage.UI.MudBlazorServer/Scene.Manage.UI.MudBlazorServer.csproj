@@ -18,7 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Base\Framework.Base.Service\Framework.Base.Service.csproj" />
     <ProjectReference Include="..\..\Framework\Mail\Framework.MailTemplate.Data\Framework.MailTemplate.Data.csproj" />
-    <ProjectReference Include="..\..\Framework\Mail\Framework.MailTemplate\Framework.MailTemplate.csproj" />
+    <ProjectReference Include="..\..\Framework\Mail\Framework.Mail\Framework.Mail.csproj" />
     <ProjectReference Include="..\..\Framework\User\Framework.User.DataService\Framework.User.DataService.csproj" />
     <ProjectReference Include="..\..\Framework\User\Framework.User.Service\Framework.User.Service.csproj" />
     <ProjectReference Include="..\..\Migrations\Scene.Migrations.PostgreSql\Scene.Migrations.PostgreSql.csproj" />

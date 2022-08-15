@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Base.Types.ModelTypes
+namespace Framework.Mail
 {
-    public class MailDataModel
+    public class MailDataReceivedModel
     {
         public string Email { get; set; }
 
@@ -14,6 +14,6 @@ namespace Framework.Base.Types.ModelTypes
 
         public string Culture { get; set; }
 
-        public IEnumerable<MailVariableModel> Variables { get; set; }
+        public IEnumerable<MailVariableReceivedModel> Variables { get; set; }
     }
 }

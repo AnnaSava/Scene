@@ -1,4 +1,8 @@
 ﻿using AutoMapper;
+using Framework.Mail;
+using Framework.Mail.Services;
+using Framework.Mailer;
+using Framework.Mailer.Services;
 using Framework.MailTemplate.Data;
 using Framework.MailTemplate.Data.Contract;
 using Framework.MailTemplate.Data.Services;
@@ -6,11 +10,7 @@ using Framework.MailTemplate.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Mail;
 
 namespace Framework.MailTemplate
 {
@@ -20,6 +20,9 @@ namespace Framework.MailTemplate
         {
             services.AddDbContext<MailTemplateContext>(options =>
                 options.UseNpgsql(connection, b => b.MigrationsAssembly(migrationsAssembly)));
+
+            services.AddSingleton<SmtpClient>();
+            services.AddSingleton<IEmailClient, EmailClient>();
 
             var cultures = config["Cultures"].Split(',');
 
@@ -31,6 +34,10 @@ namespace Framework.MailTemplate
             services.AddScoped<IMailTemplateService>(s => new MailTemplateService(
                 s.GetService<IMailTemplateDbService>(),
                 s.GetService<IMapper>()));
+
+            services.AddScoped<IMailService>(s => new MailService(
+                s.GetService<IMailTemplateService>(),
+                s.GetService<IEmailClient>()));
         }
     }
 }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Base.Types.ModelTypes
+namespace Framework.Mail
 {
-    public class MailVariableModel
+    public class MailVariableReceivedModel
     {
         public string Name { get; set; }
 

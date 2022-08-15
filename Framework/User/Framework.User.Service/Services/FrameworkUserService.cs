@@ -156,7 +156,7 @@ namespace Framework.User.Service.Services
             var mailData = new MailDataModel
             {
                 Email = resultModel.Email,
-                TemplatePermName = "registration",
+                Action = "registration",
                 Culture = "en",
                 Variables = new List<MailVariableModel>
                 {
@@ -197,7 +197,7 @@ namespace Framework.User.Service.Services
             var mailData = new MailDataModel
             {
                 Email = user.Email,
-                TemplatePermName = "resetpassword",
+                Action = "resetpassword",
                 Culture = "en",
                 Variables = new List<MailVariableModel>
                 {
@@ -209,7 +209,7 @@ namespace Framework.User.Service.Services
 
             var jsonMessage = JsonSerializer.Serialize(mailData);
 
-            _registerTasker.SendMailTask(jsonMessage, mailData.TemplatePermName);
+            _registerTasker.Send(jsonMessage);
         }
 
         public async Task<SignInResult> SignIn(string identifier, string password, bool rememberMe)
