@@ -69,6 +69,17 @@ namespace Framework.User.DataService.Services
             return await _userManagerAdapter.ConfirmEmail(email, token);
         }
 
+        public async Task<TUserModelOut> GetOneByLoginOrEmail<TUserModelOut>(string loginOrEmail)
+        {
+            var user = await _userManagerAdapter.GetOneByLoginOrEmail(loginOrEmail);
+            return _mapper.Map<TUserModelOut>(user);
+        }
+
+        public async Task<string> GeneratePasswordResetToken(string email)
+        {
+            return await _userManagerAdapter.GeneratePasswordResetToken(email);
+        }
+
         // TODO подумать, куда перенести, т.к. в теории может пригодиться не только для пользователей
         protected IEnumerable<ListSortModel> GetChangedSortFields(IEnumerable<ListSortModel> sortList, Dictionary<string, string> diff)
         {

@@ -36,6 +36,12 @@ namespace Framework.User.DataService.Services
             return user;
         }
 
+        public async Task<string> GeneratePasswordResetToken(string email)
+        {
+            var user = await GetOneByEmail(email);
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
+        }
+
         public async Task ChangePasswordAsync(long userId, string oldPassword, string newPassword)
         {
             var user = await FindForUpdate(userId);
@@ -60,6 +66,20 @@ namespace Framework.User.DataService.Services
         public async Task<TUserEntity> GetOneByEmail(string email)
         {
             return await _userManager.FindByEmailAsync(email);
+        }
+
+        public async Task<TUserEntity> GetOneByLoginOrEmail(string loginOrEmail)
+        {
+            // TODO отрефакторить. Подумать, где лучше разместить этот метод
+
+            var user = await _userManager.FindByEmailAsync(loginOrEmail);
+            if (user != null && user.IsDeleted) return null;
+            if (user == null)
+            {
+                user = await _userManager.FindByNameAsync(loginOrEmail);
+                if (user != null && user.IsDeleted) return null;
+            }
+            return user;
         }
 
         public async Task<string> GenerateEmailConfirmationToken(string email)

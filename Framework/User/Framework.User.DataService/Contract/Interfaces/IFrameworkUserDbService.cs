@@ -42,5 +42,9 @@ namespace Framework.User.DataService.Contract.Interfaces
         Task<string> GenerateEmailConfirmationToken(string email);
 
         Task<bool> ConfirmEmail(string email, string token);
+
+        Task<TUserModelOut> GetOneByLoginOrEmail<TUserModelOut>(string loginOrEmail);
+
+        Task<string> GeneratePasswordResetToken(string email);
     }
 }

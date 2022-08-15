@@ -21,7 +21,8 @@ namespace Framework.User.Service
         public static void AddFrameworkUser(this IServiceCollection services, IConfiguration config)
         {
             services.AddIdentity<FrameworkUser, FrameworkRole>()
-                .AddEntityFrameworkStores<FrameworkUserDbContext>();
+                .AddEntityFrameworkStores<FrameworkUserDbContext>()
+                .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {

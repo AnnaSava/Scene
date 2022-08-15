@@ -181,6 +181,37 @@ namespace Framework.User.Service.Services
             return await _userDbService.ConfirmEmail(email, codeDecoded);
         }
 
+        public async Task ResetPassword(ResetPasswordFormViewModel model)
+        {
+            var user = await _userDbService.GetOneByLoginOrEmail<FrameworkUserModel>(model.LoginOrEmail);
+
+            // TODO проверку на нулл
+
+            var token = await _userDbService.GeneratePasswordResetToken(user.Email);
+            byte[] tokenGeneratedBytes = Encoding.UTF8.GetBytes(token);
+            var codeEncoded = WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
+
+            var resetPasswordUrl = $"https://localhost:5001/account/setpassword?email={user.Email}&code={codeEncoded}";
+
+            // TODO отрефакторить
+            var mailData = new MailDataModel
+            {
+                Email = user.Email,
+                TemplatePermName = "resetpassword",
+                Culture = "en",
+                Variables = new List<MailVariableModel>
+                {
+                    new MailVariableModel{ Name = "<%Email%>", Value = user.Email },
+                    new MailVariableModel{ Name = "<%UserName%>", Value = user.Login },
+                    new MailVariableModel{ Name = "<%ConfirmUrl%>", Value = resetPasswordUrl}
+                }
+            };
+
+            var jsonMessage = JsonSerializer.Serialize(mailData);
+
+            _registerTasker.SendMailTask(jsonMessage, mailData.TemplatePermName);
+        }
+
         public async Task<SignInResult> SignIn(string identifier, string password, bool rememberMe)
         {
             return await _signInManagerAdapter.SignIn(identifier, password, rememberMe);

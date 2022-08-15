@@ -13,6 +13,8 @@ namespace Framework.User.DataService.Contract.Interfaces
 
         Task<TUserEntity> UpdateAsync(TUserEntity user);
 
+        Task<string> GeneratePasswordResetToken(string email);
+
         Task ChangePasswordAsync(long userId, string oldPassword, string newPassword);
 
         Task AddToRolesAsync(long userId, IEnumerable<string> roleNames);
@@ -24,5 +26,7 @@ namespace Framework.User.DataService.Contract.Interfaces
         Task<string> GenerateEmailConfirmationToken(string email);
 
         Task<bool> ConfirmEmail(string email, string token);
+
+        Task<TUserEntity> GetOneByLoginOrEmail(string loginOrEmail);
     }
 }

@@ -25,6 +25,22 @@ namespace Framework.User.Service.Taskers
             CreateConnection();
         }
 
+        public void SendMailTask(string message, string queueName)
+        {
+            if (ConnectionExists())
+            {
+                using (var channel = _connection.CreateModel())
+                {
+                    channel.QueueDeclare(queue: queueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
+
+                    channel.BasicPublish(exchange: "",
+                                         routingKey: queueName,
+                                         basicProperties: null,
+                                         body: Encoding.UTF8.GetBytes(message));
+                }
+            }
+        }
+
         public void Send(string message)
         {
             if (ConnectionExists())

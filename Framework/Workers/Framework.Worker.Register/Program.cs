@@ -35,8 +35,11 @@ services.AddSingleton<SmtpClient>();
 services.AddSingleton<IEmailClient, EmailClient>();
 services.AddMailTemplate(config.GetConnectionString("IdentityConnection"), "Scene.Migrations.PostgreSql", config);
 
-var work = new Work(HostName, QueueName);
-work.Execute(DoAction, services);
+//var work = new Work(HostName, QueueName);
+//work.Execute(DoAction, services);
+
+var work2 = new Work(HostName, "resetpassword");
+work2.Execute(DoAction, services);
 
 Console.WriteLine(" Press [enter] to exit.");
 Console.ReadLine();
