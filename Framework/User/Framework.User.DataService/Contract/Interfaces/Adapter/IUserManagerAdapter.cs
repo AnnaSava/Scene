@@ -15,6 +15,8 @@ namespace Framework.User.DataService.Contract.Interfaces
 
         Task<string> GeneratePasswordResetToken(string email);
 
+        Task ResetPassword(string email, string token, string newPassword);
+
         Task ChangePasswordAsync(long userId, string oldPassword, string newPassword);
 
         Task AddToRolesAsync(long userId, IEnumerable<string> roleNames);

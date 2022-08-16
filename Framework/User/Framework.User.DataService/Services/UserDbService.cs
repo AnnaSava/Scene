@@ -80,6 +80,11 @@ namespace Framework.User.DataService.Services
             return await _userManagerAdapter.GeneratePasswordResetToken(email);
         }
 
+        public async Task ResetPassword(string email, string token, string newPassword)
+        {
+            await _userManagerAdapter.ResetPassword(email, token, newPassword);
+        }
+
         // TODO подумать, куда перенести, т.к. в теории может пригодиться не только для пользователей
         protected IEnumerable<ListSortModel> GetChangedSortFields(IEnumerable<ListSortModel> sortList, Dictionary<string, string> diff)
         {

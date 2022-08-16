@@ -181,7 +181,7 @@ namespace Framework.User.Service.Services
             return await _userDbService.ConfirmEmail(email, codeDecoded);
         }
 
-        public async Task ResetPassword(ResetPasswordFormViewModel model)
+        public async Task RequestNewPassword(RequestNewPasswordFormViewModel model)
         {
             var user = await _userDbService.GetOneByLoginOrEmail<FrameworkUserModel>(model.LoginOrEmail);
 
@@ -191,7 +191,7 @@ namespace Framework.User.Service.Services
             byte[] tokenGeneratedBytes = Encoding.UTF8.GetBytes(token);
             var codeEncoded = WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
 
-            var resetPasswordUrl = $"https://localhost:5001/account/setpassword?email={user.Email}&code={codeEncoded}";
+            var resetPasswordUrl = $"https://localhost:5001/account/resetpassword?email={user.Email}&token={codeEncoded}";
 
             // TODO отрефакторить
             var mailData = new MailDataModel
@@ -210,6 +210,14 @@ namespace Framework.User.Service.Services
             var jsonMessage = JsonSerializer.Serialize(mailData);
 
             _registerTasker.Send(jsonMessage);
+        }
+
+        public async Task ResetPassword(ResetPasswordFormViewModel model)
+        {
+            var codeDecodedBytes = WebEncoders.Base64UrlDecode(model.Token);
+            var codeDecoded = Encoding.UTF8.GetString(codeDecodedBytes);
+
+            await _userDbService.ResetPassword(model.Email, codeDecoded, model.NewPassword);
         }
 
         public async Task<SignInResult> SignIn(string identifier, string password, bool rememberMe)

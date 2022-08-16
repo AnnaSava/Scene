@@ -40,6 +40,8 @@ namespace Framework.User.Service.Contract.Interfaces
 
         Task<bool> ConfirmEmail(string email, string token);
 
+        Task RequestNewPassword(RequestNewPasswordFormViewModel model);
+
         Task ResetPassword(ResetPasswordFormViewModel model);
 
         Task<FieldValidationResult> ValidateField(string name, string value);

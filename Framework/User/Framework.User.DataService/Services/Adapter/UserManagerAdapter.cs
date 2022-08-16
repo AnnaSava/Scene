@@ -42,6 +42,13 @@ namespace Framework.User.DataService.Services
             return await _userManager.GeneratePasswordResetTokenAsync(user);
         }
 
+        public async Task ResetPassword(string email, string token, string newPassword)
+        {
+            var user = await GetOneByEmail(email);
+            var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+            HandleResult(result);
+        }
+
         public async Task ChangePasswordAsync(long userId, string oldPassword, string newPassword)
         {
             var user = await FindForUpdate(userId);

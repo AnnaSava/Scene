@@ -8,6 +8,12 @@ namespace Framework.User.Service.Contract.Models
 {
     public class ResetPasswordFormViewModel
     {
-        public string LoginOrEmail { get; set; }
+        public string Email { get; set; }
+
+        public string Token { get; set; }
+
+        public string NewPassword { get; set; }
+
+        public string NewPasswordConfirm { get; set; }
     }
 }

@@ -46,5 +46,7 @@ namespace Framework.User.DataService.Contract.Interfaces
         Task<TUserModelOut> GetOneByLoginOrEmail<TUserModelOut>(string loginOrEmail);
 
         Task<string> GeneratePasswordResetToken(string email);
+
+        Task ResetPassword(string email, string token, string newPassword);
     }
 }
