@@ -48,5 +48,7 @@ namespace Framework.User.DataService.Contract.Interfaces
         Task<string> GeneratePasswordResetToken(string email);
 
         Task ResetPassword(string email, string token, string newPassword);
+
+        Task<SignInResultModel<TUserOutModel>> SignIn<TUserOutModel>(LoginModel model) where TUserOutModel : BaseUserModel;
     }
 }

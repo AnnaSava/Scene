@@ -79,13 +79,17 @@ namespace Framework.User.DataService.Services
         {
             // TODO отрефакторить. Подумать, где лучше разместить этот метод
 
-            var user = await _userManager.FindByEmailAsync(loginOrEmail);
-            if (user != null && user.IsDeleted) return null;
-            if (user == null)
+            TUserEntity user;
+
+            if (loginOrEmail.Contains("@"))
+            {
+                user = await _userManager.FindByEmailAsync(loginOrEmail);
+            }
+            else
             {
                 user = await _userManager.FindByNameAsync(loginOrEmail);
-                if (user != null && user.IsDeleted) return null;
             }
+            if (user != null && user.IsDeleted) return null;
             return user;
         }
 

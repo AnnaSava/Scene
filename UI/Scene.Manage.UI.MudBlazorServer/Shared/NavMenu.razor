@@ -2,11 +2,16 @@
     <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
     <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
     <MudNavLink Href="fetchdata" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Fetch data</MudNavLink>
-    <MudNavLink Href="users" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Users</MudNavLink>
-    <MudNavLink Href="roles" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Roles</MudNavLink>
-    <MudNavLink Href="roles/permissions" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Permissions</MudNavLink>
-    <MudNavLink Href="reservednames" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Reserved names</MudNavLink>
-    <MudNavLink Href="legaldocuments" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.List">Legal documents (ServerReload)</MudNavLink>
-    <MudNavLink Href="legaldocuments2" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.List">Legal documents (Items)</MudNavLink>
-    <MudNavLink Href="mailtemplates" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Mail templates</MudNavLink>
+
+    <AuthorizeView>
+        <Authorized>
+            <MudNavLink Href="users" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Users</MudNavLink>
+            <MudNavLink Href="roles" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Roles</MudNavLink>
+            <MudNavLink Href="roles/permissions" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Permissions</MudNavLink>
+            <MudNavLink Href="reservednames" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Reserved names</MudNavLink>
+            <MudNavLink Href="legaldocuments" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.List">Legal documents (ServerReload)</MudNavLink>
+            <MudNavLink Href="legaldocuments2" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.List">Legal documents (Items)</MudNavLink>
+            <MudNavLink Href="mailtemplates" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Mail templates</MudNavLink>
+        </Authorized>
+    </AuthorizeView>
 </MudNavMenu>

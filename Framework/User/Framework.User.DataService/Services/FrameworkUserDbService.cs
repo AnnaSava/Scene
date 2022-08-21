@@ -22,8 +22,12 @@ namespace Framework.User.DataService.Services
             { "login", "username" }
         };
 
-        public FrameworkUserDbService(FrameworkUserDbContext dbContext, IUserManagerAdapter<FrameworkUser> userManagerAdapter, IMapper mapper)
-            : base(dbContext, userManagerAdapter, mapper)
+        public FrameworkUserDbService(
+            FrameworkUserDbContext dbContext, 
+            IUserManagerAdapter<FrameworkUser> userManagerAdapter, 
+            ISignInManagerAdapter signInManagerAdapter,      
+            IMapper mapper)
+            : base(dbContext, userManagerAdapter, signInManagerAdapter, mapper)
         {
 
         }

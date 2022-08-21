@@ -3,6 +3,7 @@ using Framework.Base.DataService.Contract.Models;
 using Framework.Base.Exceptions;
 using Framework.Base.Types.ModelTypes;
 using Framework.User.DataService.Contract.Interfaces;
+using Framework.User.DataService.Contract.Models;
 using Framework.User.DataService.Entities;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,20 @@ namespace Framework.User.DataService.Services
     {
         protected readonly IUserContext<TUserEntity> _dbContext;
         protected IUserManagerAdapter<TUserEntity> _userManagerAdapter;
+        private readonly ISignInManagerAdapter _signInManagerAdapter;
         protected readonly IMapper _mapper;
 
-        public UserDbService(IUserContext<TUserEntity> dbContext, IUserManagerAdapter<TUserEntity> userManagerAdapter, IMapper mapper)
+        public UserDbService(
+            IUserContext<TUserEntity> dbContext, 
+            IUserManagerAdapter<TUserEntity> userManagerAdapter,
+            ISignInManagerAdapter signInManagerAdapter,
+            IMapper mapper)
         {
             _dbContext = dbContext;
 
             _userManagerAdapter = userManagerAdapter;
+
+            _signInManagerAdapter = signInManagerAdapter;
 
             _mapper = mapper ?? throw new ProjectArgumentException(
                 GetType(),
@@ -83,6 +91,26 @@ namespace Framework.User.DataService.Services
         public async Task ResetPassword(string email, string token, string newPassword)
         {
             await _userManagerAdapter.ResetPassword(email, token, newPassword);
+        }
+
+        public async Task<SignInResultModel<TUserOutModel>> SignIn<TUserOutModel>(LoginModel model)
+            where TUserOutModel : BaseUserModel
+        {
+            var userEntity = await _userManagerAdapter.GetOneByLoginOrEmail(model.LoginOrEmail);
+
+            var result = await _signInManagerAdapter.CheckPasswordSignIn(userEntity.Email, model.Password);
+
+            var resultModel = new SignInResultModel<TUserOutModel>()
+            {
+                Succeeded = result.Succeeded,
+            };
+
+            if(result.Succeeded)
+            {
+                var user = await _userManagerAdapter.GetOneByLoginOrEmail(model.LoginOrEmail);
+                resultModel.User = _mapper.Map<TUserOutModel>(user);
+            };
+            return resultModel;
         }
 
         // TODO подумать, куда перенести, т.к. в теории может пригодиться не только для пользователей

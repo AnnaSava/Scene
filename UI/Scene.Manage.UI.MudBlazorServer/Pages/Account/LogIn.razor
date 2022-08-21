@@ -1,0 +1,41 @@
+﻿@page "/account/login"
+@using Framework.User.Service.Contract.Interfaces
+@using Framework.User.Service.Contract.Models
+@inject IFrameworkUserService _frameworkUserService
+@inject NavigationManager _navigationManager
+@inject AuthenticationStateProvider _authStateProvider
+
+<h3>LogIn</h3>
+
+<div>@errMsg</div>
+
+<EditForm Model="@model">
+    <MudTextField Label="Login" @bind-Value="model.LoginOrEmail" For="@(() => model.LoginOrEmail)"/>
+    <MudTextField InputType="@InputType.Password" Label="Password" @bind-Value="model.Password" For="@(() => model.Password)"/>
+    <button @onclick="Authenticate">Login</button>
+</EditForm>
+
+@code {
+    LoginViewModel model = new LoginViewModel();
+    string errMsg = default;
+
+    private async Task Authenticate()
+    {
+        var result = await _frameworkUserService.SignIn(model);
+
+        if(!result.Succeeded)
+        {
+            errMsg = "Incorrect user or password";
+        }
+        else
+        {
+            var prov = (SceneAuthenticationStateProvider)_authStateProvider;
+            await prov.UpdateAuthenticationState(new UserSession
+            {
+                Login = result.User.Login,
+                Role = result.User.Email // TODO
+            });
+            _navigationManager.NavigateTo("/", true);
+        }
+    }
+}

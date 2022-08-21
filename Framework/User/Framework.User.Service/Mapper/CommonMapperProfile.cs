@@ -14,6 +14,8 @@ namespace Framework.User.Service.Mapper
     {
         public CommonMapperProfile()
         {
+            CreateMap<LoginViewModel, LoginModel>();
+
             CreateMap<ReservedNameViewModel, ReservedNameModel>();
             CreateMap<ReservedNameModel, ReservedNameViewModel>();
 

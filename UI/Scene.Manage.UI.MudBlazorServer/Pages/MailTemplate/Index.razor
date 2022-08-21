@@ -1,4 +1,6 @@
 ﻿@page "/mailtemplates"
+@attribute [Authorize]
+
 @using Framework.Base.Types.Enums
 @using Framework.MailTemplate
 @inject IMailTemplateService _mailTemplateService

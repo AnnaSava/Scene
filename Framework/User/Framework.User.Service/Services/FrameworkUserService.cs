@@ -220,9 +220,11 @@ namespace Framework.User.Service.Services
             await _userDbService.ResetPassword(model.Email, codeDecoded, model.NewPassword);
         }
 
-        public async Task<SignInResult> SignIn(string identifier, string password, bool rememberMe)
+        public async Task<FrameworkSignInResultViewModel> SignIn(LoginViewModel model)
         {
-            return await _signInManagerAdapter.SignIn(identifier, password, rememberMe);
+            var mapped = _mapper.Map<LoginModel>(model);
+            var result = await _userDbService.SignIn<FrameworkUserModel>(mapped);
+            return _mapper.Map<FrameworkSignInResultViewModel>(result);
         }
 
         public async Task SignOut()

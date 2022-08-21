@@ -43,6 +43,8 @@ namespace Framework.User.Service.Mapper
 
             CreateMap<FrameworkRegisterViewModel, FrameworkUserFormModel>(MemberList.None)
                 .ForMember(x => x.DisplayName, y => y.MapFrom(s => s.Login));
+
+            CreateMap<SignInResultModel<FrameworkUserModel>, FrameworkSignInResultViewModel>();
         }
     }
 }

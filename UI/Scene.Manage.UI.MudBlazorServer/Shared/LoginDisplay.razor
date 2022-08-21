@@ -1,0 +1,24 @@
+﻿@inject AuthenticationStateProvider _authStateProvider
+@inject NavigationManager _navigationManager
+
+<AuthorizeView>
+    <Authorized>
+        <a href="/Account/Manage">Hello, @context.User.Identity.Name!</a>
+        <form method="post" action="/Account/Logout">
+            <button @onclick="Logout" class="nav-link btn btn-link">Log out</button>
+        </form>
+    </Authorized>
+    <NotAuthorized>
+        <a href="/Account/Register">Register</a>
+        <a href="/Account/Login">Log in</a>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code{
+    private async Task Logout()
+    {
+        var prov = (SceneAuthenticationStateProvider)_authStateProvider;
+        await prov.UpdateAuthenticationState(null);
+        _navigationManager.NavigateTo("/", true);
+    }
+}

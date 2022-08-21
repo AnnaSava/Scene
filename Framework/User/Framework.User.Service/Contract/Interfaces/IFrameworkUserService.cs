@@ -26,7 +26,7 @@ namespace Framework.User.Service.Contract.Interfaces
 
         Task<FrameworkUserViewModel> Unlock(long id);
 
-        Task<SignInResult> SignIn(string identifier, string password, bool rememberMe);
+        Task<FrameworkSignInResultViewModel> SignIn(LoginViewModel model);
 
         Task SignOut();
 

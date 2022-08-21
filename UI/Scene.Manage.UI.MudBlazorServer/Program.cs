@@ -9,6 +9,8 @@ using Framework.User.Service;
 using Framework.MailTemplate;
 using Framework.User.Service.Contract;
 using Framework.User.Service.Taskers;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,9 @@ builder.Services.Configure<RabbitMqConfiguration>(builder.Configuration.GetSecti
 // Add services to the container.
 
 builder.Services.AddMapper();
+
+// Из видео https://www.youtube.com/watch?v=iq2btD9WufI
+builder.Services.AddAuthenticationCore();
 
 builder.Services.AddDbContext<FrameworkUserDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("IdentityConnection"), b => b.MigrationsAssembly("Scene.Migrations.PostgreSql")));
@@ -31,6 +36,8 @@ builder.Services.AddFrameworkUser(builder.Configuration);
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddScoped<ProtectedSessionStorage>();
+builder.Services.AddScoped<AuthenticationStateProvider, SceneAuthenticationStateProvider>();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddMudServices();
 
@@ -49,6 +56,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");

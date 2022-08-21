@@ -39,6 +39,7 @@ namespace Framework.User.Service
             services.AddScoped<IFrameworkUserDbService>(s => new FrameworkUserDbService(
                 s.GetService<FrameworkUserDbContext>(),
                 s.GetService<IUserManagerAdapter<FrameworkUser>>(),
+                s.GetService<ISignInManagerAdapter>(),
                 s.GetService<IMapper>()));
 
             services.AddScoped<IReservedNameDbService>(s => new ReservedNameDbService(
