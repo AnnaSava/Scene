@@ -1,9 +1,9 @@
 ﻿@page "/mailtemplates"
-@attribute [Authorize]
 
 @using Framework.Base.Types.Enums
 @using Framework.MailTemplate
 @inject IMailTemplateService _mailTemplateService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Templates</PageTitle>
 
@@ -22,7 +22,7 @@
             <MudSelectItem Value="@("En")" />
             <MudSelectItem Value="@("Ru")" />
         </MudSelect>
-        <MudSelect T="string" Label="Status" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(s=>OnStatusSearch(s))">
+        <MudSelect @bind-Value="Status" T="string" Label="Status" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(s=>OnStatusSearch(s))">
             <MudSelectItem Value="@("All")" />
             <MudSelectItem Value="@("Draft")" />
             <MudSelectItem Value="@("Published")" />
@@ -72,17 +72,38 @@
     </RowTemplate>
     <PagerContent>
         <MudTablePager/>
+        <MudPagination SelectedChanged="PageChanged"></MudPagination>
     </PagerContent>
 </MudTable>
 
 
 @code {
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? Culture { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? Status { get; set; }
+
     private MudTable<MailTemplateViewModel>? table;
 
     private string searchString = string.Empty;
     private string searchCulture = string.Empty;
     private DocumentStatus? searchStatus;
     private bool showDeleted = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        searchCulture = Culture;
+        switch(Status)
+        {
+            case "Draft": searchStatus = DocumentStatus.Draft; break;
+            case "Outdated": searchStatus = DocumentStatus.Outdated; break;
+            case "Published": searchStatus = DocumentStatus.Published; break;
+            default: searchStatus = null; break;
+        }
+    }
 
     private List<BreadcrumbItem> breadCrumbs = new List<BreadcrumbItem>
     {
@@ -104,6 +125,11 @@
         return PageHelper.GetTableData<MailTemplateViewModel>(result);
     }
 
+    private void PageChanged(int i)
+    {
+        table.NavigateTo(i - 1);
+    }
+
     private void OnSearch(string text)
     {
         searchString = text;
@@ -114,6 +140,9 @@
     {
         var selectedCulture = selectedCultures?.FirstOrDefault() ?? string.Empty;
         searchCulture = selectedCulture == "All" ? string.Empty : selectedCulture.ToLower();
+        
+        NavigationManager.NavigateTo(
+            NavigationManager.GetUriWithQueryParameter("culture", searchCulture));
         table?.ReloadServerData();
     }
 
