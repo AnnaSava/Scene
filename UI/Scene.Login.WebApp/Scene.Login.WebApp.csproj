@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Framework\User\Framework.DefaultUser.Service\Framework.DefaultUser.Service.csproj" />
     <ProjectReference Include="..\..\Framework\User\Framework.User.Service\Framework.User.Service.csproj" />
   </ItemGroup>
 
