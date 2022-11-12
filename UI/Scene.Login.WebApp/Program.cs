@@ -1,6 +1,28 @@
+using Framework.MailTemplate;
+using Framework.User.DataService.Services;
+using Framework.User.Service;
+using Framework.User.Service.Contract;
+using Framework.User.Service.Taskers;
+using Microsoft.EntityFrameworkCore;
+using Scene.Login.WebApp;
+
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.Configure<RabbitMqConfiguration>(builder.Configuration.GetSection("RabbitMq"));
+
 // Add services to the container.
+builder.Services.AddMapper();
+
+builder.Services.AddDbContext<FrameworkUserDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("IdentityConnection"), b => b.MigrationsAssembly("Scene.Migrations.PostgreSql")));
+
+builder.Services.AddFrameworkUser(builder.Configuration);
+builder.Services.AddTransient<RegisterTasker>();
+
+builder.Services.AddMailTemplate(builder.Configuration.GetConnectionString("IdentityConnection"), "Scene.Migrations.PostgreSql", builder.Configuration);
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
@@ -18,6 +40,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();

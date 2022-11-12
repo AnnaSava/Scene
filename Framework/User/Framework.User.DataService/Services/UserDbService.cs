@@ -96,9 +96,9 @@ namespace Framework.User.DataService.Services
         public async Task<SignInResultModel<TUserOutModel>> SignIn<TUserOutModel>(LoginModel model)
             where TUserOutModel : BaseUserModel
         {
-            var userEntity = await _userManagerAdapter.GetOneByLoginOrEmail(model.LoginOrEmail);
+            var userEntity = await _userManagerAdapter.GetOneByLoginOrEmail(model.Identifier);
 
-            var result = await _signInManagerAdapter.CheckPasswordSignIn(userEntity.Email, model.Password);
+            var result = await _signInManagerAdapter.SignIn(userEntity.Email, model.Password, model.RememberMe);
 
             var resultModel = new SignInResultModel<TUserOutModel>()
             {
@@ -107,7 +107,7 @@ namespace Framework.User.DataService.Services
 
             if(result.Succeeded)
             {
-                var user = await _userManagerAdapter.GetOneByLoginOrEmail(model.LoginOrEmail);
+                var user = await _userManagerAdapter.GetOneByLoginOrEmail(model.Identifier);
                 resultModel.User = _mapper.Map<TUserOutModel>(user);
             };
             return resultModel;

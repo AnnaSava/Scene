@@ -30,9 +30,6 @@ namespace Framework.User.Service.Contract.Models
         [Display(Name = "Подтвердить пароль")]
         public string PasswordConfirm { get; set; }
 
-        [Display(Name = "Дата рождения")]
-        public DateTime Birthday { get; set; }
-
         [IsTrue]
         [Display(Name = "Принимаю условия пользовательского соглашения")]
         public bool AcceptUserConsent { get; set; }
