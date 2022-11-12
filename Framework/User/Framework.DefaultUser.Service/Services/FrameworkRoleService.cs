@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Framework.User.Service.Services
 {
-    public class FrameworkRoleService : IFrameworkRoleService
+    public class FrameworkRoleService : BaseRoleService, IFrameworkRoleService
     {
         private readonly IFrameworkRoleDbService _roleDbService;
         private readonly IPermissionDbService _permissionDbService;

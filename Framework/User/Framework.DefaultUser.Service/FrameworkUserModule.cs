@@ -1,4 +1,8 @@
 ﻿using AutoMapper;
+using Framework.DefaultUser.Data.Contract;
+using Framework.DefaultUser.Data.Services;
+using Framework.DefaultUser.Service.Contract;
+using Framework.DefaultUser.Service.Services;
 using Framework.User.DataService.Contract.Interfaces;
 using Framework.User.DataService.Entities;
 using Framework.User.DataService.Services;
@@ -42,12 +46,27 @@ namespace Framework.User.Service
                 s.GetService<ISignInManagerAdapter>(),
                 s.GetService<IMapper>()));
 
+            services.AddScoped<IFrameworkAccountDbService>(s => new FrameworkAccountDbService(
+                s.GetService<FrameworkUserDbContext>(),
+                s.GetService<IUserManagerAdapter<FrameworkUser>>(),
+                s.GetService<ISignInManagerAdapter>(),
+                s.GetService<IMapper>()));
+
             services.AddScoped<IReservedNameDbService>(s => new ReservedNameDbService(
                 s.GetService<FrameworkUserDbContext>(),
                 s.GetService<IMapper>()));
 
             services.AddScoped<IFrameworkUserService>(s => new FrameworkUserService(
                 s.GetService<IFrameworkUserDbService>(),
+                s.GetService<IFrameworkAccountDbService>(),
+                s.GetService<ISignInManagerAdapter>(),
+                s.GetService<IReservedNameDbService>(),
+                s.GetService<RegisterTasker>(),
+                s.GetService<IMapper>()));
+
+            services.AddScoped<IAppAccountService>(s => new AppAccountService(
+                s.GetService<IFrameworkUserDbService>(),
+                s.GetService<IFrameworkAccountDbService>(),
                 s.GetService<ISignInManagerAdapter>(),
                 s.GetService<IReservedNameDbService>(),
                 s.GetService<RegisterTasker>(),

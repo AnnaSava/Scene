@@ -14,6 +14,8 @@ namespace Framework.User.Service.Mapper
     {
         public FrameworkUserMapperProfile()
         {
+            CreateMap<LoginViewModel, LoginModel>();
+
             CreateMap<FrameworkUserModel, FrameworkUserViewModel>();
             CreateMap<FrameworkUserViewModel, FrameworkUserModel>()
                 .ForMember(x => x.IsBanned, y => y.MapFrom(s => s.IsBanned))

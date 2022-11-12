@@ -1,4 +1,4 @@
-using Framework.User.Service.Contract.Interfaces;
+using Framework.DefaultUser.Service.Contract;
 using Framework.User.Service.Contract.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,11 +7,11 @@ namespace Scene.Login.WebApp.Pages.Account
 {
     public class ResetPasswordModel : PageModel
     {
-        private readonly IFrameworkUserService _userService;
+        private readonly IAppAccountService _accountService;
 
-        public ResetPasswordModel(IFrameworkUserService userService)
+        public ResetPasswordModel(IAppAccountService accountService)
         {
-            _userService = userService;
+            _accountService = accountService;
         }
 
         [BindProperty]
@@ -25,7 +25,7 @@ namespace Scene.Login.WebApp.Pages.Account
 
         public async Task<IActionResult> OnPostAsync()
         {
-            await _userService.ResetPassword(Input);
+            await _accountService.ResetPassword(Input);
             return RedirectToPage("/Account/Login");
         }
     }

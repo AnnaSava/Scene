@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Scene.DataSeeder.Data
+namespace Framework.User.SeederLib.Data
 {
-    internal class PermissionInitialData
+    public class PermissionInitialData
     {
         public static Dictionary<string, string> PermissionsRuCulture => new Dictionary<string, string>
         {

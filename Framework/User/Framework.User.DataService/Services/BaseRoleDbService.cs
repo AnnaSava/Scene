@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace Framework.User.DataService.Services
 {
     // TODO Подумать о вынесении в отдельную сборку
-    public abstract class RoleDbService<TRoleEntity, TRoleClaimEntity, TRoleModel, TFilterModel>
+    public abstract class BaseRoleDbService<TRoleEntity, TRoleClaimEntity, TRoleModel, TFilterModel>
         where TRoleEntity : BaseRole
         where TRoleClaimEntity: IdentityRoleClaim<long>, new()
         where TRoleModel : BaseRoleModel
@@ -25,7 +25,7 @@ namespace Framework.User.DataService.Services
         private readonly IRoleManagerAdapter<TRoleEntity> _roleManagerAdapter;
         protected readonly IMapper _mapper;
 
-        public RoleDbService(
+        public BaseRoleDbService(
             IRoleContext<TRoleEntity, TRoleClaimEntity> dbContext,
             IRoleManagerAdapter<TRoleEntity> roleManagerAdapter,
             IMapper mapper,
@@ -70,7 +70,7 @@ namespace Framework.User.DataService.Services
             // TODO подумать, оставить ли здесь эту проверку или повесить уникальный индекс на уровне БД?
             if (await CheckRoleNameExists(model.Name))
                 throw new EntityAlreadyExistsException(
-                    typeof(RoleDbService<TRoleEntity, TRoleClaimEntity, TRoleModel, TFilterModel>),
+                    typeof(BaseRoleDbService<TRoleEntity, TRoleClaimEntity, TRoleModel, TFilterModel>),
                     nameof(Create),
                     typeof(TRoleEntity),
                     nameof(BaseRole.Name),
@@ -105,7 +105,7 @@ namespace Framework.User.DataService.Services
                 // TODO подумать, оставить ли здесь эту проверку или повесить уникальный индекс на уровне БД?
                 if (await CheckRoleNameExists(model.Name))
                     throw new EntityAlreadyExistsException(
-                        typeof(RoleDbService<TRoleEntity, TRoleClaimEntity, TRoleModel, TFilterModel>),
+                        typeof(BaseRoleDbService<TRoleEntity, TRoleClaimEntity, TRoleModel, TFilterModel>),
                         nameof(Update),
                         typeof(TRoleEntity),
                         nameof(BaseRole.Name),

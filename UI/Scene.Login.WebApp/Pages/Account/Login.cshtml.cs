@@ -1,3 +1,4 @@
+using Framework.DefaultUser.Service.Contract;
 using Framework.User.Service.Contract.Interfaces;
 using Framework.User.Service.Contract.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -7,11 +8,11 @@ namespace Scene.Login.WebApp.Pages.Account
 {
     public class LoginModel : PageModel
     {
-        IFrameworkUserService _userService;
+        IAppAccountService _accountService;
 
-        public LoginModel(IFrameworkUserService userService)
+        public LoginModel(IAppAccountService accountService)
         {
-            _userService = userService;
+            _accountService = accountService;
         }
 
         [BindProperty]
@@ -28,7 +29,7 @@ namespace Scene.Login.WebApp.Pages.Account
         {
             if (ModelState.IsValid)
             {
-                var result = await _userService.SignIn(Input);
+                var result = await _accountService.SignIn(Input);
                 if (result.Succeeded)
                     return string.IsNullOrEmpty(ReturnUrl) ? Redirect("~/") : Redirect(ReturnUrl);
 

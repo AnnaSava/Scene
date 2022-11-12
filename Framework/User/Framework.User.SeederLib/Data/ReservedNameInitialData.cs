@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Scene.DataSeeder.Data
+namespace Framework.User.SeederLib.Data
 {
-    internal class ReservedNameInitialData
+    internal static class ReservedNameInitialData
     {
         public static string[] WithoutPlurals => new string[]
         {

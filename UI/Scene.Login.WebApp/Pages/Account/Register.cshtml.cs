@@ -1,3 +1,4 @@
+using Framework.DefaultUser.Service.Contract;
 using Framework.User.Service.Contract.Interfaces;
 using Framework.User.Service.Contract.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -9,12 +10,12 @@ namespace Scene.Login.WebApp.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        IFrameworkUserService _userService;
+        IAppAccountService _accountService;
         ILegalDocumentService _legalDocumentService;
 
-        public RegisterModel(IFrameworkUserService userService, ILegalDocumentService legalDocumentService)
+        public RegisterModel(IAppAccountService accountService, ILegalDocumentService legalDocumentService)
         {
-            _userService = userService;
+            _accountService = accountService;
             _legalDocumentService = legalDocumentService;
             Input = new FrameworkRegisterViewModel();
         }
@@ -38,8 +39,8 @@ namespace Scene.Login.WebApp.Pages.Account
             {
                 try
                 {
-                    await _userService.Register(Input);
-                    await _userService.SignIn(new LoginViewModel { Identifier = Input.Login, Password = Input.Password, RememberMe = false });
+                    await _accountService.Register(Input);
+                    await _accountService.SignIn(new LoginViewModel { Identifier = Input.Login, Password = Input.Password, RememberMe = false });
                     return string.IsNullOrEmpty(ReturnUrl) ? Redirect("~/") : Redirect(ReturnUrl);
                 }
                 catch (Exception ex)

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ namespace Framework.Helpers.Config
 {
     public static class ConfigExtentions
     {
+
+        // TODO разобраться, что это
         public static string GetMigrationAssemblyString(this IConfiguration config)
         {
             return config["MigrationsAssembly"];

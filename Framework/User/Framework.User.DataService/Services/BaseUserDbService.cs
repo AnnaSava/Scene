@@ -5,6 +5,7 @@ using Framework.Base.Types.ModelTypes;
 using Framework.User.DataService.Contract.Interfaces;
 using Framework.User.DataService.Contract.Models;
 using Framework.User.DataService.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 namespace Framework.User.DataService.Services
 {
     // TODO Подумать о вынесении в отдельную сборку
-    public class UserDbService<TUserEntity>
+    public class BaseUserDbService<TUserEntity>
         where TUserEntity : BaseUser
     {
         protected readonly IUserContext<TUserEntity> _dbContext;
@@ -22,7 +23,7 @@ namespace Framework.User.DataService.Services
         private readonly ISignInManagerAdapter _signInManagerAdapter;
         protected readonly IMapper _mapper;
 
-        public UserDbService(
+        public BaseUserDbService(
             IUserContext<TUserEntity> dbContext, 
             IUserManagerAdapter<TUserEntity> userManagerAdapter,
             ISignInManagerAdapter signInManagerAdapter,
@@ -36,7 +37,7 @@ namespace Framework.User.DataService.Services
 
             _mapper = mapper ?? throw new ProjectArgumentException(
                 GetType(),
-                nameof(UserDbService<TUserEntity>),
+                nameof(BaseUserDbService<TUserEntity>),
                 nameof(mapper),
                 null);
         }
@@ -67,51 +68,73 @@ namespace Framework.User.DataService.Services
             return await _userManagerAdapter.Restore<TUserEntity, TUserModelOut>(id, _dbContext, _mapper);
         }
 
-        public async Task<string> GenerateEmailConfirmationToken(string email)
-        {
-            return await _userManagerAdapter.GenerateEmailConfirmationToken(email);
-        }
-
-        public async Task<bool> ConfirmEmail(string email, string token)
-        {
-            return await _userManagerAdapter.ConfirmEmail(email, token);
-        }
-
         public async Task<TUserModelOut> GetOneByLoginOrEmail<TUserModelOut>(string loginOrEmail)
         {
             var user = await _userManagerAdapter.GetOneByLoginOrEmail(loginOrEmail);
             return _mapper.Map<TUserModelOut>(user);
         }
 
-        public async Task<string> GeneratePasswordResetToken(string email)
+        public async Task<TUserModelOut> GetOneByLogin<TUserModelOut>(string login)
         {
-            return await _userManagerAdapter.GeneratePasswordResetToken(email);
+            return await _dbContext.GetUserByLogin<TUserEntity, TUserModelOut>(login, _mapper);
         }
 
-        public async Task ResetPassword(string email, string token, string newPassword)
+        public async Task<TUserModelOut> GetOneByEmail<TUserModelOut>(string email)
         {
-            await _userManagerAdapter.ResetPassword(email, token, newPassword);
+            return await _dbContext.GetUserByEmail<TUserEntity, TUserModelOut>(email, _mapper);
         }
 
-        public async Task<SignInResultModel<TUserOutModel>> SignIn<TUserOutModel>(LoginModel model)
-            where TUserOutModel : BaseUserModel
+        public async Task<TUserModelOut> Lock<TUserModelOut>(UserLockoutModel lockoutModel)
         {
-            var userEntity = await _userManagerAdapter.GetOneByLoginOrEmail(model.Identifier);
+            var entity = await _dbContext.Users.FirstOrDefaultAsync(m => m.Id == lockoutModel.Id);
+            entity.LockoutEnabled = true;
+            entity.LockoutEnd = lockoutModel.LockoutEnd;
 
-            var result = await _signInManagerAdapter.SignIn(userEntity.Email, model.Password, model.RememberMe);
-
-            var resultModel = new SignInResultModel<TUserOutModel>()
+            var lockout = new Lockout()
             {
-                Succeeded = result.Succeeded,
+                LockDate = DateTime.Now,
+                LockedByUserId = 1, //TODO прокидывать юзера, кто заблокировал
+                LockoutEnd = lockoutModel.LockoutEnd,
+                Reason = lockoutModel.Reason,
+                UserId = lockoutModel.Id
             };
+            _dbContext.Lockouts.Add(lockout);
 
-            if(result.Succeeded)
-            {
-                var user = await _userManagerAdapter.GetOneByLoginOrEmail(model.Identifier);
-                resultModel.User = _mapper.Map<TUserOutModel>(user);
-            };
-            return resultModel;
+            await _dbContext.SaveChangesAsync();
+
+            return _mapper.Map<TUserModelOut>(entity);
         }
+
+        public async Task<TUserModelOut> Unlock<TUserModelOut>(long id)
+        {
+            var entity = await _dbContext.Users.FirstOrDefaultAsync(m => m.Id == id);
+            entity.LockoutEnabled = false;
+            entity.LockoutEnd = null;
+            await _dbContext.SaveChangesAsync();
+
+            return _mapper.Map<TUserModelOut>(entity);
+        }
+
+        public async Task<bool> CheckEmailExists(string email)
+        {
+            return await _dbContext.CheckUserEmailExists<TUserEntity>(email);
+        }
+
+        public async Task<bool> CheckUserNameExists(string userName)
+        {
+            return await _dbContext.CheckUserLoginExists<TUserEntity>(userName);
+        }
+
+        public async Task AddRoles(UserRolesModel model)
+        {
+            await _userManagerAdapter.AddToRolesAsync(model.UserId, model.RoleNames);
+        }
+
+        public async Task RemoveRoles(UserRolesModel model)
+        {
+            await _userManagerAdapter.RemoveFromRolesAsync(model.UserId, model.RoleNames);
+        }
+
 
         // TODO подумать, куда перенести, т.к. в теории может пригодиться не только для пользователей
         protected IEnumerable<ListSortModel> GetChangedSortFields(IEnumerable<ListSortModel> sortList, Dictionary<string, string> diff)

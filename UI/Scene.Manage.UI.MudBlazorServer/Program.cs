@@ -28,7 +28,7 @@ builder.Services.AddDbContext<FrameworkUserDbContext>(options =>
 
 builder.Services.AddTransient<RegisterTasker>();
 
-builder.Services.AddMailTemplate(builder.Configuration.GetConnectionString("IdentityConnection"), "Scene.Migrations.PostgreSql", builder.Configuration);
+builder.Services.AddMailTemplate(builder.Configuration);
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 

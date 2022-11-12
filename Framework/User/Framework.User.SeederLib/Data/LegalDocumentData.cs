@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Scene.DataSeeder.Data
+namespace Framework.User.SeederLib.Data
 {
     internal class LegalDocumentData
     {

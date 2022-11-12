@@ -26,23 +26,11 @@ namespace Framework.User.Service.Contract.Interfaces
 
         Task<FrameworkUserViewModel> Unlock(long id);
 
-        Task<FrameworkSignInResultViewModel> SignIn(LoginViewModel model);
-
-        Task SignOut();
-
         Task<IFrameworkUserViewModel> GetOne(long id, string target);
 
         Task<FrameworkUserViewModel> GetOneByEmail(string email);
 
         Task<Dictionary<string, bool>> CheckExists(string email, string login);
-
-        Task<FrameworkUserViewModel> Register(FrameworkRegisterViewModel model);
-
-        Task<bool> ConfirmEmail(string email, string token);
-
-        Task RequestNewPassword(RequestNewPasswordFormViewModel model);
-
-        Task ResetPassword(ResetPasswordFormViewModel model);
 
         Task<FieldValidationResult> ValidateField(string name, string value);
 

@@ -3,6 +3,7 @@ using Framework.Base.DataService.Contract.Models;
 using Framework.Base.Service.ListView;
 using Framework.Base.Types.ModelTypes;
 using Framework.Base.Types.Validation;
+using Framework.DefaultUser.Data.Contract;
 using Framework.User.DataService.Contract.Interfaces;
 using Framework.User.DataService.Contract.Models;
 using Framework.User.Service.Contract.Interfaces;
@@ -19,24 +20,27 @@ using System.Threading.Tasks;
 
 namespace Framework.User.Service.Services
 {
-    public class FrameworkUserService : IFrameworkUserService
+    public class FrameworkUserService : BaseUserService, IFrameworkUserService
     {
         private const string DefaultUserViewTarget = "";
         private const string FormUserViewTarget = "form";
 
         private readonly IFrameworkUserDbService _userDbService;
+        private readonly IFrameworkAccountDbService _accountDbService;
         private readonly ISignInManagerAdapter _signInManagerAdapter;
         private readonly IReservedNameDbService _reservedNameDbService;
         private readonly RegisterTasker _registerTasker;
         private readonly IMapper _mapper;
 
         public FrameworkUserService(IFrameworkUserDbService userDbService,
+            IFrameworkAccountDbService accountDbService,
             ISignInManagerAdapter signInManagerAdapter,
             IReservedNameDbService reservedNameDbService,
             RegisterTasker registerTasker,
             IMapper mapper)
         {
             _userDbService = userDbService;
+            _accountDbService = accountDbService;
             _signInManagerAdapter = signInManagerAdapter;
             _reservedNameDbService = reservedNameDbService;
             _registerTasker = registerTasker;
@@ -80,13 +84,13 @@ namespace Framework.User.Service.Services
                 Reason = lockoutModel.Reason
             };
 
-            var resultModel = await _userDbService.Lock(model);
+            var resultModel = await _userDbService.Lock<FrameworkUserViewModel>(model);
             return _mapper.Map<FrameworkUserViewModel>(resultModel);
         }
 
         public async Task<FrameworkUserViewModel> Unlock(long id)
         {
-            var resultModel = await _userDbService.Unlock(id);
+            var resultModel = await _userDbService.Unlock<FrameworkUserViewModel>(id);
             return _mapper.Map<FrameworkUserViewModel>(resultModel);
         }
 
@@ -127,111 +131,6 @@ namespace Framework.User.Service.Services
             return await types[target](id, include);
         }
 
-        public async Task<FrameworkUserViewModel> Register(FrameworkRegisterViewModel model)
-        {
-            // TODO переделать на возврат списка ошибок?
-            if (await _userDbService.CheckEmailExists(model.Email))
-                throw new Exception("Email exists!");
-
-            if (await _userDbService.CheckUserNameExists(model.Login)) // TODO: может проверять одним запросом к БД?
-                throw new Exception("Username exists!");
-
-            if (await _reservedNameDbService.CheckIsReserved(model.Login))
-                throw new Exception("UserName is forbidden!");
-
-            var newModel = _mapper.Map<FrameworkUserFormModel>(model);
-            var resultModel = await _userDbService.Create<FrameworkUserModel>(newModel, model.Password);
-
-            if (resultModel == null || resultModel.Id == 0)
-                throw new Exception("Registration error");
-
-            var token = await _userDbService.GenerateEmailConfirmationToken(resultModel.Email);
-            byte[] tokenGeneratedBytes = Encoding.UTF8.GetBytes(token);
-            var codeEncoded = WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
-            // TODO прокидывать сюда из настроек урл для подтверждения
-            var confirmUrl = $"https://localhost:5001/account/confirmemail?email={resultModel.Email}&code={codeEncoded}";
-
-            // TODO отправлять письмо с подтверждением
-            // TODO отрефакторить
-            var mailData = new MailDataModel
-            {
-                Email = resultModel.Email,
-                Action = "registration",
-                Culture = "en",
-                Variables = new List<MailVariableModel>
-                {
-                    new MailVariableModel{ Name = "<%Email%>", Value=resultModel.Email },
-                    new MailVariableModel{ Name = "<%UserName%>", Value = resultModel.Login },
-                    new MailVariableModel{ Name = "<%ConfirmUrl%>", Value = confirmUrl}
-                }
-            };
-
-            var jsonMessage = JsonSerializer.Serialize(mailData);
-
-            _registerTasker.Send(jsonMessage);
-
-            return _mapper.Map<FrameworkUserViewModel>(resultModel);
-        }
-
-        public async Task<bool> ConfirmEmail(string email, string token)
-        {
-            var codeDecodedBytes = WebEncoders.Base64UrlDecode(token);
-            var codeDecoded = Encoding.UTF8.GetString(codeDecodedBytes);
-
-            return await _userDbService.ConfirmEmail(email, codeDecoded);
-        }
-
-        public async Task RequestNewPassword(RequestNewPasswordFormViewModel model)
-        {
-            var user = await _userDbService.GetOneByLoginOrEmail<FrameworkUserModel>(model.LoginOrEmail);
-
-            // TODO проверку на нулл
-
-            var token = await _userDbService.GeneratePasswordResetToken(user.Email);
-            byte[] tokenGeneratedBytes = Encoding.UTF8.GetBytes(token);
-            var codeEncoded = WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
-
-            var resetPasswordUrl = $"https://localhost:5001/account/resetpassword?email={user.Email}&token={codeEncoded}";
-
-            // TODO отрефакторить
-            var mailData = new MailDataModel
-            {
-                Email = user.Email,
-                Action = "resetpassword",
-                Culture = "en",
-                Variables = new List<MailVariableModel>
-                {
-                    new MailVariableModel{ Name = "<%Email%>", Value = user.Email },
-                    new MailVariableModel{ Name = "<%UserName%>", Value = user.Login },
-                    new MailVariableModel{ Name = "<%ConfirmUrl%>", Value = resetPasswordUrl}
-                }
-            };
-
-            var jsonMessage = JsonSerializer.Serialize(mailData);
-
-            _registerTasker.Send(jsonMessage);
-        }
-
-        public async Task ResetPassword(ResetPasswordFormViewModel model)
-        {
-            var codeDecodedBytes = WebEncoders.Base64UrlDecode(model.Token);
-            var codeDecoded = Encoding.UTF8.GetString(codeDecodedBytes);
-
-            await _userDbService.ResetPassword(model.Email, codeDecoded, model.NewPassword);
-        }
-
-        public async Task<FrameworkSignInResultViewModel> SignIn(LoginViewModel model)
-        {
-            var mapped = _mapper.Map<LoginModel>(model);
-            var result = await _userDbService.SignIn<FrameworkUserModel>(mapped);
-            return _mapper.Map<FrameworkSignInResultViewModel>(result);
-        }
-
-        public async Task SignOut()
-        {
-            await _signInManagerAdapter.SignOut();
-        }
-
         private async Task<IFrameworkUserViewModel> GetOneForForm(long id, string include)
         {
             var model = await _userDbService.GetOne<FrameworkUserFormModel>(id, include);
@@ -246,7 +145,7 @@ namespace Framework.User.Service.Services
 
         public async Task<FrameworkUserViewModel> GetOneByEmail(string email)
         {
-            var model = await _userDbService.GetOneByEmail(email);
+            var model = await _userDbService.GetOneByEmail<FrameworkUserModel>(email);
             return _mapper.Map<FrameworkUserViewModel>(model);
         }
 

@@ -19,17 +19,17 @@ namespace Framework.User.DataService.Contract.Interfaces
 
         Task<TUserModelOut> Restore<TUserModelOut>(long id);
 
-        Task<FrameworkUserModel> Lock(UserLockoutModel lockoutModel);
+        Task<FrameworkUserModel> Lock<FrameworkUserModel>(UserLockoutModel lockoutModel);
 
-        Task<FrameworkUserModel> Unlock(long id);
+        Task<FrameworkUserModel> Unlock<FrameworkUserModel>(long id);
 
         Task<FrameworkUserModel> GetOne(long id);
 
         Task<T> GetOne<T>(long id, string include) where T : IUserModel;
 
-        Task<FrameworkUserModel> GetOneByLogin(string login);
+        Task<FrameworkUserModel> GetOneByLogin<FrameworkUserModel>(string login);
 
-        Task<FrameworkUserModel> GetOneByEmail(string email);
+        Task<FrameworkUserModel> GetOneByEmail<FrameworkUserModel>(string email);
 
         Task<bool> CheckEmailExists(string email);
 
@@ -39,16 +39,6 @@ namespace Framework.User.DataService.Contract.Interfaces
 
         Task RemoveRoles(UserRolesModel model);
 
-        Task<string> GenerateEmailConfirmationToken(string email);
-
-        Task<bool> ConfirmEmail(string email, string token);
-
         Task<TUserModelOut> GetOneByLoginOrEmail<TUserModelOut>(string loginOrEmail);
-
-        Task<string> GeneratePasswordResetToken(string email);
-
-        Task ResetPassword(string email, string token, string newPassword);
-
-        Task<SignInResultModel<TUserOutModel>> SignIn<TUserOutModel>(LoginModel model) where TUserOutModel : BaseUserModel;
     }
 }

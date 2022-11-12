@@ -21,7 +21,7 @@ services.Configure<EmailConfiguration>(config.GetSection("Email"));
 
 services.AddMapper();
 
-services.AddMailTemplate(config.GetConnectionString("IdentityConnection"), "Scene.Migrations.PostgreSql", config);
+services.AddMailTemplate(config);
 
 var work = new Work(HostName, QueueName);
 work.Execute(DoAction, services);

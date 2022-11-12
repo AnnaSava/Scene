@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Framework.User.DataService.Services
 {
-    public class FrameworkRoleDbService : RoleDbService<FrameworkRole, RoleClaim, FrameworkRoleModel, FrameworkRoleFilterModel>, IFrameworkRoleDbService
+    public class FrameworkRoleDbService : BaseRoleDbService<FrameworkRole, RoleClaim, FrameworkRoleModel, FrameworkRoleFilterModel>, IFrameworkRoleDbService
     {
         public FrameworkRoleDbService(
            FrameworkUserDbContext dbContext,

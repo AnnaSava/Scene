@@ -1,11 +1,18 @@
-﻿using Framework.MailTemplate.Data.Contract.Context;
+﻿using Framework.Base.Types;
+using Framework.MailTemplate.Data.Contract.Context;
 using Framework.MailTemplate.SeedLib.Data;
 
 namespace Framework.MailTemplate.SeedLib
 {
-    public static class MailTemplateSeeder
+    public class MailTemplateSeeder : ISeeder
     {
-        public static async Task Seed(IMailTemplateContext context)
+        private readonly IMailTemplateContext context;
+        public MailTemplateSeeder(IMailTemplateContext dbContext)
+        {
+            context = dbContext;
+        }
+
+        public async Task Seed()
         {
             if (context.MailTemplates.Any()) return;
 

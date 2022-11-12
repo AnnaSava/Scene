@@ -63,6 +63,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.DefaultUser.Data"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.DefaultUser.Service", "Framework\User\Framework.DefaultUser.Service\Framework.DefaultUser.Service.csproj", "{E2E0D4B1-270F-4C15-9D37-E1551D54E837}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.User.SeederLib", "Framework\User\Framework.User.SeederLib\Framework.User.SeederLib.csproj", "{DC25F909-C2BF-4B37-A7ED-29EAAAD6CECF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -190,6 +192,12 @@ Global
 		{E2E0D4B1-270F-4C15-9D37-E1551D54E837}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E2E0D4B1-270F-4C15-9D37-E1551D54E837}.Staging|Any CPU.ActiveCfg = Debug|Any CPU
 		{E2E0D4B1-270F-4C15-9D37-E1551D54E837}.Staging|Any CPU.Build.0 = Debug|Any CPU
+		{DC25F909-C2BF-4B37-A7ED-29EAAAD6CECF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC25F909-C2BF-4B37-A7ED-29EAAAD6CECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC25F909-C2BF-4B37-A7ED-29EAAAD6CECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC25F909-C2BF-4B37-A7ED-29EAAAD6CECF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC25F909-C2BF-4B37-A7ED-29EAAAD6CECF}.Staging|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC25F909-C2BF-4B37-A7ED-29EAAAD6CECF}.Staging|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -220,6 +228,7 @@ Global
 		{9CFF5A6F-4679-4B4E-A271-AF275B074BE3} = {A336C1D7-9866-4FD7-91F8-9FC7C1B1741A}
 		{AF502EA8-D97F-4BFC-8CD2-54488442AD79} = {C5D2BA5F-CAD3-4512-A813-2134725009D8}
 		{E2E0D4B1-270F-4C15-9D37-E1551D54E837} = {C5D2BA5F-CAD3-4512-A813-2134725009D8}
+		{DC25F909-C2BF-4B37-A7ED-29EAAAD6CECF} = {C5D2BA5F-CAD3-4512-A813-2134725009D8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F993D315-2032-47BD-9F81-54470F3E4588}
