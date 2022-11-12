@@ -15,7 +15,7 @@ namespace Scene.Login.WebApp.Pages.Account
         }
 
         [BindProperty]
-        public ResetPasswordFormViewModel Input { get; set; } = new ResetPasswordFormViewModel();
+        public AppResetPasswordFormViewModel Input { get; set; } = new AppResetPasswordFormViewModel();
 
         public void OnGet(string email, string token)
         {

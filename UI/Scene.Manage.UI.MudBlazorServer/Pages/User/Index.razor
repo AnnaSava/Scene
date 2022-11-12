@@ -1,13 +1,13 @@
 ﻿@page "/users"
 @using Framework.User.Service.Contract.Interfaces
 @using Framework.User.Service.Contract.Models
-@inject IFrameworkUserService _userService
+@inject IAppFrameworkUserService _userService
 
 <PageTitle>Users</PageTitle>
 
 <MudBreadcrumbs Items="breadCrumbs"></MudBreadcrumbs>
 
-<MudTable ServerData="@(new Func<TableState, Task<TableData<FrameworkUserViewModel>>>(ServerReload))"
+<MudTable ServerData="@(new Func<TableState, Task<TableData<AppUserViewModel>>>(ServerReload))"
     Hover="true" @ref="table">
 
     <ToolBarContent>
@@ -17,9 +17,9 @@
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
-        <MudTh><MudTableSortLabel SortLabel="id" T="FrameworkUserViewModel">Id</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="login" T="FrameworkUserViewModel">Login</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="email" T="FrameworkUserViewModel">Email</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="id" T="AppUserViewModel">Id</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="login" T="AppUserViewModel">Login</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="email" T="AppUserViewModel">Email</MudTableSortLabel></MudTh>
         <MudTh>IsBanned</MudTh>
     </HeaderContent>
     <RowTemplate>
@@ -35,7 +35,7 @@
 
 
 @code {
-    private MudTable<FrameworkUserViewModel>? table;
+    private MudTable<AppUserViewModel>? table;
 
     private string searchString = string.Empty;
 
@@ -45,13 +45,13 @@
         new BreadcrumbItem("Users", href: null, disabled: true)
     };
 
-    private async Task<TableData<FrameworkUserViewModel>> ServerReload(TableState state)
+    private async Task<TableData<AppUserViewModel>> ServerReload(TableState state)
     {
-        var filter = new FrameworkUserFilterViewModel { Login =  "contains|" + searchString };
+        var filter = new AppUserFilterViewModel { Login =  "contains|" + searchString };
 
         var result = await _userService.GetAll(filter, PageHelper.GetPageInfo(state));
 
-        return PageHelper.GetTableData<FrameworkUserViewModel>(result);
+        return PageHelper.GetTableData<AppUserViewModel>(result);
     }
 
     private void OnSearch(string text)

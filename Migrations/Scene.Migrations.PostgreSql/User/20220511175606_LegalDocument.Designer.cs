@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Scene.Migrations.PostgreSql.User
 {
-    [DbContext(typeof(FrameworkUserDbContext))]
+    [DbContext(typeof(AppUserContext))]
     [Migration("20220511175606_LegalDocument")]
     partial class LegalDocument
     {

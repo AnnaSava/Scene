@@ -9,15 +9,15 @@ namespace Framework.DefaultUser.Service.Contract
 {
     public interface IAppAccountService
     {
-        Task<FrameworkUserViewModel> Register(FrameworkRegisterViewModel model);
+        Task<AppUserViewModel> Register(AppRegisterViewModel model);
 
         Task<bool> ConfirmEmail(string email, string token);
 
-        Task RequestNewPassword(RequestNewPasswordFormViewModel model);
+        Task RequestNewPassword(AppRequestNewPasswordFormViewModel model);
 
-        Task ResetPassword(ResetPasswordFormViewModel model);
+        Task ResetPassword(AppResetPasswordFormViewModel model);
 
-        Task<FrameworkSignInResultViewModel> SignIn(LoginViewModel model);
+        Task<AppSignInResultViewModel> SignIn(AppLoginViewModel model);
 
         Task SignOut();
     }

@@ -13,8 +13,8 @@ namespace Scene.Login.WebApp
             // https://stackoverflow.com/questions/2651613/how-to-scan-and-auto-configure-profiles-in-automapper
             var mappingConfig = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new FrameworkUserDataMapperProfile());
-                mc.AddProfile(new FrameworkUserMapperProfile());
+                mc.AddProfile(new AppUserDataMapperProfile());
+                mc.AddProfile(new AppUserMapperProfile());
                 mc.AddProfile(new CommonDataMapperProfile());
                 mc.AddProfile(new CommonMapperProfile());
             });

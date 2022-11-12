@@ -17,8 +17,8 @@ namespace Scene.Manage.UI.MudBlazorServer
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new BaseServiceAutoMapperProfile());
-                mc.AddProfile(new FrameworkUserDataMapperProfile());
-                mc.AddProfile(new FrameworkUserMapperProfile());
+                mc.AddProfile(new AppUserDataMapperProfile());
+                mc.AddProfile(new AppUserMapperProfile());
                 mc.AddProfile(new CommonDataMapperProfile());
                 mc.AddProfile(new CommonMapperProfile());
                 mc.AddProfile(new MailTemplateDataMapperProfile());

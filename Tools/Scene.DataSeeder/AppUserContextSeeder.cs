@@ -14,13 +14,13 @@ namespace Scene.DataSeeder
 {
     internal class AppUserContextSeeder : ISeeder
     {
-        private readonly FrameworkUserDbContext context;
-        private readonly UserManager<FrameworkUser> _userManager;
-        private readonly RoleManager<FrameworkRole> _roleManager;
+        private readonly AppUserContext context;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<AppRole> _roleManager;
 
-        public AppUserContextSeeder(FrameworkUserDbContext dbContext,
-            UserManager<FrameworkUser> userManager,
-            RoleManager<FrameworkRole> roleManager)
+        public AppUserContextSeeder(AppUserContext dbContext,
+            UserManager<AppUser> userManager,
+            RoleManager<AppRole> roleManager)
         {
             context = dbContext;
             _userManager = userManager;
@@ -35,16 +35,16 @@ namespace Scene.DataSeeder
 
             if (!adminExists)
             {
-                var res = _userManager.CreateAsync(new FrameworkUser() { Email = "test@test.ru", UserName = "admin" }, "Pass123$").GetAwaiter().GetResult();
+                var res = _userManager.CreateAsync(new AppUser() { Email = "test@test.ru", UserName = "admin" }, "Pass123$").GetAwaiter().GetResult();
             }
 
             var admRole = context.Roles.Any(m => m.Name == "administrator");
             var moderRole = context.Roles.Any(m => m.Name == "moderator");
             var editorRole = context.Roles.Any(m => m.Name == "editor");
 
-            if (!admRole) _roleManager.CreateAsync(new FrameworkRole { Name = "administrator", LastUpdated = DateTime.Now }).GetAwaiter().GetResult();
-            if (!moderRole) _roleManager.CreateAsync(new FrameworkRole { Name = "moderator", LastUpdated = DateTime.Now }).GetAwaiter().GetResult();
-            if (!editorRole) _roleManager.CreateAsync(new FrameworkRole { Name = "editor", LastUpdated = DateTime.Now }).GetAwaiter().GetResult();
+            if (!admRole) _roleManager.CreateAsync(new AppRole { Name = "administrator", LastUpdated = DateTime.Now }).GetAwaiter().GetResult();
+            if (!moderRole) _roleManager.CreateAsync(new AppRole { Name = "moderator", LastUpdated = DateTime.Now }).GetAwaiter().GetResult();
+            if (!editorRole) _roleManager.CreateAsync(new AppRole { Name = "editor", LastUpdated = DateTime.Now }).GetAwaiter().GetResult();
 
             await new ReservedNameSeeder(context).Seed();
             await new PermissionSeeder(context).Seed();

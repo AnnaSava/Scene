@@ -24,7 +24,7 @@ namespace Scene.DataSeeder
             var services = new ServiceCollection();
             services.AddLogging(); // TODO: без него не работает идентити. разобраться
 
-            services.AddDbContext<FrameworkUserDbContext>(options =>
+            services.AddDbContext<AppUserContext>(options =>
               options.UseNpgsql(config.GetConnectionString("IdentityConnection")));
 
             services.AddMailTemplate(config);
@@ -46,9 +46,9 @@ namespace Scene.DataSeeder
 
         private static async Task Seed(IServiceScope scope)
         {
-            var context = scope.ServiceProvider.GetService<FrameworkUserDbContext>();
-            var mgr = scope.ServiceProvider.GetService<UserManager<FrameworkUser>>();
-            var roleMgr = scope.ServiceProvider.GetService<RoleManager<FrameworkRole>>();
+            var context = scope.ServiceProvider.GetService<AppUserContext>();
+            var mgr = scope.ServiceProvider.GetService<UserManager<AppUser>>();
+            var roleMgr = scope.ServiceProvider.GetService<RoleManager<AppRole>>();
             await new AppUserContextSeeder(context, mgr, roleMgr).Seed();
 
             var mailTemplateContext = scope.ServiceProvider.GetService<MailTemplateContext>();

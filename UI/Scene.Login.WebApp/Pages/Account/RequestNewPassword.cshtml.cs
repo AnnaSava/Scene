@@ -16,7 +16,7 @@ namespace Scene.Login.WebApp.Pages.Account
         }
 
         [BindProperty]
-        public RequestNewPasswordFormViewModel Input { get; set; }
+        public AppRequestNewPasswordFormViewModel Input { get; set; }
 
         public bool IsSent { get; set; } = false;
 

@@ -13,7 +13,7 @@ builder.Services.Configure<RabbitMqConfiguration>(builder.Configuration.GetSecti
 // Add services to the container.
 builder.Services.AddMapper();
 
-builder.Services.AddDbContext<FrameworkUserDbContext>(options =>
+builder.Services.AddDbContext<AppUserContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("IdentityConnection"), b => b.MigrationsAssembly("Scene.Migrations.PostgreSql")));
 
 builder.Services.AddFrameworkUser(builder.Configuration);

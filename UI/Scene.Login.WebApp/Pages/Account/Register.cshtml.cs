@@ -17,11 +17,11 @@ namespace Scene.Login.WebApp.Pages.Account
         {
             _accountService = accountService;
             _legalDocumentService = legalDocumentService;
-            Input = new FrameworkRegisterViewModel();
+            Input = new AppRegisterViewModel();
         }
 
         [BindProperty]
-        public FrameworkRegisterViewModel Input { get; set; }
+        public AppRegisterViewModel Input { get; set; }
 
         public LegalDocumentViewModel Consent { get; set; }
 
@@ -40,7 +40,7 @@ namespace Scene.Login.WebApp.Pages.Account
                 try
                 {
                     await _accountService.Register(Input);
-                    await _accountService.SignIn(new LoginViewModel { Identifier = Input.Login, Password = Input.Password, RememberMe = false });
+                    await _accountService.SignIn(new AppLoginViewModel { Identifier = Input.Login, Password = Input.Password, RememberMe = false });
                     return string.IsNullOrEmpty(ReturnUrl) ? Redirect("~/") : Redirect(ReturnUrl);
                 }
                 catch (Exception ex)

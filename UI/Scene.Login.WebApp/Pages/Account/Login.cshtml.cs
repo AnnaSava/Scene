@@ -16,7 +16,7 @@ namespace Scene.Login.WebApp.Pages.Account
         }
 
         [BindProperty]
-        public LoginViewModel Input { get; set; }
+        public AppLoginViewModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
 

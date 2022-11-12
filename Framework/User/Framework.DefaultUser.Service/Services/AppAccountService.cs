@@ -19,15 +19,15 @@ namespace Framework.DefaultUser.Service.Services
 {
     public class AppAccountService : BaseAccountService, IAppAccountService
     {
-        private readonly IFrameworkUserDbService _userDbService;
-        private readonly IFrameworkAccountDbService _accountDbService;
+        private readonly IAppUserDbService _userDbService;
+        private readonly IAppAccountDbService _accountDbService;
         private readonly ISignInManagerAdapter _signInManagerAdapter;
         private readonly IReservedNameDbService _reservedNameDbService;
         private readonly RegisterTasker _registerTasker;
         private readonly IMapper _mapper;
 
-        public AppAccountService(IFrameworkUserDbService userDbService,
-           IFrameworkAccountDbService accountDbService,
+        public AppAccountService(IAppUserDbService userDbService,
+           IAppAccountDbService accountDbService,
            ISignInManagerAdapter signInManagerAdapter,
            IReservedNameDbService reservedNameDbService,
            RegisterTasker registerTasker,
@@ -41,7 +41,7 @@ namespace Framework.DefaultUser.Service.Services
             _mapper = mapper;
         }
 
-        public async Task<FrameworkUserViewModel> Register(FrameworkRegisterViewModel model)
+        public async Task<AppUserViewModel> Register(AppRegisterViewModel model)
         {
             // TODO переделать на возврат списка ошибок?
             if (await _userDbService.CheckEmailExists(model.Email))
@@ -53,8 +53,8 @@ namespace Framework.DefaultUser.Service.Services
             if (await _reservedNameDbService.CheckIsReserved(model.Login))
                 throw new Exception("UserName is forbidden!");
 
-            var newModel = _mapper.Map<FrameworkUserFormModel>(model);
-            var resultModel = await _userDbService.Create<FrameworkUserModel>(newModel, model.Password);
+            var newModel = _mapper.Map<AppUserFormModel>(model);
+            var resultModel = await _userDbService.Create<AppUserModel>(newModel, model.Password);
 
             if (resultModel == null || resultModel.Id == 0)
                 throw new Exception("Registration error");
@@ -84,7 +84,7 @@ namespace Framework.DefaultUser.Service.Services
 
             _registerTasker.Send(jsonMessage);
 
-            return _mapper.Map<FrameworkUserViewModel>(resultModel);
+            return _mapper.Map<AppUserViewModel>(resultModel);
         }
 
         public async Task<bool> ConfirmEmail(string email, string token)
@@ -95,9 +95,9 @@ namespace Framework.DefaultUser.Service.Services
             return await _accountDbService.ConfirmEmail(email, codeDecoded);
         }
 
-        public async Task RequestNewPassword(RequestNewPasswordFormViewModel model)
+        public async Task RequestNewPassword(AppRequestNewPasswordFormViewModel model)
         {
-            var user = await _userDbService.GetOneByLoginOrEmail<FrameworkUserModel>(model.LoginOrEmail);
+            var user = await _userDbService.GetOneByLoginOrEmail<AppUserModel>(model.LoginOrEmail);
 
             // TODO проверку на нулл
 
@@ -126,7 +126,7 @@ namespace Framework.DefaultUser.Service.Services
             _registerTasker.Send(jsonMessage);
         }
 
-        public async Task ResetPassword(ResetPasswordFormViewModel model)
+        public async Task ResetPassword(AppResetPasswordFormViewModel model)
         {
             var codeDecodedBytes = WebEncoders.Base64UrlDecode(model.Token);
             var codeDecoded = Encoding.UTF8.GetString(codeDecodedBytes);
@@ -134,11 +134,11 @@ namespace Framework.DefaultUser.Service.Services
             await _accountDbService.ResetPassword(model.Email, codeDecoded, model.NewPassword);
         }
 
-        public async Task<FrameworkSignInResultViewModel> SignIn(LoginViewModel model)
+        public async Task<AppSignInResultViewModel> SignIn(AppLoginViewModel model)
         {
             var mapped = _mapper.Map<LoginModel>(model);
-            var result = await _accountDbService.SignIn<FrameworkUserModel>(mapped);
-            return _mapper.Map<FrameworkSignInResultViewModel>(result);
+            var result = await _accountDbService.SignIn<AppUserModel>(mapped);
+            return _mapper.Map<AppSignInResultViewModel>(result);
         }
 
         public async Task SignOut()
