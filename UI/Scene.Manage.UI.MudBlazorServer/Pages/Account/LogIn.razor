@@ -10,7 +10,7 @@
 <div>@errMsg</div>
 
 <EditForm Model="@model">
-    <MudTextField Label="Login" @bind-Value="model.LoginOrEmail" For="@(() => model.LoginOrEmail)"/>
+    <MudTextField Label="Login" @bind-Value="model.Identifier" For="@(() => model.Identifier)"/>
     <MudTextField InputType="@InputType.Password" Label="Password" @bind-Value="model.Password" For="@(() => model.Password)"/>
     <button @onclick="Authenticate">Login</button>
 </EditForm>

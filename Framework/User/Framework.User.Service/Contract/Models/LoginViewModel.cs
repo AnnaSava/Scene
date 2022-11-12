@@ -8,7 +8,7 @@ namespace Framework.User.Service.Contract.Models
 {
     public class LoginViewModel
     {
-        public string LoginOrEmail { get; set; }
+        public string Identifier { get; set; }
 
         public string Password { get; set; }
 

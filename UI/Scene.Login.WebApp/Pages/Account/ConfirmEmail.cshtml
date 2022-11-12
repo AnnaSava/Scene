@@ -1,0 +1,13 @@
+﻿@page
+@model Scene.Login.WebApp.Pages.Account.ConfirmEmailModel
+@{
+}
+
+@if(Model.IsConfirmed)
+{
+    <p>Ваш Email подтвержден</p>
+}
+else
+{
+    <p>Не удалось подтвердить Email</p>
+}
