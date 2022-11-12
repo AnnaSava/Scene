@@ -1,6 +1,7 @@
 ﻿using Framework.MailTemplate;
 using Framework.MailTemplate.Data;
 using Framework.MailTemplate.Data.Entities;
+using Framework.MailTemplate.SeedLib;
 using Framework.User.DataService.Entities;
 using Framework.User.DataService.Services;
 using Framework.User.Service;
@@ -79,7 +80,7 @@ namespace Scene.DataSeeder
             var mailTemplateContext = scope.ServiceProvider.GetService<MailTemplateContext>();
             mailTemplateContext.Database.Migrate();
 
-            await SeedMailTemplate(mailTemplateContext);
+            await MailTemplateSeeder.Seed(mailTemplateContext);
         }
 
         private static async Task SeedPermissions(FrameworkUserDbContext context)
@@ -151,40 +152,6 @@ namespace Scene.DataSeeder
 
             context.LegalDocuments.AddRange(en);
             context.LegalDocuments.AddRange(ru);
-
-            await context.SaveChangesAsync();
-        }
-
-        private static async Task SeedMailTemplate(MailTemplateContext context)
-        {
-            if (context.MailTemplates.Any()) return;
-
-            var en = MailTemplateData.MailTemplateEnCulture
-                .Select(m => new MailTemplate
-                {
-                    PermName = m.Key,
-                    Title = m.Value,
-                    Text = "This is a new template. Edit this text as you wish.",
-                    Created = DateTime.Now,
-                    LastUpdated = DateTime.Now,
-                    Status = Framework.Base.Types.Enums.DocumentStatus.Draft,
-                    Culture = "en"
-                });
-
-            var ru = MailTemplateData.MailTemplateRuCulture
-                .Select(m => new MailTemplate
-                {
-                    PermName = m.Key,
-                    Title = m.Value,
-                    Text = "Это новый шаблон. Отредактиуйте его так, как вам нужно.",
-                    Created = DateTime.Now,
-                    LastUpdated = DateTime.Now,
-                    Status = Framework.Base.Types.Enums.DocumentStatus.Draft,
-                    Culture = "ru"
-                });
-
-            context.MailTemplates.AddRange(en);
-            context.MailTemplates.AddRange(ru);
 
             await context.SaveChangesAsync();
         }

@@ -32,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Framework.Mail.WorkerLib\Framework.Mail.WorkerLib.csproj" />
     <ProjectReference Include="..\Framework.Mail\Framework.Mail.csproj" />
   </ItemGroup>
 

@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Mail\Framework.MailTemplate.SeederLib\Framework.MailTemplate.SeederLib.csproj" />
     <ProjectReference Include="..\..\Framework\Mail\Framework.Mail\Framework.Mail.csproj" />
     <ProjectReference Include="..\..\Framework\User\Framework.User.DataService\Framework.User.DataService.csproj" />
     <ProjectReference Include="..\..\Framework\User\Framework.User.Service\Framework.User.Service.csproj" />

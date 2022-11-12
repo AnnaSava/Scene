@@ -1,8 +1,8 @@
 ﻿using Framework.Mail;
 using Framework.Mail.Worker;
+using Framework.Mail.WorkerLib;
 using Framework.Mailer;
 using Framework.MailTemplate;
-using Framework.Worker.Register;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;

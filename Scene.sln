@@ -53,6 +53,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Mail", "Framework
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Mail.Worker", "Framework\Mail\Framework.Mail.Worker\Framework.Mail.Worker.csproj", "{036446EA-CA19-4E88-BA20-F543985EC445}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Mail.WorkerLib", "Framework\Mail\Framework.Mail.WorkerLib\Framework.Mail.WorkerLib.csproj", "{A4760DC7-02DB-40F0-B39F-4D7E1652BF87}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.MailTemplate.SeederLib", "Framework\Mail\Framework.MailTemplate.SeederLib\Framework.MailTemplate.SeederLib.csproj", "{B51D031C-DE73-4F6B-8BB0-C20AA6EA610B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -150,6 +154,18 @@ Global
 		{036446EA-CA19-4E88-BA20-F543985EC445}.Release|Any CPU.Build.0 = Release|Any CPU
 		{036446EA-CA19-4E88-BA20-F543985EC445}.Staging|Any CPU.ActiveCfg = Debug|Any CPU
 		{036446EA-CA19-4E88-BA20-F543985EC445}.Staging|Any CPU.Build.0 = Debug|Any CPU
+		{A4760DC7-02DB-40F0-B39F-4D7E1652BF87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4760DC7-02DB-40F0-B39F-4D7E1652BF87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4760DC7-02DB-40F0-B39F-4D7E1652BF87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4760DC7-02DB-40F0-B39F-4D7E1652BF87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4760DC7-02DB-40F0-B39F-4D7E1652BF87}.Staging|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4760DC7-02DB-40F0-B39F-4D7E1652BF87}.Staging|Any CPU.Build.0 = Debug|Any CPU
+		{B51D031C-DE73-4F6B-8BB0-C20AA6EA610B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B51D031C-DE73-4F6B-8BB0-C20AA6EA610B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B51D031C-DE73-4F6B-8BB0-C20AA6EA610B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B51D031C-DE73-4F6B-8BB0-C20AA6EA610B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B51D031C-DE73-4F6B-8BB0-C20AA6EA610B}.Staging|Any CPU.ActiveCfg = Debug|Any CPU
+		{B51D031C-DE73-4F6B-8BB0-C20AA6EA610B}.Staging|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -175,6 +191,8 @@ Global
 		{9CA1E00A-AB6F-470B-AC9F-486AE64BF640} = {E37DB373-18D0-4C73-A126-7B263F8967FC}
 		{900203A5-19BD-41F4-98C8-8B6BFC43E81E} = {74BCDE5F-941F-48F4-9753-5EB306F50A9B}
 		{036446EA-CA19-4E88-BA20-F543985EC445} = {74BCDE5F-941F-48F4-9753-5EB306F50A9B}
+		{A4760DC7-02DB-40F0-B39F-4D7E1652BF87} = {74BCDE5F-941F-48F4-9753-5EB306F50A9B}
+		{B51D031C-DE73-4F6B-8BB0-C20AA6EA610B} = {74BCDE5F-941F-48F4-9753-5EB306F50A9B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F993D315-2032-47BD-9F81-54470F3E4588}
