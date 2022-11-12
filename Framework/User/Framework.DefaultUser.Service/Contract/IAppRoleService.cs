@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Framework.User.Service.Contract.Interfaces
 {
-    public interface IAppFrameworkRoleService
+    public interface IAppRoleService
     {
         Task<AppRoleViewModel> GetOne(long id);
 

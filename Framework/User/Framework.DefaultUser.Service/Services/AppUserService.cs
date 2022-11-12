@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace Framework.User.Service.Services
 {
-    public class AppUserService : BaseUserService, IAppFrameworkUserService
+    public class AppUserService : BaseUserService, IAppUserService
     {
         private const string DefaultUserViewTarget = "";
         private const string FormUserViewTarget = "form";

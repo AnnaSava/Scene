@@ -56,7 +56,7 @@ namespace Framework.User.Service
                 s.GetService<AppUserContext>(),
                 s.GetService<IMapper>()));
 
-            services.AddScoped<IAppFrameworkUserService>(s => new AppUserService(
+            services.AddScoped<IAppUserService>(s => new AppUserService(
                 s.GetService<IAppUserDbService>(),
                 s.GetService<IAppAccountDbService>(),
                 s.GetService<ISignInManagerAdapter>(),
@@ -64,13 +64,7 @@ namespace Framework.User.Service
                 s.GetService<RegisterTasker>(),
                 s.GetService<IMapper>()));
 
-            services.AddScoped<IAppAccountService>(s => new AppAccountService(
-                s.GetService<IAppUserDbService>(),
-                s.GetService<IAppAccountDbService>(),
-                s.GetService<ISignInManagerAdapter>(),
-                s.GetService<IReservedNameDbService>(),
-                s.GetService<RegisterTasker>(),
-                s.GetService<IMapper>()));
+            services.AddScoped<IAppAccountService, AppAccountService>();
 
             services.AddScoped<IPermissionDbService>(s => new PermissionDbService(s.GetService<AppUserContext>(), s.GetService<IMapper>()));
             services.AddScoped<IPermissionService>(s => new PermissionService(
@@ -85,7 +79,7 @@ namespace Framework.User.Service
                 s.GetService<IRoleManagerAdapter<AppRole>>(),
                 s.GetService<IMapper>()));
 
-            services.AddScoped<IAppFrameworkRoleService>(s => new AppRoleService(
+            services.AddScoped<IAppRoleService>(s => new AppRoleService(
                 s.GetService<IAppRoleDbService>(),
                 s.GetService<IPermissionDbService>(),
                 s.GetService<IMapper>()));

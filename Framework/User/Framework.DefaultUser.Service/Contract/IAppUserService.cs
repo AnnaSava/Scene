@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Framework.User.Service.Contract.Interfaces
 {
-    public interface IAppFrameworkUserService
+    public interface IAppUserService
     {
         Task<ListPageViewModel<AppUserViewModel>> GetAll(AppUserFilterViewModel filter, ListPageInfoViewModel pageInfo);
 
