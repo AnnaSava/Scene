@@ -16,7 +16,7 @@ builder.Services.AddMapper();
 builder.Services.AddDbContext<AppUserContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("IdentityConnection"), b => b.MigrationsAssembly("Scene.Migrations.PostgreSql")));
 
-builder.Services.AddFrameworkUser(builder.Configuration);
+builder.Services.AddAppUser(builder.Configuration);
 builder.Services.AddTransient<RegisterTasker>();
 
 builder.Services.AddMailTemplate(builder.Configuration);

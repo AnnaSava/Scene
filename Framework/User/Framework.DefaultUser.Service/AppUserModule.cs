@@ -22,7 +22,7 @@ namespace Framework.User.Service
 {
     public static class AppUserModule
     {
-        public static void AddFrameworkUser(this IServiceCollection services, IConfiguration config)
+        public static void AddAppUser(this IServiceCollection services, IConfiguration config)
         {
             services.AddIdentity<AppUser, AppRole>()
                 .AddEntityFrameworkStores<AppUserContext>()
@@ -35,6 +35,9 @@ namespace Framework.User.Service
 
             services.AddScoped<IUserManagerAdapter<AppUser>>(s => new UserManagerAdapter<AppUser>(
                 s.GetService<UserManager<AppUser>>()));
+
+            services.AddScoped<IRoleManagerAdapter<AppRole>>(s => new RoleManagerAdapter<AppRole>(
+               s.GetService<RoleManager<AppRole>>()));
 
             services.AddScoped<ISignInManagerAdapter>(s => new SignInManagerAdapter<AppUser>(
                 s.GetService<UserManager<AppUser>>(),
@@ -56,40 +59,15 @@ namespace Framework.User.Service
                 s.GetService<AppUserContext>(),
                 s.GetService<IMapper>()));
 
-            services.AddScoped<IAppUserService>(s => new AppUserService(
-                s.GetService<IAppUserDbService>(),
-                s.GetService<IAppAccountDbService>(),
-                s.GetService<ISignInManagerAdapter>(),
-                s.GetService<IReservedNameDbService>(),
-                s.GetService<RegisterTasker>(),
-                s.GetService<IMapper>()));
-
-            services.AddScoped<IAppAccountService, AppAccountService>();
-
             services.AddScoped<IPermissionDbService>(s => new PermissionDbService(s.GetService<AppUserContext>(), s.GetService<IMapper>()));
-            services.AddScoped<IPermissionService>(s => new PermissionService(
-                s.GetService<IPermissionDbService>(),
-                s.GetService<IMapper>()));
-
-            services.AddScoped<IRoleManagerAdapter<AppRole>>(s => new RoleManagerAdapter<AppRole>(
-                s.GetService<RoleManager<AppRole>>()));
 
             services.AddScoped<IAppRoleDbService>(s => new AppRoleDbService(
                 s.GetService<AppUserContext>(),
                 s.GetService<IRoleManagerAdapter<AppRole>>(),
                 s.GetService<IMapper>()));
 
-            services.AddScoped<IAppRoleService>(s => new AppRoleService(
-                s.GetService<IAppRoleDbService>(),
-                s.GetService<IPermissionDbService>(),
-                s.GetService<IMapper>()));
-
             services.AddScoped<IAuthDbService>(s => new AuthDbService(
                 s.GetService<AppUserContext>(),
-                s.GetService<IMapper>()));
-
-            services.AddScoped<IReservedNameService>(s => new ReservedNameService(
-                s.GetService<IReservedNameDbService>(),
                 s.GetService<IMapper>()));
 
             var cultures = config["Cultures"].Split(',');
@@ -99,9 +77,12 @@ namespace Framework.User.Service
                 cultures,
                 s.GetService<IMapper>()));
 
-            services.AddScoped<ILegalDocumentService>(s => new LegalDocumentService(
-                s.GetService<ILegalDocumentDbService>(),
-                s.GetService<IMapper>()));
+            services.AddScoped<IAppAccountService, AppAccountService>();
+            services.AddScoped<IPermissionService, PermissionService>();
+            services.AddScoped<IAppUserService, AppUserService>();
+            services.AddScoped<IAppRoleService, AppRoleService>();
+            services.AddScoped<IReservedNameService, ReservedNameService>();
+            services.AddScoped<ILegalDocumentService, LegalDocumentService>();
         }
     }
 }

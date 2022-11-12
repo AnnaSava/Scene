@@ -32,7 +32,7 @@ builder.Services.AddMailTemplate(builder.Configuration);
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-builder.Services.AddFrameworkUser(builder.Configuration);
+builder.Services.AddAppUser(builder.Configuration);
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();

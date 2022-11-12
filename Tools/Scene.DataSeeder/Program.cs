@@ -31,7 +31,7 @@ namespace Scene.DataSeeder
 
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-            services.AddFrameworkUser(config);
+            services.AddAppUser(config);
 
             using (ServiceProvider serviceProvider = services.BuildServiceProvider())
             {
