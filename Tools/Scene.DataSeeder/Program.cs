@@ -1,4 +1,5 @@
-﻿using Framework.Helpers.Config;
+﻿using Framework.Base.Service.Module;
+using Framework.Helpers.Config;
 using Framework.MailTemplate;
 using Framework.MailTemplate.Data;
 using Framework.User.DataService.Entities;
@@ -24,10 +25,13 @@ namespace Scene.DataSeeder
             var services = new ServiceCollection();
             services.AddLogging(); // TODO: без него не работает идентити. разобраться
 
-            services.AddDbContext<AppUserContext>(options =>
-              options.UseNpgsql(config.GetConnectionString("IdentityConnection")));
+            //services.AddDbContext<AppUserContext>(options =>
+            //  options.UseNpgsql(config.GetConnectionString("IdentityConnection")));
 
-            services.AddMailTemplate(config);
+            //services.AddMailTemplate(config);
+
+            services.AddModuleDbContext<AppUserContext>(config, new ModuleSettings("Ap", "IdentityConnection"));
+            services.AddModuleDbContext<MailTemplateContext>(config, new ModuleSettings("Ml", "IdentityConnection"));
 
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 

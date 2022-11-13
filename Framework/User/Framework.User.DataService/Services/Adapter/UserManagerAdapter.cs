@@ -22,7 +22,7 @@ namespace Framework.User.DataService.Services
 
         public async Task<TUserEntity> CreateAsync(TUserEntity user, string password)
         {
-            user.RegDate = user.LastUpdated = DateTime.Now;
+            user.RegDate = user.LastUpdated = DateTime.UtcNow;
             var result = await _userManager.CreateAsync(user, password);
             HandleResult(result);
             return user;

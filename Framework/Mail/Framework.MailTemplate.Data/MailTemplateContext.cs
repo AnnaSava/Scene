@@ -1,4 +1,6 @@
-﻿using Framework.MailTemplate.Data.Contract.Context;
+﻿using Framework.Base.DataService.Contract;
+using Framework.MailTemplate.Data.Contract.Context;
+using Framework.MailTemplate.Data.Extentions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,10 +14,23 @@ namespace Framework.MailTemplate.Data
     {
         public DbSet<Entities.MailTemplate> MailTemplates { get; set; }
 
-        public MailTemplateContext(DbContextOptions<MailTemplateContext> options)
+        DbContextSettings<MailTemplateContext> Settings;
+
+        public MailTemplateContext(DbContextOptions<MailTemplateContext> options, DbContextSettings<MailTemplateContext > settings)
             : base(options)
         {
-            //Database.EnsureCreated();
+            Settings = settings;
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.ConfigureContext(options =>
+            {
+                options.TablePrefix = Settings.TablePrefix;
+                options.NamingConvention = Settings.NamingConvention;
+            });
         }
     }
 }

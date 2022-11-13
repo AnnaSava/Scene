@@ -1,4 +1,6 @@
-﻿using Framework.Base.DataService.Contract.Interfaces;
+﻿using Framework.Base.DataService.Contract;
+using Framework.Base.DataService.Contract.Interfaces;
+using Framework.DefaultUser.Data.Extentions;
 using Framework.User.DataService.Contract.Interfaces;
 using Framework.User.DataService.Contract.Interfaces.Context;
 using Framework.User.DataService.Entities;
@@ -23,10 +25,12 @@ namespace Framework.User.DataService.Services
         IPermissionContext,
         ILegalDocumentContext
     {
-        public AppUserContext(DbContextOptions<AppUserContext> options)
+        DbContextSettings<AppUserContext> Settings;
+
+        public AppUserContext(DbContextOptions<AppUserContext> options, DbContextSettings<AppUserContext> settings)
             : base(options)
         {
-            //Database.EnsureCreated();
+            Settings = settings;
         }
 
         public DbSet<LegalDocument> LegalDocuments { get; set; }
@@ -45,67 +49,10 @@ namespace Framework.User.DataService.Services
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<AppUser>(b =>
+            builder.ConfigureContext(options =>
             {
-                b.ToTable("Users");
-            });
-
-            builder.Entity<UserClaim>(b =>
-            {
-                b.ToTable("UserClaims");
-            });
-
-            builder.Entity<UserLogin>(b =>
-            {
-                b.HasKey(m => new { m.LoginProvider, m.ProviderKey, m.UserId });
-                b.ToTable("UserLogins");
-            });
-
-            builder.Entity<UserToken>(b =>
-            {
-                b.HasKey(m => new { m.LoginProvider, m.UserId });
-                b.ToTable("UserTokens");
-            });
-
-            builder.Entity<AppRole>(b =>
-            {
-                b.ToTable("Roles");
-            });
-
-            builder.Entity<RoleClaim>(b =>
-            {
-                b.ToTable("RoleClaims");
-            });
-
-            builder.Entity<UserRole>(b =>
-            {
-                b.HasKey(m => new { m.UserId, m.RoleId });
-                b.ToTable("UserRoles");
-            });
-
-            builder.Entity<AuthToken>(b =>
-            {
-                b.HasIndex(m => m.AuthJti).IsUnique();
-                b.HasIndex(m => m.RefreshJti).IsUnique();
-            });
-
-            builder.Entity<Permission>(b =>
-            {
-                b.HasMany(m => m.Cultures)
-                    .WithOne(m => m.Permission)
-                    .HasForeignKey(m => m.PermissionName)
-                    .IsRequired();
-            });
-
-            builder.Entity<PermissionCulture>(b =>
-            {
-                b.HasKey(m => new { m.PermissionName, m.Culture });
-            });
-
-            builder.Entity<AuthToken>(b =>
-            {
-                b.HasIndex(m => m.AuthJti).IsUnique();
-                b.HasIndex(m => m.RefreshJti).IsUnique();
+                options.TablePrefix = Settings.TablePrefix;
+                options.NamingConvention = Settings.NamingConvention;
             });
         }
 

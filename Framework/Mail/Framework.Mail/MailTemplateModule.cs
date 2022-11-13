@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Mail;
+using Framework.Base.Service.Module;
 
 namespace Framework.MailTemplate
 {
@@ -21,8 +22,10 @@ namespace Framework.MailTemplate
             var connection = config.GetConnectionString("IdentityConnection");
             var migrationsAssembly = config.GetSection("MigrationsAssemblies:Default").Value;
 
-            services.AddDbContext<MailTemplateContext>(options =>
-                options.UseNpgsql(connection, b => b.MigrationsAssembly(migrationsAssembly)));
+            //services.AddDbContext<MailTemplateContext>(options =>
+            //    options.UseNpgsql(connection, b => b.MigrationsAssembly(migrationsAssembly)));
+
+            services.AddModuleDbContext<MailTemplateContext>(config, new ModuleSettings("Ml", "IdentityConnection"));
 
             services.AddSingleton<SmtpClient>();
             services.AddSingleton<IEmailClient, EmailClient>();

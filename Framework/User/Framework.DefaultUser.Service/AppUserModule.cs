@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Framework.Base.Service.Module;
 using Framework.DefaultUser.Data.Contract;
 using Framework.DefaultUser.Data.Services;
 using Framework.DefaultUser.Service.Contract;
@@ -24,6 +25,8 @@ namespace Framework.User.Service
     {
         public static void AddAppUser(this IServiceCollection services, IConfiguration config)
         {
+            services.AddModuleDbContext<AppUserContext>(config, new ModuleSettings("Ap", "IdentityConnection"));
+
             services.AddIdentity<AppUser, AppRole>()
                 .AddEntityFrameworkStores<AppUserContext>()
                 .AddDefaultTokenProviders();

@@ -15,7 +15,7 @@ namespace Framework.Helpers.Config
         // TODO разобраться, что это
         public static string GetMigrationAssemblyString(this IConfiguration config)
         {
-            return config["MigrationsAssembly"];
+            return config.GetSection("MigrationsAssemblies:Default").Value; 
         }
 
         public static NamingConvention GetSqlNamingConvention(this IConfiguration config)

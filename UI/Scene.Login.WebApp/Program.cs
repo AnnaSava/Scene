@@ -21,7 +21,7 @@ builder.Services.AddTransient<RegisterTasker>();
 
 builder.Services.AddMailTemplate(builder.Configuration);
 
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+//AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 builder.Services.AddRazorPages();
 

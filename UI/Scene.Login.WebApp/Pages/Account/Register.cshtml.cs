@@ -37,16 +37,16 @@ namespace Scene.Login.WebApp.Pages.Account
         {
             if (ModelState.IsValid)
             {
-                try
+                //try
                 {
                     await _accountService.Register(Input);
                     await _accountService.SignIn(new AppLoginViewModel { Identifier = Input.Login, Password = Input.Password, RememberMe = false });
                     return string.IsNullOrEmpty(ReturnUrl) ? Redirect("~/") : Redirect(ReturnUrl);
                 }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError(string.Empty, ex.Message);
-                }
+                //catch (Exception ex)
+                //{
+                //    ModelState.AddModelError(string.Empty, ex.Message);
+                //}
             }
             return Page();
         }
