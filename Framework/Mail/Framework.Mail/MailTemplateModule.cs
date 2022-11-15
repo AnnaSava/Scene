@@ -19,12 +19,6 @@ namespace Framework.MailTemplate
     {
         public static void AddMailTemplate(this IServiceCollection services, IConfiguration config)
         {
-            var connection = config.GetConnectionString("IdentityConnection");
-            var migrationsAssembly = config.GetSection("MigrationsAssemblies:Default").Value;
-
-            //services.AddDbContext<MailTemplateContext>(options =>
-            //    options.UseNpgsql(connection, b => b.MigrationsAssembly(migrationsAssembly)));
-
             services.AddModuleDbContext<MailTemplateContext>(config, new ModuleSettings("Ml", "IdentityConnection"));
 
             services.AddSingleton<SmtpClient>();

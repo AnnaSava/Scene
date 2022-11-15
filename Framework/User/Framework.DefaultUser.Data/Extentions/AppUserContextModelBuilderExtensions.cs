@@ -76,7 +76,6 @@ namespace Framework.DefaultUser.Data.Extentions
             builder.Entity<LegalDocument>(b => { b.ToTable(helper.GetTableName(nameof(LegalDocument))); });
             builder.Entity<ReservedName>(b => { b.ToTable(helper.GetTableName(nameof(ReservedName))); });
             builder.Entity<Lockout>(b => { b.ToTable(helper.GetTableName(nameof(Lockout))); });
-            builder.Entity<AppUser>(b => { b.ToTable(helper.GetTableName(nameof(AppUser))); });
         }
 
         // TODO использовать автоматическое преобразование naming conventions вместо этого милого костыля
