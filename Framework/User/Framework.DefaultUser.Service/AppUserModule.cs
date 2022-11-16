@@ -27,6 +27,16 @@ namespace Framework.User.Service
         {
             services.AddModuleDbContext<AppUserContext>(config, new ModuleSettings("Ap", "IdentityConnection"));
 
+            
+
+            using (ServiceProvider serviceProvider = services.BuildServiceProvider())
+            {
+                using (IServiceScope scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
+                {
+                    var t = services.BuildServiceProvider().GetService<AppUserContext>().Set<LegalDocument>().FirstOrDefault();
+                }
+            }
+
             services.AddIdentity<AppUser, AppRole>()
                 .AddEntityFrameworkStores<AppUserContext>()
                 .AddDefaultTokenProviders();

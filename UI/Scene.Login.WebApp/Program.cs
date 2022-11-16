@@ -3,6 +3,7 @@ using Framework.User.DataService.Services;
 using Framework.User.Service;
 using Framework.User.Service.Contract;
 using Framework.User.Service.Taskers;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Scene.Login.WebApp;
 
@@ -18,6 +19,15 @@ builder.Services.AddDbContext<AppUserContext>(options =>
 
 builder.Services.AddAppUser(builder.Configuration);
 builder.Services.AddTransient<RegisterTasker>();
+
+builder.Services.AddDataProtection()
+                .PersistKeysToFileSystem(new System.IO.DirectoryInfo(@"D:\Data\Scene\Sessions"))
+                .SetApplicationName("SharedCookieApp");
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.Name = ".Dollvilla.SharedCookie";
+});
 
 builder.Services.AddMailTemplate(builder.Configuration);
 

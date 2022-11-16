@@ -17,8 +17,8 @@
 @code{
     private async Task Logout()
     {
-        var prov = (SceneAuthenticationStateProvider)_authStateProvider;
-        await prov.UpdateAuthenticationState(null);
+        var prov = _authStateProvider;
+
         _navigationManager.NavigateTo("/", true);
     }
 }

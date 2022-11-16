@@ -148,9 +148,13 @@ namespace Framework.User.DataService.Services
 
         public async Task<LegalDocumentModel> GetActual(string permName, string culture)
         {
-            var entity = await _dbContext.Set<LegalDocument>()
-                .Where(m => m.PermName == permName && m.Culture == culture && m.Status == DocumentStatus.Published && m.IsDeleted == false)
-                .FirstOrDefaultAsync();
+            //var entity = await _dbContext.Set<LegalDocument>()
+            var query = _dbContext.Set<LegalDocument>()
+                .Where(m => m.PermName == permName && m.Culture == culture && m.Status == DocumentStatus.Published && m.IsDeleted == false);
+            //var entity = await _legalDocumentContext.LegalDocuments
+            //    .Where(m => m.PermName == permName && m.Culture == culture && m.Status == DocumentStatus.Published && m.IsDeleted == false)
+
+            var entity = await query.FirstOrDefaultAsync();
 
             return _mapper.Map<LegalDocumentModel>(entity);
         }

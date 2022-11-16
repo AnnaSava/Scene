@@ -1,9 +1,12 @@
+using Framework.Helpers.Http;
 using Framework.MailTemplate;
 using Framework.User.Service;
 using Framework.User.Service.Contract;
 using Framework.User.Service.Taskers;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.AspNetCore.DataProtection;
 using MudBlazor.Services;
 using Scene.Manage.UI.MudBlazorServer;
 using Scene.Manage.UI.MudBlazorServer.Data;
@@ -20,14 +23,31 @@ builder.Services.AddTransient<RegisterTasker>();
 
 builder.Services.AddAppUser(builder.Configuration);
 
+
+builder.Services.AddDataProtection()
+                .PersistKeysToFileSystem(new System.IO.DirectoryInfo(@"D:\Data\Scene\Sessions"))
+                .SetApplicationName("SharedCookieApp");
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.Name = builder.Configuration["Cookie:Name"];
+    options.Events = new CookieAuthenticationEvents()
+    {
+        OnRedirectToLogin = (context) =>
+        {
+            var uri = UriHelpers.MakeLoginRedirectUri(context.Request, builder.Configuration["Cookie:LoginUrl"]);
+            context.HttpContext.Response.Redirect(uri);
+            return Task.CompletedTask;
+        }
+    };
+});
+
 builder.Services.AddMailTemplate(builder.Configuration);
 
 //AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddScoped<ProtectedSessionStorage>();
-builder.Services.AddScoped<AuthenticationStateProvider, SceneAuthenticationStateProvider>();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddMudServices();
 

@@ -12,4 +12,10 @@
     <ProjectReference Include="..\..\Framework\User\Framework.User.Service\Framework.User.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
