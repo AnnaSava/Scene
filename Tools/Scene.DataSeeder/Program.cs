@@ -28,14 +28,13 @@ namespace Scene.DataSeeder
             //services.AddDbContext<AppUserContext>(options =>
             //  options.UseNpgsql(config.GetConnectionString("IdentityConnection")));
 
-            //services.AddMailTemplate(config);
-
-            services.AddModuleDbContext<AppUserContext>(config, new ModuleSettings("Ap", "IdentityConnection"));
-            services.AddModuleDbContext<MailTemplateContext>(config, new ModuleSettings("Ml", "IdentityConnection"));
+            //services.AddModuleDbContext<AppUserContext>(config, new ModuleSettings("Ap", "IdentityConnection"));
+            //services.AddModuleDbContext<MailTemplateContext>(config, new ModuleSettings("Ml", "IdentityConnection"));
 
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             services.AddAppUser(config);
+            services.AddMailTemplate(config);
 
             using (ServiceProvider serviceProvider = services.BuildServiceProvider())
             {

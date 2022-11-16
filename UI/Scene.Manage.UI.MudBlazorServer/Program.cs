@@ -4,8 +4,6 @@ using Framework.User.Service;
 using Framework.User.Service.Contract;
 using Framework.User.Service.Taskers;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.DataProtection;
 using MudBlazor.Services;
 using Scene.Manage.UI.MudBlazorServer;
@@ -26,7 +24,7 @@ builder.Services.AddAppUser(builder.Configuration);
 
 builder.Services.AddDataProtection()
                 .PersistKeysToFileSystem(new System.IO.DirectoryInfo(@"D:\Data\Scene\Sessions"))
-                .SetApplicationName("SharedCookieApp");
+                .SetApplicationName("SceneApp");
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

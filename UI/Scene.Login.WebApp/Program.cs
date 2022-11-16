@@ -19,11 +19,11 @@ builder.Services.AddTransient<RegisterTasker>();
 
 builder.Services.AddDataProtection()
                 .PersistKeysToFileSystem(new System.IO.DirectoryInfo(@"D:\Data\Scene\Sessions"))
-                .SetApplicationName("SharedCookieApp");
+                .SetApplicationName("SceneApp");
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.Cookie.Name = ".Dollvilla.SharedCookie";
+    options.Cookie.Name = ".Scene.SharedCookie";
 });
 
 builder.Services.AddMailTemplate(builder.Configuration);
