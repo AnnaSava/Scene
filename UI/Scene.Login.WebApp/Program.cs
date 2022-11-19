@@ -18,7 +18,7 @@ builder.Services.AddAppUser(builder.Configuration);
 builder.Services.AddTransient<RegisterTasker>();
 
 builder.Services.AddDataProtection()
-                .PersistKeysToFileSystem(new System.IO.DirectoryInfo(@"D:\Data\Scene\Sessions"))
+                .PersistKeysToFileSystem(new System.IO.DirectoryInfo(builder.Configuration.GetSection("SessionsPath").Value))
                 .SetApplicationName("SceneApp");
 
 builder.Services.ConfigureApplicationCookie(options =>
