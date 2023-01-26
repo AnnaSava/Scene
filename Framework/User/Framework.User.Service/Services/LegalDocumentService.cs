@@ -56,7 +56,7 @@ namespace Framework.User.Service.Services
         {
             var newModel = _mapper.Map<LegalDocumentModel>(model);
             newModel.Id = id;
-            var resultModel = await _legalDocumentDbService.Update(newModel);
+            var resultModel = await _legalDocumentDbService.Update(id, newModel);
             return _mapper.Map<LegalDocumentViewModel>(resultModel);
         }
 

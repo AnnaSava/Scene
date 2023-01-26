@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Mapper\**" />
+    <EmbeddedResource Remove="Mapper\**" />
+    <None Remove="Mapper\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.11" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
@@ -15,10 +21,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Helpers\Framework.Helpers\Framework.Helpers.csproj" />
     <ProjectReference Include="..\Framework.Base.Types\Framework.Base.Types.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Mapper\" />
   </ItemGroup>
 
 </Project>

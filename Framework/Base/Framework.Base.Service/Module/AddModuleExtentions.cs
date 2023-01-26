@@ -1,7 +1,9 @@
-﻿using Framework.Base.DataService.Contract;
+﻿using Framework.Base.DataService;
+using Framework.Base.DataService.Contract;
 using Framework.Base.Types.Enums;
 using Framework.Helpers.Config;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -26,6 +28,7 @@ namespace Framework.Base.Service.Module
                 tablePrefix = tablePrefix.ToLower() + "_";
             }
 
+            // TODO устарело. Заменить в контекстах, откуда брать конвеншен и префикс, и удалить
             services.AddSingleton(s => new DbContextSettings<TContext>(tablePrefix, namingConvention));
 
             services.AddDbContext<TContext>(options =>
@@ -35,6 +38,11 @@ namespace Framework.Base.Service.Module
                 {
                     options.UseSnakeCaseNamingConvention();
                 }
+
+                var extension = options.Options.FindExtension<FrameworkDbOptionsExtension>() 
+                    ?? new FrameworkDbOptionsExtension { TablePrefix = tablePrefix, NamingConvention = namingConvention };
+
+                ((IDbContextOptionsBuilderInfrastructure)options).AddOrUpdateExtension(extension);
             });
         }
     }

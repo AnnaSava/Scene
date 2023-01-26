@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.Service.ListView
 {
+    [Obsolete]
     public class ListPageInfoViewModel
     {
         public string Sort { get; set; }

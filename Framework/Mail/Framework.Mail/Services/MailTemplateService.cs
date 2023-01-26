@@ -54,7 +54,7 @@ namespace Framework.MailTemplate.Services
         {
             var newModel = _mapper.Map<MailTemplateModel>(model);
             newModel.Id = id;
-            var resultModel = await _mailTemplateDbService.Update(newModel);
+            var resultModel = await _mailTemplateDbService.Update(id, newModel);
             return _mapper.Map<MailTemplateViewModel>(resultModel);
         }
 

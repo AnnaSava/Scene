@@ -1,5 +1,6 @@
 ﻿using Framework.Base.DataService.Contract.Models;
 using Framework.Base.DataService.Contract.Models.ListView;
+using Framework.Base.Types.View;
 using Framework.MailTemplate.Data.Contract.Models;
 using System;
 using System.Collections.Generic;
@@ -11,19 +12,19 @@ namespace Framework.MailTemplate.Data.Contract
 {
     public interface IMailTemplateDbService
     {
-        Task<MailTemplateModel> Create(MailTemplateModel model);
+        Task<OperationResult<MailTemplateModel>> Create(MailTemplateModel model);
 
-        Task<MailTemplateModel> CreateTranslation(MailTemplateModel model);
+        Task<OperationResult<MailTemplateModel>> CreateTranslation(MailTemplateModel model);
 
-        Task<MailTemplateModel> Update(MailTemplateModel model);
+        Task<OperationResult<MailTemplateModel>> Update(long  id, MailTemplateModel model);
 
-        Task Publish(long id);
+        Task<OperationResult> Publish(long id);
 
-        Task<MailTemplateModel> CreateVersion(MailTemplateModel model);
+        Task<OperationResult<MailTemplateModel>> CreateVersion(MailTemplateModel model);
 
-        Task<MailTemplateModel> Delete(long id);
+        Task<OperationResult> Delete(long id);
 
-        Task<MailTemplateModel> Restore(long id);
+        Task<OperationResult> Restore(long id);
 
         Task<MailTemplateModel> GetOne(long id);
 

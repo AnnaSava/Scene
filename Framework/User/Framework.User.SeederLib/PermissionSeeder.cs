@@ -39,5 +39,37 @@ namespace Framework.User.SeederLib
                 await context.SaveChangesAsync();
             }
         }
+
+        public async Task Seed(IEnumerable<string> permissions)
+        {
+            foreach (var permission in permissions)
+            {
+                if (context.Permissions.Any(m => m.Name == permission))
+                    continue;
+
+                var permissionEntity = new Permission
+                {
+                    Name = permission,
+                    Cultures = new List<PermissionCulture>
+                    {
+                        new PermissionCulture
+                        {
+                            PermissionName = permission,
+                            Culture = "en",
+                            Title = permission
+                        },
+                        new PermissionCulture
+                        {
+                            PermissionName = permission,
+                            Culture = "ru",
+                            Title = permission
+                        }
+                    }
+                };
+
+                context.Permissions.Add(permissionEntity);
+                await context.SaveChangesAsync();
+            }
+        }
     }
 }

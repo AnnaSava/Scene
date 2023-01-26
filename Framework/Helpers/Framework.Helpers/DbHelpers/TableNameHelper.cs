@@ -1,4 +1,5 @@
 ﻿using Framework.Base.Types.Enums;
+using Framework.Helpers.TypeHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,28 +10,34 @@ namespace Framework.Helpers
 {
     public class TableNameHelper
     {
-        private Dictionary<string, string> tables;
+        private string tablePrefix;
         private NamingConvention namingConvention;
 
-        public TableNameHelper(Dictionary<string, string> tables, NamingConvention namingConvention)
+        public TableNameHelper(NamingConvention namingConvention, string tablePrefix)
         {
-            this.tables = tables;
             this.namingConvention = namingConvention;
+            this.tablePrefix = tablePrefix;
         }
 
-        // Key содержит nameof(EntityType), Value - название таблицы в snake case
-        // Это костыль, чтобы использовать разные конвенции наименования в кастомных настройках имен таблиц
-        // Нужен для настройки префиксов, а также теоретически для работы с разными провайдерами бд
-        // (напр. SQL Server и Npg - они юзают разные name conventions)
-        // TODO В дальнейшем написать нормальную реализацию
         public string GetTableName(string entityName)
         {
-            if (tables == null) return null;
+            if (entityName == null) return null;
 
             if (namingConvention == NamingConvention.SnakeCase)
-                return tables[entityName];
+                return GetMultipleWord(tablePrefix + entityName.ToSnakeCase());
 
-            return entityName + "s";
+            return GetMultipleWord(tablePrefix + entityName);
+        }
+
+        private string GetMultipleWord(string word)
+        {
+            if(word.EndsWith('y'))
+            {
+                word = word.Substring(0, word.Length - 1) + "ies";
+                return word;
+            }
+
+            return word + "s";
         }
     }
 }

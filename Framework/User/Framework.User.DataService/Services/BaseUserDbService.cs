@@ -125,6 +125,24 @@ namespace Framework.User.DataService.Services
             return await _dbContext.CheckUserLoginExists<TUserEntity>(userName);
         }
 
+        public async Task UpdateRoles(UserRolesModel model)
+        {
+            var userRoles = await _userManagerAdapter.GetRolesAsync(model.UserId);
+
+            var rolesToAdd = model.RoleNames.Except(userRoles);
+
+            if (rolesToAdd.Any())
+            {
+                await _userManagerAdapter.AddToRolesAsync(model.UserId, rolesToAdd);
+            }
+
+            var rolesToRemove = userRoles.Except(model.RoleNames);
+            if (rolesToRemove.Any())
+            {
+                await _userManagerAdapter.RemoveFromRolesAsync(model.UserId, rolesToRemove);
+            }
+        }
+
         public async Task AddRoles(UserRolesModel model)
         {
             await _userManagerAdapter.AddToRolesAsync(model.UserId, model.RoleNames);
@@ -133,6 +151,11 @@ namespace Framework.User.DataService.Services
         public async Task RemoveRoles(UserRolesModel model)
         {
             await _userManagerAdapter.RemoveFromRolesAsync(model.UserId, model.RoleNames);
+        }
+
+        public async Task<IList<string>> GetRoleNames(long id)
+        {
+            return await _userManagerAdapter.GetRolesAsync(id);
         }
 
 

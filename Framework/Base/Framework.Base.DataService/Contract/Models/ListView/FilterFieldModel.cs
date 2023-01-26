@@ -34,4 +34,5 @@ namespace Framework.Base.DataService.Contract.Models
 
         public MatchModeNumeric MatchMode { get; set; }
     }
+
 }

@@ -1,9 +1,8 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Framework.Base.DataService.Entities
 {
-    public abstract class BaseEntity<TKey> : IEntity<TKey>, IEntityRestorable
+    public abstract class BaseEntityRestorable<TKey> : IEntity<TKey>, IEntityRestorable
     {
         public TKey Id { get; set; }
 

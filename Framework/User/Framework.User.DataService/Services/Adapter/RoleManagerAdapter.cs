@@ -37,6 +37,12 @@ namespace Framework.User.DataService.Services
             return role;
         }
 
+
+        public async Task<TRoleEntity> GetRoleByNameAsync(string name)
+        {
+            return await _roleManager.FindByNameAsync(name);
+        }
+
         public async Task CreatePermissions(TRoleEntity role, IEnumerable<string> permissions)
         {
             if (permissions == null) return;
@@ -60,7 +66,7 @@ namespace Framework.User.DataService.Services
             var curClaims = await _roleManager.GetClaimsAsync(role);
             var curPermissions = curClaims.Where(m => m.Type == PermissionClaimType);
 
-            var deletedPermissions = curPermissions.Where(m => !permissions.Contains(m.Type));
+            var deletedPermissions = curPermissions.Where(m => !permissions.Contains(m.Value));
             foreach (var deletedPermission in deletedPermissions)
             {
                 var result = await _roleManager.RemoveClaimAsync(role, deletedPermission);

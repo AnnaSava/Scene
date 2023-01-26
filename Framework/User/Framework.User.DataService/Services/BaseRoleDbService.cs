@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Framework.Base.DataService.Contract.Models;
 using Framework.Base.DataService.Contract.Models.ListView;
 using Framework.Base.DataService.Exceptions;
@@ -9,6 +10,7 @@ using Framework.User.DataService.Contract.Models;
 using Framework.User.DataService.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -153,6 +155,15 @@ namespace Framework.User.DataService.Services
         public async Task<PageListModel<TRoleModel>> GetAll(ListQueryModel<TFilterModel> query)
         {
             return await _dbContext.GetAll<TRoleEntity, TRoleModel, TFilterModel>(query, ApplyFilters, _mapper);
+        }
+
+        public async Task<IEnumerable<TRoleModel>> GetByNames(IEnumerable<string> names)
+        {
+            names = names.Select(m => m.ToUpper());
+            return await _dbContext.Set<TRoleEntity>()
+                .Where(m => names.Contains(m.NormalizedName))
+                .ProjectTo<TRoleModel>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
         public async Task<bool> CheckRoleNameExists(string roleName)

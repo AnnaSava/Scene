@@ -9,5 +9,7 @@ namespace Framework.User.Service.Contract.Models
     public class PermissionViewModel
     {
         public string Name { get; set; }
+
+        public bool IsChecked { get; set; }
     }
 }

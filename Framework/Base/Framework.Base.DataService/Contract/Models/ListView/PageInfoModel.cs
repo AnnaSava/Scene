@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.DataService.Contract.Models
 {
+    [Obsolete]
     public class PageInfoModel
     {
         public IEnumerable<ListSortModel> Sort { get; set; }
@@ -31,6 +32,14 @@ namespace Framework.Base.DataService.Contract.Models
                 if (value < 1) throw new ArgumentOutOfRangeException(nameof(RowsCount), $"Value must be greater than 0. Value: {value}");
                 rowsCount = value;
             }
+        }
+
+        public PageInfoModel() { }
+
+        public PageInfoModel(int pageNumber, int rowsCount)
+        {
+            PageNumber = pageNumber;
+            RowsCount = rowsCount;
         }
     }
 }

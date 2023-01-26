@@ -15,6 +15,8 @@ namespace Framework.User.DataService.Contract.Interfaces
 
         Task<TRoleEntity> UpdateAsync(TRoleEntity role);
 
+        Task<TRoleEntity> GetRoleByNameAsync(string name);
+
         Task CreatePermissions(TRoleEntity role, IEnumerable<string> permissions);
 
         Task UpdatePermissions(TRoleEntity role, IEnumerable<string> permissions);

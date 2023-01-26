@@ -14,24 +14,26 @@ using System.Threading.Tasks;
 using Framework.User.DataService.Services.Filters;
 using Framework.User.DataService.Contract.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Framework.Base.DataService.Services.Managers;
+using Microsoft.Extensions.Logging;
+using Framework.Base.Types.View;
 
 namespace Framework.User.DataService.Services
 {
     public class PermissionDbService : AnyEntityService<Permission, PermissionModel>, IPermissionDbService
     {
-        private readonly IPermissionContext _context;
+        private readonly AnyEntityManager<Permission, PermissionModel> entityManager;
 
-        public PermissionDbService(IPermissionContext dbContext, IMapper mapper)
-            : base(dbContext as IDbContext, mapper, nameof(PermissionDbService))
+        public PermissionDbService(IDbContext dbContext, IMapper mapper, ILogger<PermissionDbService> logger)
+            : base(dbContext, mapper, nameof(PermissionDbService))
         {
-            _context = dbContext;
+            entityManager = new AnyEntityManager<Permission, PermissionModel>(dbContext, mapper, logger);
         }
 
-        public async Task<PermissionModel> GetOne(string name)
-        {
-            return await GetOne(m => m.Name == name.ToLower());
-        }
+        public async Task<OperationResult<PermissionModel>> Create(PermissionModel model) => await entityManager.Create(model);
 
+        public async Task<PermissionModel> GetOne(string name) => await entityManager.GetOne<PermissionModel>(m => m.Name == name.ToLower());
+        
         public async Task<PageListModel<PermissionModel>> GetAll(ListQueryModel<PermissionFilterModel> query)
         {
             // TODO Фильтрация по PermissionCultures
@@ -43,7 +45,7 @@ namespace Framework.User.DataService.Services
         {
             var treeDict = new Dictionary<string, List<string>>();
 
-            var permissions = await _context.Permissions.ToListAsync();
+            var permissions = await _dbContext.Set<Permission>().ToListAsync();
 
             foreach(var permission in permissions)
             {
@@ -69,7 +71,7 @@ namespace Framework.User.DataService.Services
         {
             if (name == null) throw new ArgumentNullException();
 
-            return await _context.Permissions.AnyAsync(m => m.Name == name.ToLower());
+            return await entityManager.CheckExists(m => m.Name == name.ToLower());
         }
 
         public async Task<IEnumerable<string>> FilterExisting(IEnumerable<string> names)
@@ -78,7 +80,7 @@ namespace Framework.User.DataService.Services
 
             var normalizedNames = names.Select(m => m.ToLower());
 
-            return await _context.Permissions.Where(m => normalizedNames.Contains(m.Name.ToLower()))
+            return await _dbContext.Set<Permission>().Where(m => normalizedNames.Contains(m.Name.ToLower()))
                 .Select(m => m.Name)
                 .ToListAsync();
         }

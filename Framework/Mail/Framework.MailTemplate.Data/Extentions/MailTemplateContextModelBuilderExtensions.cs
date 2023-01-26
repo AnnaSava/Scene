@@ -1,5 +1,5 @@
 ﻿using Framework.Base.DataService.Contract;
-using Framework.Base.Types.DataStorage;
+using Framework.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,19 +19,12 @@ namespace Framework.MailTemplate.Data.Extentions
             var options = new ModelBuilderConfigurationOptions();
             optionsAction?.Invoke(options);
 
-            //TODO отрефакторить для автоматического преобразования naming conventions
-            var helper = new TableNameHelper(TableName, options.NamingConvention, options.TablePrefix);
+            var helper = new TableNameHelper(options.NamingConvention, options.TablePrefix);
 
             builder.Entity<Entities.MailTemplate>(b =>
             {
                 b.ToTable(helper.GetTableName(nameof(Entities.MailTemplate)));
             });
         }
-
-        // TODO использовать автоматическое преобразование naming conventions вместо этого милого костыля
-        private static Dictionary<string, string> TableName => new Dictionary<string, string>
-        {
-            { nameof(Entities.MailTemplate), "mail_templates" }
-        };
     }
 }

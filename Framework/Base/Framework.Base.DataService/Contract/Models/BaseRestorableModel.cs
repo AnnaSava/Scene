@@ -3,7 +3,7 @@ using System;
 
 namespace Framework.Base.DataService.Contract.Models
 {
-    public class BaseModel<TKey> : IModelRestorable
+    public class BaseRestorableModel<TKey> : IModelRestorable
     {
         public TKey Id { get; set; }
 

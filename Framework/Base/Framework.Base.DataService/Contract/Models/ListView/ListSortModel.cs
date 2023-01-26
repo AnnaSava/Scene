@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.DataService.Contract.Models
 {
+    [Obsolete]
     public class ListSortModel
     {
         public string FieldName { get; set; }

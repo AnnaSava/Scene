@@ -10,6 +10,8 @@ namespace Framework.User.Service.Contract.Models
     {
         public string Group { get; set; }
 
-        public IEnumerable<PermissionViewModel> Permissions { get; set; }
+        public bool IsChecked { get; set; }
+
+        public List<PermissionViewModel> Permissions { get; set; }
     }
 }

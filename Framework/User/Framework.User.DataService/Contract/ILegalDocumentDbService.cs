@@ -1,5 +1,6 @@
 ﻿using Framework.Base.DataService.Contract.Models;
 using Framework.Base.DataService.Contract.Models.ListView;
+using Framework.Base.Types.View;
 using Framework.User.DataService.Contract.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,19 +9,19 @@ namespace Framework.User.DataService.Contract.Interfaces
 {
     public interface ILegalDocumentDbService
     {
-        Task<LegalDocumentModel> Create(LegalDocumentModel model);
+        Task<OperationResult<LegalDocumentModel>> Create(LegalDocumentModel model);
 
-        Task<LegalDocumentModel> CreateTranslation(LegalDocumentModel model);
+        Task<OperationResult<LegalDocumentModel>> CreateTranslation(LegalDocumentModel model);
 
-        Task<LegalDocumentModel> Update(LegalDocumentModel model);
+        Task<OperationResult<LegalDocumentModel>> Update(long id, LegalDocumentModel model);
 
-        Task Publish(long id);
+        Task<OperationResult> Publish(long id);
 
-        Task<LegalDocumentModel> CreateVersion(LegalDocumentModel model);
+        Task<OperationResult<LegalDocumentModel>> CreateVersion(LegalDocumentModel model);
 
-        Task<LegalDocumentModel> Delete(long id);
+        Task<OperationResult> Delete(long id);
 
-        Task<LegalDocumentModel> Restore(long id);
+        Task<OperationResult> Restore(long id);
 
         Task<LegalDocumentModel> GetOne(long id);
 

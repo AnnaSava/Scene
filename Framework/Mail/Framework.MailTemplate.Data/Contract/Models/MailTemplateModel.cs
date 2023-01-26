@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Framework.MailTemplate.Data.Contract.Models
 {
-    public class MailTemplateModel : BaseModel<long>, IModel<long>
+    public class MailTemplateModel : BaseDocumentFormModel<long>, IModel<long>
     {
         public string PermName { get; set; }
 

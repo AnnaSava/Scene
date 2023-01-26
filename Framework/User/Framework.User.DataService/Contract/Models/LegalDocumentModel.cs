@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Framework.User.DataService.Contract.Models
 {
-    public class LegalDocumentModel : BaseModel<long>, IModel<long>
+    public class LegalDocumentModel : BaseDocumentFormModel<long>, IModel<long>
     {
         public string PermName { get; set; }
 

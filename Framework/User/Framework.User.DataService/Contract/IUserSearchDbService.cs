@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Framework.User.DataService.Contract.Interfaces
 {
-    public interface IUserSearchDbService<TUserModel, TFilterModel>
+    public interface IUserSearchDbService<TUserModel, TFilterModel> : IUserSearchService<TUserModel>
         where TFilterModel : ListFilterModel, new()
     {
         Task<PageListModel<TUserModel>> GetAll(ListQueryModel<TFilterModel> query);

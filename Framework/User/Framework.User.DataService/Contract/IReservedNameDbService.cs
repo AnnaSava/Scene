@@ -1,5 +1,6 @@
 ﻿using Framework.Base.DataService.Contract.Models;
 using Framework.Base.DataService.Contract.Models.ListView;
+using Framework.Base.Types.View;
 using Framework.User.DataService.Contract.Models;
 using System;
 using System.Collections.Generic;
@@ -11,13 +12,13 @@ namespace Framework.User.DataService.Contract.Interfaces
 {
     public interface IReservedNameDbService
     {
+        Task<OperationResult<ReservedNameModel>> Create(ReservedNameModel model);
+
+        Task<OperationResult<ReservedNameModel>> Update(ReservedNameModel model);
+
+        Task<OperationResult> Remove(string text);
+        
         Task<ReservedNameModel> GetOne(string text);
-
-        Task<ReservedNameModel> Create(ReservedNameModel model);
-
-        Task<ReservedNameModel> Update(ReservedNameModel model);
-
-        Task Remove(string text);
 
         Task<PageListModel<ReservedNameModel>> GetAll(ListQueryModel<ReservedNameFilterModel> query);
 

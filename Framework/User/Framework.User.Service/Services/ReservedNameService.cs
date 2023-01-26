@@ -60,14 +60,7 @@ namespace Framework.User.Service.Services
 
             var list = await _reservedNameDbService.GetAll(new ListQueryModel<ReservedNameFilterModel> { Filter = filterModel, PageInfo = pageInfoModel });
 
-            var vm = new ListPageViewModel<ReservedNameViewModel>()
-            {
-                Items = list.Items.Select(m => _mapper.Map<ReservedNameModel, ReservedNameViewModel>(m)),
-                Page = list.Page,
-                TotalPages = list.TotalPages,
-                TotalRows = list.TotalRows
-            };
-
+            var vm = ListPageViewModel.Map<ReservedNameModel, ReservedNameViewModel>(list, _mapper);
             return vm;
         }
 

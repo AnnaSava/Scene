@@ -70,6 +70,12 @@ namespace Framework.User.DataService.Services
             HandleResult(result);
         }
 
+        public async Task<IList<string>> GetRolesAsync(long userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            return await _userManager.GetRolesAsync(user);
+        }
+
         public async Task<TUserEntity> GetOneByEmail(string email)
         {
             return await _userManager.FindByEmailAsync(email);
@@ -106,6 +112,14 @@ namespace Framework.User.DataService.Services
             HandleResult(result);
 
             return user.EmailConfirmed;
+        }
+
+        public async Task<bool> IsLocked(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return false;
+
+            return user.LockoutEnabled;
         }
 
         private async Task<TUserEntity> FindForUpdate(long userId)

@@ -32,14 +32,7 @@ namespace Framework.User.Service.Services
 
             var list = await _permissionDbService.GetAll(new ListQueryModel<PermissionFilterModel> { Filter = filterModel, PageInfo = pageInfoModel });
 
-            var vm = new ListPageViewModel<PermissionViewModel>()
-            {
-                Items = list.Items.Select(m => _mapper.Map<PermissionModel, PermissionViewModel>(m)),
-                Page = list.Page,
-                TotalPages = list.TotalPages,
-                TotalRows = list.TotalRows
-            };
-
+            var vm = ListPageViewModel.Map<PermissionModel, PermissionViewModel>(list, _mapper);
             return vm;
         }
 
@@ -47,7 +40,7 @@ namespace Framework.User.Service.Services
         {
             var dict = await _permissionDbService.GetTree();
 
-            return dict.Select(m => new PermissionTreeNodeViewModel { Group = m.Key, Permissions = m.Value.Select(p => new PermissionViewModel { Name = p }) });
+            return dict.Select(m => new PermissionTreeNodeViewModel { Group = m.Key, Permissions = m.Value.Select(p => new PermissionViewModel { Name = p }).ToList() });
         }
     }
 }

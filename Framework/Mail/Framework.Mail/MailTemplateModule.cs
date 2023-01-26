@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Mail;
 using Framework.Base.Service.Module;
+using Framework.Base.Types;
 
 namespace Framework.MailTemplate
 {
@@ -24,20 +25,9 @@ namespace Framework.MailTemplate
             services.AddSingleton<SmtpClient>();
             services.AddSingleton<IEmailClient, EmailClient>();
 
-            var cultures = config["Cultures"].Split(',');
-
-            services.AddScoped<IMailTemplateDbService>(s => new MailTemplateDbService(
-                s.GetService<MailTemplateContext>(),
-                cultures,
-                s.GetService<IMapper>()));
-
-            services.AddScoped<IMailTemplateService>(s => new MailTemplateService(
-                s.GetService<IMailTemplateDbService>(),
-                s.GetService<IMapper>()));
-
-            services.AddScoped<IMailService>(s => new MailService(
-                s.GetService<IMailTemplateService>(),
-                s.GetService<IEmailClient>()));
+            services.AddScoped<IMailTemplateDbService, MailTemplateDbService>();
+            services.AddScoped<IMailTemplateService, MailTemplateService>();
+            services.AddScoped<IMailService, MailService>();
         }
     }
 }
