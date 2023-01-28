@@ -102,13 +102,7 @@ namespace Framework.User.Service.Services
 
             var list = await _userDbService.GetAll(new ListQueryModel<AppUserFilterModel> { Filter = filterModel, PageInfo = pageInfoModel });
 
-            var vm = new ListPageViewModel<AppUserViewModel>()
-            {
-                Items = list.Items.Select(m => _mapper.Map<AppUserModel, AppUserViewModel>(m)),
-                Page = list.Page,
-                TotalPages = list.TotalPages,
-                TotalRows = list.TotalRows
-            };
+            var vm = ListPageViewModel.Map<AppUserModel, AppUserViewModel>(list, _mapper);
 
             return vm;
         }

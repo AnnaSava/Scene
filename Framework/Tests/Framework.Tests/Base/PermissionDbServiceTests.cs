@@ -27,7 +27,9 @@ namespace Framework.Tests.Base
         {
             _mapper = new MapperConfiguration(opts => { opts.AddProfile<CommonDataMapperProfile>(); }).CreateMapper();
             _context = GetContext();
-            _permissionDbService = new PermissionDbService(_context, _mapper);
+
+            // TODO logger
+            _permissionDbService = new PermissionDbService(_context, _mapper, null);
             FillContextWithTestData(_context, TestData.GetPermissions());
         }
 

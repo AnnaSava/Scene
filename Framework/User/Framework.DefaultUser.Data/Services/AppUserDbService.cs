@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Framework.Base.DataService.Contract.Models;
 using Framework.Base.DataService.Contract.Models.ListView;
 using Framework.Base.DataService.Services;
@@ -73,6 +74,18 @@ namespace Framework.User.DataService.Services
             query.PageInfo.Sort = GetChangedSortFields(query.PageInfo.Sort, FieldNamesDiff);
 
             return await _dbContext.GetAll<AppUser, AppUserModel, AppUserFilterModel>(query, ApplyFilters, _mapper);
+        }
+
+        public async Task<IEnumerable<AppUserModel>> GetAllByIds(IEnumerable<string> ids)
+        {
+            var longIds = ids.Select(m => long.Parse(m));
+
+            var list = await _dbContext.Set<AppUser>()
+                .Where(m => longIds.Contains(m.Id))
+                .ProjectTo<AppUserModel>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return list;
         }
     }
 }

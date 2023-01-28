@@ -27,7 +27,9 @@ namespace Framework.Tests.Base
         {
             _mapper = new MapperConfiguration(opts => { opts.AddProfile<CommonDataMapperProfile>(); }).CreateMapper();
             _context = GetContext();
-            _reservedNameDbService = new ReservedNameDbService(_context, _mapper);
+
+            // TODO logger
+            _reservedNameDbService = new ReservedNameDbService(_context, _mapper, null);
             FillContextWithTestData(_context, TestData.GetReservedNames());
         }
 
@@ -46,7 +48,8 @@ namespace Framework.Tests.Base
             var rnModel = new ReservedNameModel() { Text = text, IncludePlural = true };
 
             // Act
-            var model = await _reservedNameDbService.Create(rnModel);
+            var result = await _reservedNameDbService.Create(rnModel);
+            var model = result.Model;
 
             // Assert
             Assert.Equal(expectedText, model.Text);
@@ -102,7 +105,8 @@ namespace Framework.Tests.Base
             var rnModel = new ReservedNameModel() { Text = text, IncludePlural = false };
 
             // Act
-            var model = await _reservedNameDbService.Update(rnModel);
+            var result = await _reservedNameDbService.Update(rnModel);
+            var model = result.Model;
 
             // Assert
             Assert.Equal(rnModel.IncludePlural, model.IncludePlural);

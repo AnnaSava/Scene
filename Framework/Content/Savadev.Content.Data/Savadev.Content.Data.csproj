@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Framework\Base\Framework.Base.DataService\Framework.Base.DataService.csproj" />
+    <ProjectReference Include="..\..\Base\Framework.Base.Service\Framework.Base.Service.csproj" />
   </ItemGroup>
 
 </Project>

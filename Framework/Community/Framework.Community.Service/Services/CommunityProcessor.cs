@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Framework.Base.Types.View;
 using Framework.Community.Data;
 using Framework.Community.Data.Contract;
 using Framework.Community.Data.Contract.Models;
@@ -36,11 +37,11 @@ namespace Framework.Community.Service.Services
             _mapper = mapper;
         }
 
-        public async Task<CommunityViewModel> CreateCommunity(CommunitySavingModel model)
+        public async Task<OperationResult<CommunityViewModel>> CreateCommunity(CommunitySavingModel model)
         {
             var newModel = _mapper.Map<CommunityModel>(model);
             var resModel = await _communityService.Create(newModel);
-            return _mapper.Map<CommunityViewModel>(resModel);
+            return new OperationResult<CommunityViewModel>(resModel.Rows, _mapper.Map<CommunityViewModel>(resModel.Model));
         }
 
         public async Task CreateSubscription(SubscriptionFormViewModel model)

@@ -36,7 +36,7 @@ namespace Framework.Base.DataService.Services.Managers
                 var newEntity = _mapper.Map<TEntity>(model);
                 var addResult = await _dbContext.AddAsync(newEntity);
 
-                onCreating?.Invoke(newEntity);
+                onCreating?.Invoke(addResult.Entity);
                 var rows = await _dbContext.SaveChangesAsync();
                 onCreated?.Invoke(addResult.Entity);
 
@@ -48,7 +48,7 @@ namespace Framework.Base.DataService.Services.Managers
             catch (Exception ex)
             {
                 await tran.RollbackAsync();
-                _logger.LogError($"{nameof(Create)}: {ex.Message} {ex.StackTrace}");
+                _logger.LogError($"{nameof(Create)}: {ex.Message} {ex.InnerException} {ex.StackTrace}");
                 var result = new OperationResult<TFormModel>(0, model, new OperationExceptionInfo(ex.Message));
                 return result;
             }

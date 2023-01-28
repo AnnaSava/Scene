@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Framework.Base.DataService.Contract.Interfaces;
 using Framework.Base.Service.Module;
 using Framework.DefaultUser.Data.Contract;
 using Framework.DefaultUser.Data.Services;
@@ -26,6 +27,9 @@ namespace Framework.User.Service
         public static void AddAppUser(this IServiceCollection services, IConfiguration config)
         {
             services.AddModuleDbContext<AppUserContext>(config, new ModuleSettings("Ap", "IdentityConnection"));
+
+            // TODO возможно, перенести сервисы запрещенных имен и т.п. в другой проект и контекст, потому что юзерконтекст не пихается в конструктор
+            services.AddScoped<IDbContext>(s => s.GetService<AppUserContext>());
 
             services.AddIdentity<AppUser, AppRole>()
                 .AddEntityFrameworkStores<AppUserContext>()
@@ -58,11 +62,9 @@ namespace Framework.User.Service
                 s.GetService<ISignInManagerAdapter>(),
                 s.GetService<IMapper>()));
 
-            services.AddScoped<IReservedNameDbService>(s => new ReservedNameDbService(
-                s.GetService<AppUserContext>(),
-                s.GetService<IMapper>()));
+            services.AddScoped<IReservedNameDbService, ReservedNameDbService>();
 
-            services.AddScoped<IPermissionDbService>(s => new PermissionDbService(s.GetService<AppUserContext>(), s.GetService<IMapper>()));
+            services.AddScoped<IPermissionDbService, PermissionDbService>();
 
             services.AddScoped<IAppRoleDbService>(s => new AppRoleDbService(
                 s.GetService<AppUserContext>(),
@@ -73,12 +75,7 @@ namespace Framework.User.Service
                 s.GetService<AppUserContext>(),
                 s.GetService<IMapper>()));
 
-            var cultures = config["Cultures"].Split(',');
-
-            services.AddScoped<ILegalDocumentDbService>(s => new LegalDocumentDbService(
-                s.GetService<AppUserContext>(),
-                cultures,
-                s.GetService<IMapper>()));
+            services.AddScoped<ILegalDocumentDbService, LegalDocumentDbService >();
 
             services.AddScoped<IAppAccountService, AppAccountService>();
             services.AddScoped<IPermissionService, PermissionService>();

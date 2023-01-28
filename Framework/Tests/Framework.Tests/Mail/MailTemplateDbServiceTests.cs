@@ -26,7 +26,9 @@ namespace Framework.Tests.Mail
         {
             _mapper = new MapperConfiguration(opts => { opts.AddProfile<MailTemplateDataMapperProfile>(); }).CreateMapper();
             _context = Infrastructure.GetContext<MailTemplateTestDbContext>(x => new MailTemplateTestDbContext(x));
-            _mailTemplateDbService = new MailTemplateDbService(_context, _cultures, _mapper);
+
+            // TODO пробросить логгер и культуры
+            _mailTemplateDbService = new MailTemplateDbService(_context, _cultures, _mapper, null);
             FillContextWithTestData(_context, TestData.GetMailTemplates());
         }
 
@@ -45,7 +47,8 @@ namespace Framework.Tests.Mail
             var testStartDate = DateTime.Now;
 
             // Act
-            var model = await _mailTemplateDbService.Create(mailTemplateModel);
+            var result = await _mailTemplateDbService.Create(mailTemplateModel);
+            var model = result.Model;
 
             // Assert
             Assert.IsType<MailTemplateModel>(model);
@@ -80,7 +83,8 @@ namespace Framework.Tests.Mail
             var testStartDate = DateTime.Now;
 
             // Act
-            var model = await _mailTemplateDbService.CreateTranslation(mailTemplateModel);
+            var result = await _mailTemplateDbService.CreateTranslation(mailTemplateModel);
+            var model = result.Model;
 
             // Assert
             Assert.IsType<MailTemplateModel>(model);
@@ -116,7 +120,8 @@ namespace Framework.Tests.Mail
             var testStartDate = DateTime.Now;
 
             // Act
-            var model = await _mailTemplateDbService.CreateVersion(mailTemplateModel);
+            var result = await _mailTemplateDbService.CreateVersion(mailTemplateModel);
+            var model = result.Model;
 
             // Assert
             Assert.IsType<MailTemplateModel>(model);
@@ -156,7 +161,8 @@ namespace Framework.Tests.Mail
             var oldModel = _context.MailTemplates.AsNoTracking().First(m => m.Id == mailTemplateModel.Id);
 
             // Act
-            var model = await _mailTemplateDbService.Update(mailTemplateModel);
+            var result = await _mailTemplateDbService.Update(mailTemplateModel.Id, mailTemplateModel);
+            var model = result.Model;
 
             // Assert
             Assert.IsType<MailTemplateModel>(model);
@@ -180,7 +186,7 @@ namespace Framework.Tests.Mail
             var mailTemplateModel = new MailTemplateModel { Id = id, Title = "Title", Text = "Text"};
 
             // Act
-            async Task action() => await _mailTemplateDbService.Update(mailTemplateModel);
+            async Task action() => await _mailTemplateDbService.Update(mailTemplateModel.Id, mailTemplateModel);
 
             // Assert
             await Assert.ThrowsAsync<EntityNotFoundException>(action);
@@ -194,7 +200,7 @@ namespace Framework.Tests.Mail
             var mailTemplateModel = new MailTemplateModel { Id = id, Title = "Title", Text = "Text" };
 
             // Act
-            async Task action() => await _mailTemplateDbService.Update(mailTemplateModel);
+            async Task action() => await _mailTemplateDbService.Update(mailTemplateModel.Id, mailTemplateModel);
 
             // Assert
             await Assert.ThrowsAsync<Exception>(action);

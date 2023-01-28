@@ -34,7 +34,7 @@ namespace Framework.Base.DataService.Services.Managers
             try
             {
                 var newEntity = _mapper.Map<TEntity>(model);
-                newEntity.Id = new Guid();
+                newEntity.Id = Guid.NewGuid();
 
                 var addResult = await _dbContext.AddAsync(newEntity);
 

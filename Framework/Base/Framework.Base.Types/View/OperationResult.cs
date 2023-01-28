@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,6 +17,13 @@ namespace Framework.Base.Types.View
         public List<object> ModelIds { get; set; } = new List<object>();
 
         public List<OperationExceptionInfo> Exceptions { get; set; } = new List<OperationExceptionInfo>();
+
+        public OperationResult(OperationResult res)
+        {
+            Rows = res.Rows;
+            Exceptions = res.Exceptions;
+            ModelIds = res.ModelIds;
+        }
 
         public OperationResult(int rows) { Rows = rows; }
 
@@ -49,6 +57,8 @@ namespace Framework.Base.Types.View
     {
         public List<TModel> Models { get; set; } = new List<TModel>();
 
+        public TModel Model { get { return Models.First(); } }
+
         public OperationResult(int rows, TModel model)
             : base(rows)
         {
@@ -66,6 +76,10 @@ namespace Framework.Base.Types.View
         {
             Models.Add(model);
             Exceptions.Add(ex);
+        }
+
+        public OperationResult(OperationResult res) :base(res)
+        {
         }
     }
 }

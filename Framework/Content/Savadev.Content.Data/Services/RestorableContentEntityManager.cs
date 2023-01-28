@@ -36,7 +36,7 @@ namespace Savadev.Content.Data.Services
         {
             var res = await entityManager.Create(model, entity =>
             {
-                entity.Id = new Guid();
+                entity.Id = Guid.NewGuid();
                 entity.Content = JsonSerializer.Serialize(contentModel);
                 entity.Created = DateTime.Now;
             });

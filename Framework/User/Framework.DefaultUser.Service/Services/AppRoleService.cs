@@ -71,13 +71,7 @@ namespace Framework.User.Service.Services
 
             var list = await _roleDbService.GetAll(new ListQueryModel<AppRoleFilterModel> { Filter = filterModel, PageInfo = pageInfoModel });
 
-            var vm = new ListPageViewModel<AppRoleViewModel>()
-            {
-                Items = list.Items.Select(m => _mapper.Map<AppRoleModel, AppRoleViewModel>(m)),
-                Page = list.Page,
-                TotalPages = list.TotalPages,
-                TotalRows = list.TotalRows
-            };
+            var vm = ListPageViewModel.Map<AppRoleModel, AppRoleViewModel>(list, _mapper);
 
             return vm;
         }

@@ -1,5 +1,6 @@
 ﻿using Framework.Base.DataService.Contract;
 using Framework.Base.Types.DataStorage;
+using Framework.Helpers;
 using Framework.User.DataService.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,7 +22,7 @@ namespace Framework.DefaultUser.Data.Extentions
             optionsAction?.Invoke(options);
 
             //TODO отрефакторить для автоматического преобразования naming conventions
-            var helper = new TableNameHelper(TableName, options.NamingConvention, options.TablePrefix);
+            var helper = new TableNameHelper(options.NamingConvention, options.TablePrefix);
 
             builder.SetTableNames(helper);
 
@@ -77,23 +78,5 @@ namespace Framework.DefaultUser.Data.Extentions
             builder.Entity<ReservedName>(b => { b.ToTable(helper.GetTableName(nameof(ReservedName))); });
             builder.Entity<Lockout>(b => { b.ToTable(helper.GetTableName(nameof(Lockout))); });
         }
-
-        // TODO использовать автоматическое преобразование naming conventions вместо этого милого костыля
-        private static Dictionary<string, string> TableName => new Dictionary<string, string>
-        {
-            { nameof(AppUser), "users" },
-            { nameof(UserClaim), "user_claims" },
-            { nameof(UserLogin), "user_logins" },
-            { nameof(UserToken), "user_tokens" },
-            { nameof(AppRole), "roles" },
-            { nameof(RoleClaim), "role_claims" },
-            { nameof(UserRole), "user_roles" },
-            { nameof(AuthToken), "auth_tokens" },
-            { nameof(Permission), "permissions" },
-            { nameof(PermissionCulture), "permission_cultures" },
-            { nameof(LegalDocument), "legal_documents" },
-            { nameof(ReservedName), "reserved_names" },
-            { nameof(Lockout), "lockouts" }
-        };
     }
 }

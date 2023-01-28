@@ -1,3 +1,4 @@
+using Framework.Base.Types;
 using Framework.Helpers.Http;
 using Framework.MailTemplate;
 using Framework.User.Service;
@@ -14,6 +15,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<RabbitMqConfiguration>(builder.Configuration.GetSection("RabbitMq"));
 
 // Add services to the container.
+
+//var opt = config.GetSection("ServiceOptions").Get<ServiceOptions>();
+//services.AddScoped(s => opt);
+
+//var copt = config.GetSection("Cultures").Get<AvailableContentCultures>();
+//services.AddScoped(s => copt);
+
+//services.AddHttpContextAccessor();
+//services.AddCurrentUser();
 
 builder.Services.AddMapper();
 

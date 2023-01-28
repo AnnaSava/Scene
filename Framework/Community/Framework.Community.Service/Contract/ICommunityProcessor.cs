@@ -1,4 +1,5 @@
-﻿using Framework.Community.Service.Contract.Models;
+﻿using Framework.Base.Types.View;
+using Framework.Community.Service.Contract.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Framework.Community.Service.Contract
 {
     public interface ICommunityProcessor<TUserModel>
     {
-        Task<CommunityViewModel> CreateCommunity(CommunitySavingModel model);
+        Task<OperationResult<CommunityViewModel>> CreateCommunity(CommunitySavingModel model);
 
         Task CreateSubscription(SubscriptionFormViewModel model);
 

@@ -21,6 +21,8 @@ namespace Framework.Base.DataService.Services.Managers
         private readonly IDbContext _dbContext;
         private readonly ILogger _logger;
 
+
+
         public EditableRestorableEntityManager(IDbContext dbContext, IMapper mapper, ILogger logger)
         {
             _dbContext = dbContext;
@@ -43,6 +45,7 @@ namespace Framework.Base.DataService.Services.Managers
                 var result = new OperationResult<TFormModel>(rows, _mapper.Map<TFormModel>(addResult.Entity));
 
                 await tran.CommitAsync();
+
                 return result;
             }
             catch (Exception ex)

@@ -27,7 +27,9 @@ namespace Framework.Tests.Base
         {
             _mapper = new MapperConfiguration(opts => { opts.AddProfile<CommonDataMapperProfile>(); }).CreateMapper();
             _context = Infrastructure.GetContext<LegalDocumentTestDbContext>(x => new LegalDocumentTestDbContext(x));
-            _legalDocumentDbService = new LegalDocumentDbService(_context, _cultures, _mapper);
+            
+            // TODO logger
+            _legalDocumentDbService = new LegalDocumentDbService(_context, _cultures, _mapper, null);
             FillContextWithTestData(_context, TestData.GetLegalDocuments());
         }
 
@@ -46,7 +48,8 @@ namespace Framework.Tests.Base
             var testStartDate = DateTime.Now;
 
             // Act
-            var model = await _legalDocumentDbService.Create(legalDocumentModel);
+            var result = await _legalDocumentDbService.Create(legalDocumentModel);
+            var model = result.Model;
 
             // Assert
             Assert.IsType<LegalDocumentModel>(model);
@@ -81,7 +84,8 @@ namespace Framework.Tests.Base
             var testStartDate = DateTime.Now;
 
             // Act
-            var model = await _legalDocumentDbService.CreateTranslation(legalDocumentModel);
+            var result = await _legalDocumentDbService.CreateTranslation(legalDocumentModel);
+            var model = result.Model;
 
             // Assert
             Assert.IsType<LegalDocumentModel>(model);
@@ -117,7 +121,8 @@ namespace Framework.Tests.Base
             var testStartDate = DateTime.Now;
 
             // Act
-            var model = await _legalDocumentDbService.CreateVersion(legalDocumentModel);
+            var result = await _legalDocumentDbService.CreateVersion(legalDocumentModel);
+            var model = result.Model;
 
             // Assert
             Assert.IsType<LegalDocumentModel>(model);
@@ -159,7 +164,8 @@ namespace Framework.Tests.Base
             var oldModel = _context.LegalDocuments.AsNoTracking().First(m => m.Id == legalDocumentModel.Id);
 
             // Act
-            var model = await _legalDocumentDbService.Update(legalDocumentModel);
+            var result = await _legalDocumentDbService.Update(legalDocumentModel.Id, legalDocumentModel);
+            var model = result.Model;
 
             // Assert
             Assert.IsType<LegalDocumentModel>(model);
@@ -185,7 +191,7 @@ namespace Framework.Tests.Base
             var legalDocumentModel = new LegalDocumentModel { Id = id, Title = "Title", Text = "Text", Comment = "Comment", Info = "Info" };
 
             // Act
-            async Task action() => await _legalDocumentDbService.Update(legalDocumentModel);
+            async Task action() => await _legalDocumentDbService.Update(legalDocumentModel.Id, legalDocumentModel);
 
             // Assert
             await Assert.ThrowsAsync<EntityNotFoundException>(action);
@@ -199,7 +205,7 @@ namespace Framework.Tests.Base
             var legalDocumentModel = new LegalDocumentModel { Id = id, Title = "Title", Text = "Text", Comment = "Comment", Info = "Info" };
 
             // Act
-            async Task action() => await _legalDocumentDbService.Update(legalDocumentModel);
+            async Task action() => await _legalDocumentDbService.Update(legalDocumentModel.Id, legalDocumentModel);
 
             // Assert
             await Assert.ThrowsAsync<Exception>(action);
