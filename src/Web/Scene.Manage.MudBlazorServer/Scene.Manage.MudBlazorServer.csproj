@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+	  <TargetFramework>net6.0</TargetFramework>
+	  <Nullable>enable</Nullable>
+	  <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MudBlazor" Version="6.0.10" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Modules\AppUsers\SavaDev.AppUsers.Data\SavaDev.AppUsers.Data.csproj" />
+    <ProjectReference Include="..\..\Framework\Modules\AppUsers\SavaDev.AppUsers.Front\SavaDev.AppUsers.Front.csproj" />
+    <ProjectReference Include="..\..\Framework\Obsolete\Framework.Base.Service\Framework.Base.Service.csproj" />
+    <ProjectReference Include="..\..\Framework\Obsolete\Framework.MailTemplate.Data\Framework.MailTemplate.Data.csproj" />
+    <ProjectReference Include="..\..\Framework\Obsolete\Framework.Mail\Framework.Mail.csproj" />
+    <ProjectReference Include="..\..\Migrations\Scene.Migrations.PostgreSql\Scene.Migrations.PostgreSql.csproj" />
+  </ItemGroup>
+
+</Project>

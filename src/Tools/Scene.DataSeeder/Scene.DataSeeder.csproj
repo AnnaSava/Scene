@@ -17,13 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Mail\Framework.MailTemplate.SeederLib\Framework.MailTemplate.SeederLib.csproj" />
-    <ProjectReference Include="..\..\Framework\Mail\Framework.Mail\Framework.Mail.csproj" />
-    <ProjectReference Include="..\..\Framework\User\Framework.DefaultUser.Data\Framework.DefaultUser.Data.csproj" />
-    <ProjectReference Include="..\..\Framework\User\Framework.DefaultUser.Service\Framework.DefaultUser.Service.csproj" />
-    <ProjectReference Include="..\..\Framework\User\Framework.User.DataService\Framework.User.DataService.csproj" />
-    <ProjectReference Include="..\..\Framework\User\Framework.User.SeederLib\Framework.User.SeederLib.csproj" />
-    <ProjectReference Include="..\..\Framework\User\Framework.User.Service\Framework.User.Service.csproj" />
+    <ProjectReference Include="..\..\Framework\Modules\AppUsers\SavaDev.AppUsers.Data\SavaDev.AppUsers.Data.csproj" />
+    <ProjectReference Include="..\..\Framework\Obsolete\Framework.Base.Types\Framework.Base.Types.csproj" />
+    <ProjectReference Include="..\..\Framework\Obsolete\Framework.Helpers\Framework.Helpers.csproj" />
+    <ProjectReference Include="..\..\Framework\Obsolete\Framework.MailTemplate.Data\Framework.MailTemplate.Data.csproj" />
+    <ProjectReference Include="..\..\Framework\Obsolete\Framework.MailTemplate.SeederLib\Framework.MailTemplate.SeederLib.csproj" />
+    <ProjectReference Include="..\..\Framework\Obsolete\Framework.User.SeederLib\Framework.User.SeederLib.csproj" />
     <ProjectReference Include="..\..\Migrations\Scene.Migrations.PostgreSql\Scene.Migrations.PostgreSql.csproj" />
   </ItemGroup>
 

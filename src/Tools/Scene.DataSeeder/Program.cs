@@ -1,16 +1,11 @@
-﻿using Framework.Base.Service.Module;
-using Framework.Helpers.Config;
-using Framework.MailTemplate;
+﻿using Framework.Helpers.Config;
 using Framework.MailTemplate.Data;
 using Framework.User.DataService.Entities;
 using Framework.User.DataService.Services;
-using Framework.User.Service;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace Scene.DataSeeder
@@ -33,8 +28,8 @@ namespace Scene.DataSeeder
 
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-            services.AddAppUser(config);
-            services.AddMailTemplate(config);
+            //services.AddAppUser(config);
+            //services.AddMailTemplate(config);
 
             using (ServiceProvider serviceProvider = services.BuildServiceProvider())
             {

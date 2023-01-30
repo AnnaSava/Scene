@@ -1,13 +1,7 @@
-﻿using Framework.Base.DataService;
-using Framework.Helpers;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using SavaDev.Base.Data.Context;
 using SavaDev.Boxyz.Data.Entities;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SavaDev.Boxyz.Data
 {
@@ -15,7 +9,7 @@ namespace SavaDev.Boxyz.Data
     {
         public static void ConfigureContext(
             [NotNull] this ModelBuilder builder,
-            FrameworkDbOptionsExtension options)
+            BaseDbOptionsExtension options)
         {
             var helper = new TableNameHelper(options.NamingConvention, options.TablePrefix);
 

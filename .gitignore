@@ -290,4 +290,9 @@ __pycache__/
 # Mercurial
 .hg/
 .hgignore
+.hgsub
+.hgsubstate
 
+#Sava
+Sava.*
+Sava*.slnf

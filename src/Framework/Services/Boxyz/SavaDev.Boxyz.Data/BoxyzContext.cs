@@ -1,12 +1,10 @@
-﻿using Framework.Base.DataService.Services;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using SavaDev.Base.Data.Context;
 using SavaDev.Boxyz.Data.Entities;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 
 namespace SavaDev.Boxyz.Data
 {
-    public class BoxyzContext : FrameworkBaseDbContext
+    public class BoxyzContext : BaseDbContext
     {
         #region Public DbSets
 
@@ -66,7 +64,8 @@ namespace SavaDev.Boxyz.Data
         {
             base.OnModelCreating(builder);
 
-            builder.ConfigureContext(_dbOptionsExtension);
+            // TODO
+            //builder.ConfigureContext(_dbOptionsExtension);
         }
     }
 }

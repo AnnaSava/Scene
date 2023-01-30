@@ -1,10 +1,9 @@
-﻿using Framework.Base.DataService;
-using Framework.Base.Types.Enums;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using SavaDev.Base.Data.Context;
 
 namespace SavaDev.Libs.UnitTestingHelpers
 {
@@ -27,10 +26,10 @@ namespace SavaDev.Libs.UnitTestingHelpers
             options.UseInMemoryDatabase(Guid.NewGuid().ToString())
             .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning));
 
-            var extension = options.Options.FindExtension<FrameworkDbOptionsExtension>()
-                    ?? new FrameworkDbOptionsExtension { TablePrefix = "_", NamingConvention = NamingConvention.SnakeCase };
+            //todo var extension = options.Options.FindExtension<BaseDbOptionsExtension>()
+            //        ?? new BaseDbOptionsExtension { TablePrefix = "_", NamingConvention = NamingConvention.SnakeCase };
 
-            ((IDbContextOptionsBuilderInfrastructure)options).AddOrUpdateExtension(extension);
+            //((IDbContextOptionsBuilderInfrastructure)options).AddOrUpdateExtension(extension);
         };
 
         public static ILogger<T> GetLogger<T>()
