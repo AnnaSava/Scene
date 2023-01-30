@@ -1,4 +1,5 @@
-﻿using Framework.Base.DataService.Contract;
+﻿using Framework.Base.DataService;
+using Framework.Base.DataService.Contract;
 using Framework.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,11 +15,9 @@ namespace Framework.MailTemplate.Data.Extentions
     {
         public static void ConfigureContext(
             [NotNull] this ModelBuilder builder,
-            Action<ModelBuilderConfigurationOptions> optionsAction = null)
+            FrameworkDbOptionsExtension options)
         {
-            var options = new ModelBuilderConfigurationOptions();
-            optionsAction?.Invoke(options);
-
+            //TODO отрефакторить для автоматического преобразования naming conventions
             var helper = new TableNameHelper(options.NamingConvention, options.TablePrefix);
 
             builder.Entity<Entities.MailTemplate>(b =>

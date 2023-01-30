@@ -18,7 +18,7 @@ namespace Framework.Base.Service.ListView
             destination = new PageInfoModel() { PageNumber = source.Page, RowsCount = source.Rows };
 
             destination.Sort = source.Sort
-                  .ToSortDictionary()?
+                  .ToSortDictionary0()?
                   .Select((m, i) => new ListSortModel() { FieldName = m.Key, Direction = m.Value, Initial = i == 0 });
 
             return destination;

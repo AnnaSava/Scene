@@ -9,10 +9,13 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.DataService
 {
+    [Obsolete]
     public class FrameworkDbOptionsExtension : IDbContextOptionsExtension
     {
+        [Obsolete]
         public string TablePrefix { get; set; }
 
+        [Obsolete]
         public NamingConvention NamingConvention { get; set; }
 
         public void Validate(IDbContextOptions options) { }

@@ -1,17 +1,11 @@
 ﻿using AutoMapper;
 using Framework.Base.DataService.Contract.Interfaces;
 using Framework.Base.DataService.Services;
-using Framework.Base.Types.DataStorage;
 using Framework.Base.Types.ModelTypes;
 using Framework.User.DataService.Contract.Interfaces;
-using Framework.User.DataService.Contract.Models;
 using Framework.User.DataService.Entities;
-using Framework.User.DataService.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Framework.User.DataService.Services

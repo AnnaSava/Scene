@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.DataService.Entities
 {
+    [Obsolete]
     public abstract class BaseDocumentEntity<TKey> : BaseEntityRestorable<TKey>
     {
         public string PermName { get; set; }

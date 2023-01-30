@@ -1,6 +1,6 @@
 ﻿using Framework.Base.DataService.Contract.Models;
 using Framework.Base.DataService.Contract.Models.ListView;
-using Framework.Base.Types.View;
+using Framework.Base.Types.Registry;
 using Framework.User.DataService.Contract.Models;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Framework.User.DataService.Contract.Interfaces
 {
+    [Obsolete]
     public interface IReservedNameDbService
     {
         Task<OperationResult<ReservedNameModel>> Create(ReservedNameModel model);

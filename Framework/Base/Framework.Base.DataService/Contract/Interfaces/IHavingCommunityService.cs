@@ -1,4 +1,4 @@
-﻿using Framework.Base.Types.View;
+﻿using Framework.Base.Types.Registry;
 using System;
 using System.Collections.Generic;
 using System.Linq;

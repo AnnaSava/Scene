@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SavaDev.Boxyz.Data.Entities
+{
+    public class ShapeFolk : BaseFolkEntity<Shape>
+    {
+        public string Title { get; set; }
+    }
+}

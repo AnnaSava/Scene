@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.DataService.Exceptions
 {
+    [Obsolete]
     public class EntityAlreadyExistsException : ProjectException
     {
         private const string ExceptionMessageTemplate = "Type: {0}. Method: {1}. Entity: {2}. Field: {3}. Value: {4}";

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.Service.Exceptions
 {
+    [Obsolete]
     public class NotPermittedException : Exception
     {
         public NotPermittedException()

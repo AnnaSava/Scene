@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Framework.Base.DataService.Contract.Interfaces;
+using Framework.Base.DataService.Contract.Models;
 using Framework.Base.DataService.Entities;
 using Framework.Base.DataService.Exceptions;
-using Framework.Base.Types.View;
+using Framework.Base.Types.Registry;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.DataService.Services.Managers
 {
+    [Obsolete]
     public class EditableRestorableEntityManager<TKey, TEntity, TFormModel>
          where TEntity : class, IEntity<TKey>, IEntityRestorable
     {
@@ -220,6 +222,45 @@ namespace Framework.Base.DataService.Services.Managers
             entity.LastUpdated = DateTime.Now;
 
             return entity;
+        }
+
+        public async Task<RegistryPage<TItemModel>> GetRegistryPage<TFilterModel, TItemModel>(RegistryQuery<TFilterModel> query)
+            where TFilterModel : BaseFilter
+        {
+            var list = _dbContext.Set<TEntity>()
+                .AsQueryable()
+                .AsNoTracking()
+                .ApplyFilters(query.Filter)
+                .ApplySort(query.Sort);
+
+            var res = await list
+                .ProjectTo<TItemModel>(_mapper.ConfigurationProvider)
+                .ToPage(query.PageInfo);
+
+            var page = new RegistryPage<TItemModel>(res);
+            return page;
+        }
+
+        public async Task<ItemsPage<TItemModel>> GetItemsPage<TFilterModel, TItemModel>(
+        RegistryQuery<TFilterModel> query,
+            Func<IQueryable<TEntity>, RegistryQuery<TFilterModel>, IQueryable<TEntity>> applyFilterExpression)
+            where TFilterModel : BaseFilter
+        {
+            var list = _dbContext.Set<TEntity>()
+                   .AsQueryable()
+                   .AsNoTracking();
+
+            applyFilterExpression(list, query);
+
+            list = list.ApplyFilters(query.Filter)
+                   .ApplySort(query.Sort);
+
+            var res = await list
+                .ProjectTo<TItemModel>(_mapper.ConfigurationProvider)
+                .ToPage(query.PageInfo);
+
+            var page = new ItemsPage<TItemModel>(res);
+            return page;
         }
     }
 }

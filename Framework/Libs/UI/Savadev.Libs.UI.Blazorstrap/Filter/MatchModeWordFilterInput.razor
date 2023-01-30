@@ -1,0 +1,39 @@
+﻿<BSInputGroup MarginBottom="Margins.Medium">
+    <BSInput InputType="InputType.Text" placeholder="@Placeholder" @bind-Value="@field.Text" />
+    <BSInput InputType="InputType.Select" @bind-Value="@field.Match">
+        <option value="@MatchModeWord.None">None</option>
+        <option value="@MatchModeWord.Equals">Equals</option>
+        <option value="@MatchModeWord.NotEquals">NotEquals</option>
+        <option value="@MatchModeWord.StartsWith">StartsWith</option>
+        <option value="@MatchModeWord.EndsWith">EndsWith</option>
+        <option value="@MatchModeWord.Contains">Contains</option>
+        <option value="@MatchModeWord.NotContains">NotContains</option>
+        <option value="@MatchModeWord.In">In</option>
+        <option value="@MatchModeWord.NotIn">NotIn</option>
+    </BSInput>
+
+</BSInputGroup>
+
+@code {
+    private WordField field { get; set; }
+
+    [Parameter]
+    public WordField Field
+    {
+        get => field;
+        set
+        {
+            if (field == value) return;
+
+            field = value;
+            FieldChanged.InvokeAsync(value);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<WordField> FieldChanged { get; set; }
+
+    [Parameter]
+    public string Placeholder { get; set; }
+
+}

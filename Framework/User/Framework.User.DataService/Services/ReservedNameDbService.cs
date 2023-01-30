@@ -4,7 +4,7 @@ using Framework.Base.DataService.Contract.Models;
 using Framework.Base.DataService.Contract.Models.ListView;
 using Framework.Base.DataService.Services;
 using Framework.Base.DataService.Services.Managers;
-using Framework.Base.Types.View;
+using Framework.Base.Types.Registry;
 using Framework.User.DataService.Contract.Interfaces;
 using Framework.User.DataService.Contract.Models;
 using Framework.User.DataService.Entities;

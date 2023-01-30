@@ -9,8 +9,10 @@ namespace Framework.Base.DataService.Contract
 {
     public class ModelBuilderConfigurationOptions 
     {
+        [Obsolete]
         public string TablePrefix { get; set; }
 
+        [Obsolete]
         public NamingConvention NamingConvention { get; set; }
 
         public ModelBuilderConfigurationOptions()

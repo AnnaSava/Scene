@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Framework.Base.Service.ListView;
+using Framework.Base.Types.Registry;
 using Framework.User.DataService.Contract.Models;
 using Framework.User.Service.Contract.Models;
 using System;

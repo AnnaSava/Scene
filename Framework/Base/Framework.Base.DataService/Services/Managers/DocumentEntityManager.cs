@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Framework.Base.DataService.Contract.Interfaces;
 using Framework.Base.DataService.Entities;
-using Framework.Base.Types.View;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,9 +10,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Framework.Base.DataService.Contract.Models;
 using Framework.Base.Types.Enums;
+using Framework.Base.Types.Registry;
 
 namespace Framework.Base.DataService.Services.Managers
 {
+    [Obsolete]
     public class DocumentEntityManager<TKey, TEntity, TFormModel>
         where TEntity : BaseDocumentEntity<TKey>, new()
         where TFormModel : BaseDocumentFormModel<TKey>, new()

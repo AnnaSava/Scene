@@ -2,7 +2,7 @@
 using Framework.Base.DataService.Contract.Models;
 using Framework.Base.DataService.Contract.Models.ListView;
 using Framework.Base.Service;
-using Framework.Base.Types.View;
+using Framework.Base.Types.Registry;
 using Savadev.Content.Data.Contract.Models;
 using System;
 using System.Collections.Generic;

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.DataService.Contract.Models
 {
+    [Obsolete]
     public class FilterFieldModel<T>
     {
         public T Value { get; set; }
@@ -14,6 +15,7 @@ namespace Framework.Base.DataService.Contract.Models
         public MatchMode MatchMode { get; set; }
     }
 
+    [Obsolete]
     public class WordFilterField
     {
         public List<string> Value { get; set; }
@@ -21,6 +23,7 @@ namespace Framework.Base.DataService.Contract.Models
         public MatchModeWord MatchMode { get; set; }
     }
 
+    [Obsolete]
     public class TextFilterField
     {
         public string Value { get; set; }
@@ -28,6 +31,7 @@ namespace Framework.Base.DataService.Contract.Models
         public MatchModeText MatchMode { get; set; }
     }
 
+    [Obsolete]
     public class NumericFilterField<T> where T : struct
     {
         public List<T> Value { get; set; }

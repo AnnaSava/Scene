@@ -3,6 +3,7 @@ using System;
 
 namespace Framework.Base.DataService.Exceptions
 {
+    [Obsolete]
    public class EntityNotFoundException : ProjectException
     {
         private const string ExceptionMessageTemplate = "Type: {0}. Method: {1}. Argument: {2}. Value: {3}.";

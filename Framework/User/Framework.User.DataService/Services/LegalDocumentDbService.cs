@@ -6,7 +6,7 @@ using Framework.Base.DataService.Entities;
 using Framework.Base.DataService.Services;
 using Framework.Base.DataService.Services.Managers;
 using Framework.Base.Types.Enums;
-using Framework.Base.Types.View;
+using Framework.Base.Types.Registry;
 using Framework.User.DataService.Contract.Interfaces;
 using Framework.User.DataService.Contract.Interfaces.Context;
 using Framework.User.DataService.Contract.Models;

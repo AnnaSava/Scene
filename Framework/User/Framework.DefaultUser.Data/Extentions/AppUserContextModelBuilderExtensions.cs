@@ -1,14 +1,8 @@
 ﻿using Framework.Base.DataService.Contract;
-using Framework.Base.Types.DataStorage;
 using Framework.Helpers;
 using Framework.User.DataService.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Framework.DefaultUser.Data.Extentions
 {

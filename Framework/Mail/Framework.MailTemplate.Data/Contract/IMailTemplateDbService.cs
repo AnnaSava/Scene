@@ -1,6 +1,6 @@
 ﻿using Framework.Base.DataService.Contract.Models;
 using Framework.Base.DataService.Contract.Models.ListView;
-using Framework.Base.Types.View;
+using Framework.Base.Types.Registry;
 using Framework.MailTemplate.Data.Contract.Models;
 using System;
 using System.Collections.Generic;

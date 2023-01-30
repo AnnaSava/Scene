@@ -22,17 +22,17 @@ namespace Savadev.Content.Mapper
             CreateMap<VersionModel, VersionViewModel>();
 
             CreateMap<DraftFilterViewModel, DraftFilterModel>(MemberList.None)
-                .ForMember(x => x.Entity, y => y.MapFrom(s => s.Entity.ToWordListFilterField()))
-                .ForMember(x => x.Module, y => y.MapFrom(s => s.Module.ToWordListFilterField()))
-                .ForMember(x => x.ContentId, y => y.MapFrom(s => s.ContentId.ToWordListFilterField()))
-                .ForMember(x => x.GroupingKey, y => y.MapFrom(s => s.GroupingKey.ToWordListFilterField()))
-                .ForMember(x => x.Owner, y => y.MapFrom(s => s.Owner.ToWordListFilterField()));
+                .ForMember(x => x.Entity, y => y.MapFrom(s => s.Entity.ToWordListFilterField0()))
+                .ForMember(x => x.Module, y => y.MapFrom(s => s.Module.ToWordListFilterField0()))
+                .ForMember(x => x.ContentId, y => y.MapFrom(s => s.ContentId.ToWordListFilterField0()))
+                .ForMember(x => x.GroupingKey, y => y.MapFrom(s => s.GroupingKey.ToWordListFilterField0()))
+                .ForMember(x => x.Owner, y => y.MapFrom(s => s.Owner.ToWordListFilterField0()));
 
             CreateMap<VersionFilterViewModel, VersionFilterModel>(MemberList.None)
-                .ForMember(x => x.Entity, y => y.MapFrom(s => s.Entity.ToWordListFilterField()))
-                .ForMember(x => x.Module, y => y.MapFrom(s => s.Module.ToWordListFilterField()))
-                .ForMember(x => x.ContentId, y => y.MapFrom(s => s.ContentId.ToWordListFilterField()))
-                .ForMember(x => x.Owner, y => y.MapFrom(s => s.Owner.ToWordListFilterField()));
+                .ForMember(x => x.Entity, y => y.MapFrom(s => s.Entity.ToWordListFilterField0()))
+                .ForMember(x => x.Module, y => y.MapFrom(s => s.Module.ToWordListFilterField0()))
+                .ForMember(x => x.ContentId, y => y.MapFrom(s => s.ContentId.ToWordListFilterField0()))
+                .ForMember(x => x.Owner, y => y.MapFrom(s => s.Owner.ToWordListFilterField0()));
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Framework.User.DataService.Contract.Interfaces
 {
+    [Obsolete]
    public interface IRoleDbService<TModel> where TModel : IModel<long>
     {
         Task<TModel> GetOne(long id);

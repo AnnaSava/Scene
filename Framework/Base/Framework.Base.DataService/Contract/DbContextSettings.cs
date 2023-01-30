@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.DataService.Contract
 {
+    [Obsolete]
     // TODO устарело. Заменить в контекстах, откуда брать конвеншен и префикс, и удалить
     public class DbContextSettings<TContext>
         where TContext: DbContext

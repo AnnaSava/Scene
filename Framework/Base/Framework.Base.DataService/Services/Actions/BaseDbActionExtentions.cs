@@ -19,30 +19,33 @@ using X.PagedList;
 
 namespace Framework.Base.DataService.Services
 {
+    [Obsolete]
     public delegate void IncludeDelegate<TEntity>(ref IQueryable<TEntity> list, string include) where TEntity : class, IEntity<long>;
-
+    [Obsolete]
     public delegate void ApplyFiltersDelegate<TEntity, TFilterModel>(ref IQueryable<TEntity> list, TFilterModel filter) 
         where TEntity : class, IEntity<long>
         where TFilterModel : ListFilterModel, new();
-
+    [Obsolete]
     public delegate void ApplyIntKeyFiltersDelegate<TEntity, TFilterModel>(ref IQueryable<TEntity> list, TFilterModel filter)
         where TEntity : class, IEntity<int>
         where TFilterModel : IFilter, new();
-
+    [Obsolete]
     public delegate void ApplySimpleFiltersDelegate<TEntity, TFilterModel>(ref IQueryable<TEntity> list, TFilterModel filter)
         where TEntity : class, IAnyEntity
         where TFilterModel : IFilter, new();
-
+    [Obsolete]
     public delegate void AddingDelegate<TEntity>(TEntity entity) where TEntity : class, IAnyEntity;
-
+    [Obsolete]
     public delegate Task DeletingDelegate<TEntity>(TEntity entity) where TEntity : class, IAnyEntity;
-
+    [Obsolete]
     public delegate void SavingDelegate<TEntity>(TEntity entity) where TEntity : class, IAnyEntity;
-
+    [Obsolete]
     public delegate Task SavingAsyncDelegate<TEntity>(TEntity entity) where TEntity : class, IAnyEntity;
 
+    [Obsolete]
     public static class BaseDbActionExtentions
     {
+        [Obsolete]
         public static async Task<TModel> GetOne<TEntity, TModel>(this IDbContext dbContext, long id, IMapper mapper, IncludeDelegate<TEntity> includeDel, string include)
             where TEntity : class, IEntity<long>, IEntityRestorable
            // where TModel : IViewModel
@@ -53,7 +56,7 @@ namespace Framework.Base.DataService.Services
             return await elQuery.ProjectTo<TModel>(mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
         }
-
+        [Obsolete]
         public static async Task<TModel> GetOne<TEntity, TModel>(this IDbContext dbContext, Expression<Func<TEntity, bool>> expression, IMapper mapper)
             where TEntity : class, IAnyEntity
             where TModel : IAnyModel
@@ -63,7 +66,7 @@ namespace Framework.Base.DataService.Services
             return await elQuery.ProjectTo<TModel>(mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
         }
-
+        [Obsolete]
         public static async Task<TModel> GetOneByAlias<TEntity, TModel>(this IDbContext dbContext, string alias, IMapper mapper)
             where TEntity : class, IEntityAliased, IEntityRestorable
             where TModel : IModelRestorable, IModelAliased
@@ -73,7 +76,7 @@ namespace Framework.Base.DataService.Services
             return await elQuery.ProjectTo<TModel>(mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
         }
-
+        [Obsolete]
         public static async Task<TModel> Create<TEntity, TModel>(this IDbContext dbContext, TModel model, IMapper mapper, AddingDelegate<TEntity> OnAdding)
             where TEntity : class, IAnyEntity
             where TModel : IAnyModel
@@ -85,7 +88,7 @@ namespace Framework.Base.DataService.Services
 
             return mapper.Map<TModel>(addResult.Entity);
         }
-
+        [Obsolete]
         public static async Task<TModel> Update<TEntity, TModel>(this IDbContext dbContext, TModel model, Expression<Func<TEntity, bool>> expression, IMapper mapper)
             where TEntity : class, IAnyEntity
         {
@@ -98,7 +101,7 @@ namespace Framework.Base.DataService.Services
 
             return mapper.Map<TModel>(currentEntity);
         }
-
+        [Obsolete]
         public static async Task<TModel> Update<TEntity, TModel>(this IDbContext dbContext, TModel model, long id, IMapper mapper)
              where TEntity : class, IEntity<long>, IEntityRestorable
             where TModel : IModelRestorable
@@ -110,7 +113,7 @@ namespace Framework.Base.DataService.Services
 
             return mapper.Map<TModel>(currentEntity);
         }
-
+        [Obsolete]
         public static async Task<TModel> Delete<TEntity, TModel>(this IDbContext dbContext, long id, IMapper mapper, SavingDelegate<TEntity> OnDeleting)
             where TEntity : class, IEntity<long>, IEntityRestorable
         {
@@ -123,7 +126,7 @@ namespace Framework.Base.DataService.Services
 
             return mapper.Map<TModel>(entity);
         }
-
+        [Obsolete]
         public static async Task<TModel> Delete<TEntity, TModel>(this IDbContext dbContext, long id, IMapper mapper, SavingAsyncDelegate<TEntity> OnDeletingAsync)
             where TEntity : class, IEntity<long>, IEntityRestorable
         {
@@ -136,7 +139,7 @@ namespace Framework.Base.DataService.Services
 
             return mapper.Map<TModel>(entity);
         }
-
+        [Obsolete]
         public static async Task<TModel> Restore<TEntity, TModel>(this IDbContext dbContext, long id, IMapper mapper)
             where TEntity : class, IEntity<long>, IEntityRestorable
         {
@@ -147,7 +150,7 @@ namespace Framework.Base.DataService.Services
 
             return mapper.Map<TModel>(entity);
         }
-
+        [Obsolete]
         public static async Task<TModel> Delete<TEntity, TModel>(this IDbContext dbContext, int id, IMapper mapper)
             where TEntity : class, IEntity<int>, IEntityRestorable
         {
@@ -158,7 +161,7 @@ namespace Framework.Base.DataService.Services
 
             return mapper.Map<TModel>(entity);
         }
-
+        [Obsolete]
         public static async Task<TModel> Delete<TEntity, TModel>(this IDbContext dbContext, long id, IMapper mapper)
             where TEntity : class, IEntity<long>, IEntityRestorable
         {
@@ -169,7 +172,7 @@ namespace Framework.Base.DataService.Services
 
             return mapper.Map<TModel>(entity);
         }
-
+        [Obsolete]
         public static async Task<TModel> Restore<TEntity, TModel>(this IDbContext dbContext, int id, IMapper mapper)
             where TEntity : class, IEntity<int>, IEntityRestorable
         {
@@ -180,7 +183,7 @@ namespace Framework.Base.DataService.Services
 
             return mapper.Map<TModel>(entity);
         }
-
+        [Obsolete]
         public static async Task Remove<TEntity>(this IDbContext dbContext, Expression<Func<TEntity, bool>> expression)
             where TEntity : class, IAnyEntity
         {
@@ -188,7 +191,7 @@ namespace Framework.Base.DataService.Services
             dbContext.Set<TEntity>().Remove(entity);
             await dbContext.SaveChangesAsync();
         }
-
+        [Obsolete]
         public static async Task<PageListModel<TModel>> GetAll<TEntity, TModel>(this IDbContext dbContext, int page, int count, IMapper mapper, bool desc = false)
             where TEntity : class, IEntity<long>
         {
@@ -206,7 +209,7 @@ namespace Framework.Base.DataService.Services
 
             return pageModel;
         }
-
+        [Obsolete]
         public static async Task<PageListModel<TModel>> GetAll<TEntity, TModel, TFilterModel>(this IDbContext dbContext,
             ListQueryModel<TFilterModel> query,
             ApplyFiltersDelegate<TEntity, TFilterModel> applyFilters,
@@ -239,7 +242,7 @@ namespace Framework.Base.DataService.Services
 
             return page;
         }
-
+        [Obsolete]
         public static async Task<PageListModel<TModel>> GetAll<TEntity, TModel, TFilterModel>(this IDbContext dbContext,
             ListQueryModel<TFilterModel> query,
             ApplySimpleFiltersDelegate<TEntity, TFilterModel> applyFilters,
@@ -273,7 +276,7 @@ namespace Framework.Base.DataService.Services
 
             return page;
         }
-
+        [Obsolete]
         // TODO подумать, куда вынести дефолтный orderby, чтобы объединить с GetAll
         public static async Task<PageListModel<TModel>> GetAllOrderByInt<TEntity, TModel, TFilterModel>(this IDbContext dbContext,
             ListQueryModel<TFilterModel> query,
@@ -308,14 +311,14 @@ namespace Framework.Base.DataService.Services
 
             return page;
         }
-
+        [Obsolete]
         public static async Task<TEntity> GetEntityForView<TEntity>(this IDbContext dbContext, long id)
             where TEntity : class, IEntity<long>, IEntityRestorable
         {
             var entity = await dbContext.Set<TEntity>().FirstOrDefaultAsync(m => m.Id == id && m.IsDeleted == false);
             return entity;
         }
-
+        [Obsolete]
         public static async Task<TEntity> GetEntityForUpdate<TEntity>(this IDbContext dbContext, long id)
             where TEntity : class, IEntity<long>, IEntityRestorable
         {
@@ -333,7 +336,7 @@ namespace Framework.Base.DataService.Services
 
             return entity;
         }
-
+        [Obsolete]
         public static async Task<TEntity> GetEntityForRestore<TEntity>(this IDbContext dbContext, long id)
             where TEntity : class, IEntity<long>, IEntityRestorable
         {
@@ -350,7 +353,7 @@ namespace Framework.Base.DataService.Services
 
             return entity;
         }
-
+        [Obsolete]
         public static async Task<TEntity> GetEntityForUpdate<TEntity>(this IDbContext dbContext, int id)
             where TEntity : class, IEntity<int>, IEntityRestorable
         {
@@ -367,7 +370,7 @@ namespace Framework.Base.DataService.Services
 
             return entity;
         }
-
+        [Obsolete]
         public static async Task<TEntity> GetEntityForRestore<TEntity>(this IDbContext dbContext, int id)
             where TEntity : class, IEntity<int>, IEntityRestorable
         {
@@ -384,7 +387,7 @@ namespace Framework.Base.DataService.Services
 
             return entity;
         }
-
+        [Obsolete]
         public static async Task<TEntity> GetEntityForRemove<TEntity>(this IDbContext dbContext, Expression<Func<TEntity, bool>> expression)
             where TEntity : class
         {

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.Types.Enums
 {
+    [Obsolete]
     public enum NamingConvention
     {
         Default = 0,

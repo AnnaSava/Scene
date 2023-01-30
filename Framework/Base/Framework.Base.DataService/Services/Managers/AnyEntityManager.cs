@@ -4,7 +4,7 @@ using Framework.Base.DataService.Contract.Interfaces;
 using Framework.Base.DataService.Entities;
 using Framework.Base.DataService.Exceptions;
 using Framework.Base.Types.ModelTypes;
-using Framework.Base.Types.View;
+using Framework.Base.Types.Registry;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.DataService.Services.Managers
 {
+    [Obsolete]
     public class AnyEntityManager<TEntity, TFormModel>
         where TEntity : class, IAnyEntity
     {

@@ -9,12 +9,13 @@ using Framework.Helpers.TypeHelpers;
 
 namespace Framework.Base.Service.ListView
 {
+    [Obsolete]
     public static class QueryStringExtentions
     {
         const char SortArraySeparator = ',';
         const char DescSortSign = '-';
         const char FilterPropsSeparator = '|';
-        public static Dictionary<string, SortDirection> ToSortDictionary(this string inputString)
+        public static Dictionary<string, SortDirection> ToSortDictionary0(this string inputString)
         {
             if (string.IsNullOrEmpty(inputString))
                 return null;
@@ -37,7 +38,7 @@ namespace Framework.Base.Service.ListView
             return dictionary;
         }
 
-        public static NumericFilterField<long> ToLongListFilterField(this string filterField)
+        public static NumericFilterField<long> ToLongListFilterField0(this string filterField)
         {
             if (string.IsNullOrEmpty(filterField))
                 return null;
@@ -70,7 +71,7 @@ namespace Framework.Base.Service.ListView
             return null;
         }
 
-        public static WordFilterField ToWordListFilterField(this string filterField)
+        public static WordFilterField ToWordListFilterField0(this string filterField)
         {
             if (string.IsNullOrEmpty(filterField))
                 return null;
@@ -103,7 +104,7 @@ namespace Framework.Base.Service.ListView
             return null;
         }
 
-        public static TextFilterField ToTextFilterField(this string filterField)
+        public static TextFilterField ToTextFilterField0(this string filterField)
         {
             if (string.IsNullOrEmpty(filterField))
                 return null;

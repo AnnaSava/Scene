@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.DataService.Entities
 {
+    [Obsolete]
     public class BaseHubEntity
     {
         [Key]

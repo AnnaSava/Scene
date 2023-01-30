@@ -25,12 +25,6 @@ namespace Framework.MailTemplate.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            builder.ConfigureContext(options =>
-            {
-                options.TablePrefix = Settings.TablePrefix;
-                options.NamingConvention = Settings.NamingConvention;
-            });
         }
     }
 }

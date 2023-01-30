@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Framework.Base.Types.View;
+using Framework.Base.Types.Registry;
 using Framework.Community.Data;
 using Framework.Community.Data.Contract;
 using Framework.Community.Data.Contract.Models;

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.DataService.Contract.Interfaces
 {
+    [Obsolete]
     public interface IDbContext
     {
         DbSet<TEntity> Set<TEntity>() where TEntity : class;

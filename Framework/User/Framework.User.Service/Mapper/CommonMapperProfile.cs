@@ -18,12 +18,12 @@ namespace Framework.User.Service.Mapper
             CreateMap<ReservedNameModel, ReservedNameViewModel>();
 
             CreateMap<ReservedNameFilterViewModel, ReservedNameFilterModel>(MemberList.None)
-                .ForMember(x => x.Text, y => y.MapFrom(s => s.Text.ToWordListFilterField()));
+                .ForMember(x => x.Text, y => y.MapFrom(s => s.Text.ToWordListFilterField0()));
 
             CreateMap<ReservedNameFormViewModel, ReservedNameModel>(MemberList.None);
 
             CreateMap<PermissionFilterViewModel, PermissionFilterModel>(MemberList.None)
-                .ForMember(x => x.Name, y => y.MapFrom(s => s.Name.ToWordListFilterField()));
+                .ForMember(x => x.Name, y => y.MapFrom(s => s.Name.ToWordListFilterField0()));
 
             CreateMap<PermissionViewModel, PermissionModel>();
             CreateMap<PermissionModel, PermissionViewModel>();
@@ -35,9 +35,9 @@ namespace Framework.User.Service.Mapper
             CreateMap<LegalDocumentModel, LegalDocumentFormViewModel>();
 
             CreateMap<LegalDocumentFilterViewModel, LegalDocumentFilterModel>(MemberList.None)
-                .ForMember(x => x.PermName, y => y.MapFrom(s => s.PermName.ToWordListFilterField()))
-                .ForMember(x => x.Title, y => y.MapFrom(s => s.Title.ToWordListFilterField()))
-                .ForMember(x => x.Culture, y => y.MapFrom(s => s.Culture.ToWordListFilterField()));
+                .ForMember(x => x.PermName, y => y.MapFrom(s => s.PermName.ToWordListFilterField0()))
+                .ForMember(x => x.Title, y => y.MapFrom(s => s.Title.ToWordListFilterField0()))
+                .ForMember(x => x.Culture, y => y.MapFrom(s => s.Culture.ToWordListFilterField0()));
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Framework.Base.Types.View;
+﻿using Framework.Base.Types.Registry;
 using Framework.Community.Service.Contract.Models;
 using System;
 using System.Collections.Generic;

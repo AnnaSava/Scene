@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.DataService.Services
 {
+    [Obsolete]
     public abstract class BaseEntityService<TEntity, TModel>
         where TEntity : class, IAnyEntity
         where TModel : IAnyModel

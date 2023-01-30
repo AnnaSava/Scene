@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Framework.Base.DataService.Contract.Models;
 using Framework.Base.Types;
-using Framework.Base.Types.View;
+using Framework.Base.Types.Registry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.Service.Services
 {
+    [Obsolete]
     public abstract class BaseViewService
     {
         protected const string ZeroIdString = "0";

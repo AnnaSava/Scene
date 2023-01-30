@@ -5,7 +5,7 @@ using Framework.Base.DataService.Contract.Models.ListView;
 using Framework.Base.DataService.Services;
 using Framework.Base.DataService.Services.Managers;
 using Framework.Base.Types.Enums;
-using Framework.Base.Types.View;
+using Framework.Base.Types.Registry;
 using Framework.MailTemplate.Data.Contract;
 using Framework.MailTemplate.Data.Contract.Context;
 using Framework.MailTemplate.Data.Contract.Models;
@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 
 namespace Framework.MailTemplate.Data.Services
 {
+    [Obsolete]
     public class MailTemplateDbService : BaseEntityService<Entities.MailTemplate, MailTemplateModel>, IMailTemplateDbService
     {
         protected DocumentEntityManager<long, Entities.MailTemplate, MailTemplateModel> entityManager;

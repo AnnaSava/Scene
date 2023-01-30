@@ -16,7 +16,7 @@ using Framework.User.DataService.Contract.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Framework.Base.DataService.Services.Managers;
 using Microsoft.Extensions.Logging;
-using Framework.Base.Types.View;
+using Framework.Base.Types.Registry;
 
 namespace Framework.User.DataService.Services
 {

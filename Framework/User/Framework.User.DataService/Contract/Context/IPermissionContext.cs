@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Framework.User.DataService.Contract.Interfaces.Context
 {
+    [Obsolete]
     public interface IPermissionContext
     {
         DbSet<Permission> Permissions { get; set; }

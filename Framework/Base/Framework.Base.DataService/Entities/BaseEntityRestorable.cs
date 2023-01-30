@@ -2,6 +2,7 @@
 
 namespace Framework.Base.DataService.Entities
 {
+    [Obsolete]
     public abstract class BaseEntityRestorable<TKey> : IEntity<TKey>, IEntityRestorable
     {
         public TKey Id { get; set; }

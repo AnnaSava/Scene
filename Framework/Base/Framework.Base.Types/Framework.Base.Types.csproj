@@ -5,4 +5,10 @@
     <Configurations>Debug;Release;Staging</Configurations>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="6.2.24" />
+    <PackageReference Include="X.PagedList" Version="8.4.0" />
+  </ItemGroup>
+
 </Project>

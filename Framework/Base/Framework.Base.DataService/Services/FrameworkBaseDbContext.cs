@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.DataService.Services
 {
+    [Obsolete]
     public class FrameworkBaseDbContext : DbContext, IDbContext
     {
         private DbContextOptions _options;
-        protected FrameworkDbOptionsExtension _frameworkDbOptionsExtension;
+        protected FrameworkDbOptionsExtension _dbOptionsExtension;
 
         public FrameworkBaseDbContext() : base() { }
 
@@ -20,9 +21,9 @@ namespace Framework.Base.DataService.Services
         {
             _options = options;
 
-            _frameworkDbOptionsExtension = options.Extensions.OfType<FrameworkDbOptionsExtension>().FirstOrDefault();
+            _dbOptionsExtension = options.Extensions.OfType<FrameworkDbOptionsExtension>().FirstOrDefault();
 
-            if (_frameworkDbOptionsExtension == null)
+            if (_dbOptionsExtension == null)
                 throw new Exception($"{nameof(FrameworkDbOptionsExtension)} not set in {nameof(FrameworkBaseDbContext)}");
         }
 

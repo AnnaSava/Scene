@@ -3,7 +3,7 @@ using Framework.Base.DataService;
 using Framework.Base.DataService.Contract.Models;
 using Framework.Base.DataService.Contract.Models.ListView;
 using Framework.Base.Service;
-using Framework.Base.Types.View;
+using Framework.Base.Types.Registry;
 using Microsoft.Extensions.Logging;
 using Savadev.Content.Data.Contract;
 using Savadev.Content.Data.Contract.Models;

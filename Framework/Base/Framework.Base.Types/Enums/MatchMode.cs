@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.Types.Enums
 {
+    [Obsolete]
     public enum MatchMode
     {
         Equals,
@@ -27,6 +28,7 @@ namespace Framework.Base.Types.Enums
         DateAfter
     }
 
+    [Obsolete]
     public enum MatchModeNumeric
     {
         Equals,
@@ -40,8 +42,10 @@ namespace Framework.Base.Types.Enums
         Between
     }
 
+    [Obsolete]
     public enum MatchModeWord
     {
+        None,
         Equals,
         NotEquals,
         In,
@@ -52,6 +56,7 @@ namespace Framework.Base.Types.Enums
         NotContains,
     }
 
+    [Obsolete]
     public enum MatchModeText
     {
         StartsWith,

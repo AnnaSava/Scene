@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.DataService.Services
 {
+    [Obsolete]
     public class AnyEntityService<TEntity, TModel> : IAnyEntityService<TModel>
         where TEntity : class, IAnyEntity
         where TModel : IAnyModel

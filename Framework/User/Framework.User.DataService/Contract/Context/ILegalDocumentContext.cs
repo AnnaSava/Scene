@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Framework.User.DataService.Contract.Interfaces.Context
 {
+    [Obsolete]
     public interface ILegalDocumentContext
     {
         DbSet<LegalDocument> LegalDocuments { get; set; }

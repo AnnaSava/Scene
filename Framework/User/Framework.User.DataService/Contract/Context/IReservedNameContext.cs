@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Framework.User.DataService.Contract.Interfaces
 {
+    [Obsolete]
     public interface IReservedNameContext
     {
         DbSet<ReservedName> ReservedNames { get; set; }

@@ -10,8 +10,10 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.DataService.Services
 {
+    [Obsolete]
     public static class FilterExtentions
     {
+        [Obsolete]
         public static IQueryable<TEntity> ApplyIdFilter<TEntity, TFilterModel>(this IQueryable<TEntity> list, TFilterModel filter)
             where TEntity : IEntity<long>
             where TFilterModel : ListFilterModel
@@ -26,7 +28,7 @@ namespace Framework.Base.DataService.Services
 
             return list;
         }
-
+        [Obsolete]
         public static IQueryable<TEntity> ApplyIntIdFilter<TEntity, TFilterModel>(this IQueryable<TEntity> list, TFilterModel filter)
             where TEntity : IEntity<int>
             where TFilterModel : ListFilterModel<int>
@@ -41,7 +43,7 @@ namespace Framework.Base.DataService.Services
 
             return list;
         }
-
+        [Obsolete]
         public static IQueryable<TEntity> ApplyIsDeletedFilter<TEntity, TFilterModel>(this IQueryable<TEntity> list, TFilterModel filter)
             where TEntity : IEntityRestorable
             where TFilterModel : IFilterIsDeleted
@@ -49,7 +51,7 @@ namespace Framework.Base.DataService.Services
             list = list.Where(m => m.IsDeleted == filter.IsDeleted);
             return list;
         }
-
+        [Obsolete]
         private static Dictionary<MatchModeNumeric, Expression<Func<TEntity, bool>>> GetIdRules<TEntity>(List<long> value)
             where TEntity : IEntity<long>
         {
@@ -64,7 +66,7 @@ namespace Framework.Base.DataService.Services
                         { MatchModeNumeric.NotIn, m => !value.Contains(m.Id) },
                     };
         }
-
+        [Obsolete]
         private static Dictionary<MatchModeNumeric, Expression<Func<TEntity, bool>>> GetIntIdRules<TEntity>(List<int> value)
             where TEntity : IEntity<int>
         {
