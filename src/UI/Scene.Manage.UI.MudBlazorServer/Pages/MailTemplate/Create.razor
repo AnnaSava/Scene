@@ -1,0 +1,39 @@
+﻿@page "/mailtemplates/create"
+@using Framework.MailTemplate
+@using Framework.User.Service.Contract.Interfaces
+@using Framework.User.Service.Contract.Models
+@inject IMailTemplateService _mailTemplateService
+
+<h3>Create</h3>
+
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator/>
+
+    <MudTextField Label="Permanent name" @bind-Value="model.PermName" For="@(() => model.PermName)"/>
+        
+    <MudSelect T="string" Label="Culture" @bind-Value="model.Culture" AnchorOrigin="Origin.BottomCenter">
+        <MudSelectItem Value="@("En")" />
+        <MudSelectItem Value="@("Ru")" />
+    </MudSelect>
+
+    <MudTextField Label="Title" @bind-Value="model.Title" For="@(() => model.Title)"/>
+    <MudTextField T="string" @bind-Value="model.Text" Label="Text" Variant="Variant.Text" Lines="20" />
+
+    <MudCardActions>
+        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Save</MudButton>
+    </MudCardActions>
+
+</EditForm>
+
+@code {
+    MailTemplateFormViewModel model = new MailTemplateFormViewModel();
+    bool success;
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        await _mailTemplateService.Create(model);
+
+        success = true;
+        StateHasChanged();
+    }
+}

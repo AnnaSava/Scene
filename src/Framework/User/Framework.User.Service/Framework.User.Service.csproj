@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Configurations>Debug;Release;Staging</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Base\Framework.Base.Service\Framework.Base.Service.csproj" />
+    <ProjectReference Include="..\Framework.User.DataService\Framework.User.DataService.csproj" />
+    <ProjectReference Include="..\Framework.User.Helpers\Framework.User.Helpers.csproj" />
+  </ItemGroup>
+
+</Project>

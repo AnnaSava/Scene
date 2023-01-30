@@ -1,0 +1,39 @@
+﻿@page
+@model Scene.Login.WebApp.Pages.Account.RegisterModel
+@{
+}
+<h2>Регистрация нового пользователя</h2>
+<form method="post" asp-controller="Account" asp-action="Register">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div>
+        <label asp-for="Input.Login"></label><br />
+        <input asp-for="Input.Login" />
+        <span asp-validation-for="Input.Login"></span>
+    </div>
+    <div>
+        <label asp-for="Input.Email"></label><br />
+        <input asp-for="Input.Email" />
+        <span asp-validation-for="Input.Email"></span>
+    </div>
+    <div>
+        <label asp-for="Input.Password"></label><br />
+        <input asp-for="Input.Password" />
+        <span asp-validation-for="Input.Password"></span>
+    </div>
+    <div>
+        <label asp-for="Input.PasswordConfirm"></label><br />
+        <input asp-for="Input.PasswordConfirm" />
+        <span asp-validation-for="Input.PasswordConfirm"></span>
+    </div>
+    <div>
+        <textarea rows="6" disabled>@Model.Consent?.Text</textarea>
+    </div>
+    <div>
+        <label asp-for="Input.AcceptUserConsent"></label><br />
+        <input asp-for="Input.AcceptUserConsent" />
+        <span asp-validation-for="Input.AcceptUserConsent"></span>
+    </div>
+    <div>
+        <input type="submit" value="Регистрация" />
+    </div>
+</form>

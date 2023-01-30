@@ -1,0 +1,62 @@
+﻿@page "/users"
+@using Framework.User.Service.Contract.Interfaces
+@using Framework.User.Service.Contract.Models
+@inject IAppUserService _userService
+
+<PageTitle>Users</PageTitle>
+
+<MudBreadcrumbs Items="breadCrumbs"></MudBreadcrumbs>
+
+<MudTable ServerData="@(new Func<TableState, Task<TableData<AppUserViewModel>>>(ServerReload))"
+    Hover="true" @ref="table">
+
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Users</MudText>
+        <MudSpacer />
+        <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortLabel="id" T="AppUserViewModel">Id</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="login" T="AppUserViewModel">Login</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="email" T="AppUserViewModel">Email</MudTableSortLabel></MudTh>
+        <MudTh>IsBanned</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="Login">@context.Login</MudTd>
+        <MudTd DataLabel="Email">@context.Email</MudTd>
+        <MudTd DataLabel="IsBanned">@context.IsBanned</MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager/>
+    </PagerContent>
+</MudTable>
+
+
+@code {
+    private MudTable<AppUserViewModel>? table;
+
+    private string searchString = string.Empty;
+
+    private List<BreadcrumbItem> breadCrumbs = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem("Home", href: "/"),
+        new BreadcrumbItem("Users", href: null, disabled: true)
+    };
+
+    private async Task<TableData<AppUserViewModel>> ServerReload(TableState state)
+    {
+        var filter = new AppUserFilterViewModel { Login =  "contains|" + searchString };
+
+        var result = await _userService.GetAll(filter, PageHelper.GetPageInfo(state));
+
+        return PageHelper.GetTableData<AppUserViewModel>(result);
+    }
+
+    private void OnSearch(string text)
+    {
+        searchString = text;
+        table?.ReloadServerData();
+    }
+}

@@ -1,0 +1,58 @@
+﻿@page "/roles"
+@using Framework.User.Service.Contract.Interfaces
+@using Framework.User.Service.Contract.Models
+@inject IAppRoleService _roleService
+
+<PageTitle>Roles</PageTitle>
+
+<MudBreadcrumbs Items="breadCrumbs"></MudBreadcrumbs>
+
+<MudTable ServerData="@(new Func<TableState, Task<TableData<AppRoleViewModel>>>(ServerReload))"
+    Hover="true" @ref="table">
+
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Roles</MudText>
+        <MudSpacer />
+        <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortLabel="id" T="AppRoleViewModel">Id</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="name" T="AppRoleViewModel">Name</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager/>
+    </PagerContent>
+</MudTable>
+
+
+@code {
+    private MudTable<AppRoleViewModel>? table;
+
+    private string searchString = string.Empty;
+
+    private List<BreadcrumbItem> breadCrumbs = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem("Home", href: "/"),
+        new BreadcrumbItem("Roles", href: null, disabled: true)
+    };
+
+    private async Task<TableData<AppRoleViewModel>> ServerReload(TableState state)
+    {
+        var filter = new AppRoleFilterViewModel { Name =  "contains|" + searchString };
+
+        var result = await _roleService.GetAll(filter, PageHelper.GetPageInfo(state));
+
+        return PageHelper.GetTableData<AppRoleViewModel>(result);
+    }
+
+    private void OnSearch(string text)
+    {
+        searchString = text;
+        table?.ReloadServerData();
+    }
+}

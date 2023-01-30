@@ -1,0 +1,158 @@
+﻿@page "/legaldocuments"
+@using Framework.Base.Types.Enums
+@using Framework.User.Service.Contract.Interfaces
+@using Framework.User.Service.Contract.Models
+@inject ILegalDocumentService _legalDocumentService
+
+<PageTitle>Documents</PageTitle>
+
+<MudBreadcrumbs Items="breadCrumbs"></MudBreadcrumbs>
+
+<MudSwitch T="bool" Checked="@showDeleted" CheckedChanged="@(c=>OnDeletedCheckedChanged(c))" />
+
+<MudTable ServerData="@(new Func<TableState, Task<TableData<LegalDocumentViewModel>>>(ServerReload))"
+    Hover="true" @ref="table">
+
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Documents</MudText>
+        <MudButton Href="/legaldocuments/create" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary">Add</MudButton>
+        <MudSelect @bind-Value="searchCulture" T="string" Label="Culture" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(s=>OnCultureSearch(s))">
+            <MudSelectItem Value="@("All")" />
+            <MudSelectItem Value="@("En")" />
+            <MudSelectItem Value="@("Ru")" />
+        </MudSelect>
+        <MudSelect T="string" Label="Status" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(s=>OnStatusSearch(s))">
+            <MudSelectItem Value="@("All")" />
+            <MudSelectItem Value="@("Draft")" />
+            <MudSelectItem Value="@("Published")" />
+            <MudSelectItem Value="@("Outdated")" />
+        </MudSelect>
+        <MudSpacer />
+        <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortLabel="id" T="LegalDocumentViewModel">Id</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="permname" T="LegalDocumentViewModel">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="title" T="LegalDocumentViewModel">Title</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="culture" T="LegalDocumentViewModel">Culture</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="status" T="LegalDocumentViewModel">Status</MudTableSortLabel></MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="PermName">@context.PermName</MudTd>
+        <MudTd DataLabel="Title">@context.Title</MudTd>
+        <MudTd DataLabel="Culture">@context.Culture</MudTd>
+        <MudTd DataLabel="Status">@context.Status.ToString()</MudTd>
+        <MudTd>
+            @if(context.IsDeleted)
+            {
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="(() => OnClickRestore(context))">Restore</MudButton>  
+            }
+            else
+            {
+                @if (context.HasAllTranslations == false)
+                {
+                    <MudButton Href="@("/legaldocuments/"+ context.PermName + "/createtranslation")" Variant="Variant.Outlined" Color="Color.Primary">+ transl</MudButton>
+                }
+                @if(context.Status == DocumentStatus.Published)
+                {
+                    <MudButton Href="@("/legaldocuments/"+ context.PermName + "/" + context.Culture.ToLower() + "/createversion")" Variant="Variant.Outlined" Color="Color.Primary">+ vers</MudButton>
+                } 
+                else if(context.Status == DocumentStatus.Draft)
+                {
+                    <MudButton Href="@("/legaldocuments/update/" + context.Id)" Variant="Variant.Outlined" Color="Color.Primary">Update</MudButton>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="(() => OnClickPublish(context))">Publish</MudButton>
+                }
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="(() => OnClickDelete(context))">Delete</MudButton>
+            }
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager/>
+    </PagerContent>
+</MudTable>
+
+
+@code {
+    private MudTable<LegalDocumentViewModel>? table;
+
+    private string searchString = string.Empty;
+    private string searchCulture = string.Empty;
+    private DocumentStatus? searchStatus;
+    private bool showDeleted = false;
+
+    private List<BreadcrumbItem> breadCrumbs = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem("Home", href: "/"),
+        new BreadcrumbItem("Documents", href: null, disabled: true)
+    };
+
+    private async Task<TableData<LegalDocumentViewModel>> ServerReload(TableState state)
+    {
+        var filter = new LegalDocumentFilterViewModel 
+        { 
+            PermName =  "contains|" + searchString, 
+            Culture = "equals|" + searchCulture,
+            Status = searchStatus,
+            IsDeleted = showDeleted
+        };
+
+        var result = await _legalDocumentService.GetAll(filter, PageHelper.GetPageInfo(state));
+
+        return PageHelper.GetTableData<LegalDocumentViewModel>(result);
+    }
+
+    private void OnSearch(string text)
+    {
+        searchString = text;
+        table?.ReloadServerData();
+    }
+
+    private void OnCultureSearch(IEnumerable<string> selectedCultures)
+    {
+        var selectedCulture = selectedCultures?.FirstOrDefault() ?? string.Empty;
+        searchCulture = selectedCulture == "All" ? string.Empty : selectedCulture.ToLower();
+        table?.ReloadServerData();
+    }
+
+    private void OnStatusSearch(IEnumerable<string> selectedOptions)
+    {
+        var selectedOption = selectedOptions?.FirstOrDefault() ?? string.Empty;
+
+        switch(selectedOption)
+        {
+            case "Draft": searchStatus = DocumentStatus.Draft; break;
+            case "Outdated": searchStatus = DocumentStatus.Outdated; break;
+            case "Published": searchStatus = DocumentStatus.Published; break;
+            default: searchStatus = null; break;
+        }
+
+        table?.ReloadServerData();
+    }
+
+    private async Task OnClickPublish(LegalDocumentViewModel el)
+    {
+        await _legalDocumentService.Publish(el.Id);
+        table?.ReloadServerData();
+    }
+
+    private void OnDeletedCheckedChanged(bool isChecked)
+    { 
+        showDeleted = isChecked;
+        table?.ReloadServerData();
+    }
+
+    private async Task OnClickDelete(LegalDocumentViewModel el)
+    {
+        await _legalDocumentService.Delete(el.Id);
+        table?.ReloadServerData();
+    }
+
+    private async Task OnClickRestore(LegalDocumentViewModel el)
+    {
+        await _legalDocumentService.Restore(el.Id);
+        table?.ReloadServerData();
+    }
+}
