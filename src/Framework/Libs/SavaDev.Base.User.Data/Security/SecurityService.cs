@@ -1,4 +1,5 @@
-﻿using SavaDev.Base.User.Data.Adapters.Interfaces;
+﻿using Microsoft.AspNetCore.Http;
+using SavaDev.Base.User.Data.Adapters.Interfaces;
 using SavaDev.Base.User.Data.Entities;
 using System;
 using System.Collections.Generic;
@@ -16,10 +17,20 @@ namespace SavaDev.Base.User.Data.Security
 
         private Dictionary<string, UserInfoCacheModel> memCache = new Dictionary<string, UserInfoCacheModel>();
 
-        public SecurityService(IUserManagerAdapter<TUserEntity> userManager, IRoleManagerAdapter<TRoleEntity> roleManager)
+        public SecurityService(IHttpContextAccessor httpContextAccessor,
+            IUserManagerAdapter<TUserEntity> userManager, 
+            IRoleManagerAdapter<TRoleEntity> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _httpContextAccessor = httpContextAccessor;
+        }
+
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public string GetId()
+        {
+            return HttpContextUser.GetId(_httpContextAccessor);
         }
 
         public async Task<bool> IsLocked(string userId)

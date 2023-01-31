@@ -25,16 +25,16 @@ namespace Savadev.Content.Services
             _mapper = mapper;
         }
 
-        public async Task<ListPageViewModel<DraftViewModel>> GetAll(DraftFilterViewModel filter, ListPageInfoViewModel pageInfo)
-        {
-            var filterModel = _mapper.Map<DraftFilterModel>(filter);
+        //public async Task<ListPageViewModel<DraftViewModel>> GetAll(DraftFilterViewModel filter, ListPageInfoViewModel pageInfo)
+        //{
+        //    var filterModel = _mapper.Map<DraftFilterModel>(filter);
 
-            var pageInfoModel = _mapper.Map<PageInfoModel>(pageInfo);
+        //    var pageInfoModel = _mapper.Map<PageInfoModel>(pageInfo);
 
-            var list = await _draftService.GetAll(new ListQueryModel<DraftFilterModel> { Filter = filterModel, PageInfo = pageInfoModel });
+        //    var list = await _draftService.GetAll(new ListQueryModel<DraftFilterModel> { Filter = filterModel, PageInfo = pageInfoModel });
 
-            var vm = ListPageViewModel.Map<DraftModel, DraftViewModel>(list, _mapper);
-            return vm;
-        }
+        //    var vm = ListPageViewModel.Map<DraftModel, DraftViewModel>(list, _mapper);
+        //    return vm;
+        //}
     }
 }

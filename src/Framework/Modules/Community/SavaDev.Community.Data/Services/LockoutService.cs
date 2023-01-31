@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
-using Framework.Base.DataService.Services;
-using Framework.Community.Data.Contract;
-using Framework.Community.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using SavaDev.Base.Data.Services;
+using SavaDev.Community.Data;
+using SavaDev.Community.Data.Contract;
+using SavaDev.Community.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Community.Data.Services
+namespace SavaDev.Community.Data.Services
 {
     public class LockoutService : BaseEntityService<Lockout, LockoutModel>, ILockoutService
     {

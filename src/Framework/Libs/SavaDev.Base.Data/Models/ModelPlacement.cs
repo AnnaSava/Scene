@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Base.Types
+namespace SavaDev.Base.Data.Models
 {
     public class ModelPlacement
     {
@@ -14,11 +14,11 @@ namespace Framework.Base.Types
 
         public ModelPlacement(Type type)
         {
-            var t = type.Assembly.GetName().Name;
-            var t1 = type.Name;
+            var module = type.Assembly.GetName().Name;
+            var entity = type.Name;
 
-            Entity= t1;
-            Module = t;
+            Entity = entity;
+            Module = module;
         }
     }
 }

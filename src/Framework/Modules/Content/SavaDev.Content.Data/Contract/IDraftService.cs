@@ -1,7 +1,8 @@
-﻿using Framework.Base.DataService.Contract.Models;
-using Framework.Base.DataService.Contract.Models.ListView;
-using Framework.Base.Types.Registry;
-using Savadev.Content.Data.Contract.Models;
+﻿using Savadev.Content.Data.Contract.Models;
+using SavaDev.Base.Data.Registry;
+using SavaDev.Base.Data.Services;
+using SavaDev.Base.Front.Registry;
+using SavaDev.Content.Data.Contract.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +23,8 @@ namespace Savadev.Content.Data.Contract
 
         Task<DraftModel> GetOne(Guid id);
 
-        Task<PageListModel<DraftModel>> GetAll(ListQueryModel<DraftStrictFilterModel> query);
+        Task<ItemsPage<DraftModel>> GetAll(RegistryQuery<DraftStrictFilterModel> query);
 
-        Task<PageListModel<DraftModel>> GetAll(ListQueryModel<DraftFilterModel> query);
+        Task<ItemsPage<DraftModel>> GetAll(RegistryQuery<DraftFilterModel> query);
     }
 }

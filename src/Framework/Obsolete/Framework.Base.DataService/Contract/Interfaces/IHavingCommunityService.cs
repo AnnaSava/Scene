@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.DataService.Contract.Interfaces
 {
+    [Obsolete]
     public interface IHavingCommunityService
     {
         Task<OperationResult> SetCommunityId(long id, Guid communityId);

@@ -1,11 +1,11 @@
-﻿using Framework.Base.DataService.Entities;
+﻿using SavaDev.Base.Data.Entities.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Community.Data.Entities
+namespace SavaDev.Community.Data.Entities
 {
     public class Subscription : BaseCommunityEntity, IAnyEntity
     {

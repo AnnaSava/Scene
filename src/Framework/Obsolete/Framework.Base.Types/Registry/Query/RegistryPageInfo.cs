@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.Types.Registry
 {
+    [Obsolete]
     public class RegistryPageInfo
     {
         public int PageNumber { get; set; }

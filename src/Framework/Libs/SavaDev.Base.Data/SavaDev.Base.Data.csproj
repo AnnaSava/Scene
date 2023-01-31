@@ -13,8 +13,4 @@
     <PackageReference Include="X.PagedList" Version="8.4.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\Interfaces\" />
-  </ItemGroup>
-
 </Project>

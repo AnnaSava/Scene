@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 namespace Framework.User.Service.Services
 {
     // TODO возможно, объединить с секурити
+    [Obsolete]
     public class CurrentUserService : ICurrentUserService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;

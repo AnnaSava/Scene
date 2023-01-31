@@ -7,6 +7,7 @@ using X.PagedList;
 
 namespace Framework.Base.Types.Registry
 {
+    [Obsolete]
     public class ItemsPage<TModel>
     {
         public List<TModel> Items { get; }

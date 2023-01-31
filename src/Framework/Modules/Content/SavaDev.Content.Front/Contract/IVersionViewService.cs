@@ -10,6 +10,6 @@ namespace Savadev.Content.Contract
 {
     public interface IVersionViewService
     {
-        Task<ListPageViewModel<VersionViewModel>> GetAll(VersionFilterViewModel filter, ListPageInfoViewModel pageInfo);
+        //Task<ListPageViewModel<VersionViewModel>> GetAll(VersionFilterViewModel filter, ListPageInfoViewModel pageInfo);
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Community.Service.Contract.Models
+namespace SavaDev.Community.Front.Contract.Models
 {
     public class CommunitySavingModel
     {

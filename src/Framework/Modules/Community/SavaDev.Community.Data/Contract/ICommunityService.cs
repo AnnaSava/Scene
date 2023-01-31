@@ -1,13 +1,8 @@
-﻿using Framework.Base.DataService.Contract.Models.ListView;
-using Framework.Base.Types.Registry;
-using Framework.Community.Data.Contract.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SavaDev.Base.Data.Registry;
+using SavaDev.Base.Data.Services;
+using SavaDev.Community.Data.Contract.Models;
 
-namespace Framework.Community.Service.Contract
+namespace SavaDev.Community.Service.Contract
 {
     public interface ICommunityService
     {
@@ -15,6 +10,6 @@ namespace Framework.Community.Service.Contract
 
         Task<CommunityModel> GetOne(Guid id);
 
-        Task<PageListModel<CommunityModel>> GetAll(int page, int count);
+        Task<ItemsPage<CommunityModel>> GetAll(int page, int count);
     }
 }

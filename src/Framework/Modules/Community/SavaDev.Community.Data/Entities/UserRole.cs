@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Community.Data.Entities
+namespace SavaDev.Community.Data.Entities
 {
     public class UserRole
     {

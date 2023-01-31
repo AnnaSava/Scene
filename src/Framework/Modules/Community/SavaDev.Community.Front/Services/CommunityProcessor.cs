@@ -1,25 +1,20 @@
 ﻿using AutoMapper;
-using Framework.Base.Types.Registry;
-using Framework.Community.Data;
-using Framework.Community.Data.Contract;
-using Framework.Community.Data.Contract.Models;
-using Framework.Community.Data.Services;
-using Framework.Community.Service.Contract;
-using Framework.Community.Service.Contract.Models;
 using Framework.User.DataService.Contract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SavaDev.Base.Data.Services;
+using SavaDev.Community.Data;
+using SavaDev.Community.Data.Contract;
+using SavaDev.Community.Data.Contract.Models;
+using SavaDev.Community.Front.Contract.Models;
+using SavaDev.Community.Front.Services.Contract;
+using SavaDev.Community.Service.Contract;
 
-namespace Framework.Community.Service.Services
+namespace SavaDev.Community.Front.Services
 {
     public class CommunityProcessor<TUserModel> : ICommunityProcessor<TUserModel>
     {
         IUserSearchService<TUserModel> _userService;
 
-        CommunityService _communityService;
+        ICommunityService _communityService;
         ISubscriptionService _subscriptionService;
         ILockoutService _lockoutService;
         IMapper _mapper;
@@ -31,7 +26,7 @@ namespace Framework.Community.Service.Services
             IUserSearchService<TUserModel> userService,
             IMapper mapper)
         {
-            //todo _communityService = communityService;
+             _communityService = communityService;
             _subscriptionService = subscriptionService;
             _lockoutService = lockoutService;
             _userService = userService;

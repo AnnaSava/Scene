@@ -1,12 +1,12 @@
-﻿using Framework.Base.Types.Registry;
-using Framework.Community.Service.Contract.Models;
+﻿using SavaDev.Base.Data.Services;
+using SavaDev.Community.Front.Contract.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Community.Service.Contract
+namespace SavaDev.Community.Front.Services.Contract
 {
     public interface ICommunityProcessor<TUserModel>
     {

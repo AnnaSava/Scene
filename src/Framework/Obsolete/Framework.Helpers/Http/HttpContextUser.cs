@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Helpers.Http
 {
+    [Obsolete]
     public static class HttpContextUser
     {
         public static string GetId(IHttpContextAccessor httpContextAccessor)

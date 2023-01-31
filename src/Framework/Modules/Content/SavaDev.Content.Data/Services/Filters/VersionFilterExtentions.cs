@@ -15,51 +15,52 @@ namespace Savadev.Content.Data.Services.Filters
         {
             if (filter == null) return list;
 
-            return list.ApplyModuleFilter(filter)
-                .ApplyEntityFilter(filter)
-                .ApplyOwnerFilter(filter)
-                .ApplyContentIdFilter(filter);
+            return list;
+            //.ApplyModuleFilter(filter)
+            //    .ApplyEntityFilter(filter)
+            //    .ApplyOwnerFilter(filter)
+            //    .ApplyContentIdFilter(filter);
         }
 
-        private static IQueryable<Entities.Version> ApplyModuleFilter(this IQueryable<Entities.Version> list, VersionFilterModel filter)
-        {
-            if (filter.Module?.Value?.Any() ?? false)
-            {
-                var rules = GetModuleRules(filter.Module.Value);
-                list = list.Where(rules[filter.Module.MatchMode]);
-            }
-            return list;
-        }
+        //private static IQueryable<Entities.Version> ApplyModuleFilter(this IQueryable<Entities.Version> list, VersionFilterModel filter)
+        //{
+        //    if (filter.Module?.Value?.Any() ?? false)
+        //    {
+        //        var rules = GetModuleRules(filter.Module.Value);
+        //        list = list.Where(rules[filter.Module.MatchMode]);
+        //    }
+        //    return list;
+        //}
 
-        private static IQueryable<Entities.Version> ApplyEntityFilter(this IQueryable<Entities.Version> list, VersionFilterModel filter)
-        {
-            if (filter.Entity?.Value?.Any() ?? false)
-            {
-                var rules = GetEntityRules(filter.Entity.Value);
-                list = list.Where(rules[filter.Entity.MatchMode]);
-            }
-            return list;
-        }
+        //private static IQueryable<Entities.Version> ApplyEntityFilter(this IQueryable<Entities.Version> list, VersionFilterModel filter)
+        //{
+        //    if (filter.Entity?.Value?.Any() ?? false)
+        //    {
+        //        var rules = GetEntityRules(filter.Entity.Value);
+        //        list = list.Where(rules[filter.Entity.MatchMode]);
+        //    }
+        //    return list;
+        //}
 
-        private static IQueryable<Entities.Version> ApplyContentIdFilter(this IQueryable<Entities.Version> list, VersionFilterModel filter)
-        {
-            if (filter.ContentId?.Value?.Any() ?? false)
-            {
-                var rules = GetContentIdRules(filter.ContentId.Value);
-                list = list.Where(rules[filter.ContentId.MatchMode]);
-            }
-            return list;
-        }
+        //private static IQueryable<Entities.Version> ApplyContentIdFilter(this IQueryable<Entities.Version> list, VersionFilterModel filter)
+        //{
+        //    if (filter.ContentId?.Value?.Any() ?? false)
+        //    {
+        //        var rules = GetContentIdRules(filter.ContentId.Value);
+        //        list = list.Where(rules[filter.ContentId.MatchMode]);
+        //    }
+        //    return list;
+        //}
 
-        private static IQueryable<Entities.Version> ApplyOwnerFilter(this IQueryable<Entities.Version> list, VersionFilterModel filter)
-        {
-            if (filter.Owner?.Value?.Any() ?? false)
-            {
-                var rules = GetOwnerRules(filter.Owner.Value);
-                list = list.Where(rules[filter.Owner.MatchMode]);
-            }
-            return list;
-        }
+        //private static IQueryable<Entities.Version> ApplyOwnerFilter(this IQueryable<Entities.Version> list, VersionFilterModel filter)
+        //{
+        //    if (filter.Owner?.Value?.Any() ?? false)
+        //    {
+        //        var rules = GetOwnerRules(filter.Owner.Value);
+        //        list = list.Where(rules[filter.Owner.MatchMode]);
+        //    }
+        //    return list;
+        //}
 
         private static Dictionary<MatchModeWord, Expression<Func<Entities.Version, bool>>> GetModuleRules(List<string> value)
         {

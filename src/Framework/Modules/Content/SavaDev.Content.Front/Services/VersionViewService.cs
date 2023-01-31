@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
-using Framework.Base.DataService.Contract.Models;
-using Framework.Base.Service.ListView;
 using Savadev.Content.Contract;
 using Savadev.Content.Contract.Models;
 using Savadev.Content.Data;
 using Savadev.Content.Data.Contract;
 using Savadev.Content.Data.Contract.Models;
+using SavaDev.Base.Front.Registry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,16 +24,16 @@ namespace Savadev.Content.Services
             _mapper = mapper;
         }
 
-        public async Task<ListPageViewModel<VersionViewModel>> GetAll(VersionFilterViewModel filter, ListPageInfoViewModel pageInfo)
-        {
-            var filterModel = _mapper.Map<VersionFilterModel>(filter);
+        //public async Task<ItemsPageViewModel<VersionViewModel>> GetAll(VersionFilterViewModel filter, ListPageInfoViewModel pageInfo)
+        //{
+        //    var filterModel = _mapper.Map<VersionFilterModel>(filter);
 
-            var pageInfoModel = _mapper.Map<PageInfoModel>(pageInfo);
+        //    var pageInfoModel = _mapper.Map<PageInfoModel>(pageInfo);
 
-            var list = await _versionService.GetAll(new ListQueryModel<VersionFilterModel> { Filter = filterModel, PageInfo = pageInfoModel });
+        //    var list = await _versionService.GetAll(new RegistryQuery<VersionFilterModel> { Filter = filterModel, PageInfo = pageInfoModel });
 
-            var vm = ListPageViewModel.Map<VersionModel, VersionViewModel>(list, _mapper);
-            return vm;
-        }
+        //    var vm = ItemsPageViewModel.Map<VersionModel, VersionViewModel>(list, _mapper);
+        //    return vm;
+        //}
     }
 }

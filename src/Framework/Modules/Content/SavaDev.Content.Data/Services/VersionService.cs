@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
-using Framework.Base.DataService.Contract.Models;
-using Framework.Base.DataService.Contract.Models.ListView;
-using Framework.Base.Types.Registry;
 using Microsoft.Extensions.Logging;
 using Savadev.Content.Data.Contract;
 using Savadev.Content.Data.Contract.Models;
 using Savadev.Content.Data.Services.Filters;
+using SavaDev.Base.Data.Registry;
+using SavaDev.Base.Data.Services;
 
 namespace Savadev.Content.Data.Services
 {
@@ -28,7 +27,7 @@ namespace Savadev.Content.Data.Services
 
         public async Task<OperationResult<VersionModel>> Create<T>(VersionModel model, T contentModel) => await entityManager.Create(model, contentModel);
 
-        public async Task<PageListModel<VersionModel>> GetAll(ListQueryModel<VersionFilterModel> query)
+        public async Task<ItemsPage<VersionModel>> GetAll(RegistryQuery<VersionFilterModel> query)
         {
             var page = await entityManager.GetAll(query, ApplyFilters);
 

@@ -1,11 +1,11 @@
-﻿using Framework.Base.Types.ModelTypes;
+﻿using SavaDev.Base.Data.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Community.Data
+namespace SavaDev.Community.Data
 {
     public class LockoutModel : BaseCommunityModel, IAnyModel
     {

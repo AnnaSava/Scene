@@ -1,14 +1,8 @@
 ﻿using AutoMapper;
-using Framework.Community.Data;
-using Framework.Community.Data.Contract.Models;
-using Framework.Community.Service.Contract.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SavaDev.Community.Data.Contract.Models;
+using SavaDev.Community.Front.Contract.Models;
 
-namespace Framework.Community.Service.Mapper
+namespace SavaDev.Community.Front.Scheme
 {
     public class CommunityViewMapperProfile : Profile
     {

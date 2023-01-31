@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.DataService.Contract.Interfaces
 {
+    [Obsolete]
     public interface IHavingDraftsModel
     {
         Guid? DraftId { get; set; }

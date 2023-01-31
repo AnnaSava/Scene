@@ -8,6 +8,8 @@ namespace SavaDev.Base.User.Data.Security
         where TUserEntity : BaseUser
         where TRoleEntity : BaseRole
     {
+        string GetId();
+
         Task<bool> IsLocked(string userId);
 
         Task<bool> HasRequiredPermissions(string userId, IEnumerable<string> permissions);

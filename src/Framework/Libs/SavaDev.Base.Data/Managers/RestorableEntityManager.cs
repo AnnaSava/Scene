@@ -8,11 +8,9 @@ using SavaDev.Base.Data.Exceptions;
 using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Registry.Filter;
 using SavaDev.Base.Data.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
+//using System.Linq.Dynamic.Core;
+using X.PagedList;
 
 namespace SavaDev.Base.Data.Managers
 {
@@ -259,6 +257,77 @@ namespace SavaDev.Base.Data.Managers
 
             var page = new ItemsPage<TItemModel>(res);
             return page;
+        }
+
+        public async Task<IEnumerable<TItemModel>> GetAllByIds<TItemModel>(ByIdsFilter<TKey> filter)
+        {
+            var list = _dbContext.Set<TEntity>()
+                .AsQueryable()
+                .AsNoTracking();
+
+            list = list.Where(m => filter.Ids.Contains(m.Id));
+
+            if (!filter.WithDeleted)
+            {
+                list = list.Where(m => !m.IsDeleted);
+            }
+
+            var res = await list
+                .ProjectTo<TItemModel>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return res;
+        }
+
+        public async Task<IEnumerable<TItemModel>> GetAllByRelated<TItemModel>(ByRelatedFilter<long> filter)
+        {
+            var list = GetAllByRelatedQueryable(filter);
+
+            var res = await list
+                .ProjectTo<TItemModel>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return res;
+        }
+
+        public async Task<IPagedList<TItemModel>> GetAllByRelated<TItemModel>(ByRelatedFilter<long> filter, int page, int count)
+        {
+            var list = GetAllByRelatedQueryable(filter);
+
+            var res = await list
+                .ProjectTo<TItemModel>(_mapper.ConfigurationProvider)
+                .ToPagedListAsync(page, count);
+
+            return res;
+        }
+
+        public async Task<IPagedList<TItemModel>> GetAllByRelated<TItemModel>(ByRelatedFilter<long> filter, RegistrySort sort, int page, int count)
+        {
+            var list = GetAllByRelatedQueryable(filter);
+
+            list = list.ApplySort(sort);
+
+            var res = await list
+                .ProjectTo<TItemModel>(_mapper.ConfigurationProvider)
+                .ToPagedListAsync(page, count);
+
+            return res;
+        }
+
+
+        private IQueryable<TEntity> GetAllByRelatedQueryable(ByRelatedFilter<long> filter)
+        {
+            var list = _dbContext.Set<TEntity>()
+                .AsQueryable()
+                .AsNoTracking();
+
+            list = list.ApplyByRelatedFilter(filter);
+
+            if (!filter.WithDeleted)
+            {
+                list = list.Where(m => !m.IsDeleted);
+            }
+            return list;
         }
     }
 }

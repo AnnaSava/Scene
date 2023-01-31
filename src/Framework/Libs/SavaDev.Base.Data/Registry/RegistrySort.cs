@@ -12,5 +12,11 @@ namespace SavaDev.Base.Data.Registry
         public string FieldName { get; set; }
 
         public SortDirection Direction { get; set; }
+
+        public RegistrySort(string fieldName, SortDirection direction = SortDirection.Asc)
+        {
+            FieldName = fieldName;
+            Direction = direction;
+        }
     }
 }

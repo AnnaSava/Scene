@@ -1,21 +1,15 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Framework.Base.DataService.Contract.Models.ListView;
-using Framework.Base.DataService.Services.Managers;
-using Framework.Base.Types.Registry;
-using Framework.Community.Data;
-using Framework.Community.Data.Contract.Models;
-using Framework.Community.Service.Contract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SavaDev.Base.Data.Managers;
+using SavaDev.Base.Data.Registry;
+using SavaDev.Base.Data.Services;
+using SavaDev.Community.Data.Contract.Models;
+using SavaDev.Community.Service.Contract;
 using X.PagedList;
 
-namespace Framework.Community.Data.Services
+namespace SavaDev.Community.Data.Services
 {
     public class CommunityService : ICommunityService
     {
@@ -36,19 +30,13 @@ namespace Framework.Community.Data.Services
 
         public async Task<CommunityModel> GetOne(Guid id) => await entityManager.GetOne<CommunityModel>(id);
 
-        public async Task<PageListModel<CommunityModel>> GetAll(int page, int count)
+        public async Task<ItemsPage<CommunityModel>> GetAll(int page, int count)
         {
             var dbSet = _dbContext.Set<Entities.Community>().AsNoTracking();
 
             var res = await dbSet.ProjectTo<CommunityModel>(_mapper.ConfigurationProvider).ToPagedListAsync(page, count);
 
-            var pageModel = new PageListModel<CommunityModel>()
-            {
-                Items = res,
-                Page = res.PageNumber,
-                TotalPages = res.PageCount,
-                TotalRows = res.TotalItemCount
-            };
+            var pageModel = new ItemsPage<CommunityModel>(res);
 
             return pageModel;
         }

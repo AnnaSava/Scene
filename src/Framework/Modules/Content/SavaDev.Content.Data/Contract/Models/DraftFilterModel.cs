@@ -1,13 +1,8 @@
-﻿using Framework.Base.DataService.Contract.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SavaDev.Base.Data.Registry.Filter;
 
 namespace Savadev.Content.Data.Contract.Models
 {
-    public class DraftFilterModel : ListFilterModel<Guid>
+    public class DraftFilterModel : BaseFilter
     {
         public WordFilterField Entity { get; set; }
 

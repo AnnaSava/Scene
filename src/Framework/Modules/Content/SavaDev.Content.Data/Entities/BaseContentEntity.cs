@@ -1,10 +1,5 @@
-﻿using Framework.Base.DataService.Entities;
-using System;
-using System.Collections.Generic;
+﻿using SavaDev.Base.Data.Entities.Interfaces;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Savadev.Content.Data.Entities
 {

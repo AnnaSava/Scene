@@ -1,7 +1,6 @@
-﻿using Framework.Base.DataService.Contract.Models;
-using Framework.Base.DataService.Contract.Models.ListView;
-using Framework.Base.Types.Registry;
-using Savadev.Content.Data.Contract.Models;
+﻿using Savadev.Content.Data.Contract.Models;
+using SavaDev.Base.Data.Registry;
+using SavaDev.Base.Data.Services;
 
 namespace Savadev.Content.Data.Contract
 {
@@ -9,6 +8,6 @@ namespace Savadev.Content.Data.Contract
     {
         Task<OperationResult<VersionModel>> Create<T>(VersionModel model, T contentModel);
 
-        Task<PageListModel<VersionModel>> GetAll(ListQueryModel<VersionFilterModel> query);
+        Task<ItemsPage<VersionModel>> GetAll(RegistryQuery<VersionFilterModel> query);
     }
 }

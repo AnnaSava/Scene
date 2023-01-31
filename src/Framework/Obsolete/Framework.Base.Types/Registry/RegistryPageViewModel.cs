@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.Types.Registry
 {
+    [Obsolete]
     public class RegistryPageViewModel<TModel>
     {
         public List<TModel> Items { get; }

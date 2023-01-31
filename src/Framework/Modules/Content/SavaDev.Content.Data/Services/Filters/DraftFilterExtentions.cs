@@ -1,12 +1,8 @@
 ﻿using Framework.Base.Types.Enums;
 using Savadev.Content.Data.Contract.Models;
 using Savadev.Content.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using SavaDev.Content.Data.Contract.Models;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Savadev.Content.Data.Services.Filters
 {
@@ -16,69 +12,70 @@ namespace Savadev.Content.Data.Services.Filters
         {
             if (filter == null) return list;
 
-            return list.ApplyModuleFilter(filter)
-                .ApplyEntityFilter(filter)
-                .ApplyOwnerFilter(filter)
-                .ApplyIsDeletedFilter(filter)
-                .ApplyContentIdFilter(filter)
-                .ApplyGroupingKeyFilter(filter);
+            return list;
+                //.ApplyModuleFilter(filter)
+                //.ApplyEntityFilter(filter)
+                //.ApplyOwnerFilter(filter)
+                //.ApplyIsDeletedFilter(filter)
+                //.ApplyContentIdFilter(filter)
+                //.ApplyGroupingKeyFilter(filter);
         }
 
-        private static IQueryable<Draft> ApplyModuleFilter(this IQueryable<Draft> list, DraftFilterModel filter)
-        {
-            if (filter.Module?.Value?.Any() ?? false)
-            {
-                var rules = GetModuleRules(filter.Module.Value);
-                list = list.Where(rules[filter.Module.MatchMode]);
-            }
-            return list;
-        }
+        //private static IQueryable<Draft> ApplyModuleFilter(this IQueryable<Draft> list, DraftFilterModel filter)
+        //{
+        //    if (filter.Module?.Value?.Any() ?? false)
+        //    {
+        //        var rules = GetModuleRules(filter.Module.Value);
+        //        list = list.Where(rules[filter.Module.MatchMode]);
+        //    }
+        //    return list;
+        //}
 
-        private static IQueryable<Draft> ApplyEntityFilter(this IQueryable<Draft> list, DraftFilterModel filter)
-        {
-            if (filter.Entity?.Value?.Any() ?? false)
-            {
-                var rules = GetEntityRules(filter.Entity.Value);
-                list = list.Where(rules[filter.Entity.MatchMode]);
-            }
-            return list;
-        }
+        //private static IQueryable<Draft> ApplyEntityFilter(this IQueryable<Draft> list, DraftFilterModel filter)
+        //{
+        //    if (filter.Entity?.Value?.Any() ?? false)
+        //    {
+        //        var rules = GetEntityRules(filter.Entity.Value);
+        //        list = list.Where(rules[filter.Entity.MatchMode]);
+        //    }
+        //    return list;
+        //}
 
-        private static IQueryable<Draft> ApplyContentIdFilter(this IQueryable<Draft> list, DraftFilterModel filter)
-        {
-            if (filter.ContentId?.Value?.Any() ?? false)
-            {
-                var rules = GetContentIdRules(filter.ContentId.Value);
-                list = list.Where(rules[filter.ContentId.MatchMode]);
-            }
-            return list;
-        }
+        //private static IQueryable<Draft> ApplyContentIdFilter(this IQueryable<Draft> list, DraftFilterModel filter)
+        //{
+        //    if (filter.ContentId?.Value?.Any() ?? false)
+        //    {
+        //        var rules = GetContentIdRules(filter.ContentId.Value);
+        //        list = list.Where(rules[filter.ContentId.MatchMode]);
+        //    }
+        //    return list;
+        //}
 
-        private static IQueryable<Draft> ApplyGroupingKeyFilter(this IQueryable<Draft> list, DraftFilterModel filter)
-        {
-            if (filter.GroupingKey?.Value?.Any() ?? false)
-            {
-                var rules = GetGroupingKeyRules(filter.GroupingKey.Value);
-                list = list.Where(rules[filter.GroupingKey.MatchMode]);
-            }
-            return list;
-        }
+        //private static IQueryable<Draft> ApplyGroupingKeyFilter(this IQueryable<Draft> list, DraftFilterModel filter)
+        //{
+        //    if (filter.GroupingKey?.Value?.Any() ?? false)
+        //    {
+        //        var rules = GetGroupingKeyRules(filter.GroupingKey.Value);
+        //        list = list.Where(rules[filter.GroupingKey.MatchMode]);
+        //    }
+        //    return list;
+        //}
 
-        private static IQueryable<Draft> ApplyOwnerFilter(this IQueryable<Draft> list, DraftFilterModel filter)
-        {
-            if (filter.Owner?.Value?.Any() ?? false)
-            {
-                var rules = GetOwnerRules(filter.Owner.Value);
-                list = list.Where(rules[filter.Owner.MatchMode]);
-            }
-            return list;
-        }
+        //private static IQueryable<Draft> ApplyOwnerFilter(this IQueryable<Draft> list, DraftFilterModel filter)
+        //{
+        //    if (filter.Owner?.Value?.Any() ?? false)
+        //    {
+        //        var rules = GetOwnerRules(filter.Owner.Value);
+        //        list = list.Where(rules[filter.Owner.MatchMode]);
+        //    }
+        //    return list;
+        //}
 
-        public static IQueryable<Draft> ApplyIsDeletedFilter(this IQueryable<Draft> list, DraftFilterModel filter)
-        {
-            list = list.Where(m => m.IsDeleted == filter.IsDeleted);
-            return list;
-        }
+        //public static IQueryable<Draft> ApplyIsDeletedFilter(this IQueryable<Draft> list, DraftFilterModel filter)
+        //{
+        //    list = list.Where(m => m.IsDeleted == filter.IsDeleted);
+        //    return list;
+        //}
 
         private static Dictionary<MatchModeWord, Expression<Func<Draft, bool>>> GetModuleRules(List<string> value)
         {
@@ -197,7 +194,7 @@ namespace Savadev.Content.Data.Services.Filters
 
         private static IQueryable<Draft> ApplyIsDeletedStrictFilter(this IQueryable<Draft> list, DraftStrictFilterModel filter)
         {
-            list = list.Where(m => m.IsDeleted == filter.IsDeleted);
+            //list = list.Where(m => m.IsDeleted == filter.IsDeleted);
             return list;
         }
 

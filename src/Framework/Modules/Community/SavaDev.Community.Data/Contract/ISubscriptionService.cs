@@ -1,10 +1,11 @@
-﻿using System;
+﻿using SavaDev.Community.Data.Contract.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Community.Data.Contract
+namespace SavaDev.Community.Data.Contract
 {
     public interface ISubscriptionService
     {

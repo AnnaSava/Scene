@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Community.Data.Contract
+namespace SavaDev.Community.Data.Contract
 {
     public interface ILockoutService
     {
-        Task<LockoutModel> Create(LockoutModel model);
+        //Task<LockoutModel> Create(LockoutModel model);
 
         Task<IEnumerable<string>> GetAllActualIds(Guid communityId);
     }

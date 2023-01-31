@@ -1,8 +1,7 @@
-﻿using Framework.Base.DataService.Contract;
-using Framework.Base.DataService.Contract.Interfaces;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Savadev.Content.Data.Entities;
 using Savadev.Content.Data.Extentions;
+using SavaDev.Base.Data.Context;
 
 namespace Savadev.Content.Data
 {
@@ -16,12 +15,10 @@ namespace Savadev.Content.Data
 
         public DbSet<Import> Imports { get; set; }
 
-        DbContextSettings<ContentContext> Settings;
-
-        public ContentContext(DbContextOptions<ContentContext> options, DbContextSettings<ContentContext> settings)
+        public ContentContext(DbContextOptions<ContentContext> options)
            : base(options)
         {
-            Settings = settings;
+
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -30,7 +27,7 @@ namespace Savadev.Content.Data
 
             builder.ConfigureContext(options =>
             {
-                options.TablePrefix = Settings.TablePrefix;
+                //options.TablePrefix = Settings.TablePrefix;
                 //options.NamingConvention = Settings.NamingConvention;
             });
         }

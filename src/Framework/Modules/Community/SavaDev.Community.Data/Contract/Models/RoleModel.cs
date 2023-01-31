@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Community.Data
+namespace SavaDev.Community.Data
 {
     public class RoleModel : BaseCommunityModel
     {

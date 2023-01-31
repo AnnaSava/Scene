@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SavaDev.Base.Data.Registry.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -91,16 +92,14 @@ namespace SavaDev.Base.Data.Registry
             var sorts = new List<RegistrySort>();
             foreach (var item in arr)
             {
-                var sort = new RegistrySort();
+                RegistrySort sort;
                 if (item.EndsWith("Desc"))
                 {
-                    sort.Direction = Enums.SortDirection.Desc;
-                    sort.FieldName = item.Replace("Desc", "");
+                    sort = new RegistrySort(item.Replace("Desc", ""), SortDirection.Desc);
                 }
                 else
                 {
-                    sort.Direction = Enums.SortDirection.Asc;
-                    sort.FieldName = item;
+                    sort = new RegistrySort(item);
                 }
                 sorts.Add(sort);
             }

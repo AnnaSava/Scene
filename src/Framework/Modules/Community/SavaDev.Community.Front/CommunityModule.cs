@@ -1,19 +1,18 @@
-﻿using Framework.Base.Service.Module;
-using Framework.Community.Data;
-using Framework.Community.Data.Contract;
-using Framework.Community.Data.Services;
-using Framework.Community.Service.Contract;
-using Framework.Community.Service.Services;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SavaDev.Community.Data;
+using SavaDev.Community.Data.Contract;
+using SavaDev.Community.Data.Services;
+using SavaDev.Community.Service.Contract;
 
-namespace Framework.Community.Service
+namespace SavaDev.Community.Service
 {
     public static class CommunityModule
     {
-        public static void AddCommunity(this IServiceCollection services, IConfiguration config, ModuleSettings moduleSettings)
+        public static void AddCommunity(this IServiceCollection services, IConfiguration config, object t)//, ServiceOptions moduleSettings)
         {
-            services.AddModuleDbContext<CommunityContext>(config, moduleSettings);
+            /// todo
+            //services.AddModuleDbContext<CommunityContext>(config, moduleSettings);
 
             services.AddScoped<ICommunityService, CommunityService>();
             services.AddScoped<ISubscriptionService, SubscriptionService>();

@@ -1,10 +1,8 @@
-﻿using Framework.Base.DataService.Contract;
-using Framework.Base.DataService.Contract.Interfaces;
-using Framework.Community.Data.Entities;
-using Framework.Community.Data.Extentions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using SavaDev.Base.Data.Context;
+using SavaDev.Community.Data.Entities;
 
-namespace Framework.Community.Data
+namespace SavaDev.Community.Data
 {
     public class CommunityContext : DbContext, IDbContext
     {
@@ -20,23 +18,21 @@ namespace Framework.Community.Data
 
         public DbSet<UserRole> UserRoles { get; set; }
 
-        DbContextSettings<CommunityContext> Settings;
-
-        public CommunityContext(DbContextOptions<CommunityContext> options, DbContextSettings<CommunityContext> settings)
+        public CommunityContext(DbContextOptions<CommunityContext> options)
            : base(options)
         {
-            Settings = settings;
+
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.ConfigureContext(options =>
-            {
-                options.TablePrefix = Settings.TablePrefix;
-                //options.NamingConvention = Settings.NamingConvention;
-            });
+            //builder.ConfigureContext(options =>
+            //{
+            //   // options.TablePrefix = Settings.TablePrefix;
+            //    //options.NamingConvention = Settings.NamingConvention;
+            //});
         }
     }
 }

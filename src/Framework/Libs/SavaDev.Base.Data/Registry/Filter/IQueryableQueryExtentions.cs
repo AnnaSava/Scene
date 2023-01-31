@@ -37,6 +37,15 @@ namespace SavaDev.Base.Data.Registry.Filter
             return list;
         }
 
+        public static IQueryable<T> ApplySort<T>(this IQueryable<T> list, RegistrySort sort)
+        {
+            if (sort != null && !string.IsNullOrEmpty(sort.FieldName))
+            {
+                list = sort.Direction == SortDirection.Asc ? list.OrderBy(sort.FieldName) : list.OrderBy(sort.FieldName + " desc");
+            };
+            return list;
+        }
+
         public static async Task<IPagedList<T>> ToPage<T>(this IQueryable<T> list, RegistryPageInfo pageInfo)
         {
             return await list.ToPagedListAsync(pageInfo.PageNumber, pageInfo.RowsCount);
@@ -51,6 +60,15 @@ namespace SavaDev.Base.Data.Registry.Filter
                 list = ApplyStringFilter(list, field.Name, field.GetValue(filter));
             }
 
+            return list;
+        }
+
+        public static IQueryable<T> ApplyByRelatedFilter<T>(this IQueryable<T> list, ByRelatedFilter<long> filter)
+        {
+            if(filter == null) return list;
+
+            var str = string.Format("{0} == {1}", filter.FieldNameOfRelated, filter.RelatedId);
+            list = list.Where(str);
             return list;
         }
 

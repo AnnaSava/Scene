@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using SavaDev.Base.Data.Context;
+using SavaDev.Base.Data.Enums;
 
 namespace SavaDev.Libs.UnitTestingHelpers
 {
@@ -19,17 +20,15 @@ namespace SavaDev.Libs.UnitTestingHelpers
             return creator(optionsBuilder.Options);
         }
 
-        //public static Action<DbContextOptionsBuilder> GetOptionsAction() => options => options.UseInMemoryDatabase(Guid.NewGuid().ToString());
-
         private static Action<DbContextOptionsBuilder> GetOptionsAction() => options =>
         {
             options.UseInMemoryDatabase(Guid.NewGuid().ToString())
             .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning));
 
-            //todo var extension = options.Options.FindExtension<BaseDbOptionsExtension>()
-            //        ?? new BaseDbOptionsExtension { TablePrefix = "_", NamingConvention = NamingConvention.SnakeCase };
+            var extension = options.Options.FindExtension<BaseDbOptionsExtension>()
+                    ?? new BaseDbOptionsExtension { TablePrefix = "_", NamingConvention = NamingConvention.SnakeCase };
 
-            //((IDbContextOptionsBuilderInfrastructure)options).AddOrUpdateExtension(extension);
+            ((IDbContextOptionsBuilderInfrastructure)options).AddOrUpdateExtension(extension);
         };
 
         public static ILogger<T> GetLogger<T>()

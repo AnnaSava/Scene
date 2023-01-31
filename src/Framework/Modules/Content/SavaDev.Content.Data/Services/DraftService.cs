@@ -1,22 +1,14 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Framework.Base.DataService.Contract.Models;
-using Framework.Base.DataService.Contract.Models.ListView;
-using Framework.Base.DataService.Services;
-using Framework.Base.DataService.Services.Managers;
-using Framework.Base.Types.Registry;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Savadev.Content.Data.Contract;
 using Savadev.Content.Data.Contract.Models;
 using Savadev.Content.Data.Entities;
 using Savadev.Content.Data.Services.Filters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+using SavaDev.Base.Data.Registry;
+using SavaDev.Base.Data.Services;
+using SavaDev.Content.Data.Contract.Models;
 using X.PagedList;
 
 namespace Savadev.Content.Data.Services
@@ -64,16 +56,14 @@ namespace Savadev.Content.Data.Services
             return _mapper.Map<DraftModel>(entity);
         }
 
-        public async Task<PageListModel<DraftModel>> GetAll(ListQueryModel<DraftStrictFilterModel> query)
+        public async Task<ItemsPage<DraftModel>> GetAll(RegistryQuery<DraftStrictFilterModel> query)
         {
             var result = await GetAll(query, _mapper);
 
             return result;
         }
 
-        // TODO посмотреть, с кем можно обобщить по аналогии с сущностями с лонговым айдишником
-        // например _dbContext.GetAll<Goal, GoalModel, GoalFilterModel>(query, ApplyFilters, _mapper)
-        private async Task<PageListModel<DraftModel>> GetAll(ListQueryModel<DraftStrictFilterModel> query,
+        private async Task<ItemsPage<DraftModel>> GetAll(RegistryQuery<DraftStrictFilterModel> query,
             IMapper mapper)
         {
             var list = _dbContext.Set<Draft>().AsQueryable();
@@ -84,18 +74,12 @@ namespace Savadev.Content.Data.Services
 
             var res = await list.ProjectTo<DraftModel>(mapper.ConfigurationProvider).ToPagedListAsync(query.PageInfo.PageNumber, query.PageInfo.RowsCount);
 
-            var page = new PageListModel<DraftModel>()
-            {
-                Items = res,
-                Page = res.PageNumber,
-                TotalPages = res.PageCount,
-                TotalRows = res.TotalItemCount
-            };
+            var page = new ItemsPage<DraftModel>(res);
 
             return page;
         }
 
-        public async Task<PageListModel<DraftModel>> GetAll(ListQueryModel<DraftFilterModel> query)
+        public async Task<ItemsPage<DraftModel>> GetAll(RegistryQuery<DraftFilterModel> query)
         {
             var page = await entityManager.GetAll(query, ApplyFilters);
             return page;

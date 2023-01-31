@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Framework.Community.Data.Contract.Models;
-using Framework.Community.Data.Entities;
+using SavaDev.Community.Data.Contract.Models;
+using SavaDev.Community.Data.Entities;
 
-namespace Framework.Community.Data.Mapper
+namespace SavaDev.Community.Data.Mapper
 {
     public class CommunityMapperProfile : Profile
     {

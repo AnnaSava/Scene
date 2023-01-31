@@ -37,31 +37,65 @@ namespace SavaDev.Infrastructure.Util.ModelFieldsManager
 
         public void SetValues<T>(string typeName, T entity, IEnumerable<PropertyInfo> eProps, Dictionary<string, string> input)
         {
-            var typeProps = eProps.Where(f => f.PropertyType.Name == typeName);
-
-            foreach (var prop in typeProps)
+            foreach (var eProp in eProps)
             {
-                var parsed = Parsers[prop.PropertyType.Name](input[prop.Name]);
+                object parsed = null;
 
-                prop.SetValue(entity, parsed);
-            }
-
-            var nullableProps = eProps.Where(f => f.PropertyType.Name == NullableTypeNamePart && f.PropertyType.FullName.Contains(typeName));
-            foreach (var prop in nullableProps)
-            {
-                var parsed = string.IsNullOrEmpty(input[prop.Name]) ? null : Parsers[prop.PropertyType.Name](input[prop.Name]);
-
-                prop.SetValue(entity, parsed);
-            }
-
-            var enumProps = eProps.Where(f => f.PropertyType.FullName.Contains(EnumTypeNamePart));
-            foreach (var prop in enumProps)
-            {
-                if (int.TryParse(input[prop.Name], out int parsed))
+                if (eProp.PropertyType.Name == typeName
+                    || eProp.PropertyType.Name == NullableTypeNamePart && eProp.PropertyType.FullName.Contains(typeName))
                 {
-                    prop.SetValue(entity, parsed);
+                    parsed = Parsers[typeName](input[eProp.Name]);
+                }
+                else if(eProp.PropertyType.FullName.Contains(EnumTypeNamePart))
+                {
+                    if(int.TryParse(input[eProp.Name], out int parsedInt))
+                    {
+                        parsed = parsedInt;
+                    }
+                }
+
+                if (parsed != null)
+                {
+                    eProp.SetValue(entity, parsed);
                 }
             }
+
+
+            //var typeProps = eProps.Where(f => f.PropertyType.Name == typeName);
+
+            //foreach (var prop in typeProps)
+            //{
+            //    var parsed = Parsers[prop.PropertyType.Name](input[prop.Name]);
+
+            //    prop.SetValue(entity, parsed);
+            //}
+
+            //var nullableProps = eProps.Where(f => f.PropertyType.Name == NullableTypeNamePart && f.PropertyType.FullName.Contains(typeName));
+            //foreach (var prop in nullableProps)
+            //{
+            //    if (!string.IsNullOrEmpty(input[prop.Name]))
+            //    {
+            //        foreach (var tpName in Parsers.Keys)
+            //        {
+            //            if (prop.PropertyType.FullName.Contains(tpName))
+            //            {
+            //                var parsed = Parsers[prop.PropertyType.Name](input[prop.Name]);
+
+            //                prop.SetValue(entity, parsed);
+            //                continue;
+            //            }
+            //        }
+            //    }
+            //}
+
+            //var enumProps = eProps.Where(f => f.PropertyType.FullName.Contains(EnumTypeNamePart));
+            //foreach (var prop in enumProps)
+            //{
+            //    if (int.TryParse(input[prop.Name], out int parsed))
+            //    {
+            //        prop.SetValue(entity, parsed);
+            //    }
+            //}
         }
 
 

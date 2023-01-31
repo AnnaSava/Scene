@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Community.Service.Contract.Models
+namespace SavaDev.Community.Front.Contract.Models
 {
     public class SubscriptionFormViewModel
     {
         public long Id { get; set; }
 
-        public Guid CommunityId { get; set; }
+        public Guid GropupId { get; set; }
 
         public string UserId { get; set; }
 
