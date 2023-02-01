@@ -40,7 +40,7 @@ namespace SavaDev.Infrastructure.Util.ModelFieldsManager
 
         private void DropTable<T>()
         {
-            var query = $"DROP TABLE IF EXISTS {typeof(T).Name}";
+            var query = $"DROP TABLE IF EXISTS [{typeof(T).Name}]";
             Exec(query);
         }
 
@@ -48,7 +48,7 @@ namespace SavaDev.Infrastructure.Util.ModelFieldsManager
         {
             var modelProps = GetModelProps<T>();
 
-            var sb = new StringBuilder($"CREATE TABLE {typeof(T).Name} (");
+            var sb = new StringBuilder($"CREATE TABLE [{typeof(T).Name}] (");
             sb.AppendLine($"{PrimaryKeyColumnHeader} int,");
             if (_options.UseMethodNameColumn)
             {
@@ -69,7 +69,7 @@ namespace SavaDev.Infrastructure.Util.ModelFieldsManager
         {
             var modelProps = GetModelProps<T>().OrderBy(m => m.Name);
 
-            var sb = new StringBuilder($"INSERT INTO {typeof(T).Name} ({PrimaryKeyColumnHeader},");
+            var sb = new StringBuilder($"INSERT INTO [{typeof(T).Name}] ({PrimaryKeyColumnHeader},");
             if (useMethodColumn)
             {
                 sb.Append($"{MethodColumnHeader},");

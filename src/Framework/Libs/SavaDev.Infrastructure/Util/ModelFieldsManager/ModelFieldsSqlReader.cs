@@ -77,8 +77,9 @@ namespace SavaDev.Infrastructure.Util.ModelFieldsManager
 
         private List<object[]> ReadEntitiesFromDb<T>(bool useMethodColumn)
         {
-            var modelProps = GetModelProps<T>();
-            var query = MakeSqlQuery<T>(modelProps, useMethodColumn);
+            var query = MakeSqlQuery<T>(useMethodColumn);
+
+            var modelProps = GetModelProps<T>();            
             var columnsCount = useMethodColumn ? modelProps.Count() + 1 : modelProps.Count();
 
             var result = new List<object[]>();
@@ -101,10 +102,8 @@ namespace SavaDev.Infrastructure.Util.ModelFieldsManager
             return result;
         }
 
-        private string MakeSqlQuery<T>(IEnumerable<PropertyInfo> modelProps, bool useMethodColumn)
+        private string MakeSqlQuery<T>(bool useMethodColumn)
         {
-            modelProps = GetModelProps<T>();
-
             var sb = new StringBuilder($"SELECT ");
 
             if (useMethodColumn)
@@ -112,9 +111,10 @@ namespace SavaDev.Infrastructure.Util.ModelFieldsManager
                 sb.Append($"{MethodColumnHeader},");
             }
 
-            var fields = string.Join(",", modelProps.OrderBy(m => m.Name).Select(m => m.Name));
+            var propNames = GetModelPropNamesOrdered<T>();
+            var fields = string.Join(",", propNames);
             sb.AppendLine(fields);
-            sb.AppendLine($" FROM {typeof(T).Name}");
+            sb.AppendLine($" FROM [{typeof(T).Name}]");
 
             var query = sb.ToString();
             return query;
