@@ -1,6 +1,7 @@
-﻿using System.Reflection;
+﻿using SavaDev.Infrastructure.Util.TestDataGenerator;
+using System.Reflection;
 
-namespace SavaDev.Infrastructure.Util.ModelFieldsManager
+namespace SavaDev.Infrastructure.Util.TestDataGenerator
 {
     public class TestDataGeneratorProvider : ITestDataProvider
     {

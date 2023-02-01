@@ -1,7 +1,7 @@
 ﻿using System.Data.SqlClient;
 using System.Text;
 
-namespace SavaDev.Infrastructure.Util.ModelFieldsManager
+namespace SavaDev.Infrastructure.Util.TestDataGenerator
 {
     public class ModelFieldsSqlWriter : BaseModelFieldsManager
     {

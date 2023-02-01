@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace SavaDev.Infrastructure.Util.ModelFieldsManager
+namespace SavaDev.Infrastructure.Util.TestDataGenerator
 {
     public class ModelFieldsCsvReader : BaseModelFieldsManager, IModelFieldsReader
     {

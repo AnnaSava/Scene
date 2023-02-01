@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SavaDev.Infrastructure.Util.ModelFieldsManager
+namespace SavaDev.Infrastructure.Util.TestDataGenerator
 {
     public class ModelFieldsCsvWriter : BaseModelFieldsManager
     {

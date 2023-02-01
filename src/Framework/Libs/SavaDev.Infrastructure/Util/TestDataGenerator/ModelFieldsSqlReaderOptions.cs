@@ -4,17 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SavaDev.Infrastructure.Util.ModelFieldsManager
+namespace SavaDev.Infrastructure.Util.TestDataGenerator
 {
-    public class ModelFieldsSqlWriterOptions
+    public class ModelFieldsSqlReaderOptions
     {
-        public int RowsCountNeeded { get; set; }
-
-        public bool UseMethodNameColumn { get; private set; }
+        public bool UseMethodNameColumn { get; set; }
 
         public string SqlConnectionString { get; set; }
 
-        public ModelFieldsSqlWriterOptions(string sqlConnection, bool useMethodNameColumn)
+        public ModelFieldsSqlReaderOptions(string sqlConnection, bool useMethodNameColumn)
         {
             SqlConnectionString = sqlConnection;
             UseMethodNameColumn = useMethodNameColumn;
