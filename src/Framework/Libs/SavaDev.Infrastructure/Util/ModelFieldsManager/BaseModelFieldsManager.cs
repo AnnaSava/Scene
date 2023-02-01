@@ -18,20 +18,42 @@ namespace SavaDev.Infrastructure.Util.ModelFieldsManager
         protected const string EntityTypeNamePart = "Entities";
 
         protected const string IdPropertyName = "Id";
-        protected const string MethodColumnHeader = "-Method-";
+        protected const string MethodColumnHeader = "MTDKEY";
+        protected const string PrimaryKeyColumnHeader = "PK";
 
-        public BaseModelFieldsManager()
+        protected readonly ITestDataProvider _dataGenerator;
+        protected readonly ITestDataParser _dataParser;
+
+        public BaseModelFieldsManager(ITestDataProvider dataGenerator)
         {
-
+            _dataGenerator = dataGenerator;
         }
 
-        public IEnumerable<PropertyInfo> GetEntityProps<T>()
+        public BaseModelFieldsManager(ITestDataParser dataParser)
         {
-            var eProps = typeof(T)
+            _dataParser = dataParser;
+        }
+
+
+        public IEnumerable<PropertyInfo> GetModelProps<T>()
+        {
+            var modelProps = typeof(T)
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy)
                 .Where(f => !f.PropertyType.FullName.Contains(EntityTypeNamePart)); // See Important! comment in the base class //.Where(f => !f.GetGetMethod().IsVirtual);
 
-            return eProps;
+            return modelProps;
+        }
+
+        public IEnumerable<string> GetModelPropNamesOrdered<T>()
+        {
+            var modelProps = GetModelProps<T>().Select(m => m.Name).OrderBy(m => m);
+            return modelProps;
+        }
+
+        public object? GetValue<T>(T model, string propName)
+        {
+            var value = typeof(T)?.GetProperty(propName)?.GetValue(model, null);
+            return value;
         }
     }
 }

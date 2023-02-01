@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SavaDev.Base.Image.Enums
+namespace SavaDev.Infrastructure.Util.ImageEditor.Enums
 {
     public class ImageResizeKindName
     {

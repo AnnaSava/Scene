@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Infrastructure.Util.ModelFieldsManager
 {
-    public class ModelFieldsWriterOptions
+    public class ModelFieldsCsvWriterOptions
     {
         public string OutputFolderName { get; set; } = "Output";
 
@@ -15,5 +15,12 @@ namespace SavaDev.Infrastructure.Util.ModelFieldsManager
         public bool InsertTestNameColumn { get; set; }
 
         public char CsvSeparator { get; set; } = ';';
+
+        public bool UseMethodNameColumn { get; set; }
+
+        public ModelFieldsCsvWriterOptions(bool useMethodNameColumn)
+        {
+            UseMethodNameColumn = useMethodNameColumn;
+        }
     }
 }

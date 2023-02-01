@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Infrastructure.Util.ModelFieldsManager
 {
-    public class ModelFieldsReaderOptions
+    public class ModelFieldsCsvReaderOptions
     {
         public char CsvSeparator { get; set; } = ';';
+
+        public string InputFolderName { get; set; } = "Data";
     }
 }
