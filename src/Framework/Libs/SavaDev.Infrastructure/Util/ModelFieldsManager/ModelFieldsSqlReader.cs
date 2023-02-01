@@ -108,10 +108,10 @@ namespace SavaDev.Infrastructure.Util.ModelFieldsManager
 
             if (useMethodColumn)
             {
-                sb.Append($"{MethodColumnHeader},");
+                sb.Append($"[{MethodColumnHeader}],");
             }
 
-            var propNames = GetModelPropNamesOrdered<T>();
+            var propNames = GetModelPropNamesOrdered<T>().Select(m => $"[{m}]");
             var fields = string.Join(",", propNames);
             sb.AppendLine(fields);
             sb.AppendLine($" FROM [{typeof(T).Name}]");

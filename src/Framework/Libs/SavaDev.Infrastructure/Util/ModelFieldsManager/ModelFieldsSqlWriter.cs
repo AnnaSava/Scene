@@ -52,11 +52,11 @@ namespace SavaDev.Infrastructure.Util.ModelFieldsManager
             sb.AppendLine($"{PrimaryKeyColumnHeader} int,");
             if (_options.UseMethodNameColumn)
             {
-                sb.AppendLine($"{MethodColumnHeader} NVARCHAR(255),");
+                sb.AppendLine($"[{MethodColumnHeader}] NVARCHAR(255),");
             }
             foreach (var prop in modelProps)
             {
-                sb.AppendLine($"{prop.Name} NVARCHAR(255),");
+                sb.AppendLine($"[{prop.Name}] NVARCHAR(255),");
             }
             sb.AppendLine("PRIMARY KEY (PK)");
             sb.AppendLine(");");
@@ -75,7 +75,7 @@ namespace SavaDev.Infrastructure.Util.ModelFieldsManager
                 sb.Append($"{MethodColumnHeader},");
             }
 
-            var fieldsStr = string.Join(",", modelProps.Select(m => m.Name));
+            var fieldsStr = string.Join(",", modelProps.Select(m => $"[{m.Name}]"));
             sb.AppendLine(fieldsStr);
             sb.AppendLine(")");
             sb.AppendLine($"VALUES ({pk},");
