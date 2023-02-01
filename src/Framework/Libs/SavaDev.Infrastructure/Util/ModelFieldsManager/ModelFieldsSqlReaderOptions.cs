@@ -10,10 +10,11 @@ namespace SavaDev.Infrastructure.Util.ModelFieldsManager
     {
         public bool UseMethodNameColumn { get; set; }
 
-        public string SqlConnectionString { get; set; } = "Server=DESKTOP-PJFB6BC;Database=SavaDevTestData;Trusted_Connection=True;";
+        public string SqlConnectionString { get; set; }
 
-        public ModelFieldsSqlReaderOptions(bool useMethodNameColumn)
+        public ModelFieldsSqlReaderOptions(string sqlConnection, bool useMethodNameColumn)
         {
+            SqlConnectionString = sqlConnection;
             UseMethodNameColumn = useMethodNameColumn;
         }
     }
