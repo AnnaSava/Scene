@@ -332,7 +332,7 @@ namespace Framework.Base.DataService.Services
             //              typeof(TEntity).Name,
             //              id);
 
-            entity.LastUpdated = DateTime.Now;
+            entity.LastUpdated = DateTime.UtcNow;
 
             return entity;
         }
@@ -349,7 +349,7 @@ namespace Framework.Base.DataService.Services
                           typeof(TEntity).Name,
                           id);
 
-            entity.LastUpdated = DateTime.Now;
+            entity.LastUpdated = DateTime.UtcNow;
 
             return entity;
         }
@@ -366,7 +366,7 @@ namespace Framework.Base.DataService.Services
                           typeof(TEntity).Name,
                           id);
 
-            entity.LastUpdated = DateTime.Now;
+            entity.LastUpdated = DateTime.UtcNow;
 
             return entity;
         }
@@ -383,7 +383,7 @@ namespace Framework.Base.DataService.Services
                           typeof(TEntity).Name,
                           id);
 
-            entity.LastUpdated = DateTime.Now;
+            entity.LastUpdated = DateTime.UtcNow;
 
             return entity;
         }

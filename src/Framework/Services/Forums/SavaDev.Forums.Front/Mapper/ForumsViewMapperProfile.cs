@@ -23,17 +23,17 @@ namespace Sava.Forums.Mapper
             CreateMap<TopicModel, TopicInputViewModel>();
 
             CreateMap<TopicCreatingInputViewModel, TopicModel>()
-                .ForMember(x => x.Date, y => y.MapFrom(s => string.IsNullOrEmpty(s.Date) ? DateTime.Now : DateTime.Parse(s.Date))); //TODO заменить на TryParse и ConvertUsing;
+                .ForMember(x => x.Date, y => y.MapFrom(s => string.IsNullOrEmpty(s.Date) ? DateTime.UtcNow : DateTime.Parse(s.Date))); //TODO заменить на TryParse и ConvertUsing;
 
             CreateMap<TopicCreatingInputViewModel, PostModel>()
-                .ForMember(x => x.Date, y => y.MapFrom(s => string.IsNullOrEmpty(s.Date) ? DateTime.Now : DateTime.Parse(s.Date))); //TODO заменить на TryParse и ConvertUsing;
+                .ForMember(x => x.Date, y => y.MapFrom(s => string.IsNullOrEmpty(s.Date) ? DateTime.UtcNow : DateTime.Parse(s.Date))); //TODO заменить на TryParse и ConvertUsing;
 
             CreateMap<PostViewModel, PostModel>();
             CreateMap<PostModel, PostViewModel>()
                 .ForMember(x => x.Text, y => y.MapFrom(s => BBCodePreprocessor.Process(s.Text)));
 
             CreateMap<PostInputViewModel, PostModel>()
-                .ForMember(x => x.Date, y => y.MapFrom(s => string.IsNullOrEmpty(s.Date) ? DateTime.Now : DateTime.Parse(s.Date))); //TODO заменить на TryParse и ConvertUsing
+                .ForMember(x => x.Date, y => y.MapFrom(s => string.IsNullOrEmpty(s.Date) ? DateTime.UtcNow : DateTime.Parse(s.Date))); //TODO заменить на TryParse и ConvertUsing
             CreateMap<PostModel, PostInputViewModel>()
                 .ForMember(x => x.Date, y => y.MapFrom(s => s.Date.ToString("dd-MM-yyyy HH:mm")));
         }

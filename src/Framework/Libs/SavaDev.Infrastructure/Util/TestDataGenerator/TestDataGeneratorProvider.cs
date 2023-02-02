@@ -12,7 +12,7 @@ namespace SavaDev.Infrastructure.Util.TestDataGenerator
             { nameof(Int32), () => 0 },
             { nameof(Int64), () => 0 },
             { nameof(Guid), () => Guid.NewGuid() },
-            { nameof(DateTime), () => DateTime.Now },
+            { nameof(DateTime), () => DateTime.UtcNow },
         };
 
         private readonly IEnumerable<string> Types;

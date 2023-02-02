@@ -1,6 +1,6 @@
 ﻿@page "/reservednames"
-@using Framework.User.Service.Contract.Interfaces
-@using Framework.User.Service.Contract.Models
+@using SavaDev.System.Front.Contract;
+@using SavaDev.System.Front.Contract.Models;
 @inject IReservedNameService _reservedNameService
 
 <PageTitle>Reserved names</PageTitle>
@@ -47,9 +47,10 @@
     {
         var filter = new ReservedNameFilterViewModel { Text =  "contains|" + searchString };
 
-        var result = await _reservedNameService.GetAll(filter, PageHelper.GetPageInfo(state));
+        //var result = await _reservedNameService.GetAll(filter, PageHelper.GetPageInfo(state));
 
-        return PageHelper.GetTableData<ReservedNameViewModel>(result);
+        //return PageHelper.GetTableData<ReservedNameViewModel>(result);
+        return new TableData<ReservedNameViewModel>();
     }
 
     private void OnSearch(string text)

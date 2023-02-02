@@ -42,7 +42,7 @@ namespace SavaDev.Infrastructure.Util.TestDataGenerator
                 Directory.CreateDirectory(_options.OutputFolderName);
             }
 
-            var filePath = $"{_options.OutputFolderName}\\{typeof(T).Name.ToLower()}_{DateTime.Now.Ticks}.csv";
+            var filePath = $"{_options.OutputFolderName}\\{typeof(T).Name.ToLower()}_{DateTime.UtcNow.Ticks}.csv";
 
             using (var sw = new StreamWriter(filePath))
             {

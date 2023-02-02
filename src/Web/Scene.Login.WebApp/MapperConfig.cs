@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Framework.User.DataService.Mapper;
 using Framework.User.Service.Mapper;
+using SavaDev.System.Data;
+using SavaDev.System.Front.Mapper;
 
 namespace Scene.Login.WebApp
 {
@@ -15,8 +17,8 @@ namespace Scene.Login.WebApp
             {
                 mc.AddProfile(new AppUserDataMapperProfile());
                 mc.AddProfile(new AppUserMapperProfile());
-                mc.AddProfile(new CommonDataMapperProfile());
-                mc.AddProfile(new CommonMapperProfile());
+                mc.AddProfile(new SystemDataMapperProfile());
+                mc.AddProfile(new SystemMapperProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();

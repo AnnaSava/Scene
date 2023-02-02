@@ -184,7 +184,7 @@ namespace SavaDev.Base.Data.Managers
             if (entity == null)
                 throw new EntityNotFoundException();
 
-            entity.LastUpdated = DateTime.Now;
+            entity.LastUpdated = DateTime.UtcNow;
 
             return entity;
         }
@@ -203,7 +203,7 @@ namespace SavaDev.Base.Data.Managers
             if (entity == null)
                 throw new EntityNotFoundException();
 
-            entity.LastUpdated = DateTime.Now;
+            entity.LastUpdated = DateTime.UtcNow;
 
             return entity;
         }
@@ -215,7 +215,7 @@ namespace SavaDev.Base.Data.Managers
             if (entity == null)
                 throw new EntityNotFoundException();
 
-            entity.LastUpdated = DateTime.Now;
+            entity.LastUpdated = DateTime.UtcNow;
 
             return entity;
         }

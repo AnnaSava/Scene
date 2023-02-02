@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Framework.MailTemplate.SeedLib.Data
 {
+    [Obsolete]
     internal class MailTemplateData
     {
         public static Dictionary<string, string> MailTemplateRuCulture => new Dictionary<string, string>

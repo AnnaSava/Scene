@@ -30,7 +30,7 @@ namespace Framework.User.DataService.Services
 
         public async Task<TUserEntity> UpdateAsync(TUserEntity user)
         {
-            user.LastUpdated = DateTime.Now;
+            user.LastUpdated = DateTime.UtcNow;
             var result = await _userManager.UpdateAsync(user);
             HandleResult(result);
             return user;

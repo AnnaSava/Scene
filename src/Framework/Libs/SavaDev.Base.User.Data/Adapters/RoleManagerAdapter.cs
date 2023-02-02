@@ -30,7 +30,7 @@ namespace SavaDev.Base.User.Data.Adapters
 
         public async Task<TRoleEntity> UpdateAsync(TRoleEntity role)
         {
-            role.LastUpdated = DateTime.Now;
+            role.LastUpdated = DateTime.UtcNow;
             var result = await _roleManager.UpdateAsync(role);
             HandleResult(result);
             return role;

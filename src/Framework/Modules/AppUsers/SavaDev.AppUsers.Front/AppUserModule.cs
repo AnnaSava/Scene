@@ -78,11 +78,8 @@ namespace Framework.User.Service
             services.AddScoped<ILegalDocumentDbService, LegalDocumentDbService >();
 
             services.AddScoped<IAppAccountService, AppAccountService>();
-            services.AddScoped<IPermissionService, PermissionService>();
             services.AddScoped<IAppUserService, AppUserService>();
             services.AddScoped<IAppRoleService, AppRoleService>();
-            services.AddScoped<IReservedNameService, ReservedNameService>();
-            services.AddScoped<ILegalDocumentService, LegalDocumentService>();
         }
     }
 }

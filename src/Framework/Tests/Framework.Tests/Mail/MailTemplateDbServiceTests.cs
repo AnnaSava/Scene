@@ -44,7 +44,7 @@ namespace Framework.Tests.Mail
         {
             // Arrange
             var mailTemplateModel = new MailTemplateModel() { PermName = "doc99", Culture = "en" };
-            var testStartDate = DateTime.Now;
+            var testStartDate = DateTime.UtcNow;
 
             // Act
             var result = await _mailTemplateDbService.Create(mailTemplateModel);
@@ -80,7 +80,7 @@ namespace Framework.Tests.Mail
         {
             // Arrange
             var mailTemplateModel = new MailTemplateModel() { PermName = permName, Culture = culture };
-            var testStartDate = DateTime.Now;
+            var testStartDate = DateTime.UtcNow;
 
             // Act
             var result = await _mailTemplateDbService.CreateTranslation(mailTemplateModel);
@@ -117,7 +117,7 @@ namespace Framework.Tests.Mail
         {
             // Arrange
             var mailTemplateModel = new MailTemplateModel() { PermName = permName, Culture = culture };
-            var testStartDate = DateTime.Now;
+            var testStartDate = DateTime.UtcNow;
 
             // Act
             var result = await _mailTemplateDbService.CreateVersion(mailTemplateModel);
@@ -140,7 +140,7 @@ namespace Framework.Tests.Mail
         {
             // Arrange
             var mailTemplateModel = new MailTemplateModel() { PermName = permName, Culture = culture };
-            var testStartDate = DateTime.Now;
+            var testStartDate = DateTime.UtcNow;
 
             // Act
             async Task action() => await _mailTemplateDbService.CreateVersion(mailTemplateModel);
@@ -156,7 +156,7 @@ namespace Framework.Tests.Mail
             // Arrange
             mailTemplateModel.Title = "Title";
             mailTemplateModel.Text = "Text";
-            var testStartDate = DateTime.Now;
+            var testStartDate = DateTime.UtcNow;
             var createdDate = new DateTime(2000, 1, 1, 0, 0, 0);
             var oldModel = _context.MailTemplates.AsNoTracking().First(m => m.Id == mailTemplateModel.Id);
 

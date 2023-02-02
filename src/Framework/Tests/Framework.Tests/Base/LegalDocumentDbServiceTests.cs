@@ -4,7 +4,6 @@ using Framework.Base.Types.Enums;
 using Framework.Tests.Base.Data;
 using Framework.User.DataService.Contract.Models;
 using Framework.User.DataService.Entities;
-using Framework.User.DataService.Mapper;
 using Framework.User.DataService.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -25,7 +24,7 @@ namespace Framework.Tests.Base
 
         public LegalDocumentDbServiceTests()
         {
-            _mapper = new MapperConfiguration(opts => { opts.AddProfile<CommonDataMapperProfile>(); }).CreateMapper();
+            //_mapper = new MapperConfiguration(opts => { opts.AddProfile<SystemDataMapperProfile>(); }).CreateMapper();
             _context = Infrastructure.GetContext<LegalDocumentTestDbContext>(x => new LegalDocumentTestDbContext(x));
             
             // TODO logger
@@ -45,7 +44,7 @@ namespace Framework.Tests.Base
         {
             // Arrange
             var legalDocumentModel = new LegalDocumentModel() { PermName = "doc99", Culture = "en" };
-            var testStartDate = DateTime.Now;
+            var testStartDate = DateTime.UtcNow;
 
             // Act
             var result = await _legalDocumentDbService.Create(legalDocumentModel);
@@ -81,7 +80,7 @@ namespace Framework.Tests.Base
         {
             // Arrange
             var legalDocumentModel = new LegalDocumentModel() { PermName = permName, Culture = culture };
-            var testStartDate = DateTime.Now;
+            var testStartDate = DateTime.UtcNow;
 
             // Act
             var result = await _legalDocumentDbService.CreateTranslation(legalDocumentModel);
@@ -118,7 +117,7 @@ namespace Framework.Tests.Base
         {
             // Arrange
             var legalDocumentModel = new LegalDocumentModel() { PermName = permName, Culture = culture };
-            var testStartDate = DateTime.Now;
+            var testStartDate = DateTime.UtcNow;
 
             // Act
             var result = await _legalDocumentDbService.CreateVersion(legalDocumentModel);
@@ -141,7 +140,7 @@ namespace Framework.Tests.Base
         {
             // Arrange
             var legalDocumentModel = new LegalDocumentModel() { PermName = permName, Culture = culture };
-            var testStartDate = DateTime.Now;
+            var testStartDate = DateTime.UtcNow;
 
             // Act
             async Task action() => await _legalDocumentDbService.CreateVersion(legalDocumentModel);
@@ -159,7 +158,7 @@ namespace Framework.Tests.Base
             legalDocumentModel.Info = "Info";
             legalDocumentModel.Title = "Title";
             legalDocumentModel.Text = "Text";
-            var testStartDate = DateTime.Now;
+            var testStartDate = DateTime.UtcNow;
             var createdDate = new DateTime(2000, 1, 1, 0, 0, 0);
             var oldModel = _context.LegalDocuments.AsNoTracking().First(m => m.Id == legalDocumentModel.Id);
 

@@ -17,7 +17,7 @@ namespace Framework.User.Helpers.Jwt
         private const char TokenEndFiller = '=';
         private const int TokenLengthMultiplicity = 4;
 
-        private readonly DateTime now = DateTime.Now;
+        private readonly DateTime now = DateTime.UtcNow;
         private readonly long unixTime;
         private readonly JwtAppOptions _options;
 

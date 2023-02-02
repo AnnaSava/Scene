@@ -1,71 +1,79 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using SavaDev.Base.Data.Context;
 using SavaDev.Base.User.Data.Adapters.Interfaces;
 using SavaDev.Base.User.Data.Context;
 using SavaDev.Base.User.Data.Entities;
+using SavaDev.Base.User.Data.Manager;
 using SavaDev.Base.User.Data.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SavaDev.Base.User.Data.Services
 {
-    public class BaseAccountDbService<TUserEntity> where TUserEntity : BaseUser
+    public class BaseAccountDbService<TKey, TEntity> where TEntity : BaseUser
     {
-        protected readonly IUserContext<TUserEntity> _dbContext;
-        protected IUserManagerAdapter<TUserEntity> _userManagerAdapter;
+        protected readonly IDbContext _dbContext;
         private readonly ISignInManagerAdapter _signInManagerAdapter;
         protected readonly IMapper _mapper;
+        private readonly UserManager<TEntity> _userManager;
+
+        protected readonly AccountEntityManager<TKey, TEntity> entityManager;
 
         public BaseAccountDbService(
-            IUserContext<TUserEntity> dbContext,
-            IUserManagerAdapter<TUserEntity> userManagerAdapter,
-            ISignInManagerAdapter signInManagerAdapter,
-            IMapper mapper)
+            IDbContext dbContext,
+            UserManager<TEntity> userManager,
+            ISignInManagerAdapter signInManagerAdapter,            
+            IMapper mapper,
+            ILogger logger)
         {
             _dbContext = dbContext;
-
-            _userManagerAdapter = userManagerAdapter;
-
+            _userManager = userManager;
             _signInManagerAdapter = signInManagerAdapter;
-
             _mapper = mapper;
-        }
 
-        public async Task<string> GenerateEmailConfirmationToken(string email)
-        {
-            return await _userManagerAdapter.GenerateEmailConfirmationToken(email);
-        }
-
-        public async Task<bool> ConfirmEmail(string email, string token)
-        {
-            return await _userManagerAdapter.ConfirmEmail(email, token);
+            entityManager = new AccountEntityManager<TKey, TEntity>(dbContext, userManager, _mapper, logger);
         }
 
         public async Task<string> GeneratePasswordResetToken(string email)
-        {
-            return await _userManagerAdapter.GeneratePasswordResetToken(email);
-        }
+            => await entityManager.GeneratePasswordResetToken(email);
 
         public async Task ResetPassword(string email, string token, string newPassword)
+            => await entityManager.ResetPassword(email, token, newPassword);
+
+        public async Task ChangePasswordAsync(TKey userId, string oldPassword, string newPassword)
+            => await entityManager.ChangePasswordAsync(userId, oldPassword, newPassword);
+
+        public async Task<IList<string>> GetRolesAsync(long userId)
         {
-            await _userManagerAdapter.ResetPassword(email, token, newPassword);
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            return await _userManager.GetRolesAsync(user);
         }
+
+        public async Task<string> GenerateEmailConfirmationToken(string email) => await entityManager.GenerateEmailConfirmationToken(email);
+
+        public async Task<bool> ConfirmEmail(string email, string token) => await entityManager.ConfirmEmail(email, token);
 
         public async Task<SignInResultModel<TUserOutModel>> SignIn<TUserOutModel>(LoginModel model)
             where TUserOutModel : BaseUserModel
         {
-            var userEntity = await _userManagerAdapter.GetOneByLoginOrEmail(model.Identifier);
 
-            var result = await _signInManagerAdapter.SignIn(userEntity.Email, model.Password, model.RememberMe);
+            // TODO
+            //var userEntity = await entityManager.GetOneByLoginOrEmail(model.Identifier);
+
+            //var result = await _signInManagerAdapter.SignIn(userEntity.Email, model.Password, model.RememberMe);
 
             var resultModel = new SignInResultModel<TUserOutModel>()
             {
-                Succeeded = result.Succeeded,
+               // Succeeded = result.Succeeded,
             };
 
-            if (result.Succeeded)
-            {
-                var user = await _userManagerAdapter.GetOneByLoginOrEmail(model.Identifier);
-                resultModel.User = _mapper.Map<TUserOutModel>(user);
-            };
+            //if (result.Succeeded)
+            //{
+            //    var user = await entityManager.GetOneByLoginOrEmail(model.Identifier);
+            //    resultModel.User = _mapper.Map<TUserOutModel>(user);
+            //};
             return resultModel;
         }
     }

@@ -1,7 +1,7 @@
 ﻿@page "/legaldocuments"
-@using Framework.Base.Types.Enums
-@using Framework.User.Service.Contract.Interfaces
-@using Framework.User.Service.Contract.Models
+@using SavaDev.Base.Data.Enums;
+@using SavaDev.System.Front.Contract;
+@using SavaDev.System.Front.Contract.Models;
 @inject ILegalDocumentService _legalDocumentService
 
 <PageTitle>Documents</PageTitle>
@@ -99,9 +99,10 @@
             IsDeleted = showDeleted
         };
 
-        var result = await _legalDocumentService.GetAll(filter, PageHelper.GetPageInfo(state));
+        //var result = await _legalDocumentService.GetAll(filter, PageHelper.GetPageInfo(state));
 
-        return PageHelper.GetTableData<LegalDocumentViewModel>(result);
+        //return PageHelper.GetTableData<LegalDocumentViewModel>(result);
+        return new TableData<LegalDocumentViewModel>();
     }
 
     private void OnSearch(string text)

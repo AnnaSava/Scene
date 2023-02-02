@@ -5,7 +5,6 @@ using Framework.Base.Types.Enums;
 using Framework.Tests.Base.Data;
 using Framework.User.DataService.Contract.Models;
 using Framework.User.DataService.Entities;
-using Framework.User.DataService.Mapper;
 using Framework.User.DataService.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -25,7 +24,7 @@ namespace Framework.Tests.Base
 
         public PermissionDbServiceTests()
         {
-            _mapper = new MapperConfiguration(opts => { opts.AddProfile<CommonDataMapperProfile>(); }).CreateMapper();
+            //_mapper = new MapperConfiguration(opts => { opts.AddProfile<SystemDataMapperProfile>(); }).CreateMapper();
             _context = GetContext();
 
             // TODO logger

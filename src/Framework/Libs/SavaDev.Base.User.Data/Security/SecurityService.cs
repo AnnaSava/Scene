@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using SavaDev.Base.User.Data.Adapters.Interfaces;
 using SavaDev.Base.User.Data.Entities;
 using System;
@@ -12,13 +13,13 @@ namespace SavaDev.Base.User.Data.Security
         where TUserEntity : BaseUser
         where TRoleEntity : BaseRole
     {
-        private readonly IUserManagerAdapter<TUserEntity> _userManager;
+        private readonly UserManager<TUserEntity> _userManager;
         private readonly IRoleManagerAdapter<TRoleEntity> _roleManager;
 
         private Dictionary<string, UserInfoCacheModel> memCache = new Dictionary<string, UserInfoCacheModel>();
 
         public SecurityService(IHttpContextAccessor httpContextAccessor,
-            IUserManagerAdapter<TUserEntity> userManager, 
+            UserManager<TUserEntity> userManager, 
             IRoleManagerAdapter<TRoleEntity> roleManager)
         {
             _userManager = userManager;
@@ -36,7 +37,8 @@ namespace SavaDev.Base.User.Data.Security
         public async Task<bool> IsLocked(string userId)
         {
             if (memCache.ContainsKey(userId) && memCache[userId].IsLocked.HasValue) return memCache[userId].IsLocked.Value;
-            var isLocked = await _userManager.IsLocked(userId);
+            // TODO
+            var isLocked = false;// await _userManager.IsLocked(userId);
             memCache.Add(userId, new UserInfoCacheModel { IsLocked = isLocked });
             return memCache[userId].IsLocked.Value;
         }
@@ -49,7 +51,9 @@ namespace SavaDev.Base.User.Data.Security
             if (!memCache.ContainsKey(userId) || memCache[userId].Permissions == null || !memCache[userId].Permissions.Any())
             {
                 // я не понимаю, почему в дефолтном манагере нельзя сразу получить айдишники или роли целиком
-                var roleNames = await _userManager.GetRolesAsync(long.Parse(userId));
+               // var roleNames = await _userManager.GetRolesAsync(long.Parse(userId));
+                // TODO
+                var roleNames = await _userManager.GetRolesAsync(null);
 
                 var existingPermissions = new List<string>();
 

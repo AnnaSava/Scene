@@ -92,7 +92,7 @@ namespace Framework.User.DataService.Services
 
             var lockout = new Lockout()
             {
-                LockDate = DateTime.Now,
+                LockDate = DateTime.UtcNow,
                 LockedByUserId = 1, //TODO прокидывать юзера, кто заблокировал
                 LockoutEnd = lockoutModel.LockoutEnd,
                 Reason = lockoutModel.Reason,

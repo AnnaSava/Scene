@@ -1,0 +1,82 @@
+﻿@using SavaDev.UI.Blazorstrap.Models
+@typeparam T where T: RegistryViewItem
+
+<BSDataTable FetchItems="InvokeParentMethod" PaginationBottom="true" StartPage="_startPage" RowsPerPage="20" Context="item" @ref=table>
+    <Header>
+        <BSDataTableHead TValue="T">
+            <BSInputCheckbox CheckedValue="@(true)" @onchange="@(c=>HandleAllCheckedChanged(c))" @bind-Value="AllIsSelected" />
+
+        </BSDataTableHead>
+        <BSDataTableHead TValue="T" Sortable="true" Column="Id">Id</BSDataTableHead>
+        <BSDataTableHead TValue="T"></BSDataTableHead>
+    </Header>
+    <Body>
+        <BSDataTableRow>
+            <BSTD>
+                <div Class="@BS.Form_Check">
+                    <BSTD><BSInputCheckbox CheckedValue="@(true)" @onchange="@(c=>HandleCheckedChanged(c, item))" @bind-Value="item.IsSelected" /></BSTD>
+                </div>
+            </BSTD>
+            <BSTD>
+                @item.Id
+            </BSTD>
+            <BSTD>
+
+            </BSTD>
+        </BSDataTableRow>
+    </Body>
+</BSDataTable>
+
+@code {
+    [Parameter]
+    public RegistryView<T>? List { get; set; }
+
+    private BSDataTable<T>? table;
+
+    private int _startPage = 1;
+
+    private List<long> SelectedIds = new List<long>();
+    private bool AllIsSelected;
+
+
+    [Parameter] public Func<DataRequest, Task<(IEnumerable<T>, int)>> FetchItems { get; set; }
+
+    private async Task<(IEnumerable<T>, int)> InvokeParentMethod(DataRequest dataRequest)
+    {
+        var task = FetchItems?.Invoke(dataRequest);
+        var result = await task;
+
+        return (result.Item1, result.Item2);
+    }
+
+    private async Task HandleCheckedChanged(ChangeEventArgs args, T sender)
+    {
+        if (sender.IsSelected) SelectedIds.Add(sender.Id);
+        else SelectedIds.Remove(sender.Id);
+    }
+
+    private async Task HandleAllCheckedChanged(ChangeEventArgs args)
+    {
+        foreach (var item in table.Items)
+        {
+            item.IsSelected = (bool)args.Value == true;
+
+            var selectedIdsContains = SelectedIds.Contains(item.Id);
+
+            if (item.IsSelected)
+            {
+                if (!selectedIdsContains)
+                {
+                    SelectedIds.Add(item.Id);
+                }
+            }
+            else
+            {
+                if (selectedIdsContains)
+                {
+                    SelectedIds.Remove(item.Id);
+                }
+            }
+        }
+    }
+}

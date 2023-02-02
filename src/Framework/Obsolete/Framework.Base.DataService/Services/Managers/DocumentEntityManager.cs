@@ -39,7 +39,7 @@ namespace Framework.Base.DataService.Services.Managers
         protected Action<TEntity> OnCreating = (entity) =>
         {
             entity.Status = DocumentStatus.Draft;
-            entity.Created = entity.LastUpdated = DateTime.Now;
+            entity.Created = entity.LastUpdated = DateTime.UtcNow;
         };
 
         public async Task<OperationResult<TFormModel>> Create(TFormModel model)

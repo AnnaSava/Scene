@@ -24,7 +24,7 @@ namespace SavaDev.Community.Data.Services
         public async Task<IEnumerable<string>> GetAllActualIds(Guid communityId)
         {
             var list = await _dbContext.Set<Lockout>()
-                .Where(m => m.CommunityId == communityId && m.LockoutEnd > DateTime.Now)
+                .Where(m => m.CommunityId == communityId && m.LockoutEnd > DateTime.UtcNow)
                 .Select(m => m.UserId)
                 .ToListAsync();
 

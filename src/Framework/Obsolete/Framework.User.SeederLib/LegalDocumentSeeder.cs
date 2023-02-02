@@ -29,8 +29,8 @@ namespace Framework.User.SeederLib
                     PermName = m.Key,
                     Title = m.Value,
                     Text = "This is a new document. Edit this text as you wish.",
-                    Created = DateTime.Now,
-                    LastUpdated = DateTime.Now,
+                    Created = DateTime.UtcNow,
+                    LastUpdated = DateTime.UtcNow,
                     Status = DocumentStatus.Draft,
                     Culture = "en"
                 });
@@ -41,8 +41,8 @@ namespace Framework.User.SeederLib
                     PermName = m.Key,
                     Title = m.Value,
                     Text = "Это новый документ. Отредактиуйте его так, как вам нужно.",
-                    Created = DateTime.Now,
-                    LastUpdated = DateTime.Now,
+                    Created = DateTime.UtcNow,
+                    LastUpdated = DateTime.UtcNow,
                     Status = DocumentStatus.Draft,
                     Culture = "ru"
                 });

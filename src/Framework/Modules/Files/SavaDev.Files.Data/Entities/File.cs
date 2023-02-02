@@ -28,7 +28,7 @@ namespace Sava.Files.Data.Entities
 
         public long Size { get; set; }
 
-        public DateTime DateUploaded { get; set; } = DateTime.Now;
+        public DateTime DateUploaded { get; set; } = DateTime.UtcNow;
 
         public bool IsDuplicateMd5 { get; set; }
 

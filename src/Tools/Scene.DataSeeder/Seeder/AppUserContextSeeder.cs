@@ -42,9 +42,9 @@ namespace Scene.DataSeeder
             var moderRole = context.Roles.Any(m => m.Name == "moderator");
             var editorRole = context.Roles.Any(m => m.Name == "editor");
 
-            if (!admRole) _roleManager.CreateAsync(new AppRole { Name = "administrator", LastUpdated = DateTime.Now }).GetAwaiter().GetResult();
-            if (!moderRole) _roleManager.CreateAsync(new AppRole { Name = "moderator", LastUpdated = DateTime.Now }).GetAwaiter().GetResult();
-            if (!editorRole) _roleManager.CreateAsync(new AppRole { Name = "editor", LastUpdated = DateTime.Now }).GetAwaiter().GetResult();
+            if (!admRole) _roleManager.CreateAsync(new AppRole { Name = "administrator", LastUpdated = DateTime.UtcNow }).GetAwaiter().GetResult();
+            if (!moderRole) _roleManager.CreateAsync(new AppRole { Name = "moderator", LastUpdated = DateTime.UtcNow }).GetAwaiter().GetResult();
+            if (!editorRole) _roleManager.CreateAsync(new AppRole { Name = "editor", LastUpdated = DateTime.UtcNow }).GetAwaiter().GetResult();
 
             await new ReservedNameSeeder(context).Seed();
             await new PermissionSeeder(context).Seed();

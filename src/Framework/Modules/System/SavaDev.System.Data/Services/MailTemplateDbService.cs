@@ -12,7 +12,7 @@ namespace SavaDev.System.Data.Services
     {
         protected DocumentEntityManager<long, Entities.MailTemplate, MailTemplateModel> entityManager;
 
-        public MailTemplateDbService(IMailTemplateContext dbContext, IEnumerable<string> availableCultures, IMapper mapper, ILogger<MailTemplateDbService> logger)
+        public MailTemplateDbService(SystemContext dbContext, IEnumerable<string> availableCultures, IMapper mapper, ILogger<MailTemplateDbService> logger)
             : base(dbContext, mapper, nameof(MailTemplateDbService))
         {
             entityManager = new DocumentEntityManager<long, Entities.MailTemplate, MailTemplateModel>(dbContext, availableCultures, mapper, logger);

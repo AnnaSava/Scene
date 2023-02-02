@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Modules\AppUsers\SavaDev.AppUsers.Front\SavaDev.AppUsers.Front.csproj" />
+    <ProjectReference Include="..\..\Framework\Modules\System\SavaDev.System.Front\SavaDev.System.Front.csproj" />
     <ProjectReference Include="..\..\Framework\Obsolete\Framework.User.Service\Framework.User.Service.csproj" />
   </ItemGroup>
 

@@ -38,7 +38,7 @@ namespace Savadev.Content.Data.Services
             {
                 entity.Id = Guid.NewGuid();
                 entity.Content = JsonSerializer.Serialize(contentModel);
-                entity.Created = DateTime.Now;
+                entity.Created = DateTime.UtcNow;
             });
 
             return res;

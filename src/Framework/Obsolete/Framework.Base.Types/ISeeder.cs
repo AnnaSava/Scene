@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Base.Types
 {
+    [Obsolete]
     public interface ISeeder
     {
         Task Seed();

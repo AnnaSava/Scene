@@ -4,6 +4,7 @@ using Framework.MailTemplate.SeedLib.Data;
 
 namespace Framework.MailTemplate.SeedLib
 {
+    [Obsolete]
     public class MailTemplateSeeder : ISeeder
     {
         private readonly IMailTemplateContext context;
@@ -22,8 +23,8 @@ namespace Framework.MailTemplate.SeedLib
                     PermName = m.Key,
                     Title = m.Value,
                     Text = "This is a new template. Edit this text as you wish.",
-                    Created = DateTime.Now,
-                    LastUpdated = DateTime.Now,
+                    Created = DateTime.UtcNow,
+                    LastUpdated = DateTime.UtcNow,
                     Status = Base.Types.Enums.DocumentStatus.Draft,
                     Culture = "en"
                 });
@@ -34,8 +35,8 @@ namespace Framework.MailTemplate.SeedLib
                     PermName = m.Key,
                     Title = m.Value,
                     Text = "Это новый шаблон. Отредактиуйте его так, как вам нужно.",
-                    Created = DateTime.Now,
-                    LastUpdated = DateTime.Now,
+                    Created = DateTime.UtcNow,
+                    LastUpdated = DateTime.UtcNow,
                     Status = Base.Types.Enums.DocumentStatus.Draft,
                     Culture = "ru"
                 });

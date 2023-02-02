@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Modules\AppUsers\SavaDev.AppUsers.Data\SavaDev.AppUsers.Data.csproj" />
     <ProjectReference Include="..\..\Framework\Modules\AppUsers\SavaDev.AppUsers.Front\SavaDev.AppUsers.Front.csproj" />
+    <ProjectReference Include="..\..\Framework\Modules\System\SavaDev.System.Front\SavaDev.System.Front.csproj" />
     <ProjectReference Include="..\..\Framework\Obsolete\Framework.Base.Service\Framework.Base.Service.csproj" />
     <ProjectReference Include="..\..\Framework\Obsolete\Framework.MailTemplate.Data\Framework.MailTemplate.Data.csproj" />
     <ProjectReference Include="..\..\Framework\Obsolete\Framework.Mail\Framework.Mail.csproj" />

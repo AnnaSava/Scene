@@ -1,13 +1,6 @@
 ﻿using Framework.Base.Service.ListView;
 using Framework.Base.Types.Validation;
 using Framework.User.Service.Contract.Models;
-using Microsoft.AspNetCore.Identity;
-using Sava.User.Contract.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Framework.User.Service.Contract.Interfaces
 {

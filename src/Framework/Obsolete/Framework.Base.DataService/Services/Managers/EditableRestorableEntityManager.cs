@@ -188,7 +188,7 @@ namespace Framework.Base.DataService.Services.Managers
             if (entity == null)
                 throw new EntityNotFoundException();
 
-            entity.LastUpdated = DateTime.Now;
+            entity.LastUpdated = DateTime.UtcNow;
 
             return entity;
         }
@@ -207,7 +207,7 @@ namespace Framework.Base.DataService.Services.Managers
             if (entity == null)
                 throw new EntityNotFoundException();
 
-            entity.LastUpdated = DateTime.Now;
+            entity.LastUpdated = DateTime.UtcNow;
 
             return entity;
         }
@@ -219,7 +219,7 @@ namespace Framework.Base.DataService.Services.Managers
             if (entity == null)
                 throw new EntityNotFoundException();
 
-            entity.LastUpdated = DateTime.Now;
+            entity.LastUpdated = DateTime.UtcNow;
 
             return entity;
         }

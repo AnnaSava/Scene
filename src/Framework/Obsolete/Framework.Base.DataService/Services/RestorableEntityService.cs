@@ -56,7 +56,7 @@ namespace Framework.Base.DataService.Services
         protected override void OnAdding(TEntity entity)
         {
             entity.IsDeleted = false;
-            entity.LastUpdated = DateTime.Now;
+            entity.LastUpdated = DateTime.UtcNow;
         }
 
         /// <summary>

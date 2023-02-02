@@ -51,7 +51,7 @@ namespace Framework.User.Helpers.Jwt
 
             var t = principal.Claims.Where(m => m.Type == "nbf").First();
 
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
             var unixTime = ((DateTimeOffset)now).ToUnixTimeSeconds();
 
             if (unixTime >= long.Parse(t.Value))

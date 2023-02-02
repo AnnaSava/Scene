@@ -1,4 +1,4 @@
-﻿using SavaDev.Base.Data.Models.Enums;
+﻿using SavaDev.Base.Data.Enums;
 using SavaDev.Base.Data.Registry.Filter;
 
 namespace SavaDev.System.Data.Contract.Models

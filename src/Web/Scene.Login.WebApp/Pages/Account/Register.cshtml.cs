@@ -1,9 +1,10 @@
 using Framework.DefaultUser.Service.Contract;
-using Framework.User.Service.Contract.Interfaces;
 using Framework.User.Service.Contract.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SavaDev.System.Front.Contract;
+using SavaDev.System.Front.Contract.Models;
 
 namespace Scene.Login.WebApp.Pages.Account
 {

@@ -1,5 +1,5 @@
-﻿using SavaDev.Base.Data.Models;
-using SavaDev.Base.Data.Models.Enums;
+﻿using SavaDev.Base.Data.Enums;
+using SavaDev.Base.Data.Models;
 using SavaDev.Base.Data.Models.Interfaces;
 
 namespace SavaDev.System.Data.Contract.Models

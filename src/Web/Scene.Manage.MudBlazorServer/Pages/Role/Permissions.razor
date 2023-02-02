@@ -1,6 +1,6 @@
 ﻿@page "/roles/permissions"
-@using Framework.User.Service.Contract.Interfaces
-@using Framework.User.Service.Contract.Models
+@using SavaDev.System.Front.Contract;
+@using SavaDev.System.Front.Contract.Models;
 @inject IPermissionService _permissionService
 
 <PageTitle>Permissions</PageTitle>
@@ -44,9 +44,10 @@
     {
         var filter = new PermissionFilterViewModel { Name =  "contains|" + searchString };
 
-        var result = await _permissionService.GetAll(filter, PageHelper.GetPageInfo(state));
+        //var result = await _permissionService.GetAll(filter, PageHelper.GetPageInfo(state));
 
-        return PageHelper.GetTableData<PermissionViewModel>(result);
+        //return PageHelper.GetTableData<PermissionViewModel>(result);
+        return new TableData<PermissionViewModel>();
     }
 
     private void OnSearch(string text)

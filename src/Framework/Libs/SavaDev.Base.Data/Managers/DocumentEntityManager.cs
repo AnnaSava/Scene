@@ -3,14 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SavaDev.Base.Data.Context;
 using SavaDev.Base.Data.Entities;
+using SavaDev.Base.Data.Enums;
 using SavaDev.Base.Data.Models;
-using SavaDev.Base.Data.Models.Enums;
 using SavaDev.Base.Data.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SavaDev.Base.Data.Managers
 {
@@ -38,7 +33,7 @@ namespace SavaDev.Base.Data.Managers
         protected Action<TEntity> OnCreating = (entity) =>
         {
             entity.Status = DocumentStatus.Draft;
-            entity.Created = entity.LastUpdated = DateTime.Now;
+            entity.Created = entity.LastUpdated = DateTime.UtcNow;
         };
 
         public async Task<OperationResult<TFormModel>> Create(TFormModel model)

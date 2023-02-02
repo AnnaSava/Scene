@@ -30,7 +30,7 @@ namespace SavaDev.Community.Data.Services
             if (entity == null) return;
 
             entity.IsDeleted = true;
-            entity.LastUpdated = DateTime.Now;
+            entity.LastUpdated = DateTime.UtcNow;
 
             await _dbContext.SaveChangesAsync();
         }

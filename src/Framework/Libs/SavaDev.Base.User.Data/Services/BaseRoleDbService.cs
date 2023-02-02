@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using SavaDev.Base.Data.Context;
 using SavaDev.Base.User.Data.Adapters.Interfaces;
-using SavaDev.Base.User.Data.Context;
 using SavaDev.Base.User.Data.Entities;
 using SavaDev.Base.User.Data.Models.Interfaces;
 
@@ -12,12 +12,12 @@ namespace SavaDev.Base.User.Data.Services
         where TRoleClaimEntity: IdentityRoleClaim<long>, new()
         where TRoleModel : BaseRoleModel
     {
-        protected readonly IRoleContext<TRoleEntity, TRoleClaimEntity> _dbContext;
+        protected readonly IDbContext _dbContext;
         private readonly IRoleManagerAdapter<TRoleEntity> _roleManagerAdapter;
         protected readonly IMapper _mapper;
 
         public BaseRoleDbService(
-            IRoleContext<TRoleEntity, TRoleClaimEntity> dbContext,
+            IDbContext dbContext,
             IRoleManagerAdapter<TRoleEntity> roleManagerAdapter,
             IMapper mapper,
             string serviceName

@@ -44,7 +44,7 @@ namespace Framework.Mail.WorkerLib
                                 }
                                 catch (Exception e)
                                 {
-                                    Console.WriteLine("[{0}] Error: {1}", DateTime.Now, e.Message);
+                                    Console.WriteLine("[{0}] Error: {1}", DateTime.UtcNow, e.Message);
                                 }
 
                             };
