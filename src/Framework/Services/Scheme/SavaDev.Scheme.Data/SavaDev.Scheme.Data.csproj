@@ -14,6 +14,7 @@
     <ProjectReference Include="..\..\..\Libs\SavaDev.Base.Data\SavaDev.Base.Data.csproj" />
     <ProjectReference Include="..\..\..\Libs\SavaDev.Base.Front\SavaDev.Base.Front.csproj" />
     <ProjectReference Include="..\..\..\Libs\SavaDev.Base.Unit\SavaDev.Base.Unit.csproj" />
+    <ProjectReference Include="..\..\..\Libs\SavaDev.Infrastructure\SavaDev.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

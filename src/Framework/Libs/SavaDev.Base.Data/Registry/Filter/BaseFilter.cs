@@ -8,5 +8,7 @@ namespace SavaDev.Base.Data.Registry.Filter
 {
     public class BaseFilter
     {
+        // TODO вынести в класс ...Restorable
+        public bool IsDeleted { get; set; }
     }
 }

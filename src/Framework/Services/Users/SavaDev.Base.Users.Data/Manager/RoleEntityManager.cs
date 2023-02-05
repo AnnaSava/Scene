@@ -89,7 +89,7 @@ namespace SavaDev.Base.User.Data.Manager
 
         private async Task<OperationResult> CreatePermissions(TEntity role, IEnumerable<string> permissions)
         {
-            if (permissions == null) return new OperationResult(0);
+            if (permissions == null || !permissions.Any()) return new OperationResult(0);
 
             permissions = permissions.Distinct();
 

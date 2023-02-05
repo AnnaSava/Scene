@@ -20,5 +20,11 @@ namespace SavaDev.Base.Data.Models
             Entity = entity;
             Module = module;
         }
+
+        public ModelPlacement(string entity, string module)
+        {
+            Entity = entity;
+            Module = module;
+        }
     }
 }

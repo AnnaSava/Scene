@@ -21,8 +21,12 @@ namespace SavaDev.Infrastructure.Util.TestDataGenerator
         protected const string MethodColumnHeader = "MTDKEY";
         protected const string PrimaryKeyColumnHeader = "PK";
 
-        protected readonly ITestDataProvider _dataGenerator;
-        protected readonly ITestDataParser _dataParser;
+        protected readonly ITestDataProvider? _dataGenerator;
+        protected readonly ITestDataParser? _dataParser;
+
+        public BaseModelFieldsManager()
+        {
+        }
 
         public BaseModelFieldsManager(ITestDataProvider dataGenerator)
         {
@@ -34,10 +38,23 @@ namespace SavaDev.Infrastructure.Util.TestDataGenerator
             _dataParser = dataParser;
         }
 
+        public static IEnumerable<Type> GetModelTypes(string @namespace)
+        {
+            return AppDomain.CurrentDomain
+                .GetAssemblies()
+                .SelectMany(t => t.GetTypes())
+                .Where(t => t.IsClass && t.Namespace == @namespace && !t.IsGenericType && !t.IsAbstract);
+        }
 
         public IEnumerable<PropertyInfo> GetModelProps<T>()
         {
-            var modelProps = typeof(T)
+            var modelProps = GetModelProps(typeof(T));
+            return modelProps;
+        }
+
+        public IEnumerable<PropertyInfo> GetModelProps(Type type)
+        {
+            var modelProps = type
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy)
                 .Where(f => !f.PropertyType.FullName.Contains(EntityTypeNamePart)); // See Important! comment in the base class //.Where(f => !f.GetGetMethod().IsVirtual);
 

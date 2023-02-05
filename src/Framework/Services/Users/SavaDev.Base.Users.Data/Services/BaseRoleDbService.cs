@@ -2,12 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SavaDev.Base.Data.Context;
-using SavaDev.Base.Data.Exceptions;
 using SavaDev.Base.Data.Services;
 using SavaDev.Base.User.Data.Entities;
 using SavaDev.Base.User.Data.Manager;
 using SavaDev.Base.User.Data.Models.Interfaces;
-using SavaDev.Base.Users.Data.Manager;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -21,7 +21,6 @@
     <ProjectReference Include="..\..\Framework\Obsolete\Framework.Helpers\Framework.Helpers.csproj" />
     <ProjectReference Include="..\..\Framework\Obsolete\Framework.MailTemplate.Data\Framework.MailTemplate.Data.csproj" />
     <ProjectReference Include="..\..\Framework\Obsolete\Framework.MailTemplate.SeederLib\Framework.MailTemplate.SeederLib.csproj" />
-    <ProjectReference Include="..\..\Framework\Obsolete\Framework.User.SeederLib\Framework.User.SeederLib.csproj" />
     <ProjectReference Include="..\..\Framework\Services\System\SavaDev.System.Front\SavaDev.System.Front.csproj" />
     <ProjectReference Include="..\..\Framework\Services\Users\SavaDev.Users.Data\SavaDev.Users.Data.csproj" />
     <ProjectReference Include="..\..\Framework\Services\Users\SavaDev.Users.Front\SavaDev.Users.Front.csproj" />

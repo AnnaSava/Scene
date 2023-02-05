@@ -8,6 +8,8 @@ namespace SavaDev.Base.Front.Registry
 {
     public abstract class BaseRegistryItemViewModel
     {
+        public long Id { get; set; }
+
         public bool IsSelected { get; set; }
     }
 }

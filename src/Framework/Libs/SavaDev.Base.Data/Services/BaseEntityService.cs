@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Base.Data.Services
 {
-    public abstract class BaseEntityService<TEntity, TModel>
+    public abstract class BaseEntityService<TEntity, TModel> : IEntityRegistryService
         where TEntity : class, IAnyEntity
         where TModel : IAnyModel
     {

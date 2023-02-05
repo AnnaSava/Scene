@@ -90,8 +90,8 @@ namespace SavaDev.Base.Data.Managers.Crud
                 var createResult = await DoCreate(entity);
                 rows += HandleResult(createResult, nameof(DoCreate));
 
-                    var afterCreateResult = await DoOnAfterCreate(entity, model);
-                    rows += HandleResult(afterCreateResult, nameof(DoOnAfterCreate));
+                var afterCreateResult = await DoOnAfterCreate(entity, model);
+                rows += HandleResult(afterCreateResult, nameof(DoOnAfterCreate));
 
                 var result = DoOnSuccess(entity);
                 result.Rows = rows; // TODO раз присваиваем здесь, то выпилить из конструктора OperationResultи вызовов методов
@@ -152,7 +152,7 @@ namespace SavaDev.Base.Data.Managers.Crud
 
         private int HandleResult(OperationResult result, string methodName)
         {
-            if (!result.IsSuccess)
+            if (!result.IsSuccess && !result.NotChanged)
             {
                 throw new Exception($"Operation in {methodName} failed", new Exception(result.GetExceptionsString()));
             }

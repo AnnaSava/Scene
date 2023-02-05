@@ -19,6 +19,10 @@ namespace SavaDev.Scheme.Contract.Models
 
         public virtual TableModel Table { get; set; }
 
+        public bool IsSortable { get; set; }
+
+        public bool HasColumnFilter { get; set; }
+
         public virtual ICollection<ColumnPropertyModel> Properties { get; set; }
     }
 }

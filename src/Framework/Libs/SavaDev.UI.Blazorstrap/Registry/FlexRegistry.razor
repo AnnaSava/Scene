@@ -1,13 +1,41 @@
-﻿@using SavaDev.UI.Blazorstrap.Models
-@typeparam T where T: RegistryViewItem
+﻿@using SavaDev.Base.Front.Registry
+@using SavaDev.Scheme.Front.Contract.Models;
+@using SavaDev.UI.Blazorstrap.Models
+@typeparam T where T: BaseRegistryItemViewModel
+
+<BSLink href="@CreateLink" IsButton="true" Color="BSColor.Primary">Add</BSLink>
+
+@if (AvailableColumns != null && AvailableColumns.Any())
+{
+    <BSDropdown>
+        <Toggler><BSToggle IsButton="true" Color="BSColor.Secondary">Dropdown button</BSToggle></Toggler>
+            <Content>
+            @foreach (var col in AvailableColumns)
+                {
+                <BSDropdownItem OnClick="@(() => OnDropdownClick(col))">@col.Name</BSDropdownItem>
+                }
+        </Content>
+    </BSDropdown>
+}
 
 <BSDataTable FetchItems="InvokeParentMethod" PaginationBottom="true" StartPage="_startPage" RowsPerPage="20" Context="item" @ref=table>
     <Header>
         <BSDataTableHead TValue="T">
             <BSInputCheckbox CheckedValue="@(true)" @onchange="@(c=>HandleAllCheckedChanged(c))" @bind-Value="AllIsSelected" />
-
         </BSDataTableHead>
-        <BSDataTableHead TValue="T" Sortable="true" Column="Id">Id</BSDataTableHead>
+            @if(Columns != null && Columns.Any())
+            {
+                foreach(var col in Columns)
+                {
+                    <BSDataTableHead 
+                        TValue="T" 
+                        Sortable="@col.IsSortable"
+                        ColumnFilter="@col.HasColumnFilter"
+                        Column="@col.Name">
+                        @col.Name
+                    </BSDataTableHead>
+                }
+            }            
         <BSDataTableHead TValue="T"></BSDataTableHead>
     </Header>
     <Body>
@@ -17,11 +45,23 @@
                     <BSTD><BSInputCheckbox CheckedValue="@(true)" @onchange="@(c=>HandleCheckedChanged(c, item))" @bind-Value="item.IsSelected" /></BSTD>
                 </div>
             </BSTD>
+            @if(Columns!=null && Columns.Any())
+            {
+                foreach(var col in Columns)
+                {
+                 <BSTD>
+                    @(typeof(T).GetProperty(col.Name).GetValue(item))
+                </BSTD>
+                }
+            }
             <BSTD>
-                @item.Id
-            </BSTD>
-            <BSTD>
-
+                <BSDropdown>
+                    <Toggler><BSToggle Class="btn btn-secondary">Actions</BSToggle></Toggler>
+                    <Content>
+                        <BSDropdownItem href="@("/role/update/" + item.Id)">Update</BSDropdownItem>
+                        <BSDropdownItem OnClick="(() => {})">Delete</BSDropdownItem>
+                    </Content>
+                </BSDropdown>
             </BSTD>
         </BSDataTableRow>
     </Body>
@@ -29,7 +69,13 @@
 
 @code {
     [Parameter]
-    public RegistryView<T>? List { get; set; }
+    public RegistryPageViewModel<T>? Page { get; set; }
+    [Parameter]
+    public Func<DataRequest, Task<(IEnumerable<T>, int)>> FetchItems { get; set; }
+    [Parameter] // возможно, сделать для ui свой набор моделек. пока берем из либ "фронт"
+    public Func<Task<IEnumerable<ColumnViewModel>>> GetColumns { get; set; }
+    [Parameter]
+    public string CreateLink { get; set; }
 
     private BSDataTable<T>? table;
 
@@ -38,8 +84,15 @@
     private List<long> SelectedIds = new List<long>();
     private bool AllIsSelected;
 
+    private List<ColumnViewModel> Columns = new List<ColumnViewModel>();
+    private List<ColumnViewModel> AvailableColumns = new List<ColumnViewModel>();
 
-    [Parameter] public Func<DataRequest, Task<(IEnumerable<T>, int)>> FetchItems { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        var task = GetColumns?.Invoke();
+        var cols = await task;
+        AvailableColumns = cols.ToList();
+    }
 
     private async Task<(IEnumerable<T>, int)> InvokeParentMethod(DataRequest dataRequest)
     {
@@ -78,5 +131,11 @@
                 }
             }
         }
+    }
+
+    private void OnDropdownClick(ColumnViewModel col)
+    {
+        AvailableColumns.Remove(col);
+        Columns.Add(col);
     }
 }
