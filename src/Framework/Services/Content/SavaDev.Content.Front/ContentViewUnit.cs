@@ -7,7 +7,7 @@ using Savadev.Content.Data;
 using Savadev.Content.Data.Contract;
 using Savadev.Content.Data.Services;
 using Savadev.Content.Services;
-using SavaDev.Base.Front.Options;
+using SavaDev.Base.Unit.Options;
 using SavaDev.Base.Unit;
 using SavaDev.Content.Data;
 using SavaDev.Content.Data.Services;
@@ -16,9 +16,9 @@ namespace Savadev.Content
 {
     public static class ContentViewUnit
     {
-        public static void AddContent(this IServiceCollection services, IConfiguration config, ServiceOptions serviceOptions)
+        public static void AddContent (this IServiceCollection services, IConfiguration config, UnitOptions unitOptions)
         {
-            services.AddUnitDbContext<ContentContext>(config, serviceOptions);
+            services.AddUnitDbContext<ContentContext>(config, unitOptions);
 
             services.AddScoped<IDraftService, DraftService>();
             services.AddScoped<IVersionService, VersionService>();

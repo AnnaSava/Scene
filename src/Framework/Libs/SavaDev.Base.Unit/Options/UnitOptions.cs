@@ -4,17 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SavaDev.Base.Front.Options
+namespace SavaDev.Base.Unit.Options
 {
-    public class ServiceOptions
+    public class UnitOptions
     {
         public string ConnectionStringName { get; }
 
         public string TablePrefix { get; }
 
-        public bool SilentResponse { get; set; }
-
-        public ServiceOptions(string tablePrefix, string connectionStringName)
+        public UnitOptions(string tablePrefix, string connectionStringName)
         {
             TablePrefix = tablePrefix;
             ConnectionStringName = connectionStringName;

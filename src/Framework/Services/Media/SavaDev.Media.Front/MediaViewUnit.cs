@@ -8,16 +8,16 @@ using Sava.Media.Contract;
 using Sava.Media.Data;
 using Sava.Media.Data.Contract;
 using Sava.Media.Services;
-using SavaDev.Base.Front.Options;
+using SavaDev.Base.Unit.Options;
 using SavaDev.Base.Unit;
 
 namespace Sava.Media
 {
     public static class MediaViewUnit
     {
-        public static void AddMedia(this IServiceCollection services, IConfiguration config, ServiceOptions serviceOptions)
+        public static void AddMedia (this IServiceCollection services, IConfiguration config, UnitOptions unitOptions)
         {
-            services.AddUnitDbContext<MediaContext>(config, serviceOptions);
+            services.AddUnitDbContext<MediaContext>(config, unitOptions);
 
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IGalleryService, GalleryService>();

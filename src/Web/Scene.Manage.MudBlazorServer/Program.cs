@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using MudBlazor.Services;
 using Sava.Libs.WebModule;
-using SavaDev.Base.Front.Options;
+using SavaDev.Base.Unit.Options;
 using SavaDev.Base.Unit;
 using SavaDev.System.Front;
 using SavaDev.Users.Front;
@@ -31,8 +31,8 @@ builder.Services.AddMapper();
 
 builder.Services.AddTransient<RegisterTasker>();
 
-builder.Services.AddUsers(builder.Configuration, new ServiceOptions(UnitCode.AppUsers, AppSettings.DefaultConnectionStringPattern));
-builder.Services.AddSystemUnit(builder.Configuration, new ServiceOptions(UnitCode.System, AppSettings.DefaultConnectionStringPattern));
+builder.Services.AddUsers(builder.Configuration, new UnitOptions(UnitCode.AppUsers, AppSettings.DefaultConnectionStringPattern));
+builder.Services.AddSystem(builder.Configuration, new UnitOptions(UnitCode.System, AppSettings.DefaultConnectionStringPattern));
 
 builder.Services.AddDataProtection()
                 .PersistKeysToFileSystem(new DirectoryInfo(builder.Configuration.GetSection("SessionsPath").Value))

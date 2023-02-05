@@ -4,23 +4,23 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SavaDev.Base.Data.Context;
 using SavaDev.Base.Data.Enums;
-using SavaDev.Base.Front.Options;
+using SavaDev.Base.Unit.Options;
 
 namespace SavaDev.Base.Unit
 {
     public static class AddUnitExtentions
     {
-        public static void AddUnitDbContext<TContext>(this IServiceCollection services, IConfiguration config, ServiceOptions serviceOptions)
+        public static void AddUnitDbContext<TContext> (this IServiceCollection services, IConfiguration config, UnitOptions unitOptions)
             where TContext : DbContext
         {
-            var parameters = new Parameters(config, serviceOptions);
+            var parameters = new Parameters(config, unitOptions);
             services.AddDbContext<TContext>(options => SetOptions(options, parameters));
         }
 
-        public static void AddUnitDbContext<TInterface, TContext>(this IServiceCollection services, IConfiguration config, ServiceOptions serviceOptions)
+        public static void AddUnitDbContext<TInterface, TContext> (this IServiceCollection services, IConfiguration config, UnitOptions unitOptions)
             where TContext : DbContext, TInterface
         {
-            var parameters = new Parameters(config, serviceOptions);
+            var parameters = new Parameters(config, unitOptions);
             services.AddDbContext<TInterface, TContext>(options => SetOptions(options, parameters));
         }
 
@@ -65,7 +65,7 @@ namespace SavaDev.Base.Unit
 
             public NamingConvention NamingConvention { get; set; }
 
-            public Parameters(IConfiguration config, ServiceOptions serviceOptions)
+            public Parameters(IConfiguration config, UnitOptions serviceOptions)
             {
                 DbProvider = config.GetDbProvider();
                 Connection = config.GetConnectionString(string.Format(serviceOptions.ConnectionStringName, DbProvider));

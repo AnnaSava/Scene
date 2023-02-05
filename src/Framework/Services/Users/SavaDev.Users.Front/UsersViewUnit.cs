@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SavaDev.Base.Data.Context;
-using SavaDev.Base.Front.Options;
+using SavaDev.Base.Unit.Options;
 using SavaDev.Base.Unit;
 using SavaDev.Base.User.Data.Services;
 using SavaDev.Base.User.Data.Services.Interfaces;
@@ -21,9 +21,9 @@ namespace SavaDev.Users.Front
 {
     public static class UsersViewUnit
     {
-        public static void AddUsers(this IServiceCollection services, IConfiguration config, ServiceOptions serviceOptions)
+        public static void AddUsers (this IServiceCollection services, IConfiguration config, UnitOptions unitOptions)
         {
-            services.AddUnitDbContext<IDbContext, UsersContext>(config, serviceOptions);
+            services.AddUnitDbContext<IDbContext, UsersContext>(config, unitOptions);
 
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<UsersContext>()

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using SavaDev.Base.Data.Models;
 using SavaDev.Base.Data.Services;
-using SavaDev.Base.Front.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;

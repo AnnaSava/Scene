@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SavaDev.Base.Front.Options;
+using SavaDev.Base.Unit;
+using SavaDev.Base.Unit.Options;
 using SavaDev.Community.Data;
 using SavaDev.Community.Data.Contract;
 using SavaDev.Community.Data.Services;
@@ -10,10 +11,9 @@ namespace SavaDev.Community.Service
 {
     public static class CommunityViewUnit
     {
-        public static void AddCommunity(this IServiceCollection services, IConfiguration config, ServiceOptions serviceOptions)
+        public static void AddCommunity (this IServiceCollection services, IConfiguration config, UnitOptions unitOptions)
         {
-            /// todo
-            //services.AddUnitDbContext<CommunityContext>(config, moduleSettings);
+            services.AddUnitDbContext<CommunityContext>(config, unitOptions);
 
             services.AddScoped<ICommunityService, CommunityService>();
             services.AddScoped<ISubscriptionService, SubscriptionService>();

@@ -48,7 +48,7 @@ namespace Savadev.Content.Data.Services
                 entity.Created = DateTime.UtcNow;
             });
 
-            return res;
+            return new OperationResult<TModel>(res); //res;
         }
 
         public async Task<OperationResult> Update<T>(Guid id, T contentModel)

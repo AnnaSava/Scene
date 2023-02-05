@@ -1,16 +1,16 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SavaDev.Base.Front.Options;
+using SavaDev.Base.Unit;
+using SavaDev.Base.Unit.Options;
+using SavaDev.Boxyz.Data;
 
 namespace SavaDev.Boxyz.Service
 {
     public static class BoxyzViewUnit
     {
-        public static void AddBoxyz(this IServiceCollection services, IConfiguration config, ServiceOptions serviceOptions)
+        public static void AddBoxyz(this IServiceCollection services, IConfiguration config, UnitOptions unitOptions)
         {
-            // TODO
-            //services.AddUnitDbContext<BoxyzContext>(config, moduleSettings);
-
+            services.AddUnitDbContext<BoxyzContext>(config, unitOptions);
         }
     }
 }

@@ -6,16 +6,16 @@ using Sava.Forums;
 using Sava.Forums.Data;
 using Sava.Forums.Data.Services;
 using Sava.Forums.Services;
-using SavaDev.Base.Front.Options;
+using SavaDev.Base.Unit.Options;
 using SavaDev.Base.Unit;
 
 namespace Sava.Forums
 {
     public static class ForumsViewUnit
     {
-        public static void AddForums(this IServiceCollection services, IConfiguration config, ServiceOptions serviceOptions)
+        public static void AddForums (this IServiceCollection services, IConfiguration config, UnitOptions unitOptions)
         {
-            services.AddUnitDbContext<ForumsContext>(config, serviceOptions);
+            services.AddUnitDbContext<ForumsContext>(config, unitOptions);
 
             services.AddScoped<IForumService>(
                 s => new ForumService(

@@ -2,7 +2,7 @@
 using Framework.Mailer.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SavaDev.Base.Front.Options;
+using SavaDev.Base.Unit.Options;
 using SavaDev.System.Data;
 using SavaDev.System.Front.Contract;
 using SavaDev.System.Front.Services;
@@ -12,9 +12,9 @@ namespace SavaDev.System.Front
 {
     public static class SystemViewUnit
     {
-        public static void AddSystemUnit(this IServiceCollection services, IConfiguration config, ServiceOptions options)
+        public static void AddSystem(this IServiceCollection services, IConfiguration config, UnitOptions options)
         {
-            services.AddSystemDataUnit(config, options);
+            services.AddSystemData(config, options);
 
             services.AddScoped<IPermissionViewService, PermissionViewService>();
             services.AddScoped<IReservedNameViewService, ReservedNameViewService>();

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Sava.Files.Contract;
-using SavaDev.Base.Front.Options;
+using SavaDev.Base.Unit.Options;
 using SavaDev.Base.Unit;
 using SavaDev.Files.Data;
 using SavaDev.Files.Data.Contract;
@@ -12,7 +12,7 @@ namespace Sava.Files
 {
     public static class FilesViewUnit
     {
-        public static void AddFiles(this IServiceCollection services, IConfiguration config, ServiceOptions moduleSettings)
+        public static void AddFiles(this IServiceCollection services, IConfiguration config, UnitOptions moduleSettings)
         {
             services.AddUnitDbContext<FilesContext>(config, moduleSettings);
 

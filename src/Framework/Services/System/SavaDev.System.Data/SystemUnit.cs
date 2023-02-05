@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SavaDev.Base.Front.Options;
+using SavaDev.Base.Unit.Options;
 using SavaDev.Base.Unit;
 using SavaDev.System.Data.Contract;
 using SavaDev.System.Data.Contract.Context;
@@ -16,7 +16,7 @@ namespace SavaDev.System.Data
     public static class SystemUnit
     {
         // TODO убрать реф на сава...фронт, сделать класс для опшенов
-        public static void AddSystemDataUnit(this IServiceCollection services, IConfiguration config, ServiceOptions options)
+        public static void AddSystemData(this IServiceCollection services, IConfiguration config, UnitOptions options)
         {
             services.AddUnitDbContext<ISystemContext, SystemContext>(config, options);
 
