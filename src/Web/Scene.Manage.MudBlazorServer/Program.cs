@@ -1,12 +1,14 @@
-using Framework.Base.Types;
 using Framework.Helpers.Http;
-using Framework.MailTemplate;
-using Framework.User.Service;
 using Framework.User.Service.Contract;
 using Framework.User.Service.Taskers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using MudBlazor.Services;
+using Sava.Libs.WebModule;
+using SavaDev.Base.Front.Options;
+using SavaDev.Base.Unit;
+using SavaDev.System.Front;
+using SavaDev.Users.Front;
 using Scene.Manage.UI.MudBlazorServer;
 using Scene.Manage.UI.MudBlazorServer.Data;
 
@@ -29,11 +31,11 @@ builder.Services.AddMapper();
 
 builder.Services.AddTransient<RegisterTasker>();
 
-builder.Services.AddAppUser(builder.Configuration);
-
+builder.Services.AddUsers(builder.Configuration, new ServiceOptions(UnitCode.AppUsers, AppSettings.DefaultConnectionStringPattern));
+builder.Services.AddSystemUnit(builder.Configuration, new ServiceOptions(UnitCode.System, AppSettings.DefaultConnectionStringPattern));
 
 builder.Services.AddDataProtection()
-                .PersistKeysToFileSystem(new System.IO.DirectoryInfo(builder.Configuration.GetSection("SessionsPath").Value))
+                .PersistKeysToFileSystem(new DirectoryInfo(builder.Configuration.GetSection("SessionsPath").Value))
                 .SetApplicationName("SceneApp");
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -49,10 +51,6 @@ builder.Services.ConfigureApplicationCookie(options =>
         }
     };
 });
-
-builder.Services.AddMailTemplate(builder.Configuration);
-
-//AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();

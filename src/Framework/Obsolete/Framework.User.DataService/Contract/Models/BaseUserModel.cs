@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Framework.User.DataService.Contract.Models
 {
+    [Obsolete]
     public abstract class BaseUserModel : IdentityUserModel, IUserModel
     {
         public DateTime LastUpdated { get; set; }

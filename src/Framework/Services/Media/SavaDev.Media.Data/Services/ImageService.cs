@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Framework.Base.DataService.Contract.Models.ListView;
-using Framework.Base.DataService.Services.Managers;
-using Framework.Base.Types.Registry;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Sava.Media.Data;
 using Sava.Media.Data.Contract;
 using Sava.Media.Data.Contract.Models;
 using Sava.Media.Data.Entities;
+using SavaDev.Base.Data.Managers;
+using SavaDev.Base.Data.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,14 +23,14 @@ namespace Sava.Files.Data.Services
         private readonly IMapper _mapper;
         private readonly MediaContext _dbContext;
 
-        private readonly EditableRestorableEntityManager<Guid, Image, ImageModel> entityManager;
+        private readonly RestorableEntityManager<Guid, Image, ImageModel> entityManager;
 
         public ImageService(MediaContext dbContext, IMapper mapper, ILogger<ImageService> logger) 
         {
             _dbContext = dbContext;
             _mapper = mapper;
 
-            entityManager = new EditableRestorableEntityManager<Guid, Image, ImageModel>(dbContext, mapper, logger);
+            entityManager = new RestorableEntityManager<Guid, Image, ImageModel>(dbContext, mapper, logger);
         }
 
         public async Task<OperationResult<ImageModel>> Create(ImageModel model)

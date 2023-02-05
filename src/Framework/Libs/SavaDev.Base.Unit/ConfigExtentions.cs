@@ -10,15 +10,20 @@ namespace SavaDev.Base.Unit
 {
     public static class ConfigExtentions
     {
-        // TODO разобраться, что это
-        public static string GetMigrationAssemblyString(this IConfiguration config)
+        public static string GetDbProvider(this IConfiguration config)
         {
-            return config.GetSection("MigrationsAssemblies:Default").Value;
+            return config.GetSection("DbProvider").Value;
         }
 
-        public static NamingConvention GetSqlNamingConvention(this IConfiguration config)
+        // TODO разобраться, что это
+        public static string GetMigrationAssemblyString(this IConfiguration config, string DbProvider)
         {
-            var conv = config["SqlNamingConvention"];
+            return config.GetSection($"MigrationsAssemblies:Default{DbProvider}").Value;
+        }
+
+        public static NamingConvention GetSqlNamingConvention(this IConfiguration config, string DbProvider)
+        {
+            var conv = config[$"{DbProvider}SqlNamingConvention"];
             var parsed = Enum.TryParse(typeof(NamingConvention), conv, out object result);
             return parsed ? (NamingConvention)result : NamingConvention.Default;
         }

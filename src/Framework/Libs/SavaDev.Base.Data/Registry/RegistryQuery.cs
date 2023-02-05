@@ -1,4 +1,5 @@
 ﻿using SavaDev.Base.Data.Registry.Enums;
+using SavaDev.Base.Data.Registry.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,9 @@ namespace SavaDev.Base.Data.Registry
 
     public class RegistryQuery
     {
-        public RegistryPageInfo PageInfo { get; private set; } = new RegistryPageInfo();
+        public BaseFilter Filter0 { get; set; }
+
+        public RegistryPageInfo PageInfo { get; set; } = new RegistryPageInfo();
 
         public List<RegistrySort> Sort { get; private set; } = new List<RegistrySort>();
 

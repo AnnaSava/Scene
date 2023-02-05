@@ -1,7 +1,6 @@
 ﻿@page "/mailtemplates"
-
-@using Framework.Base.Types.Enums
-@using Framework.MailTemplate
+@using Framework.Base.Types.Enums;
+@using Framework.MailTemplate;
 @inject IMailTemplateService _mailTemplateService
 @inject NavigationManager NavigationManager
 
@@ -57,11 +56,11 @@
                 {
                     <MudButton Href="@("/mailtemplates/"+ context.PermName + "/createtranslation")" Variant="Variant.Outlined" Color="Color.Primary">+ transl</MudButton>
                 }
-                @if(context.Status == DocumentStatus.Published)
+                @if(context.Status.ToString() == "DocumentStatus.Published")
                 {
                     <MudButton Href="@("/mailtemplates/"+ context.PermName + "/" + context.Culture.ToLower() + "/createversion")" Variant="Variant.Outlined" Color="Color.Primary">+ vers</MudButton>
                 } 
-                else if(context.Status == DocumentStatus.Draft)
+                else if(context.Status.ToString() == "DocumentStatus.Draft")
                 {
                     <MudButton Href="@("/mailtemplates/update/" + context.Id)" Variant="Variant.Outlined" Color="Color.Primary">Update</MudButton>
                     <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="(() => OnClickPublish(context))">Publish</MudButton>
@@ -117,7 +116,7 @@
         { 
             PermName =  "contains|" + searchString, 
             Culture = "equals|" + searchCulture,
-            Status = searchStatus
+            //Status = searchStatus
         };
 
         var result = await _mailTemplateService.GetAll(filter, PageHelper.GetPageInfo(state));

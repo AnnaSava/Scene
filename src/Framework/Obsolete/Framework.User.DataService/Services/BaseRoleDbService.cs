@@ -10,13 +10,14 @@ using Framework.User.DataService.Contract.Models;
 using Framework.User.DataService.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Framework.User.DataService.Services
 {
-    // TODO Подумать о вынесении в отдельную сборку
+    [Obsolete]
     public abstract class BaseRoleDbService<TRoleEntity, TRoleClaimEntity, TRoleModel, TFilterModel>
         where TRoleEntity : BaseRole
         where TRoleClaimEntity: IdentityRoleClaim<long>, new()

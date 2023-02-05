@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Framework.Base.DataService.Contract.Models.ListView;
-using Framework.Base.DataService.Services.Managers;
-using Framework.Base.Types.Registry;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Sava.Media.Data;
 using Sava.Media.Data.Contract;
 using Sava.Media.Data.Contract.Models;
 using Sava.Media.Data.Entities;
+using SavaDev.Base.Data.Managers;
+using SavaDev.Base.Data.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

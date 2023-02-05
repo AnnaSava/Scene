@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using Framework.User.DataService.Mapper;
-using Framework.User.Service.Mapper;
 using SavaDev.System.Data;
 using SavaDev.System.Front.Mapper;
+using SavaDev.Users.Data;
 
 namespace Scene.Login.WebApp
 {
@@ -15,10 +14,10 @@ namespace Scene.Login.WebApp
             // https://stackoverflow.com/questions/2651613/how-to-scan-and-auto-configure-profiles-in-automapper
             var mappingConfig = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new AppUserDataMapperProfile());
-                mc.AddProfile(new AppUserMapperProfile());
-                mc.AddProfile(new SystemDataMapperProfile());
+                mc.AddProfile(new UsersMapperProfile());
+                //mc.AddProfile(new UserMapperProfile());
                 mc.AddProfile(new SystemMapperProfile());
+                mc.AddProfile(new SystemViewMapperProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();

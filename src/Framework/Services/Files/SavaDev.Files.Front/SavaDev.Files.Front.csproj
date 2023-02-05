@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Libs\SavaDev.Base.Front\SavaDev.Base.Front.csproj" />
+    <ProjectReference Include="..\..\..\Libs\SavaDev.Base.Unit\SavaDev.Base.Unit.csproj" />
+    <ProjectReference Include="..\..\..\Obsolete\Framework.Helpers\Framework.Helpers.csproj" />
+    <ProjectReference Include="..\SavaDev.Files.Data\SavaDev.Files.Data.csproj" />
+  </ItemGroup>
+
+</Project>

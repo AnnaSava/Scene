@@ -8,9 +8,9 @@ namespace Scene.Login.WebApp.Pages.Account
     [IgnoreAntiforgeryToken]
     public class LogoutModel : PageModel
     {
-        private readonly IAppAccountService _accountService;
+        private readonly IAccountViewService _accountService;
 
-        public LogoutModel(IAppAccountService accountService)
+        public LogoutModel(IAccountViewService accountService)
         {
             _accountService = accountService;
         }

@@ -1,8 +1,9 @@
-﻿using Framework.Base.DataService.Contract.Models;
+﻿using SavaDev.Base.Data.Models;
+using SavaDev.Base.Data.Models.Interfaces;
 
 namespace Sava.Forums.Data
 {
-    public class ForumModel : BaseAliasedModel<long>
+    public class ForumModel : BaseAliasedModel<long>, IModelRestorable
     {
         public string Module { get; set; }
 

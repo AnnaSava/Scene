@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Framework.Base.DataService.Services;
+using SavaDev.Base.Data.Services;
 using Sava.Articles.Data;
 using Sava.Articles.Data.Entities;
 using System;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Sava.Articles.Data.Services
 {
-    public class RubricService : AliasedEntityService<Rubric, RubricModel>, IRubricService
+    public class RubricService : BaseEntityService<Rubric, RubricModel>, IRubricService
     {
         public RubricService(ArticlesContext dbContext, IMapper mapper) : base(dbContext, mapper, nameof(RubricService))
         {

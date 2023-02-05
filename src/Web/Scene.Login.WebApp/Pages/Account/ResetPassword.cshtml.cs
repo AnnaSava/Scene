@@ -7,15 +7,15 @@ namespace Scene.Login.WebApp.Pages.Account
 {
     public class ResetPasswordModel : PageModel
     {
-        private readonly IAppAccountService _accountService;
+        private readonly IAccountViewService _accountService;
 
-        public ResetPasswordModel(IAppAccountService accountService)
+        public ResetPasswordModel(IAccountViewService accountService)
         {
             _accountService = accountService;
         }
 
         [BindProperty]
-        public AppResetPasswordFormViewModel Input { get; set; } = new AppResetPasswordFormViewModel();
+        public ResetPasswordFormViewModel Input { get; set; } = new ResetPasswordFormViewModel();
 
         public void OnGet(string email, string token)
         {

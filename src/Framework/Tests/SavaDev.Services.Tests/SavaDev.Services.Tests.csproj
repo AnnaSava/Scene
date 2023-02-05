@@ -24,8 +24,19 @@
   <ItemGroup>
     <Folder Include="Articles\Data\" />
     <Folder Include="Boxyz\Data\" />
+    <Folder Include="Community\Data\" />
+    <Folder Include="Content\Data\" />
+    <Folder Include="Files\Data\" />
     <Folder Include="Forums\Data\" />
     <Folder Include="Media\Data\" />
+    <Folder Include="System\Data\" />
+    <Folder Include="Users\DataTests\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Services\Users\SavaDev.Base.Users.Data\SavaDev.Base.Users.Data.csproj" />
+    <ProjectReference Include="..\..\Services\Users\SavaDev.Users.Data\SavaDev.Users.Data.csproj" />
+    <ProjectReference Include="..\SavaDev.Libs.UnitTestingHelpers\SavaDev.Libs.UnitTestingHelpers.csproj" />
   </ItemGroup>
 
 </Project>

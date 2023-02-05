@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Mapper\**" />
+    <EmbeddedResource Remove="Mapper\**" />
+    <None Remove="Mapper\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EFCore.NamingConventions" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Libs\SavaDev.Base.Data\SavaDev.Base.Data.csproj" />
+    <ProjectReference Include="..\..\..\Obsolete\Framework.Base.DataService\Framework.Base.DataService.csproj" />
+    <ProjectReference Include="..\..\..\Obsolete\Framework.User.DataService\Framework.User.DataService.csproj" />
+    <ProjectReference Include="..\SavaDev.Base.Users.Data\SavaDev.Base.Users.Data.csproj" />
+  </ItemGroup>
+
+</Project>

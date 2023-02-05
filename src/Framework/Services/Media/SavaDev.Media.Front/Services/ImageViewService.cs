@@ -2,16 +2,11 @@
 using Framework.Base.Types.Image;
 using Framework.Helpers.Files;
 using Sava.Files.Contract;
-using Sava.Files.Data.Contract.Models;
 using Sava.Media.Contract;
 using Sava.Media.Contract.Models;
 using Sava.Media.Data.Contract;
 using Sava.Media.Data.Contract.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SavaDev.Files.Data.Contract.Models;
 
 namespace Sava.Media.Services
 {
@@ -107,8 +102,6 @@ namespace Sava.Media.Services
             var createdImage = await _imageService.Create(imageModel);
             return _mapper.Map<ImageViewModel>(createdImage);
         }
-
-        
 
         private async Task<FileModel> ResizeAndSave(FileModel fileModel)
         {

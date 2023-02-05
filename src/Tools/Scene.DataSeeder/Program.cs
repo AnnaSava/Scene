@@ -5,6 +5,11 @@ using Framework.User.DataService.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Sava.Libs.WebModule;
+using SavaDev.Base.Front.Options;
+using SavaDev.System.Front;
+using SavaDev.Users.Data;
+using SavaDev.Users.Front;
 using System;
 using System.Threading.Tasks;
 
@@ -23,10 +28,11 @@ namespace Scene.DataSeeder
             //services.AddDbContext<AppUserContext>(options =>
             //  options.UseNpgsql(config.GetConnectionString("IdentityConnection")));
 
-            //services.AddModuleDbContext<AppUserContext>(config, new ModuleSettings("Ap", "IdentityConnection"));
-            //services.AddModuleDbContext<MailTemplateContext>(config, new ModuleSettings("Ml", "IdentityConnection"));
+            //services.AddUnitDbContext<AppUserContext>(config, new ModuleSettings("Ap", "IdentityConnection"));
+            //services.AddUnitDbContext<MailTemplateContext>(config, new ModuleSettings("Ml", "IdentityConnection"));
 
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            services.AddUsers(config, new ServiceOptions(UnitCode.AppUsers, "Default{0}Connection"));
+            services.AddSystemUnit(config, new ServiceOptions(UnitCode.System, "Default{0}Connection"));
 
             //services.AddAppUser(config);
             //services.AddMailTemplate(config);
@@ -44,13 +50,13 @@ namespace Scene.DataSeeder
 
         private static async Task Seed(IServiceScope scope)
         {
-            var context = scope.ServiceProvider.GetService<AppUserContext>();
-            var mgr = scope.ServiceProvider.GetService<UserManager<AppUser>>();
-            var roleMgr = scope.ServiceProvider.GetService<RoleManager<AppRole>>();
-            await new AppUserContextSeeder(context, mgr, roleMgr).Seed();
+            var context = scope.ServiceProvider.GetService<UsersContext>();
+            var mgr = scope.ServiceProvider.GetService<UserManager<User>>();
+            var roleMgr = scope.ServiceProvider.GetService<RoleManager<Role>>();
+            await new UsersContextSeeder(context, mgr, roleMgr).Seed();
 
-            var mailTemplateContext = scope.ServiceProvider.GetService<MailTemplateContext>();
-            await new MailTemplateContextSeeder(mailTemplateContext).Seed();
+            //var mailTemplateContext = scope.ServiceProvider.GetService<MailTemplateContext>();
+            //await new MailTemplateContextSeeder(mailTemplateContext).Seed();
         }
     }
 }

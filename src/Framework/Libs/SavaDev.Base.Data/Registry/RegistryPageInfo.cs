@@ -11,5 +11,13 @@ namespace SavaDev.Base.Data.Registry
         public int PageNumber { get; set; }
 
         public int RowsCount { get; set; }
+
+        public RegistryPageInfo() { }
+
+        public RegistryPageInfo(int pageNumber, int rowsCount)
+        {
+            PageNumber = pageNumber;
+            RowsCount = rowsCount;
+        }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Framework.Base.DataService.Contract.Models.ListView;
-using Framework.Base.DataService.Services;
 using Microsoft.EntityFrameworkCore;
 using Sava.Forums.Data;
 using Sava.Forums.Data.Entities;
+using SavaDev.Base.Data.Services;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,16 +12,17 @@ using X.PagedList;
 
 namespace Sava.Forums.Data.Services
 {
-    public class PostService : RestorableEntityService<Post, PostModel>, IPostService
+    public class PostService : BaseEntityService<Post, PostModel>, IPostService
     {
         public PostService(ForumsContext dbContext, IMapper mapper) : base(dbContext, mapper, nameof(PostService))
         {
 
         }
 
-        public override async Task<PostModel> Delete(long id)
+        public async Task<PostModel> Delete(long id)
         {
-            return await _dbContext.Delete<Post, PostModel>(id, _mapper, OnDeletingAsync);
+            throw new NotImplementedException();
+            //return await _dbContext.Delete<Post, PostModel>(id, _mapper, OnDeletingAsync);
         }
 
         public async Task<int> GetPostsCount(long topicId)
@@ -50,9 +51,9 @@ namespace Sava.Forums.Data.Services
             return pageModel;
         }
 
-        protected override void OnAdding(Post entity)
+        protected void OnAdding(Post entity)
         {
-            base.OnAdding(entity);
+            //base.OnAdding(entity);
 
             var context = _dbContext as ForumsContext;
 
@@ -76,7 +77,7 @@ namespace Sava.Forums.Data.Services
             entity.Topic.Forum.Posts--;
         }
 
-        protected override void OnRestoring(Post entity)
+        protected void OnRestoring(Post entity)
         {
             entity.Topic.Posts++;
             entity.Topic.Forum.Posts++;

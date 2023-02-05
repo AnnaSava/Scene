@@ -19,5 +19,7 @@ namespace SavaDev.Boxyz.Data.Entities
         public int OrderNumber { get; set; }
 
         public virtual ICollection<ShapeSideFolk> Folks { get; set; }
+
+        public virtual ICollection<ShapeSideStamp> Stamps { get; set; }
     }
 }

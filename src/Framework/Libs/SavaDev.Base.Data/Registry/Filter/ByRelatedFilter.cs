@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Base.Data.Registry.Filter
 {
-    public class ByRelatedFilter<TKey>
+    public class ByRelatedFilter<TKey> : BaseFilter
     {
         public string FieldNameOfRelated { get; set; }
 

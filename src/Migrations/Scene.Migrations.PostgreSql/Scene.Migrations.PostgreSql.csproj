@@ -7,16 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
-
+    <Compile Remove="Mail\**" />
+    <Compile Remove="User\**" />
+    <EmbeddedResource Remove="Mail\**" />
+    <EmbeddedResource Remove="User\**" />
+    <None Remove="Mail\**" />
+    <None Remove="User\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Mail\" />
-    <Folder Include="User\" />
+    <Folder Include="Users\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Services\Users\SavaDev.Users.Data\SavaDev.Users.Data.csproj" />
   </ItemGroup>
 
 </Project>

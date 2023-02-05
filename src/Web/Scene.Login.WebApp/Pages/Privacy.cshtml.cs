@@ -6,10 +6,10 @@ namespace Scene.Login.WebApp.Pages
 {
     public class PrivacyModel : PageModel
     {
-        private readonly ILegalDocumentService _legalDocumentService;
+        private readonly ILegalDocumentViewService _legalDocumentService;
         private readonly ILogger<PrivacyModel> _logger;
 
-        public PrivacyModel(ILegalDocumentService legalDocumentService,
+        public PrivacyModel(ILegalDocumentViewService legalDocumentService,
             ILogger<PrivacyModel> logger)
         {
             _legalDocumentService = legalDocumentService;

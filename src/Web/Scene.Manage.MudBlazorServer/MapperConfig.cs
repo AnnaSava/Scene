@@ -2,10 +2,9 @@
 using Framework.Base.Service.Mapper;
 using Framework.MailTemplate.Data.Mapper;
 using Framework.MailTemplate.Service.Mapper;
-using Framework.User.DataService.Mapper;
-using Framework.User.Service.Mapper;
 using SavaDev.System.Data;
 using SavaDev.System.Front.Mapper;
+using SavaDev.Users.Data;
 
 namespace Scene.Manage.UI.MudBlazorServer
 {
@@ -19,10 +18,10 @@ namespace Scene.Manage.UI.MudBlazorServer
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new BaseServiceAutoMapperProfile());
-                mc.AddProfile(new AppUserDataMapperProfile());
-                mc.AddProfile(new AppUserMapperProfile());
-                mc.AddProfile(new SystemDataMapperProfile());
+                mc.AddProfile(new UsersMapperProfile());
+                mc.AddProfile(new UsersMapperProfile());
                 mc.AddProfile(new SystemMapperProfile());
+                mc.AddProfile(new SystemViewMapperProfile());
                 mc.AddProfile(new MailTemplateDataMapperProfile());
                 mc.AddProfile(new MailTemplateMapperProfile());
             });

@@ -20,6 +20,8 @@ namespace SavaDev.Boxyz.Data
 
         public DbSet<ShapeSide> ShapeSides { get; set; }
 
+        public DbSet<ShapeSideStamp> ShapeSideStamps { get; set; }
+
         public DbSet<ShapeSideFolk> ShapeSideFolks { get; set; }
 
         public DbSet<UniBox> UniBoxes { get; set; }
@@ -64,8 +66,7 @@ namespace SavaDev.Boxyz.Data
         {
             base.OnModelCreating(builder);
 
-            // TODO
-            //builder.ConfigureContext(_dbOptionsExtension);
+            builder.ConfigureContext(_dbOptionsExtension);
         }
     }
 }

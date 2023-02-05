@@ -1,4 +1,4 @@
-﻿using Framework.Base.DataService.Entities;
+﻿using SavaDev.Base.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

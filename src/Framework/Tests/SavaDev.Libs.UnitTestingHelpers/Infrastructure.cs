@@ -1,10 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NSubstitute;
 using SavaDev.Base.Data.Context;
 using SavaDev.Base.Data.Enums;
+using SavaDev.Base.User.Data.Entities;
+using SavaDev.Users.Data;
 
 namespace SavaDev.Libs.UnitTestingHelpers
 {
@@ -35,6 +40,43 @@ namespace SavaDev.Libs.UnitTestingHelpers
         {
             return Substitute.For<ILogger<T>>();
         }
+
+        #region Identity
+
+        public static UserManager<User> GetUserManager(UsersContext context)
+        {
+            var userStore = new UserStore<User, Role, UsersContext, long>(context);
+
+            var options = Substitute.For<IOptions<IdentityOptions>>();
+            var idOptions = new IdentityOptions();
+            idOptions.Lockout.AllowedForNewUsers = false;
+            options.Value.Returns(idOptions);
+            var userValidators = new List<IUserValidator<User>>();
+            var validator = Substitute.For<IUserValidator<User>>();
+            userValidators.Add(validator);
+            var pwdValidators = new List<PasswordValidator<User>>();
+            pwdValidators.Add(new PasswordValidator<User>());
+            var userManager = new UserManager<User>(userStore, options, new PasswordHasher<User>(),
+                userValidators, pwdValidators, new UpperInvariantLookupNormalizer(),
+                new IdentityErrorDescriber(), null,
+                Substitute.For<ILogger<UserManager<User>>>());
+            validator.ValidateAsync(userManager, Arg.Any<User>())
+                .Returns(Task.FromResult(IdentityResult.Success));
+            return userManager;
+        }
+
+        public static RoleManager<Role> GetRoleManager(UsersContext context)
+        {
+            var roleStore = new RoleStore<Role, UsersContext, long, UserRole, RoleClaim>(context);
+            return new RoleManager<Role>(
+                roleStore,
+                new List<IRoleValidator<Role>>(),
+                new UpperInvariantLookupNormalizer(),
+                new IdentityErrorDescriber(),
+                Substitute.For<ILogger<RoleManager<Role>>>());
+        }
+
+        #endregion
 
         public static void FillContextWithEntities<TContext, TEntity>(TContext context, IEnumerable<TEntity> entities)
             where TContext : DbContext, new()

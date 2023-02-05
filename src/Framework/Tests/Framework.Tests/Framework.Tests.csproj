@@ -25,7 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Modules\System\SavaDev.System.Data\SavaDev.System.Data.csproj" />
     <ProjectReference Include="..\..\Obsolete\Framework.Base.DataService\Framework.Base.DataService.csproj" />
     <ProjectReference Include="..\..\Obsolete\Framework.MailTemplate.Data\Framework.MailTemplate.Data.csproj" />
     <ProjectReference Include="..\..\Obsolete\Framework.User.DataService\Framework.User.DataService.csproj" />

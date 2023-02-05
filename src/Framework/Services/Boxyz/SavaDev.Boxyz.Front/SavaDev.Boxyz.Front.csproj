@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Libs\SavaDev.Base.Front\SavaDev.Base.Front.csproj" />
     <ProjectReference Include="..\SavaDev.Boxyz.Data\SavaDev.Boxyz.Data.csproj" />
   </ItemGroup>
 

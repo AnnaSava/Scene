@@ -1,33 +1,27 @@
-﻿using Framework.Base.DataService.Contract;
-using Framework.Base.DataService.Contract.Interfaces;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Sava.Media.Data.Entities;
+using SavaDev.Base.Data.Context;
+using SavaDev.Media.Data;
 
 namespace Sava.Media.Data
 {
-    public class MediaContext : DbContext, IDbContext
+    public class MediaContext : BaseDbContext, IDbContext
     {
         public DbSet<Image> Images { get; set; }
         public DbSet<ImageFile> ImageFiles { get; set; }
         public DbSet<Gallery> Galleries { get; set; }
 
-        DbContextSettings<MediaContext> Settings;
-
-        public MediaContext(DbContextOptions<MediaContext> options, DbContextSettings<MediaContext> settings)
+        public MediaContext(DbContextOptions<MediaContext> options)
            : base(options)
         {
-            Settings = settings;
+             
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.ConfigureContext(options =>
-            {
-                options.TablePrefix = Settings.TablePrefix;
-                //options.NamingConvention = Settings.NamingConvention;
-            });
+            builder.ConfigureContext(_dbOptionsExtension);
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Sava.Articles.Data
 {
-    public interface IArticleService : IAliasedEntityService<ArticleModel>
+    public interface IArticleService 
     {
     }
 }

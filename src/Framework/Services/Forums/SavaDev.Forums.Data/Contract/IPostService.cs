@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Sava.Forums.Data
 {
-    public interface IPostService : IRestorableEntityService<PostModel>
+    public interface IPostService //: IRestorableEntityService<PostModel>
     {
         Task<PageListModel<PostModel>> GetAllByTopic(long topicId, int page, int count);
 

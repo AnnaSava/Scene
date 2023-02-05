@@ -8,15 +8,15 @@ namespace Scene.Login.WebApp.Pages.Account
 {
     public class LoginModel : PageModel
     {
-        IAppAccountService _accountService;
+        IAccountViewService _accountService;
 
-        public LoginModel(IAppAccountService accountService)
+        public LoginModel(IAccountViewService accountService)
         {
             _accountService = accountService;
         }
 
         [BindProperty]
-        public AppLoginViewModel Input { get; set; }
+        public LoginViewModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
 

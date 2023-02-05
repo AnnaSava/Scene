@@ -13,55 +13,66 @@ namespace SavaDev.Base.Unit
         public static void AddUnitDbContext<TContext>(this IServiceCollection services, IConfiguration config, ServiceOptions serviceOptions)
             where TContext : DbContext
         {
-            string tablePrefix = serviceOptions.TablePrefix;
-            var namingConvention = config.GetSqlNamingConvention();
-
-            if (namingConvention == NamingConvention.SnakeCase)
-            {
-                // TODO сделать покрасивше
-                tablePrefix = tablePrefix.ToLower() + "_";
-            }
-
-            services.AddDbContext<TContext>(options =>
-            {
-                options.UseNpgsql(config.GetConnectionString(serviceOptions.ConnectionStringName), b => b.MigrationsAssembly(config.GetMigrationAssemblyString()));
-                if (namingConvention == NamingConvention.SnakeCase)
-                {
-                    options.UseSnakeCaseNamingConvention();
-                }
-
-                var extension = options.Options.FindExtension<BaseDbOptionsExtension>()
-                    ?? new BaseDbOptionsExtension { TablePrefix = tablePrefix, NamingConvention = namingConvention };
-
-                ((IDbContextOptionsBuilderInfrastructure)options).AddOrUpdateExtension(extension);
-            });
+            var parameters = new Parameters(config, serviceOptions);
+            services.AddDbContext<TContext>(options => SetOptions(options, parameters));
         }
 
         public static void AddUnitDbContext<TInterface, TContext>(this IServiceCollection services, IConfiguration config, ServiceOptions serviceOptions)
             where TContext : DbContext, TInterface
         {
-            string tablePrefix = serviceOptions.TablePrefix;
-            var namingConvention = config.GetSqlNamingConvention();
+            var parameters = new Parameters(config, serviceOptions);
+            services.AddDbContext<TInterface, TContext>(options => SetOptions(options, parameters));
+        }
 
-            if (namingConvention == NamingConvention.SnakeCase)
+        private static DbContextOptionsBuilder SetOptions(DbContextOptionsBuilder options, Parameters p)
+        {
+            if (p.DbProvider == DbProviderName.DefaultPgName)
             {
-                // TODO сделать покрасивше
-                tablePrefix = tablePrefix.ToLower() + "_";
+                options.UseNpgsql(p.Connection, b => b.MigrationsAssembly(p.Migrations));
+            }
+            else if (p.DbProvider == DbProviderName.DefaultMsName)
+            {
+                options.UseSqlServer(p.Connection, b => b.MigrationsAssembly(p.Migrations));
             }
 
-            services.AddDbContext<TInterface, TContext>(options =>
+            var tablePrefix = p.TablePrefix;
+            if (p.NamingConvention == NamingConvention.SnakeCase)
             {
-                options.UseNpgsql(config.GetConnectionString(serviceOptions.ConnectionStringName), b => b.MigrationsAssembly(config.GetMigrationAssemblyString()));
-                if (namingConvention == NamingConvention.SnakeCase)
-                {
-                    options.UseSnakeCaseNamingConvention();
-                }
+                options.UseSnakeCaseNamingConvention();
+                tablePrefix = tablePrefix.ToLower() + "_";
+            }
+            else
+            {
+                tablePrefix = tablePrefix + ".";
+            }
 
-                var extension = options.Options.FindExtension<BaseDbOptionsExtension>()
-                    ?? new BaseDbOptionsExtension { TablePrefix = tablePrefix, NamingConvention = namingConvention };
+            var extension = options.Options.FindExtension<BaseDbOptionsExtension>()
+                ?? new BaseDbOptionsExtension { TablePrefix = tablePrefix, NamingConvention = p.NamingConvention };
 
-                ((IDbContextOptionsBuilderInfrastructure)options).AddOrUpdateExtension(extension);
-            });
+            ((IDbContextOptionsBuilderInfrastructure)options).AddOrUpdateExtension(extension);
+            return options;
+        }
+
+        class Parameters
+        {
+            public string DbProvider { get; set; }
+
+            public string Connection { get; set; }
+
+            public string Migrations { get; set; }
+
+            public string TablePrefix { get; }
+
+            public NamingConvention NamingConvention { get; set; }
+
+            public Parameters(IConfiguration config, ServiceOptions serviceOptions)
+            {
+                DbProvider = config.GetDbProvider();
+                Connection = config.GetConnectionString(string.Format(serviceOptions.ConnectionStringName, DbProvider));
+                Migrations = config.GetMigrationAssemblyString(DbProvider);
+                TablePrefix = serviceOptions.TablePrefix;
+                NamingConvention = config.GetSqlNamingConvention(DbProvider);
+            }
         }
     }
 }

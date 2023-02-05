@@ -8,15 +8,15 @@ namespace Scene.Login.WebApp.Pages.Account
 {
     public class RequestNewPasswordModel : PageModel
     {
-        private readonly IAppAccountService _accountService;
+        private readonly IAccountViewService _accountService;
 
-        public RequestNewPasswordModel(IAppAccountService accountService)
+        public RequestNewPasswordModel(IAccountViewService accountService)
         {
             _accountService = accountService;
         }
 
         [BindProperty]
-        public AppRequestNewPasswordFormViewModel Input { get; set; }
+        public RequestNewPasswordFormViewModel Input { get; set; }
 
         public bool IsSent { get; set; } = false;
 

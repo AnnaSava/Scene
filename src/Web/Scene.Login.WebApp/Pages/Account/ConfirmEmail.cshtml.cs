@@ -7,9 +7,9 @@ namespace Scene.Login.WebApp.Pages.Account
 {
     public class ConfirmEmailModel : PageModel
     {
-        IAppAccountService _accountService;
+        IAccountViewService _accountService;
 
-        public ConfirmEmailModel(IAppAccountService accountService)
+        public ConfirmEmailModel(IAccountViewService accountService)
         {
             _accountService = accountService;
         }

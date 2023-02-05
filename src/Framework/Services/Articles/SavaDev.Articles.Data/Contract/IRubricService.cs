@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Sava.Articles.Data
 {
-    public interface IRubricService : IAliasedEntityService<RubricModel>
+    public interface IRubricService 
     {
     }
 }

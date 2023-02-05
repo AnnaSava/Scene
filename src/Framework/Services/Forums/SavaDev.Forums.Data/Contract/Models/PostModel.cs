@@ -1,4 +1,4 @@
-﻿using Framework.Base.DataService.Contract.Models;
+﻿using SavaDev.Base.Data.Models;
 using System;
 
 namespace Sava.Forums.Data

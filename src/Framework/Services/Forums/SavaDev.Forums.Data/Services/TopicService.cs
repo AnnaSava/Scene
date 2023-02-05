@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Framework.Base.DataService.Contract.Models.ListView;
-using Framework.Base.DataService.Services;
 using Microsoft.EntityFrameworkCore;
 using Sava.Forums.Data;
 using Sava.Forums.Data.Entities;
+using SavaDev.Base.Data.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ using X.PagedList;
 
 namespace Sava.Forums.Data.Services
 {
-    public class TopicService : AliasedEntityService<Topic, TopicModel>, ITopicService
+    public class TopicService : BaseEntityService<Topic, TopicModel>, ITopicService
     {
         public TopicService(ForumsContext dbContext, IMapper mapper) : base(dbContext, mapper, nameof(TopicService))
         {
@@ -32,9 +32,9 @@ namespace Sava.Forums.Data.Services
             topic.LastUpdated = topic.Date;
             topic.LastAnswered = post.Date;
 
-            var forum = await _dbContext.GetEntityForUpdate<Entities.Forum>(topicModel.ForumId);
-            forum.Topics++;
-            forum.Posts++;
+            //var forum = await _dbContext.GetEntityForUpdate<Entities.Forum>(topicModel.ForumId);
+            //forum.Topics++;
+            //forum.Posts++;
 
             _dbContext.Set<Topic>().Add(topic);
 
@@ -42,13 +42,13 @@ namespace Sava.Forums.Data.Services
             return _mapper.Map<TopicModel>(topic);
         }
 
-        public async Task<TopicModel> Close(long topicId) => await ChangeEntity(topicId, topic => topic.IsClosed = true);
+        //public async Task<TopicModel> Close(long topicId) => await ChangeEntity(topicId, topic => topic.IsClosed = true);
 
-        public async Task<TopicModel> Open(long topicId) => await ChangeEntity(topicId, topic => topic.IsClosed = false);
+        //public async Task<TopicModel> Open(long topicId) => await ChangeEntity(topicId, topic => topic.IsClosed = false);
 
-        public async Task<TopicModel> IncViews(long topicId) => await ChangeEntity(topicId, topic => topic.Views++);
+        //public async Task<TopicModel> IncViews(long topicId) => await ChangeEntity(topicId, topic => topic.Views++);
 
-        public async Task<TopicModel> SetLastAnswered(long topicId, DateTime date) => await ChangeEntity(topicId, topic => topic.LastAnswered = date);
+        //public async Task<TopicModel> SetLastAnswered(long topicId, DateTime date) => await ChangeEntity(topicId, topic => topic.LastAnswered = date);
 
         public async Task<PageListModel<TopicModel>> GetAllByForum(long forumId, int page, int count)
         {
@@ -69,9 +69,9 @@ namespace Sava.Forums.Data.Services
             return pageModel;
         }
 
-        protected override void OnAdding(Topic entity)
+        protected void OnAdding(Topic entity)
         {
-            base.OnAdding(entity);
+            //base.OnAdding(entity);
 
             var context = _dbContext as ForumsContext;
 
@@ -79,12 +79,12 @@ namespace Sava.Forums.Data.Services
             forum.Topics++;
         }
 
-        protected override void OnDeleting(Topic entity)
+        protected void OnDeleting(Topic entity)
         {
             entity.Forum.Topics--;
         }
 
-        protected override void OnRestoring(Topic entity)
+        protected void OnRestoring(Topic entity)
         {
             entity.Forum.Topics++;
         }

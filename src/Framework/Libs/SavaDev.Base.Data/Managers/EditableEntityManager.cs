@@ -28,7 +28,7 @@ namespace SavaDev.Base.Data.Managers
             _logger = logger;
         }
 
-        public async Task<OperationResult<TFormModel>> Create(TFormModel model, Action<TEntity> onCreating = null, Action<TEntity> onCreated = null)
+        public async Task<OperationResult> Create(TFormModel model, Action<TEntity> onCreating = null, Action<TEntity> onCreated = null)
         {
             using var tran = await _dbContext.Database.BeginTransactionAsync();
             try
@@ -49,7 +49,7 @@ namespace SavaDev.Base.Data.Managers
             {
                 await tran.RollbackAsync();
                 _logger.LogError($"{nameof(Create)}: {ex.Message} {ex.InnerException} {ex.StackTrace}");
-                var result = new OperationResult<TFormModel>(0, model, new OperationExceptionInfo(ex.Message));
+                var result = new OperationResult(0, model, new OperationExceptionInfo(ex.Message));
                 return result;
             }
         }

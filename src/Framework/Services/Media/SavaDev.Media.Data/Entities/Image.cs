@@ -1,4 +1,4 @@
-﻿using Framework.Base.DataService.Entities;
+﻿using SavaDev.Base.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Sava.Media.Data.Entities
 {
-    public class Image : BaseEntityRestorable<Guid>
+    public class Image : BaseRestorableEntity<Guid>
     {
         public Guid GalleryId { get; set; }
 

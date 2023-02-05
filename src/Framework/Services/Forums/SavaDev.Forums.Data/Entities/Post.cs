@@ -1,11 +1,11 @@
-﻿using Framework.Base.DataService.Entities;
+﻿using SavaDev.Base.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Sava.Forums.Data.Entities
 {
-    public class Post : BaseEntityRestorable<long>
+    public class Post : BaseRestorableEntity<long>
     {
         public long TopicId { get; set; }
 

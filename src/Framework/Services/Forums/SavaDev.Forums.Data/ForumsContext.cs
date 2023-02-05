@@ -1,11 +1,11 @@
-﻿using Framework.Base.DataService.Contract;
-using Framework.Base.DataService.Contract.Interfaces;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Sava.Forums.Data.Entities;
+using SavaDev.Base.Data.Context;
+using SavaDev.Forums.Data;
 
 namespace Sava.Forums.Data.Services
 {
-    public class ForumsContext : DbContext, IDbContext
+    public class ForumsContext : BaseDbContext, IDbContext
     {
         public DbSet<Forum> Forums { get; set; }
 
@@ -13,23 +13,17 @@ namespace Sava.Forums.Data.Services
 
         public DbSet<Post> Posts { get; set; }
 
-        DbContextSettings<ForumsContext> Settings;
-
-        public ForumsContext(DbContextOptions<ForumsContext> options, DbContextSettings<ForumsContext> settings)
+        public ForumsContext(DbContextOptions<ForumsContext> options)
            : base(options)
         {
-            Settings = settings;
+             
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.ConfigureContext(options =>
-            {
-                options.TablePrefix = Settings.TablePrefix;
-                options.NamingConvention = Settings.NamingConvention;
-            });
+            builder.ConfigureContext(_dbOptionsExtension);
         }
     }
 }
