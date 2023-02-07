@@ -23,10 +23,14 @@ namespace SavaDev.Scheme.Data.Entities
 
         public virtual Table Table { get; set; }
 
+        public bool IsDisplayed { get; set; }
+
         public bool IsSortable { get; set; }
 
         public bool HasColumnFilter { get; set; }
 
         public virtual ICollection<ColumnProperty> Properties { get; set; }
+
+        public virtual ICollection<ColumnPermission> Permissions { get; set; }
     }
 }

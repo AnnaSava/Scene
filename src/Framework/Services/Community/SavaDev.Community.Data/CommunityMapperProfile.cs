@@ -8,8 +8,8 @@ namespace SavaDev.Community.Data
     {
         public CommunityMapperProfile()
         {
-            CreateMap<Entities.Community, CommunityModel>();
-            CreateMap<CommunityModel, Entities.Community>();
+            CreateMap<Entities.Group, GroupModel>();
+            CreateMap<GroupModel, Entities.Group>();
 
             CreateMap<Lockout, LockoutModel>();
             CreateMap<LockoutModel, Lockout>();

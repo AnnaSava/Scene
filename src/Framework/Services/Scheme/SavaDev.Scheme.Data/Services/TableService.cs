@@ -15,19 +15,19 @@ namespace SavaDev.Scheme.Data.Services
 {
     public class TableService : BaseEntityService<Table, TableModel>, ITableService
     {
-        private readonly EditableEntityManager<Guid, Table, TableModel> entityManager;
+        private readonly CreateManager<Table, TableModel> creatorManager;
 
         #region Constructors
 
         public TableService(SchemeContext dbContext, IMapper mapper, ILogger<TableService> logger) 
             : base(dbContext, mapper, nameof(TableService))
         {
-            entityManager = new EditableEntityManager<Guid, Table, TableModel>(dbContext, mapper, logger);
+            creatorManager = new CreateManager<Table, TableModel>(dbContext, mapper, logger);
         }
 
         #endregion
 
         public async Task<OperationResult> Create(TableModel model)
-            => await entityManager.Create(model);
+            => await creatorManager.Create(model);
     }
 }

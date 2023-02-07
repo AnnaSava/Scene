@@ -1,29 +1,28 @@
 ﻿using SavaDev.Base.Data.Services;
+using SavaDev.Base.Data.Services.Interfaces;
 using SavaDev.System.Data.Contract.Models;
 
 namespace SavaDev.System.Data.Contract
 {
-    public interface IMailTemplateService
+    public interface IMailTemplateService : IEntityRegistryService<MailTemplateModel, MailTemplateFilterModel>
     {
-        Task<OperationResult<MailTemplateModel>> Create(MailTemplateModel model);
+        Task<OperationResult> Create(MailTemplateModel model);
 
-        Task<OperationResult<MailTemplateModel>> CreateTranslation(MailTemplateModel model);
+        Task<OperationResult> CreateTranslation(MailTemplateModel model);
 
-        Task<OperationResult<MailTemplateModel>> Update(long  id, MailTemplateModel model);
+        Task<OperationResult> Update(long id, MailTemplateModel model);
 
         Task<OperationResult> Publish(long id);
 
-        Task<OperationResult<MailTemplateModel>> CreateVersion(MailTemplateModel model);
+        Task<OperationResult> CreateVersion(MailTemplateModel model);
 
         Task<OperationResult> Delete(long id);
 
         Task<OperationResult> Restore(long id);
 
-        Task<MailTemplateModel> GetOne(long id);
+        Task<MailTemplateModel> GetOne<MailTemplateModel>(long id);
 
-        Task<MailTemplateModel> GetActual(string permName, string culture);
-
-        //Task<PageListModel<MailTemplateModel>> GetAll(ListQueryModel<MailTemplateFilterModel> query);
+        Task<MailTemplateModel> GetActual<MailTemplateModel>(string permName, string culture);
 
         Task<bool> CheckPermNameExists(string permName);
 

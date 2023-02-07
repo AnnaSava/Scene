@@ -2,6 +2,7 @@
 using SavaDev.Base.Data.Context;
 using SavaDev.Base.Data.Models.Interfaces;
 using SavaDev.Base.Data.Services;
+using System.Linq.Expressions;
 
 namespace SavaDev.Base.Data.Managers.Crud
 {
@@ -17,7 +18,9 @@ namespace SavaDev.Base.Data.Managers.Crud
         #region Private Properties: Func
 
         private Func<IFormModel, Task>? OnValidating { get; set; }
+        private Func<TEntity, Task>? OnValidatingEntity { get; set; }
         private Func<TKey, Task<TEntity>> OnGetToUpdate { get; set; }
+        private Func<Expression<Func<TEntity, bool>>, Task<TEntity>> OnGetToUpdateExp { get; set; }
         private Func<TKey, Task<TEntity>> OnGetToRestore { get; set; }
         private Func<TEntity, Task> OnSetValues { get; set; }
         private Func<TEntity, IFormModel, Task> OnSetValuesFromModel { get; set; }
@@ -25,6 +28,7 @@ namespace SavaDev.Base.Data.Managers.Crud
         private Func<TEntity, IFormModel, Task<OperationResult>> OnAfterUpdate { get; set; }
         private Func<TEntity, OperationResult> OnSuccess { get; set; }
         private Func<TKey?, string, OperationResult> OnError { get; set; }
+        private Func<string, OperationResult> OnErrorNoKey { get; set; }
 
         #endregion
 
@@ -49,6 +53,18 @@ namespace SavaDev.Base.Data.Managers.Crud
         public EntityUpdater<TKey, TEntity> GetEntity(Func<TKey, Task<TEntity>> func)
         {
             OnGetToUpdate = func;
+            return this;
+        }
+
+        public EntityUpdater<TKey, TEntity> GetEntity(Func<Expression<Func<TEntity, bool>>, Task<TEntity>> func)
+        {
+            OnGetToUpdateExp = func;
+            return this;
+        }
+
+        public EntityUpdater<TKey, TEntity> ValidateEntity(Func<TEntity, Task> func)
+        {
+            OnValidatingEntity = func;
             return this;
         }
 
@@ -88,9 +104,41 @@ namespace SavaDev.Base.Data.Managers.Crud
             return this;
         }
 
+        public EntityUpdater<TKey, TEntity> ErrorResult(Func<string, OperationResult> func)
+        {
+            OnErrorNoKey = func;
+            return this;
+        }
+
         #endregion
 
         #region Public Methods: Act
+
+        public async Task<OperationResult> DoUpdate<TFormModel>(Expression<Func<TEntity, bool>> expression, IFormModel model)
+        {
+            if (model != null)
+            {
+                await DoValidate(model);
+            }
+
+            using var tran = await _dbContext.Database.BeginTransactionAsync();
+            try
+            {
+                var entity = await DoGetEntityForUpdate(expression);
+                var result = await ProcessUpdate(entity, model);
+                await tran.CommitAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await tran.RollbackAsync();
+                _logger.LogError($"{nameof(DoUpdate)}: {ex.Message} {ex.InnerException?.Message} {ex.StackTrace}");
+                var result = DoOnError(ex.Message);
+                result.Rows = -1; // TODO раз присваиваем здесь, то выпилить из конструктора OperationResultи вызовов методов
+                return result;
+            }
+        }
+
 
         public async Task<OperationResult> DoUpdate<TFormModel>(TKey id, IFormModel model)
         {
@@ -113,29 +161,12 @@ namespace SavaDev.Base.Data.Managers.Crud
             {
                 await DoValidate(model);
             }
-
-            var rows = 0;
+            
             using var tran = await _dbContext.Database.BeginTransactionAsync();
             try
             {
                 var entity = restore ? await DoGetEntityForRestore(id) : await DoGetEntityForUpdate(id);
-                if (model != null)
-                {
-                    await DoSetValuesFromModel(entity, model);
-                }
-                else
-                {
-                    await DoSetValues(entity);
-                }
-                var updateResult = await DoUpdate(entity);
-                rows += HandleResult(updateResult, nameof(DoUpdate));
-                if (model != null)
-                {
-                    var afterUpdateResult = await DoOnAfterUpdate(entity, model);
-                    rows += HandleResult(afterUpdateResult, nameof(DoOnAfterUpdate));
-                }
-                var result = DoOnSuccess(entity);
-                result.Rows = rows; // TODO раз присваиваем здесь, то выпилить из конструктора OperationResultи вызовов методов
+                var result = await ProcessUpdate(entity, model);
                 await tran.CommitAsync();
                 return result;
             }
@@ -159,9 +190,21 @@ namespace SavaDev.Base.Data.Managers.Crud
             return task ?? Task.CompletedTask;
         }
 
+        protected virtual Task DoValidate(TEntity entity)
+        {
+            var task = OnValidatingEntity?.Invoke(entity);
+            return task ?? Task.CompletedTask;
+        }
+
         protected virtual Task<TEntity> DoGetEntityForUpdate(TKey id)
         {
             var task = OnGetToUpdate?.Invoke(id);
+            return task ?? (Task<TEntity>)Task.CompletedTask;
+        }
+
+        protected virtual Task<TEntity> DoGetEntityForUpdate(Expression<Func<TEntity, bool>> expression)
+        {
+            var task = OnGetToUpdateExp?.Invoke(expression);
             return task ?? (Task<TEntity>)Task.CompletedTask;
         }
 
@@ -207,9 +250,39 @@ namespace SavaDev.Base.Data.Managers.Crud
             return result ?? new OperationResult(-1);
         }
 
+        protected virtual OperationResult DoOnError(string errMessage)
+        {
+            var result = OnErrorNoKey?.Invoke(errMessage);
+            return result ?? new OperationResult(-1);
+        }
+
         #endregion
 
         #region Private Methods
+
+        private async Task<OperationResult> ProcessUpdate(TEntity entity, IFormModel model)
+        {
+            await DoValidate(entity);
+            if (model != null)
+            {
+                await DoSetValuesFromModel(entity, model);
+            }
+            else
+            {
+                await DoSetValues(entity);
+            }
+            var rows = 0;
+            var updateResult = await DoUpdate(entity);
+            rows += HandleResult(updateResult, nameof(DoUpdate));
+            if (model != null)
+            {
+                var afterUpdateResult = await DoOnAfterUpdate(entity, model);
+                rows += HandleResult(afterUpdateResult, nameof(DoOnAfterUpdate));
+            }
+            var result = DoOnSuccess(entity);
+            result.Rows = rows; // TODO раз присваиваем здесь, то выпилить из конструктора OperationResultи вызовов методов
+            return result;
+        }
 
         private int HandleResult(OperationResult result, string methodName)
         {

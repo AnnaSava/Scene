@@ -14,9 +14,13 @@ namespace SavaDev.Scheme.Data
 
         public DbSet<Table> Tables { get; set; }
 
+        public DbSet<TableConfig> TableConfigs { get; set; }
+
         public DbSet<Column>  Columns { get; set; }
 
         public DbSet<ColumnProperty> ColumnProperties { get; set; }
+
+        public DbSet<ColumnProperty> ColumnPermissions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

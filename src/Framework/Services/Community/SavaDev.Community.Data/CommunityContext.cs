@@ -6,7 +6,7 @@ namespace SavaDev.Community.Data
 {
     public class CommunityContext : BaseDbContext, IDbContext
     {
-        public DbSet<Entities.Community> Communities { get; set; }
+        public DbSet<Entities.Group> Communities { get; set; }
 
         public DbSet<Lockout> Lockouts { get; set; }
 

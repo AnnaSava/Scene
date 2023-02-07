@@ -5,7 +5,7 @@ namespace SavaDev.System.Data.Contract
 {
     public interface IPermissionService
     {
-        Task<OperationResult<PermissionModel>> Create(PermissionModel model);
+        Task<OperationResult> Create(PermissionModel model);
 
        // Task<PageListModel<PermissionModel>> GetAll(ListQueryModel<PermissionFilterModel> query);
 

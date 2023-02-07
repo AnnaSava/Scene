@@ -1,6 +1,8 @@
 ﻿using Framework.Base.DataService.Contract.Models.ListView;
 using Sava.Media.Data.Contract.Models;
+using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Services;
+using SavaDev.Media.Data.Contract.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +13,10 @@ namespace Sava.Media.Data.Contract
 {
     public interface IGalleryService
     {
-        Task<OperationResult<GalleryModel>> Create(GalleryModel model);
+        Task<OperationResult> Create(GalleryModel model);
 
-        Task<GalleryModel> GetOne(Guid id);
+        Task<GalleryModel> GetOne<GalleryModel>(Guid id);
 
-        Task<PageListModel<GalleryModel>> GetAll(int page, int count);
+        Task<RegistryPage<GalleryModel>> GetRegistryPage(RegistryQuery<GalleryFilterModel> query);
     }
 }

@@ -8,12 +8,10 @@ using SavaDev.Base.Data.Services;
 using SavaDev.Base.User.Data.Entities;
 using SavaDev.Base.User.Data.Exceptions;
 using SavaDev.Base.User.Data.Models;
-using SavaDev.Base.User.Data.Services;
 using SavaDev.Base.Users.Data.Manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SavaDev.Base.User.Data.Manager
@@ -25,6 +23,13 @@ namespace SavaDev.Base.User.Data.Manager
         protected readonly UserManager<TEntity> _userManager;
         protected readonly IMapper _mapper;
         protected readonly ILogger _logger;
+        public UserEntityManager(IDbContext dbContext, UserManager<TEntity> userManager, IMapper mapper, ILogger logger)
+        {
+            _dbContext = dbContext;
+            _userManager = userManager;
+            _mapper = mapper;
+            _logger = logger;
+        }
 
         public async Task<TModel> GetOneByLoginOrEmail<TModel>(string loginOrEmail)
             where TModel : BaseUserModel
@@ -37,14 +42,6 @@ namespace SavaDev.Base.User.Data.Manager
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
             return await _userManager.GetRolesAsync(user);
-        }
-
-        public UserEntityManager(IDbContext dbContext, UserManager<TEntity> userManager, IMapper mapper, ILogger logger)
-        {
-            _dbContext = dbContext;
-            _userManager = userManager;
-            _mapper = mapper;
-            _logger = logger;
         }
     }
 

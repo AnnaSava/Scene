@@ -1,4 +1,5 @@
 ﻿using Savadev.Content.Data.Contract.Models;
+using SavaDev.Base.Data.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Savadev.Content.Data
 {
-    public class DraftModel<T> : BaseContentModel<T>
+    public class DraftModel<T> : BaseContentModel<T>, IAnyModel
     {
         public string? ContentId { get; set; }
 

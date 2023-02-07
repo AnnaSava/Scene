@@ -10,7 +10,7 @@ namespace SavaDev.Community.Front.Services.Contract
 {
     public interface ICommunityProcessor<TUserModel>
     {
-        Task<OperationResult<CommunityViewModel>> CreateCommunity(CommunitySavingModel model);
+        Task<OperationResult> CreateCommunity(CommunitySavingModel model);
 
         Task CreateSubscription(SubscriptionFormViewModel model);
 

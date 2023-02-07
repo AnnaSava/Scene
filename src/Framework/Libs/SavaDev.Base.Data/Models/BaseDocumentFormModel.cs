@@ -1,8 +1,9 @@
 ﻿using SavaDev.Base.Data.Enums;
+using SavaDev.Base.Data.Models.Interfaces;
 
 namespace SavaDev.Base.Data.Models
 {
-    public class BaseDocumentFormModel<TKey> : BaseRestorableModel<TKey>
+    public class BaseDocumentFormModel<TKey> : BaseRestorableModel<TKey>, IFormModel
     {
         public string PermName { get; set; }
 

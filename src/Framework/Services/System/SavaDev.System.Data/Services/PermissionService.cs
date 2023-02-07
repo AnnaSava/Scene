@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SavaDev.Base.Data.Context;
 using SavaDev.Base.Data.Managers;
+using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Services;
 using SavaDev.System.Data.Contract;
 using SavaDev.System.Data.Contract.Models;
@@ -12,24 +13,54 @@ namespace SavaDev.System.Data.Services
 {
     public class PermissionService : BaseEntityService<Permission, PermissionModel>, IPermissionService
     {
-        private readonly AnyEntityManager<Permission, PermissionModel> entityManager;
+        #region Protected Properties: Managers
+
+        protected CreateManager<Permission, PermissionModel> CreateManager { get; }
+        protected OneSelector<Permission> OneSelector { get; }
+        protected AllSelector<bool, ReservedName> AllSelector { get; } // TODO убрать бул
+
+        #endregion
+
+        #region Public Constructors
 
         public PermissionService(IDbContext dbContext, IMapper mapper, ILogger<PermissionService> logger)
             : base(dbContext, mapper, nameof(PermissionService))
         {
-            entityManager = new AnyEntityManager<Permission, PermissionModel>(dbContext, mapper, logger);
+            CreateManager = new CreateManager<Permission, PermissionModel>(dbContext, mapper, logger);
+            OneSelector = new OneSelector<Permission>(dbContext, mapper, logger);
+            AllSelector = new AllSelector<bool, ReservedName>(dbContext, mapper, logger);
         }
 
-        public async Task<OperationResult<PermissionModel>> Create(PermissionModel model) => await entityManager.Create(model);
+        #endregion
 
-        public async Task<PermissionModel> GetOne(string name) => await entityManager.GetOne<PermissionModel>(m => m.Name == name.ToLower());
-        
-        //public async Task<PageListModel<PermissionModel>> GetAll(ListQueryModel<PermissionFilterModel> query)
-        //{
-        //    // TODO Фильтрация по PermissionCultures
+        #region Public Methods: Mutation
 
-        //    return await _dbContext.GetAll<Permission, PermissionModel, PermissionFilterModel>(query, ApplyFilters, m => m.Name, _mapper);
-        //}
+        public async Task<OperationResult> Create(PermissionModel model) 
+            => await CreateManager.Create(model);
+
+        #endregion
+
+        #region Public Methods: Query One
+
+        public async Task<PermissionModel?> GetOne(string name) 
+            => await OneSelector.GetOne<PermissionModel>(m => m.Name == name.ToLower());
+
+        public async Task<bool> CheckExists(string name)
+        {
+            if (name == null) throw new ArgumentNullException();
+
+            return await OneSelector.CheckExists(m => m.Name == name.ToLower());
+        }
+
+        #endregion
+
+        #region Public Methods: Query All
+
+        public async Task<RegistryPage<PermissionModel>> GetRegistryPage(RegistryQuery<PermissionFilterModel> query)
+        {
+            var page = await AllSelector.GetRegistryPage<PermissionFilterModel, PermissionModel>(query);
+            return page;
+        }
 
         public async Task<Dictionary<string, List<string>>> GetTree()
         {
@@ -57,13 +88,6 @@ namespace SavaDev.System.Data.Services
             return treeDict;
         }
 
-        public async Task<bool> CheckExists(string name)
-        {
-            if (name == null) throw new ArgumentNullException();
-
-            return await entityManager.CheckExists(m => m.Name == name.ToLower());
-        }
-
         public async Task<IEnumerable<string>> FilterExisting(IEnumerable<string> names)
         {
             if (names == null || names.Count() == 0) return default;
@@ -75,9 +99,6 @@ namespace SavaDev.System.Data.Services
                 .ToListAsync();
         }
 
-        //protected void ApplyFilters(ref IQueryable<Permission> list, PermissionFilterModel filter)
-        //{
-        //    list = list.ApplyFilters(filter);
-        //}
+        #endregion
     }
 }

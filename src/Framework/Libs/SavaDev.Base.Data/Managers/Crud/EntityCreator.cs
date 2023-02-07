@@ -5,7 +5,7 @@ using SavaDev.Base.Data.Services;
 
 namespace SavaDev.Base.Data.Managers.Crud
 {
-    public class EntityCreator<TKey, TEntity>
+    public class EntityCreator<TEntity>
     {
         #region Private Fields: Dependencies
 
@@ -37,37 +37,37 @@ namespace SavaDev.Base.Data.Managers.Crud
 
         #region Public Methods: Set
 
-        public EntityCreator<TKey, TEntity> ValidateModel(Func<IFormModel, Task> func)
+        public EntityCreator<TEntity> ValidateModel(Func<IFormModel, Task> func)
         {
             OnValidating = func;
             return this;
         }
 
-        public EntityCreator<TKey, TEntity> SetValues(Func<IFormModel, Task<TEntity>> func)
+        public EntityCreator<TEntity> SetValues(Func<IFormModel, Task<TEntity>> func)
         {
             OnSetValuesFromModel = func;
             return this;
         }
 
-        public EntityCreator<TKey, TEntity> Create(Func<TEntity, Task<OperationResult>> func)
+        public EntityCreator<TEntity> Create(Func<TEntity, Task<OperationResult>> func)
         {
             OnCreate = func;
             return this;
         }
 
-        public EntityCreator<TKey, TEntity> AfterCreate(Func<TEntity, IFormModel, Task<OperationResult>> func)
+        public EntityCreator<TEntity> AfterCreate(Func<TEntity, IFormModel, Task<OperationResult>> func)
         {
             OnAfterCreate = func;
             return this;
         }
 
-        public EntityCreator<TKey, TEntity> SuccessResult(Func<TEntity, OperationResult> func)
+        public EntityCreator<TEntity> SuccessResult(Func<TEntity, OperationResult> func)
         {
             OnSuccess = func;
             return this;
         }
 
-        public EntityCreator<TKey, TEntity> ErrorResult(Func<IFormModel, string, OperationResult> func)
+        public EntityCreator<TEntity> ErrorResult(Func<IFormModel, string, OperationResult> func)
         {
             OnError = func;
             return this;

@@ -13,9 +13,9 @@ namespace SavaDev.Community.Data
         {
             var helper = new TableNameHelper(options.NamingConvention, options.TablePrefix);
 
-            builder.Entity<Entities.Community>(b =>
+            builder.Entity<Entities.Group>(b =>
             {
-                b.ToTable(helper.GetTableName(nameof(Entities.Community)));
+                b.ToTable(helper.GetTableName(nameof(Entities.Group)));
 
                 b.HasMany(b => b.Lockouts)
                    .WithOne(b => b.Community)

@@ -13,7 +13,7 @@ namespace Savadev.Content.Data.Contract
 {
     public interface IDraftService
     {
-        Task<OperationResult<DraftModel>> Create<T>(DraftModel model, T contentModel);
+        Task<OperationResult> Create<T>(DraftModel model, T contentModel);
 
         Task<OperationResult> Update<T>(Guid id, T contentModel);
 
@@ -23,8 +23,8 @@ namespace Savadev.Content.Data.Contract
 
         Task<DraftModel> GetOne(Guid id);
 
-        Task<ItemsPage<DraftModel>> GetAll(RegistryQuery<DraftStrictFilterModel> query);
+        Task<RegistryPage<DraftModel>> GetRegistryPage(RegistryQuery<DraftFilterModel> query);
 
-        Task<ItemsPage<DraftModel>> GetAll(RegistryQuery<DraftFilterModel> query);
+        Task<ItemsPage<DraftModel>> GetAll(RegistryQuery<DraftStrictFilterModel> query);
     }
 }

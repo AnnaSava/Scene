@@ -18,5 +18,7 @@ namespace SavaDev.Scheme.Data.Entities
         public string Entity { get; set; }
 
         public virtual ICollection<Column> Columns { get;set; }
+        
+        public virtual ICollection<TableConfig> Configs { get;set; }
     }
 }

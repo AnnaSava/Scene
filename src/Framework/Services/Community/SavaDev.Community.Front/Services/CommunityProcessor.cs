@@ -14,13 +14,13 @@ namespace SavaDev.Community.Front.Services
     {
         IUserSearchService<TUserModel> _userService;
 
-        ICommunityService _communityService;
+        IGroupService _communityService;
         ISubscriptionService _subscriptionService;
         ILockoutService _lockoutService;
         IMapper _mapper;
 
         public CommunityProcessor(
-            ICommunityService communityService,
+            IGroupService communityService,
             ISubscriptionService subscriptionService,
             ILockoutService lockoutService,
             IUserSearchService<TUserModel> userService,
@@ -33,11 +33,12 @@ namespace SavaDev.Community.Front.Services
             _mapper = mapper;
         }
 
-        public async Task<OperationResult<CommunityViewModel>> CreateCommunity(CommunitySavingModel model)
+        public async Task<OperationResult> CreateCommunity(CommunitySavingModel model)
         {
-            var newModel = _mapper.Map<CommunityModel>(model);
+            var newModel = _mapper.Map<GroupModel>(model);
             var resModel = await _communityService.Create(newModel);
-            return new OperationResult<CommunityViewModel>(resModel.Rows, _mapper.Map<CommunityViewModel>(resModel.Model));
+            return resModel;
+           // return new OperationResult<CommunityViewModel>(resModel.Rows, _mapper.Map<CommunityViewModel>(resModel.Model));
         }
 
         public async Task CreateSubscription(SubscriptionFormViewModel model)

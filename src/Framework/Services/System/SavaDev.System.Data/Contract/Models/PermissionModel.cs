@@ -2,7 +2,7 @@
 
 namespace SavaDev.System.Data.Contract.Models
 {
-    public class PermissionModel : IAnyModel
+    public class PermissionModel : IAnyModel, IFormModel
     {
         public string Name { get; set; }
     }

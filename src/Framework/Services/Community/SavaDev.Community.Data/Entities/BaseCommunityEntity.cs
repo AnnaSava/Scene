@@ -12,6 +12,6 @@ namespace SavaDev.Community.Data.Entities
 
         public Guid CommunityId { get; set; }
 
-        public virtual Community Community { get; set; }
+        public virtual Group Community { get; set; }
     }
 }

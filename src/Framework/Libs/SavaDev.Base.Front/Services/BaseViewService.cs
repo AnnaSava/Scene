@@ -35,13 +35,13 @@ namespace SavaDev.Base.Front.Services
             return p2;
         }
 
-        protected OperationResult<TViewModel> MakeResponseObject<TModel, TViewModel>(OperationResult<TModel> resultModel)
+        protected OperationResult MakeResponseObject<TModel, TViewModel>(OperationResult resultModel)
             where TModel : BaseRestorableModel<long>
         {
             // TODO возвращать айдишник
-            return _options.SilentResponse
-                  ? null// new OperationResult<TViewModel>(resultModel.Rows, resultModel.Models.FirstOrDefault().Id.ToString())
-                  : new OperationResult<TViewModel>(resultModel.Rows, _mapper.Map<TViewModel>(resultModel.Models.FirstOrDefault()));
+            return null;// _options.SilentResponse
+                  //? null// new OperationResult<TViewModel>(resultModel.Rows, resultModel.Models.FirstOrDefault().Id.ToString())
+                  //: new OperationResult<TViewModel>(resultModel.Rows, _mapper.Map<TViewModel>(resultModel.Models.FirstOrDefault()));
         }
     }
 }

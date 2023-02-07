@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using SavaDev.Scheme.Contract.Models;
+using SavaDev.Scheme.Data.Contract;
+using SavaDev.Scheme.Data.Contract.Models;
+using SavaDev.Scheme.Data.Entities;
 using SavaDev.Scheme.Front.Contract.Models;
 
 namespace SavaDev.Scheme.Front
@@ -16,6 +19,12 @@ namespace SavaDev.Scheme.Front
 
             CreateMap<ColumnPropertyViewModel, ColumnPropertyModel>();
             CreateMap<ColumnPropertyModel, ColumnPropertyViewModel>();
+
+            CreateMap<ColumnPermissionViewModel, ColumnPermissionModel>();
+            CreateMap<ColumnPermissionModel, ColumnPermissionViewModel>();
+
+            CreateMap<TableConfigViewModel, TableConfigModel>();
+            CreateMap<TableConfigModel, TableConfigViewModel>();
         }
     }
 }

@@ -15,11 +15,21 @@ namespace SavaDev.Base.User.Data.Services
         where TEntity : BaseUser
         where TFormModel : BaseUserModel
     {
+        #region Protected Fields: Dependencies
+
         protected readonly IDbContext _dbContext;
         protected readonly IMapper _mapper;
-        private readonly UserManager<TEntity> _userManager;
+        protected readonly UserManager<TEntity> _userManager;
 
-        protected readonly UserEntityManager<long, TEntity, TFormModel> entityManager;
+        #endregion
+
+        #region Protected Properties: Managers
+
+        protected UserEntityManager<long, TEntity, TFormModel> EntityManager { get; }
+
+        #endregion
+
+        #region Public Constructors
 
         public BaseUserDbService(
             IDbContext dbContext,
@@ -29,45 +39,53 @@ namespace SavaDev.Base.User.Data.Services
             _dbContext = dbContext;
             _userManager = userManager;
             _mapper = mapper;
-            entityManager = new UserEntityManager<long, TEntity, TFormModel>(dbContext, _userManager, mapper, logger);
+            EntityManager = new UserEntityManager<long, TEntity, TFormModel>(dbContext, _userManager, mapper, logger);
         }
 
-        public async Task<OperationResult<TFormModel>> Create(TFormModel model, string password)
-            => await entityManager.Create(model, password);
-        public async Task<OperationResult<TFormModel>> Update(long id, TFormModel model)
-            => await entityManager.Update(id, model);
-        public async Task<OperationResult> Delete(long id)
-             => await entityManager.Delete(id);
-        public async Task<OperationResult> Restore(long id)
-             => await entityManager.Restore(id);
+        #endregion
 
+        #region Public Methods: Mutation
+
+        public async Task<OperationResult<TFormModel>> Create(TFormModel model, string password)
+            => await EntityManager.Create(model, password);
+        public async Task<OperationResult<TFormModel>> Update(long id, TFormModel model)
+            => await EntityManager.Update(id, model);
+        public async Task<OperationResult> Delete(long id)
+             => await EntityManager.Delete(id);
+        public async Task<OperationResult> Restore(long id)
+             => await EntityManager.Restore(id);
 
         public async Task<OperationResult<TModel>> Lock<TModel>(UserLockoutModel lockoutModel)
-            => await entityManager.Lock<TModel>(lockoutModel);
+            => await EntityManager.Lock<TModel>(lockoutModel);
         public async Task<OperationResult<TModel>> Unlock<TModel>(long id)
-            => await entityManager.Unlock<TModel>(id);
+            => await EntityManager.Unlock<TModel>(id);
         public async Task<OperationResult> UpdateRoles(UserRolesModel model)
-            => await entityManager.UpdateRoles(model);
+            => await EntityManager.UpdateRoles(model);
         public async Task<OperationResult> AddRoles(UserRolesModel model)
-            => await entityManager.AddRoles(model);
+            => await EntityManager.AddRoles(model);
         public async Task<OperationResult> RemoveRoles(UserRolesModel model)
-            => await entityManager.RemoveRoles(model);
+            => await EntityManager.RemoveRoles(model);
 
+        #endregion
+
+        #region Public Methods^ Query One
 
         public async Task<TModel> GetOneByLoginOrEmail<TModel>(string loginOrEmail) where TModel : BaseUserModel
-            => await entityManager.GetOneByLoginOrEmail<TModel>(loginOrEmail);
+            => await EntityManager.GetOneByLoginOrEmail<TModel>(loginOrEmail);
         public async Task<TModel> GetOneByLogin<TModel>(string login)
-            => await entityManager.GetOneByLogin<TModel>(login);
+            => await EntityManager.GetOneByLogin<TModel>(login);
         public async Task<TModel> GetOneByEmail<TModel>(string email)
-            => await entityManager.GetOneByEmail<TModel>(email);
+            => await EntityManager.GetOneByEmail<TModel>(email);
         public async Task<bool> CheckEmailExists(string email)
-            => await entityManager.CheckEmailExists(email);
+            => await EntityManager.CheckEmailExists(email);
         public async Task<bool> CheckLoginExists(string login)
-            => await entityManager.CheckLoginExists(login);
+            => await EntityManager.CheckLoginExists(login);
         public async Task<bool> IsLocked(string id)
-            => await entityManager.IsLocked(id);
+            => await EntityManager.IsLocked(id);
 
-        public async Task<IEnumerable<TModel>> GetAllByIds<TModel>(IEnumerable<string> ids) => await entityManager.GetAllByIds<TModel>(ids);
+        #endregion
+
+        public async Task<IEnumerable<TModel>> GetAllByIds<TModel>(IEnumerable<string> ids) => await EntityManager.GetAllByIds<TModel>(ids);
 
 
         // TODO подумать, куда перенести, т.к. в теории может пригодиться не только для пользователей

@@ -6,7 +6,9 @@ namespace Savadev.Content.Data.Contract
 {
     public interface IVersionService
     {
-        Task<OperationResult<VersionModel>> Create<T>(VersionModel model, T contentModel);
+        Task<OperationResult> Create<T>(VersionModel model, T contentModel);
+
+        Task<RegistryPage<DraftModel>> GetRegistryPage(RegistryQuery<DraftFilterModel> query);
 
         Task<ItemsPage<VersionModel>> GetAll(RegistryQuery<VersionFilterModel> query);
     }

@@ -20,6 +20,7 @@ namespace SavaDev.Scheme.Data
             services.AddUnitDbContext<ISchemeContext, SchemeContext>(config, options);
 
             services.AddScoped<ITableService, TableService>();
+            services.AddScoped<ITableConfigService, TableConfigService>();
             services.AddScoped<IColumnService, ColumnService>();
         }
     }

@@ -5,9 +5,9 @@ namespace SavaDev.System.Data.Contract
 {
     public interface IReservedNameService
     {
-        Task<OperationResult<ReservedNameModel>> Create(ReservedNameModel model);
+        Task<OperationResult> Create(ReservedNameModel model);
 
-        Task<OperationResult<ReservedNameModel>> Update(ReservedNameModel model);
+        Task<OperationResult> Update(ReservedNameModel model);
 
         Task<OperationResult> Remove(string text);
         

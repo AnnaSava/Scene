@@ -7,8 +7,6 @@ using SavaDev.Base.Data.Context;
 using SavaDev.Base.Data.Enums;
 using SavaDev.Base.Data.Exceptions;
 using SavaDev.Base.Data.Managers.Crud;
-using SavaDev.Base.Data.Registry;
-using SavaDev.Base.Data.Registry.Filter;
 using SavaDev.Base.Data.Services;
 using SavaDev.Base.User.Data.Entities;
 using SavaDev.Base.User.Data.Models.Interfaces;
@@ -19,7 +17,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace SavaDev.Base.User.Data.Manager
 {
@@ -65,7 +62,7 @@ namespace SavaDev.Base.User.Data.Manager
 
         public async Task<OperationResult> Create(TFormModel model)
         {
-            var creator = new EntityCreator<TKey, TEntity>(_dbContext, _logger)
+            var creator = new EntityCreator<TEntity>(_dbContext, _logger)
                 .ValidateModel(async (model) =>
                 {
                     if (await CheckRoleNameExists((model as TFormModel).Name))
@@ -78,34 +75,6 @@ namespace SavaDev.Base.User.Data.Manager
                 .ErrorResult((id, errMessage) => new OperationResult(DbOperationRows.OnFailure, id, new OperationExceptionInfo(errMessage)));
 
             return await creator.DoCreate(model);
-        }
-
-        private async Task<OperationResult> DoCreate(TEntity entity)
-        {
-            var result = await _roleManager.CreateAsync(entity);
-            return new OperationResult(result.Succeeded ? 1 : (int)DbOperationRows.OnFailure); // не уверена, что так красиво
-        }
-
-
-        private async Task<OperationResult> CreatePermissions(TEntity role, IEnumerable<string> permissions)
-        {
-            if (permissions == null || !permissions.Any()) return new OperationResult(0);
-
-            permissions = permissions.Distinct();
-
-            int rows = 0;
-            foreach (var permission in permissions)
-            {
-                var claim = new Claim(PermissionClaimType, permission);
-                var result = await _roleManager.AddClaimAsync(role, claim);
-                if (!result.Succeeded)
-                {
-                    return new OperationResult(rows, permission, new OperationExceptionInfo(result.Errors.GetString()));
-                }
-                rows++;
-            }
-
-            return new OperationResult(rows);
         }
 
         public async Task<OperationResult> Update(TKey id, TFormModel model)
@@ -138,6 +107,84 @@ namespace SavaDev.Base.User.Data.Manager
                 .ErrorResult((id, errMessage) => new OperationResult(DbOperationRows.OnFailure, id, new OperationExceptionInfo(errMessage)));
 
             return await updater.DoUpdate(id, true);
+        }
+
+        #endregion
+
+        public async Task<TModel> GetOne<TModel>(TKey id)
+            where TModel : BaseRoleModel
+        {
+            // TODO разобраться с include
+            //var role = await _dbContext.GetOne<TRoleEntity, TRoleModel>(id, _mapper, null, null);
+            var role = await GetEntityForView(id);
+            var claims = await GetClaims(role);
+
+            var roleModel = _mapper.Map<TModel>(role);
+            roleModel.Permissions = claims.Where(m => m.Type == PermissionClaimType).Select(m => m.Value);
+
+            return roleModel;
+        }
+
+        public async Task<IEnumerable<TModel>> GetByNames<TModel>(IEnumerable<string> names)
+        {
+            names = names.Select(m => m.ToUpper());
+            return await _dbContext.Set<TEntity>()
+                .Where(m => names.Contains(m.NormalizedName))
+                .ProjectTo<TModel>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
+
+        public async Task<bool> CheckRoleNameExists(string roleName)
+        {
+            if (string.IsNullOrEmpty(roleName)) return false;
+            return await _dbContext.Set<TEntity>().AnyAsync(m => m.NormalizedName == roleName.ToUpper());
+        }
+
+        public async Task<TEntity> GetEntityForUpdate(TKey id, bool restore = false)
+        {
+            var entity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(m => m.Id.Equals(id) && m.IsDeleted == restore);
+
+            if (entity == null)
+                throw new EntityNotFoundException();
+
+            entity.LastUpdated = DateTime.UtcNow;
+
+            return entity;
+        }
+
+        public async Task<TEntity> GetEntityForView(TKey id)
+        {
+            var entity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(m => m.Id.Equals(id) && m.IsDeleted == false);
+            return entity;
+        }
+
+        #region Private Methods
+
+        private async Task<OperationResult> DoCreate(TEntity entity)
+        {
+            var result = await _roleManager.CreateAsync(entity);
+            return new OperationResult(result.Succeeded ? 1 : (int)DbOperationRows.OnFailure); // не уверена, что так красиво
+        }
+
+        private async Task<OperationResult> CreatePermissions(TEntity role, IEnumerable<string> permissions)
+        {
+            if (permissions == null || !permissions.Any()) return new OperationResult(0);
+
+            permissions = permissions.Distinct();
+
+            int rows = 0;
+            foreach (var permission in permissions)
+            {
+                var claim = new Claim(PermissionClaimType, permission);
+                var result = await _roleManager.AddClaimAsync(role, claim);
+                if (!result.Succeeded)
+                {
+                    return new OperationResult(rows, permission, new OperationExceptionInfo(result.Errors.GetString()));
+                }
+                rows++;
+            }
+
+            return new OperationResult(rows);
         }
 
         private async Task<OperationResult> DoUpdate(TEntity entity)
@@ -194,74 +241,6 @@ namespace SavaDev.Base.User.Data.Manager
             }
             return new OperationResult(rows);
         }
-
-        #endregion
-
-        public async Task<TModel> GetOne<TModel>(TKey id)
-            where TModel : BaseRoleModel
-        {
-            // TODO разобраться с include
-            //var role = await _dbContext.GetOne<TRoleEntity, TRoleModel>(id, _mapper, null, null);
-            var role = await GetEntityForView(id);
-            var claims = await GetClaims(role);
-
-            var roleModel = _mapper.Map<TModel>(role);
-            roleModel.Permissions = claims.Where(m => m.Type == PermissionClaimType).Select(m => m.Value);
-
-            return roleModel;
-        }
-
-        public async Task<IEnumerable<TModel>> GetByNames<TModel>(IEnumerable<string> names)
-        {
-            names = names.Select(m => m.ToUpper());
-            return await _dbContext.Set<TEntity>()
-                .Where(m => names.Contains(m.NormalizedName))
-                .ProjectTo<TModel>(_mapper.ConfigurationProvider)
-                .ToListAsync();
-        }
-
-        public async Task<bool> CheckRoleNameExists(string roleName)
-        {
-            if (string.IsNullOrEmpty(roleName)) return false;
-            return await _dbContext.Set<TEntity>().AnyAsync(m => m.NormalizedName == roleName.ToUpper());
-        }
-
-        public async Task<TEntity> GetEntityForUpdate(TKey id, bool restore = false)
-        {
-            var entity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(m => m.Id.Equals(id) && m.IsDeleted == restore);
-
-            if (entity == null)
-                throw new EntityNotFoundException();
-
-            entity.LastUpdated = DateTime.UtcNow;
-
-            return entity;
-        }
-
-        public async Task<TEntity> GetEntityForView(TKey id)
-        {
-            var entity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(m => m.Id.Equals(id) && m.IsDeleted == false);
-            return entity;
-        }
-
-        public async Task<RegistryPage<TItemModel>> GetRegistryPage<TFilterModel, TItemModel>(RegistryQuery<TFilterModel> query)
-            where TFilterModel : BaseFilter
-        {
-            var selector = new EntitySelector<TKey, TEntity, TItemModel, TFilterModel>(_dbContext, _mapper, _logger);
-
-            var page = await selector.Query(query).ToRegistryPage();
-            return page;
-        }
-
-        public async Task<IEnumerable<TItemModel>> GetAllByRelated<TItemModel>(ByRelatedFilter<long> filter)
-        {
-            var selector = new EntitySelector<TKey, TEntity, TItemModel, ByRelatedFilter<long>>(_dbContext, _mapper, _logger);
-
-            var list = await selector.ByRelated(filter).ToEnumerable();
-            return list;
-        }
-
-        #region Private Methods
 
         // TODO возможно, пригодится
         private void HandleResult(IdentityResult result)

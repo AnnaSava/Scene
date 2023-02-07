@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Registry.Filter;
-using SavaDev.Base.Data.Services;
+using SavaDev.Base.Data.Services.Interfaces;
 using SavaDev.Base.Front.Registry;
 using System;
 using System.Collections.Generic;
@@ -24,19 +24,20 @@ namespace SavaDev.Base.Front.Services
             _mapper = mapper;
         }
 
-        public async Task<RegistryPageViewModel<TItemViewModel>> GetRegistryPage<TItemViewModel, TFilterViewModel>(RegistryQuery<TFilterViewModel> query)
+        public async Task<RegistryPageViewModel<TItemViewModel>> GetRegistryPage<TItemViewModel>(RegistryQuery query)
         {
-            var filter = _mapper.Map<TFilterModel>(query.Filter);
-
-            var queryModel = new RegistryQuery<TFilterModel>(query.PageInfo, query.Sort)
-            {
-                Filter = filter
-            };
-
-            var page = await _entityService.GetRegistryPage(queryModel);
-
             try
             {
+                var filter = _mapper.Map<TFilterModel>(query.Filter0);
+
+                var queryModel = new RegistryQuery<TFilterModel>(query.PageInfo, query.Sort)
+                {
+                    Filter = filter
+                };
+
+                var page = await _entityService.GetRegistryPage(queryModel);
+
+
                 var vm = RegistryPageMapper.MapRegistry<TItemModel, TItemViewModel>(page, _mapper);
                 return vm;
             }
@@ -48,3 +49,4 @@ namespace SavaDev.Base.Front.Services
         }
     }
 }
+

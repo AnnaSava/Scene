@@ -1,9 +1,22 @@
-﻿@using SavaDev.Base.Front.Registry
+﻿@using SavaDev.Base.Data.Models;
+@using SavaDev.Base.Data.Registry;
+@using SavaDev.Base.Data.Registry.Enums;
+@using SavaDev.Base.Front.Registry
 @using SavaDev.Scheme.Front.Contract.Models;
+@using SavaDev.Scheme.Front.Contract;
 @using SavaDev.UI.Blazorstrap.Models
 @typeparam T where T: BaseRegistryItemViewModel
+@inject ITableConfigViewService tableConfigService
+@inject IColumnViewService columnService
+
+<div>@Filter</div>
 
 <BSLink href="@CreateLink" IsButton="true" Color="BSColor.Primary">Add</BSLink>
+
+<div Class="@BS.Form_Check @BS.Form_Switch">
+    <BSInputCheckbox @onchange="@(c=>OnDeletedCheckedChanged(c))" @bind-Value="showDeleted" CheckedValue=@(true) />
+    <BSLabel IsCheckLabel="true">Show deleted</BSLabel>
+</div>
 
 @if (AvailableColumns != null && AvailableColumns.Any())
 {
@@ -11,9 +24,9 @@
         <Toggler><BSToggle IsButton="true" Color="BSColor.Secondary">Dropdown button</BSToggle></Toggler>
             <Content>
             @foreach (var col in AvailableColumns)
-                {
+            {
                 <BSDropdownItem OnClick="@(() => OnDropdownClick(col))">@col.Name</BSDropdownItem>
-                }
+            }
         </Content>
     </BSDropdown>
 }
@@ -54,12 +67,11 @@
                 </BSTD>
                 }
             }
-            <BSTD>
+            <BSTD>               
                 <BSDropdown>
                     <Toggler><BSToggle Class="btn btn-secondary">Actions</BSToggle></Toggler>
                     <Content>
-                        <BSDropdownItem href="@("/role/update/" + item.Id)">Update</BSDropdownItem>
-                        <BSDropdownItem OnClick="(() => {})">Delete</BSDropdownItem>
+                        @Actions(item)
                     </Content>
                 </BSDropdown>
             </BSTD>
@@ -68,18 +80,45 @@
 </BSDataTable>
 
 @code {
+    #region Parameters
+
     [Parameter]
     public RegistryPageViewModel<T>? Page { get; set; }
     [Parameter]
+    public ModelPlacement ModelPlacement { get; set; }
+    [Parameter]
     public Func<DataRequest, Task<(IEnumerable<T>, int)>> FetchItems { get; set; }
-    [Parameter] // возможно, сделать для ui свой набор моделек. пока берем из либ "фронт"
-    public Func<Task<IEnumerable<ColumnViewModel>>> GetColumns { get; set; }
+    //[Parameter] // возможно, сделать для ui свой набор моделек. пока берем из либ "фронт"
+    //public Func<Task<IEnumerable<ColumnViewModel>>> GetColumns { get; set; }
     [Parameter]
     public string CreateLink { get; set; }
+    [Parameter]
+    public RenderFragment? Filter { get; set; }
+    [Parameter]
+    public RenderFragment<T>? Actions { get; set; }
+    [Parameter]
+    public EventHandler<bool> ShowDeleted { get; set; }
+
+    #endregion
+
+    public RegistryPageInfo PageInfo = new RegistryPageInfo { PageNumber = 1, RowsCount = 20 };
+    public RegistrySort Sort = new RegistrySort("Id", SortDirection.Desc);
+
+    public async Task Refresh()
+    {
+        await table?.Refresh();
+    }
+
+    #region Ref
 
     private BSDataTable<T>? table;
 
+    #endregion
+
+    #region State
+
     private int _startPage = 1;
+    private bool showDeleted = false;
 
     private List<long> SelectedIds = new List<long>();
     private bool AllIsSelected;
@@ -87,20 +126,24 @@
     private List<ColumnViewModel> Columns = new List<ColumnViewModel>();
     private List<ColumnViewModel> AvailableColumns = new List<ColumnViewModel>();
 
+    #endregion
+
+    #region Lifecycle
+
     protected override async Task OnInitializedAsync()
     {
-        var task = GetColumns?.Invoke();
-        var cols = await task;
-        AvailableColumns = cols.ToList();
+        // TODO
+        // var configs = tableConfigService.GetAll(...);
+
+        //var task = GetColumns?.Invoke();
+        //var cols = await task;
+        //AvailableColumns = cols.ToList();
+        AvailableColumns = await GetColumns();
     }
 
-    private async Task<(IEnumerable<T>, int)> InvokeParentMethod(DataRequest dataRequest)
-    {
-        var task = FetchItems?.Invoke(dataRequest);
-        var result = await task;
+    #endregion
 
-        return (result.Item1, result.Item2);
-    }
+    #region Handlers
 
     private async Task HandleCheckedChanged(ChangeEventArgs args, T sender)
     {
@@ -137,5 +180,28 @@
     {
         AvailableColumns.Remove(col);
         Columns.Add(col);
+    }
+
+    #endregion
+
+    private async Task<(IEnumerable<T>, int)> InvokeParentMethod(DataRequest dataRequest)
+    {
+        var task = FetchItems?.Invoke(dataRequest);
+        var result = await task;
+
+        return (result.Item1, result.Item2);
+    }
+
+    private async Task<List<ColumnViewModel>> GetColumns()
+    {
+        var cols = await columnService.GetAll(ModelPlacement);
+        return cols.ToList();
+    }
+
+    private async Task OnDeletedCheckedChanged(ChangeEventArgs args)
+    {
+        ShowDeleted.Invoke(this, showDeleted);
+        //showDeleted = (bool)args.Value;
+        //await table.Refresh();
     }
 }

@@ -19,14 +19,12 @@ namespace SavaDev.System.Front
             services.AddScoped<IPermissionViewService, PermissionViewService>();
             services.AddScoped<IReservedNameViewService, ReservedNameViewService>();
             services.AddScoped<ILegalDocumentViewService, LegalDocumentViewService>();
+            services.AddScoped<IMailTemplateViewService, MailTemplateViewService>();
 
-            
 
             services.AddSingleton<SmtpClient>();
             services.AddSingleton<IEmailClient, EmailClient>();
-
-            
-            //services.AddScoped<IMailTemplateService, MailTemplateService>();
+                        
             //services.AddScoped<IMailService, MailService>();
         }
     }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SavaDev.Base.Data.Context;
+using SavaDev.Base.Data.Managers;
 using SavaDev.Base.Data.Services;
 using SavaDev.Base.User.Data.Entities;
 using SavaDev.Base.User.Data.Manager;
@@ -15,12 +16,22 @@ namespace SavaDev.Base.User.Data.Services
         where TEntity : BaseRole
         where TFormModel : BaseRoleModel
     {
+        #region Protected Fields: Dependencies
+
         protected readonly IDbContext _dbContext;
-        private readonly RoleManager<TEntity> _roleManager;
+        protected readonly RoleManager<TEntity> _roleManager;
         protected readonly IMapper _mapper;
         protected readonly ILogger _logger;
 
-        protected readonly RoleEntityManager<long, TEntity, TFormModel> entityManager;
+        #endregion
+
+        #region Protected Properties: Managers
+
+        protected RoleEntityManager<long, TEntity, TFormModel> EntityManager { get; }
+
+        #endregion
+
+        #region Public Constructors
 
         public BaseRoleDbService(
             IDbContext dbContext,
@@ -33,23 +44,33 @@ namespace SavaDev.Base.User.Data.Services
             _mapper = mapper;
             _logger= logger;
 
-            entityManager = new RoleEntityManager<long, TEntity, TFormModel>(dbContext, _roleManager, mapper, logger);
+            EntityManager = new RoleEntityManager<long, TEntity, TFormModel>(dbContext, _roleManager, mapper, logger);
         }
 
+        #endregion
+
+        #region Public Methods: Mutation
+
         public async Task<OperationResult> Create(TFormModel model)
-            => await entityManager.Create(model);
+            => await EntityManager.Create(model);
         public async Task<OperationResult> Update(long id, TFormModel model)
-           => await entityManager.Update(id, model);
+           => await EntityManager.Update(id, model);
         public async Task<OperationResult> Delete(long id)
-             => await entityManager.Delete(id);
+             => await EntityManager.Delete(id);
         public async Task<OperationResult> Restore(long id)
-             => await entityManager.Restore(id);
+             => await EntityManager.Restore(id);
+
+        #endregion
+
+        #region Public Methods: Query One
 
         public async Task<TModel> GetOne<TModel>(long id) where TModel : BaseRoleModel
-            => await entityManager.GetOne<TModel>(id);
+            => await EntityManager.GetOne<TModel>(id);
         public async Task<IEnumerable<TModel>> GetByNames<TModel>(IEnumerable<string> names)
-            => await entityManager.GetByNames<TModel>(names);
+            => await EntityManager.GetByNames<TModel>(names);
         public async Task<bool> CheckNameExists(string roleName)
-             => await entityManager.CheckRoleNameExists(roleName);
+             => await EntityManager.CheckRoleNameExists(roleName);
+
+        #endregion
     }
 }

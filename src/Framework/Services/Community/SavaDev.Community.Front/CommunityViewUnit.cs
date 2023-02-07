@@ -15,7 +15,7 @@ namespace SavaDev.Community.Service
         {
             services.AddUnitDbContext<CommunityContext>(config, unitOptions);
 
-            services.AddScoped<ICommunityService, CommunityService>();
+            services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<ISubscriptionService, SubscriptionService>();
             services.AddScoped<ILockoutService, LockoutService>();
         }

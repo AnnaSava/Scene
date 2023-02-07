@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace SavaDev.System.Data.Contract.Models
 {
-    public class ReservedNameModel : IAnyModel
+    public class ReservedNameModel : IAnyModel, IFormModel
     {
         private const string TextRegexPattern = @"^\w*$";
 

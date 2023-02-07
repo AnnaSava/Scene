@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SavaDev.Base.Data.Services
+namespace SavaDev.Base.Data.Services.Interfaces
 {
     public interface IEntityCrudService<TFormModel>
     {

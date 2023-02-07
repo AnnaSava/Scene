@@ -96,7 +96,7 @@ namespace Sava.Media.Services
             {
                 // TODO проперти галереи
                 var createdGallery = await _galleryService.Create(new GalleryModel { OwnerId = "", AttachedToId = "" });
-                imageModel.GalleryId = createdGallery.Models.First().Id;
+               // imageModel.GalleryId = createdGallery.Models.First().Id;
             }
 
             var createdImage = await _imageService.Create(imageModel);

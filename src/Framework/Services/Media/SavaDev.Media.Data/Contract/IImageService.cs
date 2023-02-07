@@ -11,7 +11,7 @@ namespace Sava.Media.Data.Contract
 {
     public interface IImageService
     {
-        Task<OperationResult<ImageModel>> Create(ImageModel model);
+        Task<OperationResult> Create(ImageModel model);
 
         Task<ImageModel> GetOne(Guid id);
 

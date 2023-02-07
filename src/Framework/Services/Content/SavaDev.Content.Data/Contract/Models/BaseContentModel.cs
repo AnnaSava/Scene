@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SavaDev.Base.Data.Models.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Savadev.Content.Data.Contract.Models
 {
-    public abstract class BaseContentModel<T>
+    public abstract class BaseContentModel<T> : IFormModel
     {
         public Guid Id { get; set; }
 

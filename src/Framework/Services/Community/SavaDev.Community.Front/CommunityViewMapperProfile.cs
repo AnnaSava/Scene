@@ -8,11 +8,11 @@ namespace SavaDev.Community.Front
     {
         public CommunityViewMapperProfile()
         {
-            CreateMap<CommunityViewModel, CommunityModel>();
-            CreateMap<CommunityModel, CommunityViewModel>();
+            CreateMap<CommunityViewModel, GroupModel>();
+            CreateMap<GroupModel, CommunityViewModel>();
 
-            CreateMap<CommunitySavingModel, CommunityModel>();
-            CreateMap<CommunityModel, CommunitySavingModel>();
+            CreateMap<CommunitySavingModel, GroupModel>();
+            CreateMap<GroupModel, CommunitySavingModel>();
 
             CreateMap<SubscriptionViewModel, SubscriptionModel>();
             CreateMap<SubscriptionModel, SubscriptionViewModel>();

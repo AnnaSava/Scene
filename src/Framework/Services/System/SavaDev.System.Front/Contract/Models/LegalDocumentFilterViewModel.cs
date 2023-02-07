@@ -1,9 +1,10 @@
 ﻿using SavaDev.Base.Data.Enums;
+using SavaDev.Base.Data.Registry.Filter;
 using SavaDev.Base.Front.Registry;
 
 namespace SavaDev.System.Front.Contract.Models
 {
-    public class LegalDocumentFilterViewModel : ListFilterViewModel
+    public class LegalDocumentFilterViewModel : BaseFilter
     {
         public string PermName { get; set; }
 

@@ -1,4 +1,5 @@
-﻿<BSInputGroup MarginBottom="Margins.Medium">
+﻿@using SavaDev.Base.Data.Registry.Enums;
+<BSInputGroup MarginBottom="Margins.Medium">
     <BSInput InputType="InputType.Text" placeholder="@Placeholder" @bind-Value="@field.Text" />
     <BSInput InputType="InputType.Select" @bind-Value="@field.Match">
         <option value="@MatchModeWord.None">None</option>

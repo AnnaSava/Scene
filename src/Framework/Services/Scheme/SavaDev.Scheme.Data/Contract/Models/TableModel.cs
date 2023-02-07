@@ -1,5 +1,7 @@
 ﻿using SavaDev.Base.Data.Entities.Interfaces;
 using SavaDev.Base.Data.Models.Interfaces;
+using SavaDev.Scheme.Data.Contract.Models;
+using SavaDev.Scheme.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Scheme.Contract.Models
 {
-    public class TableModel : IModel<Guid>
+    public class TableModel : IModel<Guid>, IFormModel
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -19,5 +21,7 @@ namespace SavaDev.Scheme.Contract.Models
         public string Entity { get; set; }
 
         public virtual ICollection<ColumnModel> Columns { get;set; }
+
+        public virtual ICollection<TableConfigModel> Configs { get; set; }
     }
 }

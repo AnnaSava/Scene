@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Community.Data.Entities
 {
-    public class Community : BaseHubEntity
+    public class Group : BaseHubEntity
     {
         public virtual ICollection<Lockout> Lockouts { get; set; }
 
