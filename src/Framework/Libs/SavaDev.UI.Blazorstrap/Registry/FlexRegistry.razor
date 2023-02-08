@@ -6,30 +6,111 @@
 @using SavaDev.Scheme.Front.Contract;
 @using SavaDev.UI.Blazorstrap.Models
 @typeparam T where T: BaseRegistryItemViewModel
-@inject ITableConfigViewService tableConfigService
+@inject ITableViewService tableService
 @inject IColumnViewService columnService
 
-<div>@Filter</div>
+<p>Table Guid @TableModel?.Id</p>
 
-<BSLink href="@CreateLink" IsButton="true" Color="BSColor.Primary">Add</BSLink>
+<BSAccordion>
+    <BSAccordionItem DefaultShown="true">
+        <Header>Filter</Header>
+        <Content>
+            <div class="row">
+                <div class="col-md-2">
+                  
+                        <BSInput InputType="InputType.Select" Value="SelectedFilterId" @onchange="@((e) => OnFilterSelected(e))">
+                        <option value="0">New filter</option>  
+                        @if (TableModel != null && TableModel.Filters != null && TableModel.Filters.Any())
+                        {
+                            @foreach (var conf in TableModel.Filters)
+                            {
+                                <option value="@conf.Id" selected="@(TableModel.SelectedFilter?.Id == conf.Id)">@conf.Name</option>
+                            }
+                        }
+                        </BSInput>
+                    
+                </div>
+                <div class="col-md-2">
+                    <BSButton Color="BSColor.Primary" Target="modal1">
+                    Save filter
+                    </BSButton></div>
+            </div>
 
-<div Class="@BS.Form_Check @BS.Form_Switch">
-    <BSInputCheckbox @onchange="@(c=>OnDeletedCheckedChanged(c))" @bind-Value="showDeleted" CheckedValue=@(true) />
-    <BSLabel IsCheckLabel="true">Show deleted</BSLabel>
-</div>
-
-@if (AvailableColumns != null && AvailableColumns.Any())
-{
-    <BSDropdown>
-        <Toggler><BSToggle IsButton="true" Color="BSColor.Secondary">Dropdown button</BSToggle></Toggler>
-            <Content>
-            @foreach (var col in AvailableColumns)
-            {
-                <BSDropdownItem OnClick="@(() => OnDropdownClick(col))">@col.Name</BSDropdownItem>
-            }
+            @Filter
+            <div class="row">
+                <div class="col-md-2">
+                    <div Class="@BS.Form_Check @BS.Form_Switch">
+                        <BSInputCheckbox @onchange="@(c=>OnDeletedCheckedChanged(c))" @bind-Value="showDeleted" CheckedValue=@(true) />
+                        <BSLabel IsCheckLabel="true">Show deleted</BSLabel>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <BSButton Color="BSColor.Primary" OnClick="@OnFilterClick">Filter</BSButton>                
+                </div>
+            </div>
         </Content>
-    </BSDropdown>
-}
+    </BSAccordionItem>
+</BSAccordion>
+
+<BSModal DataId="modal1">
+    <Header>Create filter</Header>
+    <Content>
+        <div class="mb-3">
+            <BSLabel>Name</BSLabel>
+            <BSInput InputType="InputType.Text" @bind-Value="FilterFormName" />
+        </div>
+    </Content>
+    <Footer Context="modal">
+        <BSButton MarginStart="Margins.Auto" Color="BSColor.Secondary" @onclick="modal.HideAsync">Close</BSButton>
+        <BSButton Color="BSColor.Primary" OnClick="OnClickSaveFilter">Save changes</BSButton>
+    </Footer>
+</BSModal>
+
+<BSModal DataId="modal2">
+    <Header>Create config</Header>
+    <Content>
+        <div class="mb-3">
+            <BSLabel>Name</BSLabel>
+            <BSInput InputType="InputType.Text" @bind-Value="ColumnConfigFormName" />
+        </div>
+    </Content>
+    <Footer Context="modal">
+        <BSButton MarginStart="Margins.Auto" Color="BSColor.Secondary" @onclick="modal.HideAsync">Close</BSButton>
+        <BSButton Color="BSColor.Primary" OnClick="(() => OnClickSaveColumns())">Save changes</BSButton>
+    </Footer>
+</BSModal>
+
+<div class="row">
+    <div class="col-md-2"><BSLink href="@CreateLink" IsButton="true" Color="BSColor.Primary">Add</BSLink></div>
+    <div class="col-md-2">
+        @if (AvailableColumns != null && AvailableColumns.Any())
+        {
+            <BSDropdown>
+                <Toggler><BSToggle IsButton="true" Color="BSColor.Secondary">Show columns</BSToggle></Toggler>
+                <Content>
+                    @foreach (var col in AvailableColumns)
+                    {
+                        <BSDropdownItem OnClick="@(() => OnDropdownClick(col))">@col.Name</BSDropdownItem>
+                    }
+                </Content>
+            </BSDropdown>
+        }
+    </div>
+    <div class="col-md-2">
+       
+            <BSInput InputType="InputType.Select" Value="SelectedColumnConfigId" @onchange="@((e) => OnColumnConfigSelected(e))">
+            <option value="0">New config</option> 
+            @if (TableModel != null && TableModel.ColumnConfigs != null && TableModel.ColumnConfigs.Any())
+            {
+                @foreach (var conf in TableModel.ColumnConfigs)
+                {
+                    <option value="@conf.Id" selected="@(TableModel.SelectedConfig?.Id == conf.Id)">@conf.Name</option>
+                }
+            }
+            </BSInput>        
+    </div>
+    <div class="col-md-2"><BSButton Color="BSColor.Primary" Target="modal2">Save config</BSButton></div>
+</div>
 
 <BSDataTable FetchItems="InvokeParentMethod" PaginationBottom="true" StartPage="_startPage" RowsPerPage="20" Context="item" @ref=table>
     <Header>
@@ -98,11 +179,19 @@
     public RenderFragment<T>? Actions { get; set; }
     [Parameter]
     public EventHandler<bool> ShowDeleted { get; set; }
+    [Parameter]
+    public EventHandler OnSaveFilter { get; set; }
 
     #endregion
 
+    public TableViewModel TableModel { get; set; }
+    public ColumnConfigViewModel SelectedColumnConfig { get; set; }
+
     public RegistryPageInfo PageInfo = new RegistryPageInfo { PageNumber = 1, RowsCount = 20 };
     public RegistrySort Sort = new RegistrySort("Id", SortDirection.Desc);
+
+    public string FilterFormName { get; set; }
+    public string ColumnConfigFormName { get; set; }
 
     public async Task Refresh()
     {
@@ -126,19 +215,18 @@
     private List<ColumnViewModel> Columns = new List<ColumnViewModel>();
     private List<ColumnViewModel> AvailableColumns = new List<ColumnViewModel>();
 
+    private int? SelectedColumnConfigId;
+    private int? SelectedFilterId;
+
     #endregion
 
     #region Lifecycle
 
     protected override async Task OnInitializedAsync()
     {
-        // TODO
-        // var configs = tableConfigService.GetAll(...);
-
-        //var task = GetColumns?.Invoke();
-        //var cols = await task;
-        //AvailableColumns = cols.ToList();
-        AvailableColumns = await GetColumns();
+        TableModel = await tableService.GetOne(ModelPlacement);
+        Columns = TableModel.DisplayedColumns;
+        AvailableColumns = TableModel.AvailableColumns;
     }
 
     #endregion
@@ -180,6 +268,44 @@
     {
         AvailableColumns.Remove(col);
         Columns.Add(col);
+    }
+
+    private async Task OnClickSaveColumns()
+    {
+        var model = new ColumnConfigViewModel()
+            {
+                ColumnIds = Columns.Select(m => m.Id).ToList(),
+                TableId = TableModel.Id,
+                Name = ColumnConfigFormName
+
+            };
+        await tableService.CreateConfig(model);
+    }
+
+    private async void OnColumnConfigSelected(ChangeEventArgs e)
+    {
+        SelectedColumnConfigId = int.Parse(e.Value.ToString());
+        if (SelectedColumnConfigId == 0) return;
+        await tableService.FillColumns(TableModel, (int)SelectedColumnConfigId);
+        Columns = TableModel.DisplayedColumns;
+        AvailableColumns = TableModel.AvailableColumns;
+        StateHasChanged();
+    }
+
+    private async void OnFilterSelected(ChangeEventArgs e)
+    {
+        SelectedFilterId = int.Parse(e.Value.ToString());
+        if (SelectedFilterId == 0) return;
+    }
+
+    private async Task OnClickSaveFilter(EventArgs e)
+    {
+        OnSaveFilter.Invoke(this, e);
+    }
+
+    protected async Task OnFilterClick()
+    {
+        table?.Refresh();
     }
 
     #endregion

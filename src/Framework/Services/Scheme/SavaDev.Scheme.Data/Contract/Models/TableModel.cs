@@ -22,6 +22,6 @@ namespace SavaDev.Scheme.Contract.Models
 
         public virtual ICollection<ColumnModel> Columns { get;set; }
 
-        public virtual ICollection<TableConfigModel> Configs { get; set; }
+        public virtual ICollection<ColumnConfigModel> Configs { get; set; }
     }
 }

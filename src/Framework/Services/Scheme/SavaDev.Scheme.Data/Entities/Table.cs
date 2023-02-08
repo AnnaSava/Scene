@@ -19,6 +19,8 @@ namespace SavaDev.Scheme.Data.Entities
 
         public virtual ICollection<Column> Columns { get;set; }
         
-        public virtual ICollection<TableConfig> Configs { get;set; }
+        public virtual ICollection<ColumnConfig> Configs { get;set; }
+
+        public virtual ICollection<Filter> Filters { get;set; }
     }
 }

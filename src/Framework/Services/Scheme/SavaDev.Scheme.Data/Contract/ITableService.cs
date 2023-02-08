@@ -1,4 +1,5 @@
-﻿using SavaDev.Base.Data.Services;
+﻿using SavaDev.Base.Data.Models;
+using SavaDev.Base.Data.Services;
 using SavaDev.Scheme.Contract.Models;
 using System;
 using System.Collections.Generic;
@@ -11,5 +12,8 @@ namespace SavaDev.Scheme.Data.Contract
     public interface ITableService
     {
         Task<OperationResult> Create(TableModel model);
+
+        Task<TableModel> GetOneByPlacement(ModelPlacement placement);
+
     }
 }

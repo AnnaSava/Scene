@@ -14,7 +14,9 @@ namespace SavaDev.Scheme.Data
 
         public DbSet<Table> Tables { get; set; }
 
-        public DbSet<TableConfig> TableConfigs { get; set; }
+        public DbSet<Filter> Filters { get; set; }
+
+        public DbSet<ColumnConfig> ColumnConfigs { get; set; }
 
         public DbSet<Column>  Columns { get; set; }
 

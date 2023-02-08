@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Base.Data.Models.Interfaces
 {
-    public interface IFormModel
+    public interface IFormModel : IAnyModel
     {
     }
 }

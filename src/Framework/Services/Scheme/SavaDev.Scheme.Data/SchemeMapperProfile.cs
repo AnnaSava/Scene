@@ -22,8 +22,11 @@ namespace SavaDev.Scheme.Data
             CreateMap<ColumnPermission, ColumnPermissionModel>();
             CreateMap<ColumnPermissionModel, ColumnPermission>();
 
-            CreateMap<TableConfig, TableConfigModel>();
-            CreateMap<TableConfigModel, TableConfig>();
+            CreateMap<ColumnConfig, ColumnConfigModel>();
+            CreateMap<ColumnConfigModel, ColumnConfig>();
+
+            CreateMap<Filter, FilterModel>();
+            CreateMap<FilterModel, Filter>();
         }
     }
 }

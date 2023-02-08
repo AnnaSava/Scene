@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SavaDev.Base.Data.Managers;
+using SavaDev.Base.Data.Models;
 using SavaDev.Base.Data.Services;
 using SavaDev.Scheme.Contract.Models;
 using SavaDev.Scheme.Data.Contract;
@@ -29,5 +31,11 @@ namespace SavaDev.Scheme.Data.Services
 
         public async Task<OperationResult> Create(TableModel model)
             => await creatorManager.Create(model);
+
+        public async Task<TableModel> GetOneByPlacement(ModelPlacement placement)
+        {
+            var entity = await _dbContext.Set<Table>().FirstOrDefaultAsync(m => m.Entity == placement.Entity && m.Module == placement.Module);
+            return _mapper.Map<TableModel>(entity);
+        }
     }
 }

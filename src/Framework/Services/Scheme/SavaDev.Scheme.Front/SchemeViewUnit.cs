@@ -20,7 +20,7 @@ namespace SavaDev.Scheme.Front
         public static void AddScheme(this IServiceCollection services, IConfiguration config, UnitOptions options)
         {
             services.AddScoped<IColumnViewService, ColumnViewService>();
-            services.AddScoped<ITableConfigViewService, TableConfigViewService>();
+            services.AddScoped<ITableViewService, TableViewService>();
         }
     }
 }

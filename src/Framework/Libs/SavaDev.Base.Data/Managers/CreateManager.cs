@@ -123,7 +123,7 @@ namespace SavaDev.Base.Data.Managers
 
         private async Task<OperationResult> DoCreate(TEntity entity)
         {
-            var addResult = await _dbContext.AddAsync(entity);
+            var addResult = await _dbContext.Set<TEntity>().AddAsync(entity);
             var rows = await _dbContext.SaveChangesAsync();
             return new OperationResult(rows); // не уверена, что так красиво
         }

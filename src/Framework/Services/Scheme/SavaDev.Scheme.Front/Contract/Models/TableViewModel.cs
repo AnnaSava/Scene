@@ -18,6 +18,16 @@ namespace SavaDev.Scheme.Front.Contract.Models
 
         public string Entity { get; set; }
 
-        public virtual ICollection<ColumnViewModel> Columns { get;set; }
+        public List<ColumnViewModel> DisplayedColumns = new List<ColumnViewModel>();
+
+        public List<ColumnViewModel> AvailableColumns = new List<ColumnViewModel>();
+
+        public List<ColumnConfigViewModel> ColumnConfigs = new List<ColumnConfigViewModel>();
+
+        public ColumnConfigViewModel? SelectedConfig { get; set; }
+
+        public List<FilterViewModel> Filters { get; set; } = new List<FilterViewModel> { };
+
+        public FilterViewModel? SelectedFilter { get; set; }
     }
 }

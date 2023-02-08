@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using SavaDev.Base.Data.Models;
+using SavaDev.Base.Data.Services;
 using SavaDev.Base.Front.Registry;
 using SavaDev.Scheme.Data.Contract;
+using SavaDev.Scheme.Data.Contract.Models;
 using SavaDev.Scheme.Front.Contract;
 using SavaDev.Scheme.Front.Contract.Models;
 using System;
@@ -16,12 +18,16 @@ namespace SavaDev.Scheme.Front.Services
     public class ColumnViewService : IColumnViewService
     {
         protected readonly IColumnService _columnService;
+        protected readonly IColumnConfigService _columnConfigService;
         protected readonly IMapper _mapper;
 
-        public ColumnViewService(IColumnService columnService, IMapper mapper)
+        public ColumnViewService(IColumnService columnService,
+            IColumnConfigService columnConfigService,
+            IMapper mapper)
         {
             _columnService = columnService;
             _mapper = mapper;
+            _columnConfigService= columnConfigService;
         }
 
         public async Task<IEnumerable<ColumnViewModel>> GetAll(ModelPlacement modelPlacement)

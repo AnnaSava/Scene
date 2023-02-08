@@ -23,6 +23,7 @@ namespace SavaDev.Scheme.Data
             {
                 b.HasMany(m => m.Columns).WithOne(m => m.Table).HasForeignKey(m => m.TableId).IsRequired();
                 b.HasMany(m => m.Configs).WithOne(m => m.Table).HasForeignKey(m => m.TableId).IsRequired();
+                b.HasMany(m => m.Filters).WithOne(m => m.Table).HasForeignKey(m => m.TableId).IsRequired();
             });
 
             builder.Entity<Column>(b =>
@@ -39,7 +40,8 @@ namespace SavaDev.Scheme.Data
             builder.Entity<Column>(b => { b.ToTable(helper.GetTableName(nameof(Column))); });
             builder.Entity<ColumnProperty>(b => { b.ToTable(helper.GetTableName(nameof(ColumnProperty))); });
             builder.Entity<ColumnPermission>(b => { b.ToTable(helper.GetTableName(nameof(ColumnPermission))); });
-            builder.Entity<TableConfig>(b => { b.ToTable(helper.GetTableName(nameof(TableConfig))); });
+            builder.Entity<ColumnConfig>(b => { b.ToTable(helper.GetTableName(nameof(ColumnConfig))); });
+            builder.Entity<Filter>(b => { b.ToTable(helper.GetTableName(nameof(Filter))); });
         }
     }
 }

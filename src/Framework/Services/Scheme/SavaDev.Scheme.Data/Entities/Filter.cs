@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Scheme.Data.Entities
 {
-    public class TableConfig : IEntity<long>
+    public class Filter : IEntity<long>
     {
         public long Id { get; set; }
 
@@ -17,8 +17,6 @@ namespace SavaDev.Scheme.Data.Entities
 
         public virtual Table Table { get; set; }
 
-        public string Filter { get; set; }
-
-        public string Columns { get; set; }
+        public string Fields { get; set; }
     }
 }

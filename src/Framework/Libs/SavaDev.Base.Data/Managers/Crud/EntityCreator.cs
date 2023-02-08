@@ -131,7 +131,7 @@ namespace SavaDev.Base.Data.Managers.Crud
         protected virtual Task<OperationResult> DoOnAfterCreate(TEntity entity, IFormModel model)
         {
             var task = OnAfterCreate?.Invoke(entity, model);
-            return task ?? (Task<OperationResult>)Task.CompletedTask;
+            return task ?? Task.FromResult(new OperationResult(0));
         }
 
         protected virtual OperationResult DoOnSuccess(TEntity entity)

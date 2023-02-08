@@ -14,5 +14,7 @@ namespace SavaDev.Scheme.Data.Contract
         Task<OperationResult> Create(ColumnModel model);
 
         Task<IEnumerable<ColumnModel>> GetAll(ModelPlacement modelPlacement);
+
+        Task<IEnumerable<ColumnModel>> GetAll(Guid tableId);
     }
 }

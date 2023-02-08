@@ -11,10 +11,14 @@ namespace SavaDev.Scheme.Data.Contract
 {
     public interface ISchemeContext : IDbContext
     {
-        public DbSet<Table> Tables { get; set; }
+        DbSet<Table> Tables { get; set; }
 
-        public DbSet<Column> Columns { get; set; }
+        DbSet<Column> Columns { get; set; }
 
-        public DbSet<ColumnProperty> ColumnProperties { get; set; }
+        DbSet<ColumnConfig> ColumnConfigs { get; set; }
+
+        DbSet<ColumnProperty> ColumnProperties { get; set; }
+
+        DbSet<Filter> Filters { get; set; }
     }
 }
