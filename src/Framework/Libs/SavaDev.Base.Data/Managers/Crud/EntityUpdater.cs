@@ -286,7 +286,7 @@ namespace SavaDev.Base.Data.Managers.Crud
 
         private int HandleResult(OperationResult result, string methodName)
         {
-            if (!result.IsSuccess)
+            if (!result.IsSuccess && !result.NotChanged)
             {
                 throw new Exception($"Operation in {methodName} failed", new Exception(result.GetExceptionsString()));
             }

@@ -18,7 +18,11 @@ namespace SavaDev.Scheme.Front.Contract
 
         Task<OperationResult> CreateFilter(FilterViewModel model, BaseFilter filter);
 
+        Task<OperationResult> RemoveFilter(long id);
+
         Task<OperationResult> CreateConfig(ColumnConfigViewModel model);
+
+        Task<OperationResult> RemoveConfig(long id);
 
         Task<ColumnConfigViewModel> GetLastConfig(Guid tableId);
     }

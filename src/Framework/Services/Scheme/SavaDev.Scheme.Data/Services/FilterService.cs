@@ -19,8 +19,9 @@ namespace SavaDev.Scheme.Data.Services
     public class FilterService : BaseEntityService<Filter, FilterModel>, IFilterService
     {
         private CreateManager<Filter, FilterModel> CreateManager { get; }
-        private readonly UpdateManager<long, Filter, FilterModel> updaterManager;
-        private readonly UpdateSelector<long, Filter> updateSelectorManager;
+        protected UpdateSelector<long, Filter> UpdateSelector { get; }
+        protected RemoveManager<long, Filter> RemoveManager { get; }
+
 
         #region Constructors
 
@@ -28,8 +29,8 @@ namespace SavaDev.Scheme.Data.Services
             : base(dbContext, mapper, nameof(ColumnService))
         {
             CreateManager = new CreateManager<Filter, FilterModel>(dbContext, mapper, logger);
-            updateSelectorManager = new UpdateSelector<long, Filter>(dbContext, mapper, logger);
-            updaterManager = new UpdateManager<long, Filter, FilterModel>(dbContext, mapper, logger, updateSelectorManager);
+            UpdateSelector = new UpdateSelector<long, Filter>(dbContext, mapper, logger);
+            RemoveManager = new RemoveManager<long, Filter>(dbContext, mapper, logger, UpdateSelector);
         }
 
         #endregion
@@ -38,6 +39,9 @@ namespace SavaDev.Scheme.Data.Services
 
         public async Task<OperationResult> Create(FilterModel model)
             => await CreateManager.Create(model);
+
+        public async Task<OperationResult> Remove(long id)
+            => await RemoveManager.Remove(id);
 
         #endregion
 

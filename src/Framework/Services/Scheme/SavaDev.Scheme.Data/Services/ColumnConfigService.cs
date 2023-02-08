@@ -21,6 +21,8 @@ namespace SavaDev.Scheme.Data.Services
         #region Protected Properties: Managers
 
         protected CreateManager<ColumnConfig, ColumnConfigModel> CreateManager { get; }
+        protected UpdateSelector<long, ColumnConfig> UpdateSelector { get; }
+        protected RemoveManager<long, ColumnConfig> RemoveManager { get; }
         protected OneSelector<ColumnConfig> OneSelector { get; }
         protected AllSelector<long, ColumnConfig> AllSelector { get; } // TODO убрать бул
 
@@ -32,6 +34,8 @@ namespace SavaDev.Scheme.Data.Services
             : base(dbContext, mapper, nameof(ColumnConfigService))
         {
             CreateManager = new CreateManager<ColumnConfig, ColumnConfigModel>(dbContext, mapper, logger);
+            UpdateSelector = new UpdateSelector<long, ColumnConfig>(dbContext, mapper, logger);
+            RemoveManager = new RemoveManager<long, ColumnConfig>(dbContext, mapper, logger, UpdateSelector);
             OneSelector = new OneSelector<ColumnConfig>(dbContext, mapper, logger);
             AllSelector = new AllSelector<long, ColumnConfig>(dbContext, mapper, logger);
         }
@@ -41,6 +45,9 @@ namespace SavaDev.Scheme.Data.Services
 
         public async Task<OperationResult> Create(ColumnConfigModel model)
             => await CreateManager.Create(model);
+
+        public async Task<OperationResult> Remove(long id)
+            => await RemoveManager.Remove(id);
 
         #endregion
 

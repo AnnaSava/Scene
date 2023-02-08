@@ -49,4 +49,39 @@ namespace SavaDev.Base.Data.Managers
             return new OperationResult(rows);
         }
     }
+
+    public class RemoveManager<TKey, TEntity>
+        where TEntity : class, IAnyEntity, IEntity<TKey>
+    {
+        private readonly IMapper _mapper;
+        private readonly IDbContext _dbContext;
+        private readonly ILogger _logger;
+        private IUpdateSelector<TKey, TEntity> updateSelector;
+
+        public RemoveManager(IDbContext dbContext, IMapper mapper, ILogger logger, IUpdateSelector<TKey, TEntity> selector)
+        {
+            _dbContext = dbContext;
+            _mapper = mapper;
+            _logger = logger;
+            updateSelector = selector;
+        }
+
+        public async Task<OperationResult> Remove(TKey id)
+        {
+            var remover = new EntityRemover<TKey, TEntity>(_dbContext, _logger)
+                .GetEntity(async (id) => await updateSelector.GetEntityForUpdate(id))
+                .Remove(DoRemove)
+                .SuccessResult(entity => new OperationResult(1))
+                .ErrorResult((errMessage) => new OperationResult((int)DbOperationRows.OnFailure, new OperationExceptionInfo(errMessage)));
+
+            return await remover.DoRemove(id);
+        }
+
+        private async Task<OperationResult> DoRemove(TEntity entity)
+        {
+            _dbContext.Set<TEntity>().Remove(entity);
+            var rows = await _dbContext.SaveChangesAsync();
+            return new OperationResult(rows);
+        }
+    }
 }

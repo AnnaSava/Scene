@@ -12,6 +12,8 @@ namespace SavaDev.Scheme.Data.Contract
     {
         Task<OperationResult> Create(ColumnConfigModel model);
 
+        Task<OperationResult> Remove(long id);
+
         Task<ColumnConfigModel> GetLast(Guid tableId);
 
         Task<IEnumerable<ColumnConfigModel>> GetAll(Guid tableId);

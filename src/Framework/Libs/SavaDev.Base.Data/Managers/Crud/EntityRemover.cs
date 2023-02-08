@@ -112,7 +112,7 @@ namespace SavaDev.Base.Data.Managers.Crud
             try
             {
                 var entity = await DoGetEntityForRemove(id);
-                var result = await ProcessRemove(entity); ;
+                var result = await ProcessRemove(entity);
                 await tran.CommitAsync();
                 return result;
             }
@@ -145,13 +145,13 @@ namespace SavaDev.Base.Data.Managers.Crud
         protected virtual Task<OperationResult> DoRemove(TEntity entity)
         {
             var task = OnRemove?.Invoke(entity);
-            return task ?? (Task<OperationResult>)Task.CompletedTask;
+            return task ?? Task.FromResult(new OperationResult(0));
         }
 
         protected virtual Task<OperationResult> DoOnAfterRemove(TEntity entity)
         {
             var task = OnAfterRemove?.Invoke(entity);
-            return task ?? (Task<OperationResult>)Task.CompletedTask;
+            return task ?? Task.FromResult(new OperationResult(0));
         }
 
         protected virtual OperationResult DoOnSuccess(TEntity entity)
@@ -192,7 +192,7 @@ namespace SavaDev.Base.Data.Managers.Crud
 
         private int HandleResult(OperationResult result, string methodName)
         {
-            if (!result.IsSuccess)
+            if (!result.IsSuccess && !result.NotChanged)
             {
                 throw new Exception($"Operation in {methodName} failed", new Exception(result.GetExceptionsString()));
             }

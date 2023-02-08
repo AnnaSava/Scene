@@ -17,8 +17,7 @@
         <Content>
             <div class="row">
                 <div class="col-md-2">
-                  
-                        <BSInput InputType="InputType.Select" Value="SelectedFilterId" @onchange="@((e) => OnFilterSelected(e))">
+                    <BSInput InputType="InputType.Select" Value="SelectedFilterId" @onchange="@((e) => OnFilterSelected(e))">
                         <option value="0">New filter</option>  
                         @if (TableModel != null && TableModel.Filters != null && TableModel.Filters.Any())
                         {
@@ -27,16 +26,20 @@
                                 <option value="@conf.Id" selected="@(TableModel.SelectedFilter?.Id == conf.Id)">@conf.Name</option>
                             }
                         }
-                        </BSInput>
-                    
+                     </BSInput>                    
                 </div>
                 <div class="col-md-2">
                     <BSButton Color="BSColor.Primary" Target="modal1">
-                    Save filter
-                    </BSButton></div>
+                        <i class="bi-save2"></i>
+                    </BSButton>
+                    <BSButton Color="BSColor.Primary" OnClick="(() => OnClickRemoveFilter())">
+                        <i class="bi-trash"></i>
+                    </BSButton>
+                </div>
             </div>
 
             @Filter
+
             <div class="row">
                 <div class="col-md-2">
                     <div Class="@BS.Form_Check @BS.Form_Switch">
@@ -83,6 +86,22 @@
 <div class="row">
     <div class="col-md-2"><BSLink href="@CreateLink" IsButton="true" Color="BSColor.Primary">Add</BSLink></div>
     <div class="col-md-2">
+        <BSInput InputType="InputType.Select" @bind-Value="_value">
+            <option value="null">Items on page</option>
+            <option value="1">10</option>
+            <option value="2">20</option>
+            <option value="3">50</option>
+        </BSInput>
+    </div>
+    <div class="col-md-2">
+        <BSButtonGroup>
+            <BSButton Color="BSColor.Primary"><i class="bi-table"></i></BSButton>
+            <BSButton Color="BSColor.Secondary"><i class="bi-list-task"></i></BSButton>
+            <BSButton Color="BSColor.Secondary"><i class="bi-layout-sidebar"></i></BSButton>
+            <BSButton Color="BSColor.Success"><i class="bi-grid"></i></BSButton>
+        </BSButtonGroup>
+    </div>
+    <div class="col-md-2">
         @if (AvailableColumns != null && AvailableColumns.Any())
         {
             <BSDropdown>
@@ -109,7 +128,12 @@
             }
             </BSInput>        
     </div>
-    <div class="col-md-2"><BSButton Color="BSColor.Primary" Target="modal2">Save config</BSButton></div>
+    <div class="col-md-2">
+        <BSButton Color="BSColor.Primary" Target="modal2"><i class="bi-save2"></i></BSButton>
+        <BSButton Color="BSColor.Primary" OnClick="(() => OnClickRemoveConfig())">
+            <i class="bi-trash"></i>
+        </BSButton>
+    </div>
 </div>
 
 <BSDataTable FetchItems="InvokeParentMethod" PaginationBottom="true" StartPage="_startPage" RowsPerPage="20" Context="item" @ref=table>
@@ -161,6 +185,8 @@
 </BSDataTable>
 
 @code {
+    private int? _value;
+
     #region Parameters
 
     [Parameter]
@@ -215,8 +241,8 @@
     private List<ColumnViewModel> Columns = new List<ColumnViewModel>();
     private List<ColumnViewModel> AvailableColumns = new List<ColumnViewModel>();
 
-    private int? SelectedColumnConfigId;
-    private int? SelectedFilterId;
+    private int? SelectedColumnConfigId = 0;
+    private int? SelectedFilterId = 0;
 
     #endregion
 
@@ -292,6 +318,14 @@
         StateHasChanged();
     }
 
+    private async Task OnClickRemoveConfig()
+    {
+        if (SelectedColumnConfigId == 0) return;
+        await tableService.RemoveConfig((long)SelectedColumnConfigId);
+        var config = TableModel.ColumnConfigs.FirstOrDefault(m => m.Id == SelectedColumnConfigId);
+        if (config != null) TableModel.ColumnConfigs.Remove(config);
+    }
+
     private async void OnFilterSelected(ChangeEventArgs e)
     {
         SelectedFilterId = int.Parse(e.Value.ToString());
@@ -302,6 +336,15 @@
     {
         OnSaveFilter.Invoke(this, e);
     }
+
+    private async Task OnClickRemoveFilter()
+    {
+        if (SelectedFilterId == 0) return;
+        await tableService.RemoveFilter((long)SelectedFilterId);
+        var filter = TableModel.Filters.FirstOrDefault(m => m.Id == SelectedFilterId);
+        if (filter != null) TableModel.Filters.Remove(filter);
+    }
+
 
     protected async Task OnFilterClick()
     {

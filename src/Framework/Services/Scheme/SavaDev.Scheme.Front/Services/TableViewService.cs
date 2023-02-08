@@ -119,6 +119,12 @@ namespace SavaDev.Scheme.Front.Services
             return new OperationResult(1);
         }
 
+        public async Task<OperationResult> RemoveConfig(long id)
+        {
+            var result = await _columnConfigService.Remove(id);
+            return result; // TODO сделать вьюшный резалт
+        }
+
         public async Task<ColumnConfigViewModel> GetLastConfig(Guid tableId)
         {
             var model = await _columnConfigService.GetLast(tableId);
@@ -132,6 +138,12 @@ namespace SavaDev.Scheme.Front.Services
             newModel.Fields = JsonSerializer.Serialize(filter);
             var resultModel = await _filterService.Create(newModel);
             return new OperationResult(1);
+        }
+
+        public async Task<OperationResult> RemoveFilter(long id)
+        {
+            var result = await _filterService.Remove(id);
+            return result; // TODO сделать вьюшный резалт
         }
     }
 }
