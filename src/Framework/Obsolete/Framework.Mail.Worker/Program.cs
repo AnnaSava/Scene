@@ -21,8 +21,6 @@ services.Configure<EmailConfiguration>(config.GetSection("Email"));
 
 services.AddMapper();
 
-services.AddMailTemplate(config);
-
 var work = new Work(HostName, QueueName);
 work.Execute(DoAction, services);
 

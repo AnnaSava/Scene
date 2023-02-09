@@ -1,8 +1,6 @@
-﻿using Framework.Base.DataService.Contract.Interfaces;
-using Framework.User.DataService.Contract.Interfaces;
-using Framework.User.DataService.Contract.Interfaces.Context;
-using Framework.User.DataService.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using SavaDev.Base.Data.Context;
+using SavaDev.System.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Tests.Base.Data
 {
-    public class PermissionTestDbContext : DbContext, IDbContext, IPermissionContext
+    public class PermissionTestDbContext : DbContext, IDbContext
     {
         public PermissionTestDbContext(DbContextOptions<PermissionTestDbContext> options)
             : base(options)

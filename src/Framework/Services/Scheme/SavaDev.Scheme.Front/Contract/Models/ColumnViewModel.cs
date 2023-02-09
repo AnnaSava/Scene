@@ -1,4 +1,5 @@
 ﻿using SavaDev.Base.Data.Models.Interfaces;
+using SavaDev.Scheme.Data.Contract.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,7 +20,7 @@ namespace SavaDev.Scheme.Front.Contract.Models
 
         public virtual TableViewModel Table { get; set; }
 
-        public bool IsDisplayed { get; set; }
+        public ColumnDisplay Display { get; set; }
 
         public bool IsSortable { get; set; }
 

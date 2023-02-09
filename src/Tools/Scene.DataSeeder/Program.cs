@@ -1,7 +1,4 @@
 ﻿using Framework.Helpers.Config;
-using Framework.MailTemplate.Data;
-using Framework.User.DataService.Entities;
-using Framework.User.DataService.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

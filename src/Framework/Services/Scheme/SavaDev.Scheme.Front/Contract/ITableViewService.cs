@@ -1,6 +1,7 @@
 ﻿using SavaDev.Base.Data.Models;
 using SavaDev.Base.Data.Registry.Filter;
 using SavaDev.Base.Data.Services;
+using SavaDev.Base.Front.Services;
 using SavaDev.Scheme.Front.Contract.Models;
 using System;
 using System.Collections.Generic;
@@ -16,13 +17,13 @@ namespace SavaDev.Scheme.Front.Contract
 
         Task FillColumns(TableViewModel vm, long configId);
 
-        Task<OperationResult> CreateFilter(FilterViewModel model, BaseFilter filter);
+        Task<OperationViewResult> CreateFilter(FilterViewModel model, BaseFilter filter);
 
-        Task<OperationResult> RemoveFilter(long id);
+        Task<OperationViewResult> RemoveFilter(long id);
 
-        Task<OperationResult> CreateConfig(ColumnConfigViewModel model);
+        Task<OperationViewResult> CreateConfig(ColumnConfigViewModel model);
 
-        Task<OperationResult> RemoveConfig(long id);
+        Task<OperationViewResult> RemoveConfig(long id);
 
         Task<ColumnConfigViewModel> GetLastConfig(Guid tableId);
     }

@@ -7,6 +7,7 @@ using SavaDev.Base.Data.Models;
 using SavaDev.Base.Data.Services;
 using SavaDev.Scheme.Contract.Models;
 using SavaDev.Scheme.Data.Contract;
+using SavaDev.Scheme.Data.Contract.Enums;
 using SavaDev.Scheme.Data.Entities;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,7 @@ namespace SavaDev.Scheme.Data.Services
         public async Task<IEnumerable<ColumnModel>> GetAll(ModelPlacement modelPlacement)
         {
             var list = await _dbContext.Set<Column>().Include(m => m.Table).Include(m => m.Properties)
-                .Where(m => m.Table.Entity == modelPlacement.Entity && m.Table.Module == modelPlacement.Module && m.IsDisplayed)
+                .Where(m => m.Table.Entity == modelPlacement.Entity && m.Table.Module == modelPlacement.Module && m.Display != ColumnDisplay.Hidden)
                 .ProjectTo<ColumnModel>(_mapper.ConfigurationProvider)
                 .ToListAsync();
             return list;

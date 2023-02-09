@@ -10,33 +10,19 @@
 @inject IColumnViewService columnService
 
 <p>Table Guid @TableModel?.Id</p>
+<p>SelectedColumnConfigId @SelectedColumnConfigId</p>
+<p>SelectedFilterId @SelectedFilterId</p>
 
 <BSAccordion>
     <BSAccordionItem DefaultShown="true">
         <Header>Filter</Header>
         <Content>
-            <div class="row">
-                <div class="col-md-2">
-                    <BSInput InputType="InputType.Select" Value="SelectedFilterId" @onchange="@((e) => OnFilterSelected(e))">
-                        <option value="0">New filter</option>  
-                        @if (TableModel != null && TableModel.Filters != null && TableModel.Filters.Any())
-                        {
-                            @foreach (var conf in TableModel.Filters)
-                            {
-                                <option value="@conf.Id" selected="@(TableModel.SelectedFilter?.Id == conf.Id)">@conf.Name</option>
-                            }
-                        }
-                     </BSInput>                    
-                </div>
-                <div class="col-md-2">
-                    <BSButton Color="BSColor.Primary" Target="modal1">
-                        <i class="bi-save2"></i>
-                    </BSButton>
-                    <BSButton Color="BSColor.Primary" OnClick="(() => OnClickRemoveFilter())">
-                        <i class="bi-trash"></i>
-                    </BSButton>
-                </div>
-            </div>
+            <FilterSelector 
+                Filters="TableModel?.Filters" 
+                SelectedFilter="TableModel?.SelectedFilter"
+                OnSelectFilter="@(async (o, e) => OnFilterSelected(e))"
+                OnSaveFilter="OnSaveFilter"
+                OnRemoveFilter="@(async (o, e)=> await OnClickRemoveFilter())"/>
 
             @Filter
 
@@ -55,51 +41,24 @@
     </BSAccordionItem>
 </BSAccordion>
 
-<BSModal DataId="modal1">
-    <Header>Create filter</Header>
-    <Content>
-        <div class="mb-3">
-            <BSLabel>Name</BSLabel>
-            <BSInput InputType="InputType.Text" @bind-Value="FilterFormName" />
-        </div>
-    </Content>
-    <Footer Context="modal">
-        <BSButton MarginStart="Margins.Auto" Color="BSColor.Secondary" @onclick="modal.HideAsync">Close</BSButton>
-        <BSButton Color="BSColor.Primary" OnClick="OnClickSaveFilter">Save changes</BSButton>
-    </Footer>
-</BSModal>
-
-<BSModal DataId="modal2">
-    <Header>Create config</Header>
-    <Content>
-        <div class="mb-3">
-            <BSLabel>Name</BSLabel>
-            <BSInput InputType="InputType.Text" @bind-Value="ColumnConfigFormName" />
-        </div>
-    </Content>
-    <Footer Context="modal">
-        <BSButton MarginStart="Margins.Auto" Color="BSColor.Secondary" @onclick="modal.HideAsync">Close</BSButton>
-        <BSButton Color="BSColor.Primary" OnClick="(() => OnClickSaveColumns())">Save changes</BSButton>
-    </Footer>
-</BSModal>
-
 <div class="row">
-    <div class="col-md-2"><BSLink href="@CreateLink" IsButton="true" Color="BSColor.Primary">Add</BSLink></div>
-    <div class="col-md-2">
-        <BSInput InputType="InputType.Select" @bind-Value="_value">
-            <option value="null">Items on page</option>
-            <option value="1">10</option>
-            <option value="2">20</option>
-            <option value="3">50</option>
-        </BSInput>
-    </div>
     <div class="col-md-2">
         <BSButtonGroup>
-            <BSButton Color="BSColor.Primary"><i class="bi-table"></i></BSButton>
-            <BSButton Color="BSColor.Secondary"><i class="bi-list-task"></i></BSButton>
-            <BSButton Color="BSColor.Secondary"><i class="bi-layout-sidebar"></i></BSButton>
-            <BSButton Color="BSColor.Success"><i class="bi-grid"></i></BSButton>
+            <BSDropdown>
+                <Toggler><BSToggle Class="btn btn-secondary">Actions</BSToggle></Toggler>
+                <Content>
+                    @BatchActions
+                </Content>
+            </BSDropdown>
+            <BSLink href="@CreateLink" IsButton="true" Color="BSColor.Primary">Add</BSLink>
+
         </BSButtonGroup>
+    </div>
+    <div class="col-md-2">
+        <ItemsOnPageSelector/>
+    </div>
+    <div class="col-md-2">
+        <RegistryViewSelector/>
     </div>
     <div class="col-md-2">
         @if (AvailableColumns != null && AvailableColumns.Any())
@@ -115,25 +74,13 @@
             </BSDropdown>
         }
     </div>
-    <div class="col-md-2">
-       
-            <BSInput InputType="InputType.Select" Value="SelectedColumnConfigId" @onchange="@((e) => OnColumnConfigSelected(e))">
-            <option value="0">New config</option> 
-            @if (TableModel != null && TableModel.ColumnConfigs != null && TableModel.ColumnConfigs.Any())
-            {
-                @foreach (var conf in TableModel.ColumnConfigs)
-                {
-                    <option value="@conf.Id" selected="@(TableModel.SelectedConfig?.Id == conf.Id)">@conf.Name</option>
-                }
-            }
-            </BSInput>        
-    </div>
-    <div class="col-md-2">
-        <BSButton Color="BSColor.Primary" Target="modal2"><i class="bi-save2"></i></BSButton>
-        <BSButton Color="BSColor.Primary" OnClick="(() => OnClickRemoveConfig())">
-            <i class="bi-trash"></i>
-        </BSButton>
-    </div>
+    <ColumnConfigSelector 
+        @ref="@columnConfigSelector"
+        Configs="TableModel?.ColumnConfigs"
+        SelectedConfig="TableModel?.SelectedConfig"
+        OnSelectConfig="@(async (o, e) => OnFilterSelected(e))"
+        OnSaveConfig="@(async(o,e) => await OnClickSaveColumns())"
+        OnRemoveConfig="@(async (o, e)=> await OnClickRemoveFilter())" />
 </div>
 
 <BSDataTable FetchItems="InvokeParentMethod" PaginationBottom="true" StartPage="_startPage" RowsPerPage="20" Context="item" @ref=table>
@@ -185,7 +132,7 @@
 </BSDataTable>
 
 @code {
-    private int? _value;
+    
 
     #region Parameters
 
@@ -195,14 +142,14 @@
     public ModelPlacement ModelPlacement { get; set; }
     [Parameter]
     public Func<DataRequest, Task<(IEnumerable<T>, int)>> FetchItems { get; set; }
-    //[Parameter] // возможно, сделать для ui свой набор моделек. пока берем из либ "фронт"
-    //public Func<Task<IEnumerable<ColumnViewModel>>> GetColumns { get; set; }
     [Parameter]
     public string CreateLink { get; set; }
     [Parameter]
     public RenderFragment? Filter { get; set; }
     [Parameter]
     public RenderFragment<T>? Actions { get; set; }
+    [Parameter]
+    public RenderFragment? BatchActions { get; set; }
     [Parameter]
     public EventHandler<bool> ShowDeleted { get; set; }
     [Parameter]
@@ -217,7 +164,7 @@
     public RegistrySort Sort = new RegistrySort("Id", SortDirection.Desc);
 
     public string FilterFormName { get; set; }
-    public string ColumnConfigFormName { get; set; }
+    public bool FilterFormForAll { get; set; }
 
     public async Task Refresh()
     {
@@ -227,6 +174,7 @@
     #region Ref
 
     private BSDataTable<T>? table;
+    private ColumnConfigSelector? columnConfigSelector;
 
     #endregion
 
@@ -302,7 +250,8 @@
             {
                 ColumnIds = Columns.Select(m => m.Id).ToList(),
                 TableId = TableModel.Id,
-                Name = ColumnConfigFormName
+                Name = columnConfigSelector?.ConfigFormName,
+                ForAll = columnConfigSelector.ConfigFormForAll
 
             };
         await tableService.CreateConfig(model);
@@ -359,12 +308,6 @@
         var result = await task;
 
         return (result.Item1, result.Item2);
-    }
-
-    private async Task<List<ColumnViewModel>> GetColumns()
-    {
-        var cols = await columnService.GetAll(ModelPlacement);
-        return cols.ToList();
     }
 
     private async Task OnDeletedCheckedChanged(ChangeEventArgs args)

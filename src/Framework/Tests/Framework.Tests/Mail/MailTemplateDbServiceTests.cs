@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
-using Framework.Base.DataService.Exceptions;
-using Framework.Base.Types.Enums;
-using Framework.MailTemplate.Data.Contract.Models;
-using Framework.MailTemplate.Data.Mapper;
-using Framework.MailTemplate.Data.Services;
-using Framework.Tests.Base.Data;
 using Microsoft.EntityFrameworkCore;
+using SavaDev.Base.Data.Enums;
+using SavaDev.Base.Data.Exceptions;
+using SavaDev.System.Data;
+using SavaDev.System.Data.Contract.Models;
+using SavaDev.System.Data.Entities;
+using SavaDev.System.Data.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -18,24 +17,24 @@ namespace Framework.Tests.Mail
     public class MailTemplateDbServiceTests : IDisposable
     {
         private IMapper _mapper;
-        private MailTemplateTestDbContext _context;
-        private MailTemplateDbService _mailTemplateDbService;
+        private SystemContext _context;
+        private MailTemplateService _mailTemplateDbService;
         private readonly string[] _cultures = new string[] { "en", "ru" };
 
         public MailTemplateDbServiceTests()
         {
-            _mapper = new MapperConfiguration(opts => { opts.AddProfile<MailTemplateDataMapperProfile>(); }).CreateMapper();
-            _context = Infrastructure.GetContext<MailTemplateTestDbContext>(x => new MailTemplateTestDbContext(x));
+            _mapper = new MapperConfiguration(opts => { opts.AddProfile<SystemMapperProfile>(); }).CreateMapper();
+            //_context = Infrastructure.GetContext<MailTemplateTestDbContext>(x => new MailTemplateTestDbContext(x));
 
             // TODO пробросить логгер и культуры
-            _mailTemplateDbService = new MailTemplateDbService(_context, _cultures, _mapper, null);
-            FillContextWithTestData(_context, TestData.GetMailTemplates());
+            //_mailTemplateDbService = new MailTemplateService(_context, _cultures, _mapper, null);
+           // FillContextWithTestData(_context, TestData.GetMailTemplates());
         }
 
         public void Dispose()
         {
             _mapper = null;
-            _context = null;
+            //_context = null;
             _mailTemplateDbService = null;
         }
 
@@ -48,7 +47,7 @@ namespace Framework.Tests.Mail
 
             // Act
             var result = await _mailTemplateDbService.Create(mailTemplateModel);
-            var model = result.Model;
+            var model = result.Model as MailTemplateModel;
 
             // Assert
             Assert.IsType<MailTemplateModel>(model);
@@ -84,7 +83,7 @@ namespace Framework.Tests.Mail
 
             // Act
             var result = await _mailTemplateDbService.CreateTranslation(mailTemplateModel);
-            var model = result.Model;
+            var model = result.Model as MailTemplateModel;
 
             // Assert
             Assert.IsType<MailTemplateModel>(model);
@@ -121,7 +120,7 @@ namespace Framework.Tests.Mail
 
             // Act
             var result = await _mailTemplateDbService.CreateVersion(mailTemplateModel);
-            var model = result.Model;
+            var model = result.Model as MailTemplateModel;
 
             // Assert
             Assert.IsType<MailTemplateModel>(model);
@@ -162,7 +161,7 @@ namespace Framework.Tests.Mail
 
             // Act
             var result = await _mailTemplateDbService.Update(mailTemplateModel.Id, mailTemplateModel);
-            var model = result.Model;
+            var model = result.Model as MailTemplateModel;
 
             // Assert
             Assert.IsType<MailTemplateModel>(model);
@@ -351,7 +350,7 @@ namespace Framework.Tests.Mail
             // Arrange
 
             // Act
-            var model = await _mailTemplateDbService.GetOne(id);
+            var model = await _mailTemplateDbService.GetOne<MailTemplateModel>(id);
 
             // Assert
             Assert.NotNull(model);
@@ -364,7 +363,7 @@ namespace Framework.Tests.Mail
             var id = 9;
 
             // Act
-            var model = await _mailTemplateDbService.GetOne(id);
+            var model = await _mailTemplateDbService.GetOne<MailTemplateModel>(id);
 
             // Assert
             Assert.NotNull(model);
@@ -377,7 +376,7 @@ namespace Framework.Tests.Mail
             var id = 99;
 
             // Act
-            var model = await _mailTemplateDbService.GetOne(id);
+            var model = await _mailTemplateDbService.GetOne<MailTemplateModel>(id);
 
             // Assert
             Assert.Null(model);
@@ -391,7 +390,7 @@ namespace Framework.Tests.Mail
             var culture = "en";
 
             // Act
-            var model = await _mailTemplateDbService.GetActual(permName, culture);
+            var model = await _mailTemplateDbService.GetActual<MailTemplateModel>(permName, culture);
 
             // Assert
             Assert.NotNull(model);
@@ -407,7 +406,7 @@ namespace Framework.Tests.Mail
             var culture = "en";
 
             // Act
-            var model = await _mailTemplateDbService.GetActual(permName, culture);
+            var model = await _mailTemplateDbService.GetActual<MailTemplateModel>(permName, culture);
 
             // Assert
             Assert.Null(model);
@@ -535,7 +534,7 @@ namespace Framework.Tests.Mail
             Assert.Empty(result);
         }
 
-        private void FillContextWithTestData(MailTemplateTestDbContext context, IEnumerable<MailTemplate.Data.Entities.MailTemplate> data)
+        private void FillContextWithTestData(SystemContext context, IEnumerable<MailTemplate> data)
         {
             context.Database.EnsureCreated();
             context.MailTemplates.AddRange(data);

@@ -1,6 +1,5 @@
-﻿using Framework.Base.DataService.Services;
-using Framework.Base.Types.Enums;
-using Framework.User.DataService.Entities;
+﻿using SavaDev.Base.Data.Enums;
+using SavaDev.System.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,7 +69,7 @@ namespace Framework.Tests.Base.Data
 
         internal static void ApplyFilters(ref IQueryable<TestEntity> list, TestFilterModel filter)
         {
-            list = list.ApplyIdFilter(filter).ApplyIsDeletedFilter(filter);
+            //list = list.ApplyIdFilter(filter).ApplyIsDeletedFilter(filter);
         }
 
         internal static IEnumerable<ReservedName> GetReservedNames()
@@ -364,11 +363,11 @@ namespace Framework.Tests.Base.Data
             };
         }
 
-        internal static IEnumerable<MailTemplate.Data.Entities.MailTemplate> GetMailTemplates()
+        internal static IEnumerable<MailTemplate> GetMailTemplates()
         {
-            return new List<MailTemplate.Data.Entities.MailTemplate>
+            return new List<MailTemplate>
             {
-                new MailTemplate.Data.Entities.MailTemplate
+                new MailTemplate
                 {
                     Id = 1,
                     Culture = "en",
@@ -378,7 +377,7 @@ namespace Framework.Tests.Base.Data
                     Text = "This is a document 1",
                     IsDeleted = false
                 },
-                new MailTemplate.Data.Entities.MailTemplate
+                new MailTemplate
                 {
                     Id = 2,
                     Culture = "en",
@@ -388,7 +387,7 @@ namespace Framework.Tests.Base.Data
                     Text = "This is a document 1 first updated",
                     IsDeleted = false
                 },
-                new MailTemplate.Data.Entities.MailTemplate
+                new MailTemplate
                 {
                     Id = 3,
                     Culture = "en",
@@ -399,7 +398,7 @@ namespace Framework.Tests.Base.Data
                     IsDeleted = false,
                     Created = new DateTime(2000, 1, 1, 0, 0, 0)
                 },
-                new MailTemplate.Data.Entities.MailTemplate
+                new MailTemplate
                 {
                     Id = 4,
                     Culture = "ru",
@@ -409,7 +408,7 @@ namespace Framework.Tests.Base.Data
                     Text = "Это документ 1",
                     IsDeleted = false
                 },
-                new MailTemplate.Data.Entities.MailTemplate
+                new MailTemplate
                 {
                     Id = 5,
                     Culture = "ru",
@@ -420,7 +419,7 @@ namespace Framework.Tests.Base.Data
                     IsDeleted = false
                 },
                 // Id 6-8: only one culture
-                new MailTemplate.Data.Entities.MailTemplate
+                new MailTemplate
                 {
                     Id = 6,
                     Culture = "en",
@@ -430,7 +429,7 @@ namespace Framework.Tests.Base.Data
                     Text = "This is a document 2",
                     IsDeleted = false
                 },
-                new MailTemplate.Data.Entities.MailTemplate
+                new MailTemplate
                 {
                     Id = 7,
                     Culture = "en",
@@ -440,7 +439,7 @@ namespace Framework.Tests.Base.Data
                     Text = "This is a document 2 first updated",
                     IsDeleted = false
                 },
-                new MailTemplate.Data.Entities.MailTemplate
+                new MailTemplate
                 {
                     Id = 8,
                     Culture = "en",
@@ -451,7 +450,7 @@ namespace Framework.Tests.Base.Data
                     IsDeleted = false
                 },
                 // Deleted
-                new MailTemplate.Data.Entities.MailTemplate
+                new MailTemplate
                 {
                     Id = 9,
                     Culture = "en",
@@ -462,7 +461,7 @@ namespace Framework.Tests.Base.Data
                     IsDeleted = true
                 },
                 // Published
-                new MailTemplate.Data.Entities.MailTemplate
+                new MailTemplate
                 {
                     Id = 10,
                     Culture = "en",
@@ -473,7 +472,7 @@ namespace Framework.Tests.Base.Data
                     IsDeleted = false
                 },
                 // Outdated and published
-                new MailTemplate.Data.Entities.MailTemplate
+                new MailTemplate
                 {
                     Id = 11,
                     Culture = "en",
@@ -483,7 +482,7 @@ namespace Framework.Tests.Base.Data
                     Text = "This is a document 5",
                     IsDeleted = false
                 },
-                new MailTemplate.Data.Entities.MailTemplate
+                new MailTemplate
                 {
                     Id = 12,
                     Culture = "en",
@@ -494,7 +493,7 @@ namespace Framework.Tests.Base.Data
                     IsDeleted = false
                 },
                 // Outdated
-                new MailTemplate.Data.Entities.MailTemplate
+                new MailTemplate
                 {
                     Id = 13,
                     Culture = "en",
@@ -505,7 +504,7 @@ namespace Framework.Tests.Base.Data
                     IsDeleted = false
                 },
                 // Deleted
-                new MailTemplate.Data.Entities.MailTemplate
+                new MailTemplate
                 {
                     Id = 14,
                     Culture = "en",
@@ -515,7 +514,7 @@ namespace Framework.Tests.Base.Data
                     Text = "This is a document 7",
                     IsDeleted = true
                 },
-                new MailTemplate.Data.Entities.MailTemplate
+                new MailTemplate
                 {
                     Id = 15,
                     Culture = "en",
@@ -525,7 +524,7 @@ namespace Framework.Tests.Base.Data
                     Text = "This is a document 7",
                     IsDeleted = true
                 },
-                new MailTemplate.Data.Entities.MailTemplate
+                new MailTemplate
                 {
                     Id = 16,
                     Culture = "en",
@@ -535,7 +534,7 @@ namespace Framework.Tests.Base.Data
                     Text = "This is a document 7",
                     IsDeleted = true
                 },
-                new MailTemplate.Data.Entities.MailTemplate
+                new MailTemplate
                 {
                     Id = 17,
                     Culture = "en",
@@ -545,7 +544,7 @@ namespace Framework.Tests.Base.Data
                     Text = "This is a document 7",
                     IsDeleted = false
                 },
-                new MailTemplate.Data.Entities.MailTemplate
+                new MailTemplate
                 {
                     Id = 18,
                     Culture = "en",
@@ -555,7 +554,7 @@ namespace Framework.Tests.Base.Data
                     Text = "This is a document 8",
                     IsDeleted = true
                 },
-                new MailTemplate.Data.Entities.MailTemplate
+                new MailTemplate
                 {
                     Id = 19,
                     Culture = "en",

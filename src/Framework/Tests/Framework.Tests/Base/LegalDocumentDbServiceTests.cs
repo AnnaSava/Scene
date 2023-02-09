@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
-using Framework.Base.DataService.Exceptions;
-using Framework.Base.Types.Enums;
 using Framework.Tests.Base.Data;
-using Framework.User.DataService.Contract.Models;
-using Framework.User.DataService.Entities;
-using Framework.User.DataService.Services;
 using Microsoft.EntityFrameworkCore;
+using SavaDev.Base.Data.Enums;
+using SavaDev.Base.Data.Exceptions;
+using SavaDev.System.Data;
+using SavaDev.System.Data.Contract.Models;
+using SavaDev.System.Data.Entities;
+using SavaDev.System.Data.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,17 +19,17 @@ namespace Framework.Tests.Base
     public class LegalDocumentDbServiceTests : IDisposable
     {
         private IMapper _mapper;
-        private LegalDocumentTestDbContext _context;
-        private LegalDocumentDbService _legalDocumentDbService;
+        private SystemContext _context;
+        private LegalDocumentService _legalDocumentDbService;
         private readonly string[] _cultures = new string[] { "en", "ru" };
 
         public LegalDocumentDbServiceTests()
         {
             //_mapper = new MapperConfiguration(opts => { opts.AddProfile<SystemDataMapperProfile>(); }).CreateMapper();
-            _context = Infrastructure.GetContext<LegalDocumentTestDbContext>(x => new LegalDocumentTestDbContext(x));
+            _context = Infrastructure.GetContext<SystemContext>(x => new SystemContext(x));
             
             // TODO logger
-            _legalDocumentDbService = new LegalDocumentDbService(_context, _cultures, _mapper, null);
+            _legalDocumentDbService = new LegalDocumentService(_context, _cultures, _mapper, null);
             FillContextWithTestData(_context, TestData.GetLegalDocuments());
         }
 
@@ -48,7 +49,7 @@ namespace Framework.Tests.Base
 
             // Act
             var result = await _legalDocumentDbService.Create(legalDocumentModel);
-            var model = result.Model;
+            var model = result.Model as LegalDocumentModel;
 
             // Assert
             Assert.IsType<LegalDocumentModel>(model);
@@ -84,7 +85,7 @@ namespace Framework.Tests.Base
 
             // Act
             var result = await _legalDocumentDbService.CreateTranslation(legalDocumentModel);
-            var model = result.Model;
+            var model = result.Model as LegalDocumentModel;
 
             // Assert
             Assert.IsType<LegalDocumentModel>(model);
@@ -121,7 +122,7 @@ namespace Framework.Tests.Base
 
             // Act
             var result = await _legalDocumentDbService.CreateVersion(legalDocumentModel);
-            var model = result.Model;
+            var model = result.Model as LegalDocumentModel;
 
             // Assert
             Assert.IsType<LegalDocumentModel>(model);
@@ -164,7 +165,7 @@ namespace Framework.Tests.Base
 
             // Act
             var result = await _legalDocumentDbService.Update(legalDocumentModel.Id, legalDocumentModel);
-            var model = result.Model;
+            var model = result.Model as LegalDocumentModel;
 
             // Assert
             Assert.IsType<LegalDocumentModel>(model);
@@ -355,7 +356,7 @@ namespace Framework.Tests.Base
             // Arrange
 
             // Act
-            var model = await _legalDocumentDbService.GetOne(id);
+            var model = await _legalDocumentDbService.GetOne<LegalDocumentModel>(id);
 
             // Assert
             Assert.NotNull(model);
@@ -368,7 +369,7 @@ namespace Framework.Tests.Base
             var id = 9;
 
             // Act
-            var model = await _legalDocumentDbService.GetOne(id);
+            var model = await _legalDocumentDbService.GetOne<LegalDocumentModel>(id);
 
             // Assert
             Assert.NotNull(model);
@@ -381,7 +382,7 @@ namespace Framework.Tests.Base
             var id = 99;
 
             // Act
-            var model = await _legalDocumentDbService.GetOne(id);
+            var model = await _legalDocumentDbService.GetOne<LegalDocumentModel>(id);
 
             // Assert
             Assert.Null(model);
@@ -395,7 +396,7 @@ namespace Framework.Tests.Base
             var culture = "en";
 
             // Act
-            var model = await _legalDocumentDbService.GetActual(permName, culture);
+            var model = await _legalDocumentDbService.GetActual<LegalDocumentModel>(permName, culture);
 
             // Assert
             Assert.NotNull(model);
@@ -411,7 +412,7 @@ namespace Framework.Tests.Base
             var culture = "en";
 
             // Act
-            var model = await _legalDocumentDbService.GetActual(permName, culture);
+            var model = await _legalDocumentDbService.GetActual<LegalDocumentModel>(permName, culture);
 
             // Assert
             Assert.Null(model);
@@ -539,7 +540,7 @@ namespace Framework.Tests.Base
             Assert.Empty(result);
         }
 
-        private void FillContextWithTestData(LegalDocumentTestDbContext context, IEnumerable<LegalDocument> data)
+        private void FillContextWithTestData(SystemContext context, IEnumerable<LegalDocument> data)
         {
             context.Database.EnsureCreated();
             context.LegalDocuments.AddRange(data);

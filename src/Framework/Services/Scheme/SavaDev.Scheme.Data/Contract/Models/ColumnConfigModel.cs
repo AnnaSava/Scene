@@ -13,6 +13,8 @@ namespace SavaDev.Scheme.Data.Contract.Models
 
         public string Name { get; set; }
 
+        public string? OwnerId { get; set; }
+
         public string Columns { get; set; }
 
         public Guid TableId { get; set; }

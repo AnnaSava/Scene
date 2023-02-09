@@ -1,0 +1,70 @@
+﻿@using SavaDev.Scheme.Front.Contract.Models;
+<div class="col-md-2">
+
+    <BSInput InputType="InputType.Select" Value="SelectedConfigId" @onchange="@((e) => OnColumnConfigSelected(e))">
+        <option value="0">New config</option> 
+    @if (Configs != null && Configs.Any())
+    {
+        @foreach (var conf in Configs)
+        {
+                        <option value="@conf.Id" selected="@(SelectedConfig?.Id == conf.Id)">@conf.Name</option>
+        }
+    }
+        </BSInput>        
+</div>
+<div class="col-md-2">
+    <BSButton Color="BSColor.Primary" Target="column-config-edit-modal"><i class="bi-save2"></i></BSButton>
+    <BSButton Color="BSColor.Primary" OnClick="OnClickRemoveConfig">
+        <i class="bi-trash"></i>
+    </BSButton>
+</div>
+
+<BSModal DataId="column-config-edit-modal">
+    <Header>Create config</Header>
+    <Content>
+        <div class="mb-3">
+            <BSLabel>Name</BSLabel>
+            <BSInput InputType="InputType.Text" @bind-Value="ConfigFormName" />
+        </div>
+        <div class="mb-3">
+            <BSInputCheckbox CheckedValue="@(true)" @bind-Value="ConfigFormForAll" />
+            <BSLabel>For all users</BSLabel>
+        </div>
+    </Content>
+    <Footer Context="modal">
+        <BSButton MarginStart="Margins.Auto" Color="BSColor.Secondary" @onclick="modal.HideAsync">Close</BSButton>
+        <BSButton Color="BSColor.Primary" OnClick="OnClickSaveColumns">Save changes</BSButton>
+    </Footer>
+</BSModal>
+
+@code {
+    [Parameter]
+    public List<ColumnConfigViewModel> Configs { get; set; } = new List<ColumnConfigViewModel>();
+    [Parameter]
+    public ColumnConfigViewModel? SelectedConfig { get; set; }
+    [Parameter]
+    public EventHandler<ChangeEventArgs> OnSelectConfig { get; set; }
+    [Parameter]
+    public EventHandler OnSaveConfig { get; set; }
+    [Parameter]
+    public EventHandler OnRemoveConfig { get; set; }
+
+    private int? SelectedConfigId = 0;
+    public string? ConfigFormName { get; set; }
+    public bool ConfigFormForAll { get; set; }
+
+    private async Task OnColumnConfigSelected(ChangeEventArgs e)
+    {
+        OnSelectConfig.Invoke(this, e);
+    }
+
+    private async Task OnClickSaveColumns(EventArgs e)
+    {
+        OnSaveConfig.Invoke(this, e);
+    }
+
+    private async Task OnClickRemoveConfig(EventArgs e)
+    {
+        OnRemoveConfig.Invoke(this, e);
+    }
+}

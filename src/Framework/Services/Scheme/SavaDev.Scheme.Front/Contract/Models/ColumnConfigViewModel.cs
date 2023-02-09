@@ -12,10 +12,14 @@ namespace SavaDev.Scheme.Front.Contract.Models
 
         public string Name { get; set; }
 
+        public string? OwnerId { get; set; }
+
         public Guid TableId { get; set; }
 
         public string Columns { get; set; }
 
         public List<Guid> ColumnIds { get; set; }
+
+        public bool ForAll { get; set; }
     }
 }

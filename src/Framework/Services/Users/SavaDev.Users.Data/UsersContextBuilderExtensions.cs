@@ -1,8 +1,7 @@
-﻿using Framework.Base.DataService.Contract;
-using Framework.Helpers;
-using Framework.User.DataService.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SavaDev.Base.Data.Context;
+using SavaDev.Base.User.Data.Entities;
+using SavaDev.System.Data.Entities;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SavaDev.Users.Data

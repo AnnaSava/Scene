@@ -14,6 +14,8 @@ namespace SavaDev.Scheme.Contract.Models
 
         public string Name { get; set; }
 
+        public string? OwnerId { get; set; }
+
         public Guid TableId { get; set; }
 
         public string Fields { get; set; }

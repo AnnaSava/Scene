@@ -1,20 +1,14 @@
 ﻿using AutoMapper;
 using SavaDev.Base.Data.Models;
 using SavaDev.Base.Data.Registry.Filter;
-using SavaDev.Base.Data.Services;
+using SavaDev.Base.Front.Services;
+using SavaDev.Base.Users.Security;
 using SavaDev.Scheme.Contract.Models;
 using SavaDev.Scheme.Data.Contract;
 using SavaDev.Scheme.Data.Contract.Models;
-using SavaDev.Scheme.Data.Entities;
-using SavaDev.Scheme.Data.Services;
 using SavaDev.Scheme.Front.Contract;
 using SavaDev.Scheme.Front.Contract.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace SavaDev.Scheme.Front.Services
 {
@@ -24,18 +18,21 @@ namespace SavaDev.Scheme.Front.Services
         protected readonly IFilterService _filterService;
         protected readonly IColumnService _columnService;
         protected readonly IColumnConfigService _columnConfigService;
+        protected readonly ISecurityService _securityService;
         protected readonly IMapper _mapper;
 
         public TableViewService(ITableService tableService,
             IFilterService filterService,
             IColumnService columnService,
             IColumnConfigService columnConfigService,
-            IMapper mapper)
+            ISecurityService securityService,
+            IMapper mapper) 
         {
             _tableService= tableService;
             _columnConfigService= columnConfigService;
             _columnService= columnService;
             _filterService= filterService;
+            _securityService = securityService;
             _mapper = mapper;
         }
 
@@ -110,19 +107,24 @@ namespace SavaDev.Scheme.Front.Services
         }
 
 
-        public async Task<OperationResult> CreateConfig(ColumnConfigViewModel model)
+        public async Task<OperationViewResult> CreateConfig(ColumnConfigViewModel model)
         {
             var newModel = _mapper.Map<ColumnConfigModel>(model);
-            //newModel.Name = "123";// TODO
             newModel.Columns = string.Join(',', model.ColumnIds);
+
+            if(!model.ForAll)
+            {
+                newModel.OwnerId = _securityService.GetId();
+            }
+
             var resultModel = await _columnConfigService.Create(newModel);
-            return new OperationResult(1);
+            return new OperationViewResult(resultModel.Details);
         }
 
-        public async Task<OperationResult> RemoveConfig(long id)
+        public async Task<OperationViewResult> RemoveConfig(long id)
         {
             var result = await _columnConfigService.Remove(id);
-            return result; // TODO сделать вьюшный резалт
+            return new OperationViewResult(result.Details);
         }
 
         public async Task<ColumnConfigViewModel> GetLastConfig(Guid tableId)
@@ -131,19 +133,24 @@ namespace SavaDev.Scheme.Front.Services
             return _mapper.Map<ColumnConfigViewModel>(model);
         }
 
-        public async Task<OperationResult> CreateFilter(FilterViewModel model, BaseFilter filter)
+        public async Task<OperationViewResult> CreateFilter(FilterViewModel model, BaseFilter filter)
         {
             var newModel = _mapper.Map<FilterModel>(model);
-            //newModel.Name = "456";// TODO
             newModel.Fields = JsonSerializer.Serialize(filter);
+
+            if (!model.ForAll)
+            {
+                newModel.OwnerId = _securityService.GetId();
+            }
+
             var resultModel = await _filterService.Create(newModel);
-            return new OperationResult(1);
+            return new OperationViewResult(resultModel.Details);
         }
 
-        public async Task<OperationResult> RemoveFilter(long id)
+        public async Task<OperationViewResult> RemoveFilter(long id)
         {
             var result = await _filterService.Remove(id);
-            return result; // TODO сделать вьюшный резалт
+            return new OperationViewResult(result.Rows, result.ProcessedObject);
         }
     }
 }

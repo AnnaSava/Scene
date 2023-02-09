@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libs\SavaDev.Base.Data\SavaDev.Base.Data.csproj" />
+    <ProjectReference Include="..\..\Users\SavaDev.Base.Users.Security\SavaDev.Base.Users.Security.csproj" />
     <ProjectReference Include="..\SavaDev.Scheme.Data\SavaDev.Scheme.Data.csproj" />
   </ItemGroup>
 

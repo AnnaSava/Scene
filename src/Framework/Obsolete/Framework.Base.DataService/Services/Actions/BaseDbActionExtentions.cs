@@ -127,54 +127,8 @@ namespace Framework.Base.DataService.Services
             return mapper.Map<TModel>(entity);
         }
         [Obsolete]
-        public static async Task<TModel> Delete<TEntity, TModel>(this IDbContext dbContext, long id, IMapper mapper, SavingAsyncDelegate<TEntity> OnDeletingAsync)
-            where TEntity : class, IEntity<long>, IEntityRestorable
-        {
-            var entity = await dbContext.GetEntityForUpdate<TEntity>(id);
-
-            entity.IsDeleted = true;
-
-            await OnDeletingAsync?.Invoke(entity);
-            await dbContext.SaveChangesAsync();
-
-            return mapper.Map<TModel>(entity);
-        }
-        [Obsolete]
         public static async Task<TModel> Restore<TEntity, TModel>(this IDbContext dbContext, long id, IMapper mapper)
             where TEntity : class, IEntity<long>, IEntityRestorable
-        {
-            var entity = await dbContext.GetEntityForRestore<TEntity>(id);
-
-            entity.IsDeleted = false;
-            await dbContext.SaveChangesAsync();
-
-            return mapper.Map<TModel>(entity);
-        }
-        [Obsolete]
-        public static async Task<TModel> Delete<TEntity, TModel>(this IDbContext dbContext, int id, IMapper mapper)
-            where TEntity : class, IEntity<int>, IEntityRestorable
-        {
-            var entity = await dbContext.GetEntityForUpdate<TEntity>(id);
-
-            entity.IsDeleted = true;
-            await dbContext.SaveChangesAsync();
-
-            return mapper.Map<TModel>(entity);
-        }
-        [Obsolete]
-        public static async Task<TModel> Delete<TEntity, TModel>(this IDbContext dbContext, long id, IMapper mapper)
-            where TEntity : class, IEntity<long>, IEntityRestorable
-        {
-            var entity = await dbContext.GetEntityForUpdate<TEntity>(id);
-
-            entity.IsDeleted = true;
-            await dbContext.SaveChangesAsync();
-
-            return mapper.Map<TModel>(entity);
-        }
-        [Obsolete]
-        public static async Task<TModel> Restore<TEntity, TModel>(this IDbContext dbContext, int id, IMapper mapper)
-            where TEntity : class, IEntity<int>, IEntityRestorable
         {
             var entity = await dbContext.GetEntityForRestore<TEntity>(id);
 
@@ -249,41 +203,6 @@ namespace Framework.Base.DataService.Services
             Expression<Func<TEntity, string>> defaultOrderBy,
             IMapper mapper)
             where TEntity : class, IAnyEntity
-            where TFilterModel : IFilter, new()
-        {
-            var list = dbContext.Set<TEntity>().AsQueryable();
-
-            applyFilters?.Invoke(ref list, query.Filter);
-
-            if (query.PageInfo.Sort?.Any() ?? false)
-            {
-                //list = list.OrderBy(query.PageInfo.Sort.Select(s => new OrderByInfo() { Direction = s.Direction, PropertyName = s.FieldName, Initial = s.Initial }));
-            }
-            else
-            {
-                list = list.OrderBy(defaultOrderBy);
-            }
-
-            var res = await list.ProjectTo<TModel>(mapper.ConfigurationProvider).ToPagedListAsync(query.PageInfo.PageNumber, query.PageInfo.RowsCount);
-
-            var page = new PageListModel<TModel>()
-            {
-                Items = res,
-                Page = res.PageNumber,
-                TotalPages = res.PageCount,
-                TotalRows = res.TotalItemCount
-            };
-
-            return page;
-        }
-        [Obsolete]
-        // TODO подумать, куда вынести дефолтный orderby, чтобы объединить с GetAll
-        public static async Task<PageListModel<TModel>> GetAllOrderByInt<TEntity, TModel, TFilterModel>(this IDbContext dbContext,
-            ListQueryModel<TFilterModel> query,
-            ApplyIntKeyFiltersDelegate<TEntity, TFilterModel> applyFilters,
-            Expression<Func<TEntity, int>> defaultOrderBy,
-            IMapper mapper)
-            where TEntity : class, IEntity<int>
             where TFilterModel : IFilter, new()
         {
             var list = dbContext.Set<TEntity>().AsQueryable();

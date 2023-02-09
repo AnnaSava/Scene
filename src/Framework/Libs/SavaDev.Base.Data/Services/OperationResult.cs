@@ -18,6 +18,10 @@ namespace SavaDev.Base.Data.Services
         public bool NotChanged { get { return Rows == 0; } }
 
         public object? ProcessedObject { get; }
+        [Obsolete]
+        public object? Model { get; }
+
+        public (int, object?) Details { get { return (Rows, ProcessedObject); } } 
 
         public List<object> ModelIds { get; set; } = new List<object>();
 

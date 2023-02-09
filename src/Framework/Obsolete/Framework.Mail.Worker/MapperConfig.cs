@@ -1,12 +1,5 @@
 ﻿using AutoMapper;
-using Framework.MailTemplate.Data.Mapper;
-using Framework.MailTemplate.Service.Mapper;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Framework.Mail.Worker
 {
@@ -19,8 +12,7 @@ namespace Framework.Mail.Worker
             // https://stackoverflow.com/questions/2651613/how-to-scan-and-auto-configure-profiles-in-automapper
             var mappingConfig = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new MailTemplateDataMapperProfile());
-                mc.AddProfile(new MailTemplateMapperProfile());
+
             });
 
             IMapper mapper = mappingConfig.CreateMapper();

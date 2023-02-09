@@ -1,17 +1,10 @@
-﻿using Framework.Base.DataService.Contract.Interfaces;
-using Framework.MailTemplate.Data.Contract.Context;
-using Framework.User.DataService.Contract.Interfaces.Context;
-using Framework.User.DataService.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using SavaDev.Base.Data.Context;
+using SavaDev.System.Data.Entities;
 
 namespace Framework.Tests.Base.Data
 {
-    public class MailTemplateTestDbContext : DbContext, IDbContext, IMailTemplateContext
+    public class MailTemplateTestDbContext : DbContext, IDbContext
     {
         public MailTemplateTestDbContext(DbContextOptions<MailTemplateTestDbContext> options)
             : base(options)
@@ -19,7 +12,7 @@ namespace Framework.Tests.Base.Data
 
         }
 
-        public DbSet<MailTemplate.Data.Entities.MailTemplate> MailTemplates { get; set; }
+        public DbSet<MailTemplate> MailTemplates { get; set; }
 
     }
 }

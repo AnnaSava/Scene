@@ -8,7 +8,7 @@ using SavaDev.Base.User.Data.Manager;
 
 namespace SavaDev.Base.Users.Security
 {
-    public class SecurityService<TKey, TUserEntity, TRoleEntity> : ISecurityService<TKey, TUserEntity, TRoleEntity>
+    public class SecurityService<TKey, TUserEntity, TRoleEntity> : ISecurityService
         where TUserEntity : BaseUser
         where TRoleEntity : BaseRole
     {

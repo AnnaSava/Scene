@@ -1,0 +1,73 @@
+﻿@using SavaDev.Scheme.Front.Contract.Models;
+<div class="row">
+    <div class="col-md-2">
+        <BSInput InputType="InputType.Select" Value="SelectedFilterId" @onchange="@((e) => OnFilterSelected(e))">
+            <option value="0">New filter</option>
+            @if (Filters != null && Filters.Any())
+            {
+                @foreach (var conf in Filters)
+                {
+                    <option value="@conf.Id" selected="@(SelectedFilter?.Id == conf.Id)">@conf.Name</option>
+                }
+            }
+        </BSInput>
+    </div>
+    <div class="col-md-2">
+        <BSButton Color="BSColor.Primary" Target="filter-edit-modal">
+            <i class="bi-save2"></i>
+        </BSButton>
+        <BSButton Color="BSColor.Primary" OnClick="((e) => OnClickRemoveFilter(e))">
+            <i class="bi-trash"></i>
+        </BSButton>
+    </div>
+</div>
+
+<BSModal DataId="filter-edit-modal">
+    <Header>Create filter</Header>
+    <Content>
+        <div class="mb-3">
+            <BSLabel>Name</BSLabel>
+            <BSInput InputType="InputType.Text" @bind-Value="FilterFormName" />
+        </div>
+        <div class="mb-3">
+            <BSInputCheckbox CheckedValue="@(true)" @bind-Value="FilterFormForAll" />
+            <BSLabel>For all users</BSLabel>            
+        </div>
+    </Content>
+    <Footer Context="modal">
+        <BSButton MarginStart="Margins.Auto" Color="BSColor.Secondary" @onclick="modal.HideAsync">Close</BSButton>
+        <BSButton Color="BSColor.Primary" OnClick="OnClickSaveFilter">Save changes</BSButton>
+    </Footer>
+</BSModal>
+
+@code {
+    [Parameter]
+    public List<FilterViewModel> Filters { get; set; } = new List<FilterViewModel>();
+    [Parameter]
+    public FilterViewModel? SelectedFilter { get; set; }
+    [Parameter]
+    public EventHandler<ChangeEventArgs> OnSelectFilter { get; set; }
+    [Parameter]
+    public EventHandler OnSaveFilter { get; set; }
+    [Parameter]
+    public EventHandler OnRemoveFilter { get; set; }
+
+    private int? SelectedFilterId = 0;
+    public string? FilterFormName { get; set; }
+    public bool FilterFormForAll { get; set; }
+
+    private async Task OnFilterSelected(ChangeEventArgs e)
+    {
+        OnSelectFilter.Invoke(this, e);
+    }
+
+    private async Task OnClickSaveFilter(EventArgs e)
+    {
+        OnSaveFilter.Invoke(this, e);
+    }
+
+    private async Task OnClickRemoveFilter(EventArgs e)
+    {
+        OnRemoveFilter.Invoke(this, e);
+    }
+}
