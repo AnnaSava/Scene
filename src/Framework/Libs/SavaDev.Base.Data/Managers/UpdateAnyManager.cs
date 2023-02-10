@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 namespace SavaDev.Base.Data.Managers
 {
     public class UpdateAnyManager<TEntity, TFormModel>
+        where TEntity : class, new()
         where TFormModel: IFormModel
     {
         private readonly IMapper _mapper;

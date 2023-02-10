@@ -11,9 +11,9 @@ namespace SavaDev.Scheme.Data.Contract
 {
     public interface ITableService
     {
-        Task<OperationResult> Create(TableModel model);
+        Task<OperationResult> Create(RegistryModel model);
 
-        Task<TableModel> GetOneByPlacement(ModelPlacement placement);
+        Task<RegistryModel> GetOneByPlacement(ModelPlacement placement);
 
     }
 }

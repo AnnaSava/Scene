@@ -1,0 +1,118 @@
+﻿@using SavaDev.Base.Front.Registry;
+@using SavaDev.Scheme.Front.Contract.Models;
+@typeparam T where T: BaseRegistryItemViewModel
+
+<BSDataTable FetchItems="InvokeFetchItems" PaginationBottom="true" StartPage="StartPage" RowsPerPage="20" Context="item" @ref=table>
+    <Header>
+        <BSDataTableHead TValue="T">
+            <BSInputCheckbox CheckedValue="@(true)" @onchange="@(c=>HandleAllCheckedChanged(c))" @bind-Value="AllIsSelected" />
+        </BSDataTableHead>
+        @if (DisplayedColumns != null && DisplayedColumns.Any())
+        {
+            foreach (var col in DisplayedColumns)
+            {
+                <BSDataTableHead TValue="T"
+                         Sortable="@col.IsSortable"
+                         ColumnFilter="@col.HasColumnFilter"
+                         Column="@col.Name">
+                    @col.Name
+                    <BSButton Color="BSColor.Light" Size="Size.Small" OnClick="@(() => OnRemoveColumnClickHandler(col))"><i class="bi-x"></i></BSButton>
+                </BSDataTableHead>
+            }
+        }
+        <BSDataTableHead TValue="T"></BSDataTableHead>
+    </Header>
+    <Body>
+        <BSDataTableRow>
+            <BSTD>
+                <div Class="@BS.Form_Check">
+                    <BSTD><BSInputCheckbox CheckedValue="@(true)" @onchange="@(c=>HandleCheckedChanged(c, item))" @bind-Value="item.IsSelected" /></BSTD>
+                </div>
+            </BSTD>
+            @if (DisplayedColumns != null && DisplayedColumns.Any())
+            {
+                foreach (var col in DisplayedColumns)
+                {
+                    <BSTD>
+                        @(ValueHelper.GetValue<T>(col.Name, item))
+                    </BSTD>
+                }
+            }
+            <BSTD>
+                <BSDropdown>
+                    <Toggler><BSToggle Class="btn btn-secondary">Actions</BSToggle></Toggler>
+                    <Content>                        
+                        @Actions(item)
+                    </Content>
+                </BSDropdown>
+            </BSTD>
+        </BSDataTableRow>
+    </Body>
+</BSDataTable>
+
+@code {
+    [Parameter]
+    public List<ColumnViewModel> DisplayedColumns { get; set; } = new List<ColumnViewModel>();
+    [Parameter]
+    public int StartPage { get; set; } = 1;
+    [Parameter]
+    public Func<DataRequest, Task<(IEnumerable<T>, int)>> FetchItems { get; set; }
+    [Parameter]
+    public RenderFragment<T>? Actions { get; set; }
+    [Parameter]
+    public EventHandler<ColumnViewModel> OnRemoveColumnClick { get; set; }
+
+    #region Ref
+
+    private BSDataTable<T>? table;
+    private RegistryConfigSelector? columnConfigSelector;
+
+    #endregion
+
+    private List<long> SelectedIds = new List<long>();
+    private bool AllIsSelected;
+
+    private async Task<(IEnumerable<T>, int)> InvokeFetchItems(DataRequest dataRequest)
+    {
+        var task = FetchItems?.Invoke(dataRequest);
+        var result = await task;
+
+        return (result.Item1, result.Item2);
+    }
+
+    public void OnRemoveColumnClickHandler(ColumnViewModel col)
+    {
+        OnRemoveColumnClick?.Invoke(this, col);
+    }
+
+    private async Task HandleCheckedChanged(ChangeEventArgs args, T sender)
+    {
+        if (sender.IsSelected) SelectedIds.Add(sender.Id);
+        else SelectedIds.Remove(sender.Id);
+    }
+
+    private async Task HandleAllCheckedChanged(ChangeEventArgs args)
+    {
+        foreach (var item in table.Items)
+        {
+            item.IsSelected = (bool)args.Value == true;
+
+            var selectedIdsContains = SelectedIds.Contains(item.Id);
+
+            if (item.IsSelected)
+            {
+                if (!selectedIdsContains)
+                {
+                    SelectedIds.Add(item.Id);
+                }
+            }
+            else
+            {
+                if (selectedIdsContains)
+                {
+                    SelectedIds.Remove(item.Id);
+                }
+            }
+        }
+    }
+}

@@ -10,7 +10,7 @@ namespace SavaDev.Base.Users.Security
 {
     public class SecurityService<TKey, TUserEntity, TRoleEntity> : ISecurityService
         where TUserEntity : BaseUser
-        where TRoleEntity : BaseRole
+        where TRoleEntity : BaseRole, new()
     {
         private readonly UserEntityManager<TKey, TUserEntity> _userManager;
         private readonly RoleEntityManager<TKey, TRoleEntity> _roleManager;

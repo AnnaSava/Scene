@@ -50,7 +50,7 @@ namespace SavaDev.Scheme.Data.Services
         public async Task<IEnumerable<ColumnModel>> GetAll(Guid tableId)
         {            
             var list = await _dbContext.Set<Column>()
-                .Where(m => m.TableId == tableId)// && m.IsDisplayed)
+                .Where(m => m.TableId == tableId && m.Display != ColumnDisplay.Hidden)
                 .ProjectTo<ColumnModel>(_mapper.ConfigurationProvider)
                 .ToListAsync();
             return list;

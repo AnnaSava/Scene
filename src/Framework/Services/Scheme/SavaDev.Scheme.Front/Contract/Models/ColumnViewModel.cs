@@ -18,7 +18,7 @@ namespace SavaDev.Scheme.Front.Contract.Models
 
         public Guid TableId { get; set; }
 
-        public virtual TableViewModel Table { get; set; }
+        public virtual RegistryViewModel Table { get; set; }
 
         public ColumnDisplay Display { get; set; }
 

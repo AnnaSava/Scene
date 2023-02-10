@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace SavaDev.Base.User.Data.Services
 {
     public abstract class BaseRoleDbService<TEntity, TFormModel>
-        where TEntity : BaseRole
+        where TEntity : BaseRole, new()
         where TFormModel : BaseRoleModel
     {
         #region Protected Fields: Dependencies

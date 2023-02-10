@@ -17,7 +17,7 @@ using X.PagedList;
 namespace Savadev.Content.Data.Services
 {
     public class BaseContentRestorableEntityService<TEntity, TModel, TFilterModel> 
-        where TEntity : BaseContentEntity, IEntity<Guid>, IEntityRestorable
+        where TEntity : BaseContentEntity, IEntity<Guid>, IEntityRestorable, new()
         where TFilterModel : BaseFilter, new()
         where TModel: IFormModel, IAnyModel
     {

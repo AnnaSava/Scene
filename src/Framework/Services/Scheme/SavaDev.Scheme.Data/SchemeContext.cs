@@ -12,11 +12,11 @@ namespace SavaDev.Scheme.Data
         {
         }
 
-        public DbSet<Table> Tables { get; set; }
+        public DbSet<Registry> Registries { get; set; }
 
         public DbSet<Filter> Filters { get; set; }
 
-        public DbSet<ColumnConfig> ColumnConfigs { get; set; }
+        public DbSet<RegistryConfig> RegistryConfigs { get; set; }
 
         public DbSet<Column>  Columns { get; set; }
 

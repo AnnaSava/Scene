@@ -1,0 +1,90 @@
+﻿@using SavaDev.Scheme.Front.Contract.Models;
+
+<BSInputGroup MarginBottom="Margins.Medium">
+    <BSInput InputType="InputType.Select" Value="SelectedConfigId" @onchange="@((e) => OnRegistryConfigSelected(e))">
+        <option value="0">New config</option> 
+        @if (Configs != null && Configs.Any())
+        {
+            @foreach (var conf in Configs)
+            {
+                <option value="@conf.Id" selected="@(SelectedConfig?.Id == conf.Id)">@conf.Name</option>
+            }
+        }
+        </BSInput>        
+    <BSButton Color="BSColor.Light" Target="column-config-edit-modal" OnClick="OnModalConfigClickHandler"><i class="bi-save2"></i></BSButton>
+    <BSButton Color="BSColor.Light" OnClick="OnRemoveConfigClickHandler">
+        <i class="bi-trash"></i>
+    </BSButton>
+</BSInputGroup>
+
+<BSModal DataId="column-config-edit-modal" @ref="modal">
+    <Header>Save config</Header>
+    <Content>
+        <div class="mb-3">
+            <BSLabel>Name</BSLabel>
+            <BSInput InputType="InputType.Text" @bind-Value="ConfigFormName" />
+        </div>
+        <div class="mb-3">
+            <BSInputCheckbox CheckedValue="@(true)" @bind-Value="ConfigFormForAll" />
+            <BSLabel>For all users</BSLabel>
+        </div>
+    </Content>
+    <Footer Context="modal">
+        <BSButton MarginStart="Margins.Auto" Color="BSColor.Secondary" @onclick="modal.HideAsync">Close</BSButton>
+        <BSButton Color="BSColor.Primary" OnClick="OnSaveConfigClickHandler">Save changes</BSButton>
+    </Footer>
+</BSModal>
+
+@code {
+    [Parameter]
+    public List<RegistryConfigViewModel> Configs { get; set; } = new List<RegistryConfigViewModel>();
+    [Parameter]
+    public RegistryConfigViewModel? SelectedConfig { get; set; }
+    [Parameter]
+    public EventHandler<ChangeEventArgs> OnSelectConfig { get; set; }
+    [Parameter]
+    public EventHandler OnSaveConfigClick { get; set; }
+    [Parameter]
+    public EventHandler OnRemoveConfigClick { get; set; }
+
+    private BSModal modal;
+
+    private long? SelectedConfigId = 0;
+    public string? ConfigFormName { get; set; }
+    public bool ConfigFormForAll { get; set; }
+
+    private async Task OnRegistryConfigSelected(ChangeEventArgs e)
+    {
+        OnSelectConfig.Invoke(this, e);
+    }
+
+    private async Task OnModalConfigClickHandler(EventArgs e)
+    {
+        SetForm(SelectedConfigId ?? 0);
+    }
+
+    private async Task OnSaveConfigClickHandler(EventArgs e)
+    {
+        OnSaveConfigClick.Invoke(this, e);
+        modal.HideAsync();
+    }
+
+    private async Task OnRemoveConfigClickHandler(EventArgs e)
+    {
+        OnRemoveConfigClick.Invoke(this, e);
+    }
+
+    private void SetForm(long id)
+    {        
+        if (id == 0)
+        {
+            ConfigFormName = "";
+            ConfigFormForAll = false;
+            return;
+        }
+        var config = Configs.FirstOrDefault(m => m.Id == id);
+        if (config == null) return;
+        ConfigFormName = config.Name;
+        ConfigFormForAll = config.ForAll;
+    }
+}

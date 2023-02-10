@@ -1,4 +1,7 @@
 ﻿using SavaDev.Base.Data.Entities.Interfaces;
+using SavaDev.Base.Data.Models.Interfaces;
+using SavaDev.Scheme.Data.Contract.Models;
+using SavaDev.Scheme.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,9 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SavaDev.Scheme.Data.Entities
+namespace SavaDev.Scheme.Contract.Models
 {
-    public class Table : IEntity<Guid>
+    public class RegistryModel : IModel<Guid>, IFormModel
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -17,10 +20,8 @@ namespace SavaDev.Scheme.Data.Entities
 
         public string Entity { get; set; }
 
-        public virtual ICollection<Column> Columns { get;set; }
-        
-        public virtual ICollection<ColumnConfig> Configs { get;set; }
+        public virtual ICollection<ColumnModel> Columns { get;set; }
 
-        public virtual ICollection<Filter> Filters { get;set; }
+        public virtual ICollection<RegistryConfigModel> Configs { get; set; }
     }
 }

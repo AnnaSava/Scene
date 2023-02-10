@@ -5,6 +5,7 @@ using SavaDev.Base.Front.Services;
 using SavaDev.Base.Users.Security;
 using SavaDev.Scheme.Contract.Models;
 using SavaDev.Scheme.Data.Contract;
+using SavaDev.Scheme.Data.Contract.Enums;
 using SavaDev.Scheme.Data.Contract.Models;
 using SavaDev.Scheme.Front.Contract;
 using SavaDev.Scheme.Front.Contract.Models;
@@ -12,19 +13,19 @@ using System.Text.Json;
 
 namespace SavaDev.Scheme.Front.Services
 {
-    public class TableViewService : ITableViewService
+    public class RegistryViewService : IRegistryViewService
     {
         protected readonly ITableService _tableService;
         protected readonly IFilterService _filterService;
         protected readonly IColumnService _columnService;
-        protected readonly IColumnConfigService _columnConfigService;
+        protected readonly IRegistryConfigService _columnConfigService;
         protected readonly ISecurityService _securityService;
         protected readonly IMapper _mapper;
 
-        public TableViewService(ITableService tableService,
+        public RegistryViewService(ITableService tableService,
             IFilterService filterService,
             IColumnService columnService,
-            IColumnConfigService columnConfigService,
+            IRegistryConfigService columnConfigService,
             ISecurityService securityService,
             IMapper mapper) 
         {
@@ -36,80 +37,77 @@ namespace SavaDev.Scheme.Front.Services
             _mapper = mapper;
         }
 
-        public async Task<TableViewModel> GetOne(ModelPlacement placement)
+        public async Task<RegistryViewModel> GetOne(ModelPlacement placement)
         {
             var model = await _tableService.GetOneByPlacement(placement);
-            var vm = _mapper.Map<TableViewModel>(model);
+            var vm = _mapper.Map<RegistryViewModel>(model);
 
             var filters = await _filterService.GetAll(model.Id);
             vm.Filters = _mapper.Map<IEnumerable<FilterViewModel>>(filters).ToList();
-
-            var columnConfig = await _columnConfigService.GetLast(model.Id);
-            var c = await _columnService.GetAll(model.Id);
-            var cols = c.Select(m => _mapper.Map<ColumnViewModel>(m));
-
-            //await FillColumns(vm, columnConfig.Id);
-
-            if (columnConfig != null)
-            {
-                var idsArr = columnConfig.Columns.Split(',').Select(m => Guid.Parse(m));
-
-                foreach (var id in idsArr)
-                {
-                    var col = cols.FirstOrDefault(m => m.Id == id);
-                    if (col != null)
-                    {
-                        vm.DisplayedColumns.Add(_mapper.Map<ColumnViewModel>(col));
-                    }
-                }
-
-                vm.AvailableColumns = cols.Where(m => !idsArr.Contains(m.Id)).ToList();
-            }
-            else
-            {
-                vm.DisplayedColumns = cols.ToList();
-            }
+            var lastFilter = await _filterService.GetLast(model.Id);
+            await ApplyFilter(lastFilter, vm);
 
             var configs = await _columnConfigService.GetAll(model.Id);
-            vm.ColumnConfigs = configs.Select(m => _mapper.Map<ColumnConfigViewModel>(m)).ToList();
-            vm.SelectedConfig = _mapper.Map<ColumnConfigViewModel>(columnConfig);
+            vm.Configs = _mapper.Map<IEnumerable<RegistryConfigViewModel>>(configs).ToList();
+            var lastConfig = await _columnConfigService.GetLast(model.Id);
+            await ApplyConfig(lastConfig, vm);            
+
             return vm;
         }
 
-        public async Task FillColumns(TableViewModel vm, long configId)
+        public async Task ApplyFilter(long filterId, RegistryViewModel vm)
         {
-            var config = vm.ColumnConfigs.FirstOrDefault(m => m.Id == configId);
-            vm.AvailableColumns.Clear();
-            vm.DisplayedColumns.Clear();
+            var filter = await _filterService.GetOne(filterId);
+            await ApplyFilter(filter, vm);
+        }
 
-            var c = await _columnService.GetAll(vm.Id);
-            var cols = c.Select(m => _mapper.Map<ColumnViewModel>(m));
+        private async Task ApplyFilter(FilterModel filter, RegistryViewModel vm)
+        {
+            if (filter != null)
+            {
+                vm.SelectedFilter = _mapper.Map<FilterViewModel>(filter);
+            }
+        }
+
+        public async Task ApplyConfig(long configId, RegistryViewModel vm)
+        {
+            var config = await _columnConfigService.GetOne(configId);
+            await ApplyConfig(config, vm);
+        }
+
+        private async Task ApplyConfig(RegistryConfigModel config, RegistryViewModel vm)
+        {
+            var columns = await _columnService.GetAll(vm.Id);
+            var colVms = columns.Select(m => _mapper.Map<ColumnViewModel>(m));
 
             if (config != null)
             {
+                vm.DisplayedColumns.Clear();
+
                 var idsArr = config.Columns.Split(',').Select(m => Guid.Parse(m));
 
                 foreach (var id in idsArr)
                 {
-                    var col = cols.FirstOrDefault(m => m.Id == id);
+                    var col = colVms.FirstOrDefault(m => m.Id == id);
                     if (col != null)
                     {
                         vm.DisplayedColumns.Add(_mapper.Map<ColumnViewModel>(col));
                     }
                 }
 
-                vm.AvailableColumns = cols.Where(m => !idsArr.Contains(m.Id)).ToList();
+                vm.SelectedConfig = _mapper.Map<RegistryConfigViewModel>(config);
+                vm.AvailableColumns = colVms.Where(m => !idsArr.Contains(m.Id)).ToList();
             }
             else
             {
-                vm.DisplayedColumns = cols.ToList();
+                vm.AvailableColumns = colVms.Where(m=>m.Display == ColumnDisplay.Available).ToList();
+                vm.DisplayedColumns = colVms.Where(m=>m.Display == ColumnDisplay.Default).ToList();
             }
         }
 
-
-        public async Task<OperationViewResult> CreateConfig(ColumnConfigViewModel model)
+        public async Task<OperationViewResult> SaveConfig(RegistryConfigViewModel model)
         {
-            var newModel = _mapper.Map<ColumnConfigModel>(model);
+            var newModel = _mapper.Map<RegistryConfigModel>(model);
             newModel.Columns = string.Join(',', model.ColumnIds);
 
             if(!model.ForAll)
@@ -117,7 +115,9 @@ namespace SavaDev.Scheme.Front.Services
                 newModel.OwnerId = _securityService.GetId();
             }
 
-            var resultModel = await _columnConfigService.Create(newModel);
+            var resultModel = model.Id == 0
+                ? await _columnConfigService.Create(newModel)
+                : await _columnConfigService.Update(model.Id, newModel);
             return new OperationViewResult(resultModel.Details);
         }
 
@@ -127,13 +127,13 @@ namespace SavaDev.Scheme.Front.Services
             return new OperationViewResult(result.Details);
         }
 
-        public async Task<ColumnConfigViewModel> GetLastConfig(Guid tableId)
+        public async Task<RegistryConfigViewModel> GetLastConfig(Guid tableId)
         {
             var model = await _columnConfigService.GetLast(tableId);
-            return _mapper.Map<ColumnConfigViewModel>(model);
+            return _mapper.Map<RegistryConfigViewModel>(model);
         }
 
-        public async Task<OperationViewResult> CreateFilter(FilterViewModel model, BaseFilter filter)
+        public async Task<OperationViewResult> SaveFilter(FilterViewModel model, BaseFilter filter)
         {
             var newModel = _mapper.Map<FilterModel>(model);
             newModel.Fields = JsonSerializer.Serialize(filter);
@@ -143,7 +143,9 @@ namespace SavaDev.Scheme.Front.Services
                 newModel.OwnerId = _securityService.GetId();
             }
 
-            var resultModel = await _filterService.Create(newModel);
+            var resultModel = model.Id == 0
+                ? await _filterService.Create(newModel)
+                : await _filterService.Update(model.Id, newModel);
             return new OperationViewResult(resultModel.Details);
         }
 

@@ -1,28 +1,24 @@
 ﻿@using SavaDev.Scheme.Front.Contract.Models;
-<div class="row">
-    <div class="col-md-2">
-        <BSInput InputType="InputType.Select" Value="SelectedFilterId" @onchange="@((e) => OnFilterSelected(e))">
-            <option value="0">New filter</option>
-            @if (Filters != null && Filters.Any())
+<BSInputGroup MarginBottom="Margins.Medium">      
+    <BSInput InputType="InputType.Select" Value="SelectedFilterId" @onchange="@((e) => OnFilterSelectedHandler(e))">
+        <option value="0">New filter</option>
+        @if (Filters != null && Filters.Any())
+        {
+            @foreach (var conf in Filters)
             {
-                @foreach (var conf in Filters)
-                {
-                    <option value="@conf.Id" selected="@(SelectedFilter?.Id == conf.Id)">@conf.Name</option>
-                }
+                <option value="@conf.Id" selected="@(SelectedFilter?.Id == conf.Id)">@conf.Name</option>
             }
-        </BSInput>
-    </div>
-    <div class="col-md-2">
-        <BSButton Color="BSColor.Primary" Target="filter-edit-modal">
-            <i class="bi-save2"></i>
-        </BSButton>
-        <BSButton Color="BSColor.Primary" OnClick="((e) => OnClickRemoveFilter(e))">
-            <i class="bi-trash"></i>
-        </BSButton>
-    </div>
-</div>
+        }
+    </BSInput>
+    <BSButton Color="BSColor.Light" Target="filter-edit-modal" OnClick="OnModalConfigClickHandler">
+        <i class="bi-save2"></i>
+    </BSButton>
+    <BSButton Color="BSColor.Light" OnClick="((e) => OnRemoveFilterClickHandler(e))">
+        <i class="bi-trash"></i>
+    </BSButton>
+</BSInputGroup>
 
-<BSModal DataId="filter-edit-modal">
+<BSModal DataId="filter-edit-modal" @ref="modal">
     <Header>Create filter</Header>
     <Content>
         <div class="mb-3">
@@ -36,7 +32,7 @@
     </Content>
     <Footer Context="modal">
         <BSButton MarginStart="Margins.Auto" Color="BSColor.Secondary" @onclick="modal.HideAsync">Close</BSButton>
-        <BSButton Color="BSColor.Primary" OnClick="OnClickSaveFilter">Save changes</BSButton>
+        <BSButton Color="BSColor.Primary" OnClick="OnSaveFilterClickHandler">Save changes</BSButton>
     </Footer>
 </BSModal>
 
@@ -48,26 +44,53 @@
     [Parameter]
     public EventHandler<ChangeEventArgs> OnSelectFilter { get; set; }
     [Parameter]
-    public EventHandler OnSaveFilter { get; set; }
+    public EventHandler<FilterViewModel>? OnSaveFilterClick { get; set; }
     [Parameter]
-    public EventHandler OnRemoveFilter { get; set; }
+    public EventHandler? OnRemoveFilterClick { get; set; }
 
     private int? SelectedFilterId = 0;
     public string? FilterFormName { get; set; }
     public bool FilterFormForAll { get; set; }
 
-    private async Task OnFilterSelected(ChangeEventArgs e)
+    private BSModal? modal;
+
+    private async Task OnFilterSelectedHandler(ChangeEventArgs e)
     {
         OnSelectFilter.Invoke(this, e);
     }
 
-    private async Task OnClickSaveFilter(EventArgs e)
+    private async Task OnModalConfigClickHandler(EventArgs e)
     {
-        OnSaveFilter.Invoke(this, e);
+        SetForm(SelectedFilterId ?? 0);
     }
 
-    private async Task OnClickRemoveFilter(EventArgs e)
+    private async Task OnSaveFilterClickHandler(EventArgs e)
     {
-        OnRemoveFilter.Invoke(this, e);
+        var model = new FilterViewModel
+            {
+                Name = FilterFormName,
+                ForAll = FilterFormForAll
+            };
+        OnSaveFilterClick?.Invoke(this, model);
+        await modal?.HideAsync();
+    }
+
+    private async Task OnRemoveFilterClickHandler(EventArgs e)
+    {
+        OnRemoveFilterClick?.Invoke(this, e);
+    }
+
+    private void SetForm(long id)
+    {
+        if (id == 0)
+        {
+            FilterFormName = "";
+            FilterFormForAll = false;
+            return;
+        }
+        var filter = Filters.FirstOrDefault(m => m.Id == id);
+        if (filter == null) return;
+        FilterFormName = filter.Name;
+        FilterFormForAll = filter.ForAll;
     }
 }

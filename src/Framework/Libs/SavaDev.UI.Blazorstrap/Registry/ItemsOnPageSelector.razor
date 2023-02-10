@@ -1,10 +1,17 @@
-﻿<BSInput InputType="InputType.Select" @bind-Value="_value">
+﻿<BSInput InputType="InputType.Select" @bind-Value="_value" @onchange="@((e) => OnItemsOnPageSelected(e))">
             <option value="null">Items on page</option>
-            <option value="1">10</option>
-            <option value="2">20</option>
-            <option value="3">50</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
         </BSInput>
 
 @code {
     private int? _value;
+    [Parameter]
+    public EventHandler<ChangeEventArgs> OnSelectItemsOnPage { get; set; }
+
+    private async Task OnItemsOnPageSelected(ChangeEventArgs e)
+    {
+        OnSelectItemsOnPage.Invoke(this, e);
+    }
 }

@@ -22,7 +22,7 @@ namespace SavaDev.Scheme.Data.Entities
 
         public Guid TableId { get; set; }
 
-        public virtual Table Table { get; set; }
+        public virtual Registry Table { get; set; }
 
         public ColumnDisplay Display { get; set; }
 

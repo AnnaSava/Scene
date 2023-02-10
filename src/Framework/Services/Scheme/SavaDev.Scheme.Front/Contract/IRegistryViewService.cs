@@ -11,20 +11,22 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Scheme.Front.Contract
 {
-    public interface ITableViewService
+    public interface IRegistryViewService
     {
-        Task<TableViewModel> GetOne(ModelPlacement placement);
+        Task<RegistryViewModel> GetOne(ModelPlacement placement);
 
-        Task FillColumns(TableViewModel vm, long configId);
+        Task ApplyFilter(long filterId, RegistryViewModel vm);
 
-        Task<OperationViewResult> CreateFilter(FilterViewModel model, BaseFilter filter);
+        Task ApplyConfig(long configId, RegistryViewModel vm);
+
+        Task<OperationViewResult> SaveFilter(FilterViewModel model, BaseFilter filter);
 
         Task<OperationViewResult> RemoveFilter(long id);
 
-        Task<OperationViewResult> CreateConfig(ColumnConfigViewModel model);
+        Task<OperationViewResult> SaveConfig(RegistryConfigViewModel model);
 
         Task<OperationViewResult> RemoveConfig(long id);
 
-        Task<ColumnConfigViewModel> GetLastConfig(Guid tableId);
+        Task<RegistryConfigViewModel> GetLastConfig(Guid tableId);
     }
 }

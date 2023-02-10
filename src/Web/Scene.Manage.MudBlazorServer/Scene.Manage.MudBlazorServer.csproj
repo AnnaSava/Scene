@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Obsolete\Framework.Base.Service\Framework.Base.Service.csproj" />
-    <ProjectReference Include="..\..\Framework\Obsolete\Framework.MailTemplate.Data\Framework.MailTemplate.Data.csproj" />
     <ProjectReference Include="..\..\Framework\Obsolete\Framework.Mail\Framework.Mail.csproj" />
     <ProjectReference Include="..\..\Framework\Obsolete\Framework.User.Service\Framework.User.Service.csproj" />
     <ProjectReference Include="..\..\Framework\Services\System\SavaDev.System.Data\SavaDev.System.Data.csproj" />

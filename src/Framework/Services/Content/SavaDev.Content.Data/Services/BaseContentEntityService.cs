@@ -22,7 +22,7 @@ using X.PagedList;
 namespace Savadev.Content.Data.Services
 {
     public class BaseContentEntityService<TEntity, TModel, TFilterModel>
-        where TEntity : BaseContentEntity, IEntity<Guid>
+        where TEntity : BaseContentEntity, IEntity<Guid>, new()
         where TFilterModel : BaseFilter, new()
         where TModel: IFormModel
     {

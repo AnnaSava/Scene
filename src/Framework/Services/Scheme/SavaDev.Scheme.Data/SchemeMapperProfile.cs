@@ -13,8 +13,8 @@ namespace SavaDev.Scheme.Data
             CreateMap<Column, ColumnModel>();
             CreateMap<ColumnModel, Column>();
 
-            CreateMap<Table, TableModel>();
-            CreateMap<TableModel, Table>();
+            CreateMap<Registry, RegistryModel>();
+            CreateMap<RegistryModel, Registry>();
 
             CreateMap<ColumnProperty, ColumnPropertyModel>();
             CreateMap<ColumnPropertyModel, ColumnProperty>();
@@ -22,8 +22,8 @@ namespace SavaDev.Scheme.Data
             CreateMap<ColumnPermission, ColumnPermissionModel>();
             CreateMap<ColumnPermissionModel, ColumnPermission>();
 
-            CreateMap<ColumnConfig, ColumnConfigModel>();
-            CreateMap<ColumnConfigModel, ColumnConfig>();
+            CreateMap<RegistryConfig, RegistryConfigModel>();
+            CreateMap<RegistryConfigModel, RegistryConfig>();
 
             CreateMap<Filter, FilterModel>();
             CreateMap<FilterModel, Filter>();

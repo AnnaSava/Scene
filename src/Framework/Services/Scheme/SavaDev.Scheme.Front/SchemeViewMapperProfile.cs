@@ -14,8 +14,8 @@ namespace SavaDev.Scheme.Front
             CreateMap<ColumnViewModel, ColumnModel>();
             CreateMap<ColumnModel, ColumnViewModel>();
 
-            CreateMap<TableViewModel, TableModel>();
-            CreateMap<TableModel, TableViewModel>();
+            CreateMap<RegistryViewModel, RegistryModel>();
+            CreateMap<RegistryModel, RegistryViewModel>();
 
             CreateMap<ColumnPropertyViewModel, ColumnPropertyModel>();
             CreateMap<ColumnPropertyModel, ColumnPropertyViewModel>();
@@ -23,8 +23,8 @@ namespace SavaDev.Scheme.Front
             CreateMap<ColumnPermissionViewModel, ColumnPermissionModel>();
             CreateMap<ColumnPermissionModel, ColumnPermissionViewModel>();
 
-            CreateMap<ColumnConfigViewModel, ColumnConfigModel>();
-            CreateMap<ColumnConfigModel, ColumnConfigViewModel>();
+            CreateMap<RegistryConfigViewModel, RegistryConfigModel>();
+            CreateMap<RegistryConfigModel, RegistryConfigViewModel>();
 
             CreateMap<FilterViewModel, FilterModel>();
             CreateMap<FilterModel, FilterViewModel>();

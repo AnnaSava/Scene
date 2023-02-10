@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Framework.Base.Service\Framework.Base.Service.csproj" />
-    <ProjectReference Include="..\Framework.MailTemplate.Data\Framework.MailTemplate.Data.csproj" />
   </ItemGroup>
 
 </Project>

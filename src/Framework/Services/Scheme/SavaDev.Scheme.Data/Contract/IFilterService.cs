@@ -13,8 +13,14 @@ namespace SavaDev.Scheme.Data.Contract
     {
         Task<OperationResult> Create(FilterModel model);
 
+        Task<OperationResult> Update(long id, FilterModel model);
+
         Task<OperationResult> Remove(long id);
 
         Task<IEnumerable<FilterModel>> GetAll(Guid tableId);
+
+        Task<FilterModel> GetLast(Guid tableId);
+
+        Task<FilterModel> GetOne(long id);
     }
 }

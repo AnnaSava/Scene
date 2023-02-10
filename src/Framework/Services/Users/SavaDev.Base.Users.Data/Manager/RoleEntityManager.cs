@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 namespace SavaDev.Base.User.Data.Manager
 {
     public class RoleEntityManager<TKey, TEntity>
-        where TEntity : BaseRole
+        where TEntity : BaseRole, new()
     {
         protected readonly IDbContext _dbContext;
         protected readonly RoleManager<TEntity> _roleManager;
@@ -46,7 +46,7 @@ namespace SavaDev.Base.User.Data.Manager
     }
 
     public class RoleEntityManager<TKey, TEntity, TFormModel> : RoleEntityManager<TKey, TEntity>
-        where TEntity : BaseRole
+        where TEntity : BaseRole, new()
         where TFormModel : BaseRoleModel
     {
         const string PermissionClaimType = "permission";

@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 namespace SavaDev.Base.Data.Managers.Crud
 {
     public class EntityUpdater<TKey, TEntity>
+        where TEntity : class, new()
     {
         #region Private Fields: Dependencies
 
@@ -199,19 +200,19 @@ namespace SavaDev.Base.Data.Managers.Crud
         protected virtual Task<TEntity> DoGetEntityForUpdate(TKey id)
         {
             var task = OnGetToUpdate?.Invoke(id);
-            return task ?? (Task<TEntity>)Task.CompletedTask;
+            return task ?? Task.FromResult(new TEntity());
         }
 
         protected virtual Task<TEntity> DoGetEntityForUpdate(Expression<Func<TEntity, bool>> expression)
         {
             var task = OnGetToUpdateExp?.Invoke(expression);
-            return task ?? (Task<TEntity>)Task.CompletedTask;
+            return task ?? Task.FromResult(new TEntity());
         }
 
         protected virtual Task<TEntity> DoGetEntityForRestore(TKey id)
         {
             var task = OnGetToRestore?.Invoke(id);
-            return task ?? (Task<TEntity>)Task.CompletedTask;
+            return task ?? Task.FromResult(new TEntity());
         }
 
         protected virtual Task DoSetValues(TEntity entity)
@@ -229,13 +230,13 @@ namespace SavaDev.Base.Data.Managers.Crud
         protected virtual Task<OperationResult> DoUpdate(TEntity entity)
         {
             var task = OnUpdate?.Invoke(entity);
-            return task ?? (Task<OperationResult>)Task.CompletedTask;
+            return task ?? Task.FromResult(new OperationResult(0));
         }
 
         protected virtual Task<OperationResult> DoOnAfterUpdate(TEntity entity, IFormModel model)
         {
             var task = OnAfterUpdate?.Invoke(entity, model);
-            return task ?? (Task<OperationResult>)Task.CompletedTask;
+            return task ?? Task.FromResult(new OperationResult(0));
         }
 
         protected virtual OperationResult DoOnSuccess(TEntity entity)

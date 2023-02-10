@@ -1,0 +1,32 @@
+﻿@using SavaDev.Scheme.Data.Contract.Enums;
+<BSButtonGroup>
+    <BSButton Color="BSColor.Light" OnClick="OnTableClick"><i class="bi-table"></i></BSButton>
+    <BSButton Color="BSColor.Light" OnClick="OnListClick"><i class="bi-list-task"></i></BSButton>
+    <BSButton Color="BSColor.Light" OnClick="OnDetailClick"><i class="bi-layout-sidebar"></i></BSButton>
+    <BSButton Color="BSColor.Light" OnClick="OnGridClick"><i class="bi-grid"></i></BSButton>
+</BSButtonGroup>
+
+@code {
+    [Parameter]
+    public EventHandler<ChangeEventArgs> OnChange { get; set; }
+
+    public void OnTableClick()
+    {
+        OnChange?.Invoke(this, new ChangeEventArgs { Value = RegistryViewMode.Table });
+    }
+
+    public void OnListClick()
+    {
+        OnChange?.Invoke(this, new ChangeEventArgs { Value = RegistryViewMode.List });
+    }
+
+    public void OnDetailClick()
+    {
+        OnChange?.Invoke(this, new ChangeEventArgs { Value = RegistryViewMode.Detail });
+    }
+
+    public void OnGridClick()
+    {
+        OnChange?.Invoke(this, new ChangeEventArgs { Value = RegistryViewMode.Grid });
+    }
+}

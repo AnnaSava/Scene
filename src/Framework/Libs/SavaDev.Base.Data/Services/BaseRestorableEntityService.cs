@@ -14,7 +14,7 @@ using X.PagedList;
 namespace SavaDev.Base.Data.Services
 {
     public class BaseRestorableEntityService<TKey, TEntity, TFormModel> : BaseEntityService<TEntity, TFormModel>
-         where TEntity : class, IEntity<TKey>, IEntityRestorable
+         where TEntity : class, IEntity<TKey>, IEntityRestorable, new()
         where TFormModel : IFormModel, IAnyModel
     {
         #region Protected Properties: Managers

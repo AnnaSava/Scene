@@ -1,0 +1,32 @@
+﻿@using SavaDev.Scheme.Front.Contract.Models;
+<BSInput InputType="InputType.Select" Value="SelectedColumnId" @onchange="@((e) => OnColumnSelectHandler(e))">
+    <option value="">Column</option> 
+    @if (AvailableColumns != null && AvailableColumns.Any())
+    {
+        @foreach (var col in AvailableColumns)
+        {
+            <option value="@col.Id">@col.Name</option>
+        }
+    }
+</BSInput> 
+
+@code {
+    [Parameter]
+    public List<ColumnViewModel> AvailableColumns { get; set; } = new List<ColumnViewModel>();
+
+    [Parameter]
+    public EventHandler<Guid> OnColumnSelect { get; set; }
+
+    private Guid? SelectedColumnId = null;
+
+    public RegistryConfigViewModel SelectedConfig { get; set; }
+
+    private async void OnColumnSelectHandler(ChangeEventArgs e)
+    {
+        var parsed = Guid.TryParse(e.Value.ToString(), out Guid guid);
+        if (parsed)
+        {
+            OnColumnSelect?.Invoke(this, guid);
+        }
+    }
+}

@@ -18,11 +18,11 @@ namespace SavaDev.Scheme.Front.Services
     public class ColumnViewService : IColumnViewService
     {
         protected readonly IColumnService _columnService;
-        protected readonly IColumnConfigService _columnConfigService;
+        protected readonly IRegistryConfigService _columnConfigService;
         protected readonly IMapper _mapper;
 
         public ColumnViewService(IColumnService columnService,
-            IColumnConfigService columnConfigService,
+            IRegistryConfigService columnConfigService,
             IMapper mapper)
         {
             _columnService = columnService;

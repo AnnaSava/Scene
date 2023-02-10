@@ -19,7 +19,7 @@ namespace SavaDev.Scheme.Data
             var helper = new TableNameHelper(options.NamingConvention, options.TablePrefix);
             builder.SetTableNames(helper);
 
-            builder.Entity<Table>(b =>
+            builder.Entity<Registry>(b =>
             {
                 b.HasMany(m => m.Columns).WithOne(m => m.Table).HasForeignKey(m => m.TableId).IsRequired();
                 b.HasMany(m => m.Configs).WithOne(m => m.Table).HasForeignKey(m => m.TableId).IsRequired();
@@ -36,11 +36,11 @@ namespace SavaDev.Scheme.Data
         // Если сделать экстеншен-дженериком, не работает создание миграций
         private static void SetTableNames([NotNull] this ModelBuilder builder, TableNameHelper helper)
         {
-            builder.Entity<Table>(b => { b.ToTable(helper.GetTableName(nameof(Table))); });
+            builder.Entity<Registry>(b => { b.ToTable(helper.GetTableName(nameof(Registry))); });
             builder.Entity<Column>(b => { b.ToTable(helper.GetTableName(nameof(Column))); });
             builder.Entity<ColumnProperty>(b => { b.ToTable(helper.GetTableName(nameof(ColumnProperty))); });
             builder.Entity<ColumnPermission>(b => { b.ToTable(helper.GetTableName(nameof(ColumnPermission))); });
-            builder.Entity<ColumnConfig>(b => { b.ToTable(helper.GetTableName(nameof(ColumnConfig))); });
+            builder.Entity<RegistryConfig>(b => { b.ToTable(helper.GetTableName(nameof(RegistryConfig))); });
             builder.Entity<Filter>(b => { b.ToTable(helper.GetTableName(nameof(Filter))); });
         }
     }

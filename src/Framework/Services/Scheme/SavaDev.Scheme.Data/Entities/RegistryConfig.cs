@@ -1,4 +1,6 @@
-﻿using SavaDev.Base.Data.Entities.Interfaces;
+﻿using Microsoft.Win32;
+using SavaDev.Base.Data.Entities.Interfaces;
+using SavaDev.Scheme.Data.Contract.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Scheme.Data.Entities
 {
-    public class ColumnConfig : IEntity<long>
+    public class RegistryConfig : IEntity<long>
     {
         public long Id { get; set; }
 
@@ -17,8 +19,12 @@ namespace SavaDev.Scheme.Data.Entities
 
         public Guid TableId { get; set; }
 
-        public virtual Table Table { get; set; }
+        public virtual Registry Table { get; set; }
 
         public string Columns { get; set; }
+
+        public RegistryViewMode ViewMode { get; set; }
+
+        public int ItemsOnPage { get; set; }
     }
 }

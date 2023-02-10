@@ -19,7 +19,7 @@ namespace SavaDev.Scheme.Contract.Models
 
         public Guid TableId { get; set; }
 
-        public virtual TableModel Table { get; set; }
+        public virtual RegistryModel Table { get; set; }
 
         public ColumnDisplay Display { get; set; }
 

@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 namespace SavaDev.Base.Data.Managers
 {
     public class UpdateFieldManager<TKey, TEntity>
+        where TEntity : class, new()
     {
         private readonly IMapper _mapper;
         private readonly IDbContext _dbContext;

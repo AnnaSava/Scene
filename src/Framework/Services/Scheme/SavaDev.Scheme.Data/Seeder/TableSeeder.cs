@@ -24,7 +24,7 @@ namespace SavaDev.Scheme.Data.Seeder
         {
             var manager = new ModelFieldsObjectManager();
 
-            var objectTables = new List<Table>();
+            var objectTables = new List<Registry>();
 
             foreach (var module in modulesAndNamespaces)
             {
@@ -32,7 +32,7 @@ namespace SavaDev.Scheme.Data.Seeder
 
                 foreach(var table in tablesWithColumns)
                 {
-                    var objectTable = new Table
+                    var objectTable = new Registry
                     {
                         Entity = table.Key,
                         Module = module.Key,
@@ -54,7 +54,7 @@ namespace SavaDev.Scheme.Data.Seeder
 
             try
             {
-                context.Tables.AddRange(objectTables);
+                context.Registries.AddRange(objectTables);
                 await context.SaveChangesAsync();
             }
             catch(Exception ex)

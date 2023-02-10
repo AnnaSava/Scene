@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Scheme.Front.Contract.Models
 {
-    public class TableViewModel : IModel<Guid>
+    public class RegistryViewModel : IModel<Guid>
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -22,9 +22,9 @@ namespace SavaDev.Scheme.Front.Contract.Models
 
         public List<ColumnViewModel> AvailableColumns = new List<ColumnViewModel>();
 
-        public List<ColumnConfigViewModel> ColumnConfigs = new List<ColumnConfigViewModel>();
+        public List<RegistryConfigViewModel> Configs = new List<RegistryConfigViewModel>();
 
-        public ColumnConfigViewModel? SelectedConfig { get; set; }
+        public RegistryConfigViewModel? SelectedConfig { get; set; }
 
         public List<FilterViewModel> Filters { get; set; } = new List<FilterViewModel> { };
 
