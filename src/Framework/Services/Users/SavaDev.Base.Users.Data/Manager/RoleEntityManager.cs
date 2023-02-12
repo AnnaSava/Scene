@@ -74,7 +74,7 @@ namespace SavaDev.Base.User.Data.Manager
                 .SuccessResult(entity => new OperationResult(1, _mapper.Map<TFormModel>(entity)))
                 .ErrorResult((id, errMessage) => new OperationResult(DbOperationRows.OnFailure, id, new OperationExceptionInfo(errMessage)));
 
-            return await creator.DoCreate(model);
+            return await creator.Create(model);
         }
 
         public async Task<OperationResult> Update(TKey id, TFormModel model)

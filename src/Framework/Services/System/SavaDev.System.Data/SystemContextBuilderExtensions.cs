@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SavaDev.Base.Data.Context;
 using SavaDev.System.Data.Entities;
+using SavaDev.System.Data.Entities.Parts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

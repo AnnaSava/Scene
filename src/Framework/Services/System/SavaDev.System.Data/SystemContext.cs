@@ -2,6 +2,7 @@
 using SavaDev.System.Data.Contract.Context;
 using SavaDev.Base.Data.Context;
 using SavaDev.System.Data.Entities;
+using SavaDev.System.Data.Entities.Parts;
 
 namespace SavaDev.System.Data
 {
@@ -20,6 +21,8 @@ namespace SavaDev.System.Data
         public DbSet<PermissionCulture> PermissionCultures { get; set; }
 
         public DbSet<ReservedName> ReservedNames { get; set; }
+
+        public SystemContext() { }
 
         public SystemContext(DbContextOptions<SystemContext> options)
             : base(options)

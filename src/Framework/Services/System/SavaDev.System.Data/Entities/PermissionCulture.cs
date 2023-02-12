@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SavaDev.System.Data.Entities
+namespace SavaDev.System.Data.Entities.Parts
 {
     public class PermissionCulture
     {

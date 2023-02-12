@@ -36,6 +36,12 @@ namespace SavaDev.Base.Data.Services
 
         public OperationResult(int rows) { Rows = rows; }
 
+        public OperationResult(IFormModel processedObject)            
+        {
+            Rows = 1;
+            ProcessedObject = processedObject;
+        }
+
         public OperationResult(int rows, IFormModel processedObject)
             : this(rows)
         {

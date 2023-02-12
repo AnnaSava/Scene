@@ -11,13 +11,14 @@ namespace SavaDev.Infrastructure.Util.TestDataGenerator
             _options = options;
         }
 
-        public List<T> GetModels<T>()
+        public List<T> GetModels<T>(string? directory = null)
             where T : class, new()
         {
             // Example: "goalformmodel_123.csv"
             var searchPattern = $"{typeof(T).Name}_*.csv";
 
-            var files = Directory.GetFiles(_options.InputFolderName, searchPattern);
+            var path = directory == null ? _options.InputFolderName : Path.Combine(directory, _options.InputFolderName);
+            var files = Directory.GetFiles(path, searchPattern);
 
             if (files == null || !files.Any()) return null;
 
@@ -38,13 +39,14 @@ namespace SavaDev.Infrastructure.Util.TestDataGenerator
             return entities;
         }
 
-        public List<KeyValuePair<string, T>> GetModelsWithTestMethods<T>()
+        public List<KeyValuePair<string, T>> GetModelsWithTestMethods<T>(string? directory = null)
             where T : class, new()
         {            
             // Example: "goalformmodel_123.csv"
             var searchPattern = $"{typeof(T).Name}_*.csv";
 
-            var files = Directory.GetFiles(_options.InputFolderName, searchPattern);
+            var path = directory == null ? _options.InputFolderName : Path.Combine(directory, _options.InputFolderName);
+            var files = Directory.GetFiles(path, searchPattern);
 
             if (files == null || !files.Any()) return null;
 

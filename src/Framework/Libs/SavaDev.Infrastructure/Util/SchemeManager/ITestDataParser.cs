@@ -12,9 +12,5 @@ namespace SavaDev.Infrastructure.Util.TestDataGenerator
         T ParseModel<T>(IEnumerable<PropertyInfo> eProps, Dictionary<string, string> input) where T : class, new();
 
         T ParseModel<T>(IEnumerable<PropertyInfo> eProps, Dictionary<string, object> input) where T : class, new();
-
-        KeyValuePair<string, T> ParseModel<T>(IEnumerable<PropertyInfo> eProps, IEnumerable<object> input, bool useMethodColumn) where T : class, new();
-
-
     }
 }

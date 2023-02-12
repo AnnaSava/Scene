@@ -27,9 +27,9 @@ namespace SavaDev.Services.Tests.Users.DataTests
         public RoleDbServiceTests()
         {
             _mapper = Dependencies.GetDataMapper();
-            _context = Infrastructure.GetContext<UsersContext>(x => new UsersContext(x));
-            _roleManager = Infrastructure.GetRoleManager(_context);
-            _logger = Infrastructure.GetLogger<RoleService>();
+            _context = TestsInfrastructure.GetContext<UsersContext>(x => new UsersContext(x));
+            _roleManager = TestsInfrastructure.GetRoleManager(_context);
+            _logger = TestsInfrastructure.GetLogger<RoleService>();
             _roleDbService = new RoleService(_context, _roleManager, _mapper, _logger);
             
             DataInitializer.FillContextWithRoles(_context);

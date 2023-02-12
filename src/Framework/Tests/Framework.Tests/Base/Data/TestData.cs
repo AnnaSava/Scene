@@ -1,5 +1,6 @@
 ﻿using SavaDev.Base.Data.Enums;
 using SavaDev.System.Data.Entities;
+using SavaDev.System.Data.Entities.Parts;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -120,9 +120,8 @@ namespace SavaDev.Base.Data.Managers.Crud
             {
                 await tran.RollbackAsync();
                 _logger.LogError($"{nameof(DoRemove)}: {ex.Message} {ex.InnerException?.Message} {ex.StackTrace}");
-                var result = DoOnError(id, ex.Message);
-                result.Rows = -1; // TODO раз присваиваем здесь, то выпилить из конструктора OperationResultи вызовов методов
-                return result;
+                DoOnError(id, ex.Message);
+                throw;
             }
         }
 

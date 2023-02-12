@@ -10,13 +10,13 @@ namespace SavaDev.Infrastructure.Util.TestDataGenerator
     public class FieldsTestDataParser : ITestDataParser
     {
         readonly Dictionary<string, Func<string, object>> Parsers = new Dictionary<string, Func<string, object>>
-        {
-            { nameof(String), p => p },
+        {          
             { nameof(Boolean), p => { bool.TryParse(p, out bool res); return res; } },
             { nameof(Int32), p => { int.TryParse(p, out int res); return res; } },
             { nameof(Int64), p => { long.TryParse(p, out long res); return res; } },
             { nameof(Guid), p => { Guid.TryParse(p, out Guid res); return res; } },
             { nameof(DateTime), p => { DateTime.TryParse(p, out DateTime res); return res; } },
+            { nameof(String), p => p },
         };
 
 
@@ -44,37 +44,20 @@ namespace SavaDev.Infrastructure.Util.TestDataGenerator
             return model;
         }
 
-        public KeyValuePair<string, T> ParseModel<T>(IEnumerable<PropertyInfo> modelProps, IEnumerable<object> input, bool useMethodColumn)
-            where T : class, new()
+        public void SetValues<T>(string typeName, T model, IEnumerable<PropertyInfo> modelProps, Dictionary<string, string> input)
         {
-            var model = new T();
-            var listInput = useMethodColumn ? input.Skip(1).ToList() : input.ToList();
-            var listePropps = modelProps.OrderBy(m => m.Name).ToList();
-
-            foreach (var parser in Parsers)
-            {
-                SetValues(parser.Key, model, listePropps, listInput);
-            }
-
-            var methodName = useMethodColumn ? input.First().ToString() : string.Empty;
-
-            return new KeyValuePair<string, T>(methodName, model);
-        }
-
-        public void SetValues<T>(string typeName, T entity, IEnumerable<PropertyInfo> modelProps, Dictionary<string, string> input)
-        {
-            foreach (var eProp in modelProps)
+            foreach (var modelProp in modelProps)
             {
                 object parsed = null;
 
-                if (eProp.PropertyType.Name == typeName
-                    || eProp.PropertyType.Name == Constants.NullableTypeNamePart && eProp.PropertyType.FullName.Contains(typeName))
+                if (modelProp.PropertyType.Name == typeName
+                    || modelProp.PropertyType.Name == Constants.NullableTypeNamePart && modelProp.PropertyType.FullName.Contains(typeName))
                 {
-                    parsed = Parsers[typeName](input[eProp.Name]);
+                    parsed = Parsers[typeName](input[modelProp.Name]);
                 }
-                else if (eProp.PropertyType.FullName.Contains(Constants.EnumTypeNamePart))
+                else if (modelProp.PropertyType.FullName.Contains(Constants.EnumTypeNamePart))
                 {
-                    if (int.TryParse(input[eProp.Name], out int parsedInt))
+                    if (int.TryParse(input[modelProp.Name], out int parsedInt))
                     {
                         parsed = parsedInt;
                     }
@@ -82,35 +65,7 @@ namespace SavaDev.Infrastructure.Util.TestDataGenerator
 
                 if (parsed != null)
                 {
-                    eProp.SetValue(entity, parsed);
-                }
-            }
-        }
-
-        public void SetValues<T>(string typeName, T entity, List<PropertyInfo> modelProps, List<object>? input)
-        {
-            for (var i = 0; i< modelProps.Count(); i++)
-            {
-                var eProp = modelProps[i];
-
-                object parsed = null;
-
-                if (eProp.PropertyType.Name == typeName
-                    || eProp.PropertyType.Name == Constants.NullableTypeNamePart && eProp.PropertyType.FullName.Contains(typeName))
-                {
-                    parsed = Parsers[typeName](input[i].ToString());
-                }
-                else if (eProp.PropertyType.FullName.Contains(Constants.EnumTypeNamePart))
-                {
-                    if (int.TryParse(input[i].ToString(), out int parsedInt))
-                    {
-                        parsed = parsedInt;
-                    }
-                }
-
-                if (parsed != null)
-                {
-                    eProp.SetValue(entity, parsed);
+                    modelProp.SetValue(model, parsed);
                 }
             }
         }

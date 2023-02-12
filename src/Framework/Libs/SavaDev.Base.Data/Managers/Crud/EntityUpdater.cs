@@ -26,7 +26,8 @@ namespace SavaDev.Base.Data.Managers.Crud
         private Func<TEntity, Task> OnSetValues { get; set; }
         private Func<TEntity, IFormModel, Task> OnSetValuesFromModel { get; set; }
         private Func<TEntity, Task<OperationResult>> OnUpdate { get; set; }
-        private Func<TEntity, IFormModel, Task<OperationResult>> OnAfterUpdate { get; set; }
+        private Func<TEntity, Task<OperationResult>> OnAfterUpdate { get; set; }
+        private Func<TEntity, IFormModel, Task<OperationResult>> OnAfterUpdateWithModel { get; set; }
         private Func<TEntity, OperationResult> OnSuccess { get; set; }
         private Func<TKey?, string, OperationResult> OnError { get; set; }
         private Func<string, OperationResult> OnErrorNoKey { get; set; }
@@ -87,9 +88,15 @@ namespace SavaDev.Base.Data.Managers.Crud
             return this;
         }
 
-        public EntityUpdater<TKey, TEntity> AfterUpdate(Func<TEntity, IFormModel, Task<OperationResult>> func)
+        public EntityUpdater<TKey, TEntity> AfterUpdate(Func<TEntity, Task<OperationResult>> func)
         {
             OnAfterUpdate = func;
+            return this;
+        }
+
+        public EntityUpdater<TKey, TEntity> AfterUpdate(Func<TEntity, IFormModel, Task<OperationResult>> func)
+        {
+            OnAfterUpdateWithModel = func;
             return this;
         }
 
@@ -149,7 +156,7 @@ namespace SavaDev.Base.Data.Managers.Crud
 
         public async Task<OperationResult> DoUpdate(TKey id, bool restore = false)
         {
-            var result = await DoUpdate(id, restore);
+            var result = await DoUpdate(id, restore, null);
             return result;
         }
 
@@ -175,9 +182,8 @@ namespace SavaDev.Base.Data.Managers.Crud
             {
                 await tran.RollbackAsync();
                 _logger.LogError($"{nameof(DoUpdate)}: {ex.Message} {ex.InnerException?.Message} {ex.StackTrace}");
-                var result = DoOnError(id, ex.Message);
-                result.Rows = -1; // TODO раз присваиваем здесь, то выпилить из конструктора OperationResultи вызовов методов
-                return result;
+                DoOnError(id, ex.Message);
+                throw;
             }
         }
 
@@ -233,9 +239,15 @@ namespace SavaDev.Base.Data.Managers.Crud
             return task ?? Task.FromResult(new OperationResult(0));
         }
 
+        protected virtual Task<OperationResult> DoOnAfterUpdate(TEntity entity)
+        {
+            var task = OnAfterUpdate?.Invoke(entity);
+            return task ?? Task.FromResult(new OperationResult(0));
+        }
+
         protected virtual Task<OperationResult> DoOnAfterUpdate(TEntity entity, IFormModel model)
         {
-            var task = OnAfterUpdate?.Invoke(entity, model);
+            var task = OnAfterUpdateWithModel?.Invoke(entity, model);
             return task ?? Task.FromResult(new OperationResult(0));
         }
 
@@ -278,6 +290,11 @@ namespace SavaDev.Base.Data.Managers.Crud
             if (model != null)
             {
                 var afterUpdateResult = await DoOnAfterUpdate(entity, model);
+                rows += HandleResult(afterUpdateResult, nameof(DoOnAfterUpdate));
+            }
+            else
+            {
+                var afterUpdateResult = await DoOnAfterUpdate(entity);
                 rows += HandleResult(afterUpdateResult, nameof(DoOnAfterUpdate));
             }
             var result = DoOnSuccess(entity);

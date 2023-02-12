@@ -37,13 +37,13 @@ namespace SavaDev.Base.Data.Managers.Crud
 
         #region Public Methods: Set
 
-        public EntityCreator<TEntity> ValidateModel(Func<IFormModel, Task> func)
+        public EntityCreator<TEntity> ValidateModel(Func<IFormModel, Task>? func)
         {
             OnValidating = func;
             return this;
         }
 
-        public EntityCreator<TEntity> SetValues(Func<IFormModel, Task<TEntity>> func)
+        public EntityCreator<TEntity> SetValues(Func<IFormModel, Task<TEntity>>? func)
         {
             OnSetValuesFromModel = func;
             return this;
@@ -75,7 +75,7 @@ namespace SavaDev.Base.Data.Managers.Crud
 
         #endregion
 
-        public async Task<OperationResult> DoCreate(IFormModel model)
+        public async Task<OperationResult> Create(IFormModel model)
         {
             if (model == null)
                 throw new ArgumentNullException("model");
@@ -102,9 +102,8 @@ namespace SavaDev.Base.Data.Managers.Crud
             {
                 await tran.RollbackAsync();
                 _logger.LogError($"{nameof(DoCreate)}: {ex.Message} {ex.InnerException?.Message} {ex.StackTrace}");
-                var result = DoOnError(model, ex.Message);
-                result.Rows = -1; // TODO раз присваиваем здесь, то выпилить из конструктора OperationResultи вызовов методов
-                return result;
+                DoOnError(model, ex.Message);
+                throw;
             }
         }
 

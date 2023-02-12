@@ -8,8 +8,8 @@ namespace SavaDev.Infrastructure.Util.TestDataGenerator
 {
     public interface IModelFieldsReader
     {
-        public List<T> GetModels<T>() where T : class, new();
+        public List<T> GetModels<T>(string? directory = null) where T : class, new();
 
-        public List<KeyValuePair<string, T>> GetModelsWithTestMethods<T>() where T : class, new();
+        public List<KeyValuePair<string, T>> GetModelsWithTestMethods<T>(string? directory = null) where T : class, new();
     }
 }

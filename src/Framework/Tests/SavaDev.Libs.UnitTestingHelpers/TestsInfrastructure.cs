@@ -13,7 +13,7 @@ using SavaDev.Users.Data;
 
 namespace SavaDev.Libs.UnitTestingHelpers
 {
-    public static class Infrastructure
+    public static class TestsInfrastructure
     {
         public static T GetContext<T>(Func<DbContextOptions<T>, T> creator) where T : DbContext
         {

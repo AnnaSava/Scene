@@ -11,7 +11,6 @@ using SavaDev.Base.Data.Models.Interfaces;
 
 namespace SavaDev.Base.Data.Services
 {
-
     public class BaseDocumentEntityService<TEntity, TFormModel> : BaseDocumentEntityService<long, TEntity, TFormModel>
         where TEntity : BaseDocumentEntity<long>, new()
         where TFormModel : BaseDocumentFormModel<long>, IAnyModel
@@ -50,16 +49,6 @@ namespace SavaDev.Base.Data.Services
 
         #endregion
 
-        #region Protected Properties: Actions
-
-        protected Action<TEntity> OnCreating = (entity) =>
-        {
-            entity.Status = DocumentStatus.Draft;
-            entity.Created = entity.LastUpdated = DateTime.UtcNow;
-        };
-
-        #endregion
-
         #region Public Constructors
 
         public BaseDocumentEntityService(IDbContext dbContext, IEnumerable<string> availableCultures, IMapper mapper, ILogger logger)
@@ -84,29 +73,13 @@ namespace SavaDev.Base.Data.Services
 
         public async Task<OperationResult> Create(TFormModel model)
         {
-            var result = await CreateManager.Create(model, async (model) => 
-            {
-                var docModel = model as BaseDocumentFormModel<Guid>;
-                var exists = await CheckPermNameExists(docModel.PermName);
-                if (exists)
-                {
-                    throw new InvalidOperationException($"Document {docModel.PermName} already exists.");
-                }
-            }, OnCreating);
+            var result = await CreateManager.Create(model, validate: Validate, setValues: SetValuesCreating);
             return result;
         }
 
         public async Task<OperationResult> CreateTranslation(TFormModel model)
         {
-            var result = await CreateManager.Create(model, async (model) =>
-            {
-                var docModel = model as BaseDocumentFormModel<Guid>;
-                var exists = await CheckTranslationExists(docModel.PermName, docModel.Culture);
-                if (exists)
-                {
-                    throw new InvalidOperationException($"Document {docModel.PermName} with culture {docModel.Culture} already exists.");
-                }
-            }, OnCreating);
+            var result = await CreateManager.Create(model, validate: ValidateTranslation, setValues: SetValuesCreating);
 
             return result;
         }
@@ -126,18 +99,7 @@ namespace SavaDev.Base.Data.Services
 
         public async Task<OperationResult> CreateVersion(TFormModel model)
         {
-            var result = await CreateManager.Create(model, async (model) =>
-            {
-                var docModel = model as BaseDocumentFormModel<Guid>;
-                var hasDraft = _dbContext.Set<TEntity>()
-                    .Any(m => m.PermName == docModel.PermName && m.Culture == docModel.Culture 
-                    && m.Status == DocumentStatus.Draft && m.IsDeleted == false);
-
-                if (hasDraft)
-                {
-                    throw new InvalidOperationException($"Draft for document {docModel.PermName} with culture {docModel.Culture} already exists.");
-                }
-            }, OnCreating);
+            var result = await CreateManager.Create(model, validate: ValidateVersion, setValues: SetValuesCreating);
 
             return result;
         }
@@ -146,7 +108,7 @@ namespace SavaDev.Base.Data.Services
         {
             var updater = new EntityUpdater<TKey, TEntity>(_dbContext, _logger)
                 .GetEntity(async (id) => await UpdateSelector.GetEntityForUpdate(id))
-                .ValidateEntity(async (entity) => 
+                .ValidateEntity(async (entity) =>
                 {
                     if (entity.Status != DocumentStatus.Draft)
                     {
@@ -155,10 +117,15 @@ namespace SavaDev.Base.Data.Services
                 })
                 .SetValues(async (entity) => entity.Status = DocumentStatus.Published)
                 .Update(DoUpdate)
-                .AfterUpdate(async (currentEntity, model) => {
+                .AfterUpdate(async (currentEntity) =>
+                {
                     var publishedEntities = await _dbContext.Set<TEntity>()
-                .Where(m => m.PermName == currentEntity.PermName && m.Culture == currentEntity.Culture && m.Status == DocumentStatus.Published && m.IsDeleted == false)
-                .ToListAsync();
+                    .Where(m => m.PermName == currentEntity.PermName 
+                        && m.Culture == currentEntity.Culture 
+                        && m.Status == DocumentStatus.Published 
+                        && m.IsDeleted == false
+                        && !m.Id.Equals(currentEntity.Id))
+                    .ToListAsync();
 
                     foreach (var publishedEntity in publishedEntities)
                     {
@@ -169,21 +136,21 @@ namespace SavaDev.Base.Data.Services
                     return new OperationResult(rows);
 
                 })
-                .SuccessResult(entity => new OperationResult(1, id))
-                .ErrorResult((id, errMessage) => new OperationResult(DbOperationRows.OnFailure, id, new OperationExceptionInfo(errMessage)));
+            .SuccessResult(entity => new OperationResult(1, id))
+            .ErrorResult((id, errMessage) => new OperationResult(DbOperationRows.OnFailure, id, new OperationExceptionInfo(errMessage)));
 
             return await updater.DoUpdate(id);
         }
 
         public async Task<OperationResult> Delete(TKey id)
         {
-            var result = await RestoreManager.SetField(id, entity => entity.IsDeleted = true);
+            var result = await FieldSetterManager.SetField(id, entity => entity.IsDeleted = true);
             return result;
         }
 
         public async Task<OperationResult> Restore(TKey id)
         {
-            var result = await FieldSetterManager.SetField(id, entity => entity.IsDeleted = false, async (entity) =>
+            var result = await RestoreManager.SetField(id, entity => entity.IsDeleted = false, async (entity) =>
             {
                 // TODO я не очень уверена, что это нужно, но пока пусть будет, потому что зачем нам делать лишний запрос к БД на апдейт?
                 if (entity.IsDeleted == false)
@@ -263,7 +230,58 @@ namespace SavaDev.Base.Data.Services
 
         #region Private Methods
 
-        // TODO подумать, как объединить с такими же методавми в манагере
+        private async Task Validate(IFormModel model)
+        {
+            var docModel = model as BaseDocumentFormModel<long>;
+            if (docModel?.PermName == null)
+            {
+                throw new ArgumentNullException("PermName is null.");
+            }
+            var exists = await CheckPermNameExists(docModel.PermName);
+            if (exists)
+            {
+                throw new InvalidOperationException($"Document {docModel.PermName} already exists.");
+            }
+        }
+
+        private async Task ValidateTranslation(IFormModel model)
+        {
+            var docModel = model as BaseDocumentFormModel<long>;
+            if (docModel?.PermName == null)
+            {
+                throw new ArgumentNullException("PermName is null.");
+            }
+            var exists = await CheckTranslationExists(docModel.PermName, docModel.Culture);
+            if (exists)
+            {
+                throw new InvalidOperationException($"Document {docModel.PermName} with culture {docModel.Culture} already exists.");
+            }
+        }
+
+        private async Task ValidateVersion(IFormModel model)
+        {
+            var docModel = model as BaseDocumentFormModel<long>;
+            if (docModel?.PermName == null)
+            {
+                throw new ArgumentNullException("PermName is null.");
+            }
+            var hasDraft = await _dbContext.Set<TEntity>()
+                .AnyAsync(m => m.PermName == docModel.PermName && m.Culture == docModel.Culture
+                && m.Status == DocumentStatus.Draft && m.IsDeleted == false);
+
+            if (hasDraft)
+            {
+                throw new InvalidOperationException($"Draft for document {docModel.PermName} with culture {docModel.Culture} already exists.");
+            }
+        }
+
+        private void SetValuesCreating(TEntity entity)
+        {
+            entity.Status = DocumentStatus.Draft;
+            entity.Created = entity.LastUpdated = DateTime.UtcNow;
+        }
+
+        // TODO подумать, как объединить с такими же методами в манагере
         private async Task<OperationResult> DoUpdate(TEntity entity)
         {
             var rows = await _dbContext.SaveChangesAsync();

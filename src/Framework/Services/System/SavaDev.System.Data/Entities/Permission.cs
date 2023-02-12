@@ -1,4 +1,5 @@
 ﻿using SavaDev.Base.Data.Entities.Interfaces;
+using SavaDev.System.Data.Entities.Parts;
 using System.ComponentModel.DataAnnotations;
 
 namespace SavaDev.System.Data.Entities

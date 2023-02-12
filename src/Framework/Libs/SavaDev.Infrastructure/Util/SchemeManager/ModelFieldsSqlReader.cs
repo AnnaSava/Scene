@@ -17,7 +17,7 @@ namespace SavaDev.Infrastructure.Util.TestDataGenerator
             _options = options;
         }
 
-        public List<T> GetModels<T>()
+        public List<T> GetModels<T>(string? directory = null) // TODO
             where T : class, new()
         {
             var data = GetModels<T>(useMethodColumn: false);
@@ -33,7 +33,7 @@ namespace SavaDev.Infrastructure.Util.TestDataGenerator
             return result;
         }
 
-        public List<KeyValuePair<string, T>> GetModelsWithTestMethods<T>()
+        public List<KeyValuePair<string, T>> GetModelsWithTestMethods<T>(string? directory = null) // TODO
             where T : class, new()
         {
             var data = GetModels<T>(useMethodColumn: true);

@@ -1,5 +1,6 @@
 ﻿using SavaDev.Base.Data.Context;
 using SavaDev.System.Data.Entities;
+using SavaDev.System.Data.Entities.Parts;
 using SavaDev.System.Data.Seeder.Data;
 
 namespace SavaDev.System.Data.Seeder

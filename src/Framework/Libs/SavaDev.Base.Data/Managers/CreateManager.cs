@@ -48,7 +48,7 @@ namespace SavaDev.Base.Data.Managers
                 .SuccessResult(entity => new OperationResult(1, _mapper.Map<TFormModel>(entity)))
                 .ErrorResult((id, errMessage) => new OperationResult(DbOperationRows.OnFailure, id, new OperationExceptionInfo(errMessage)));
 
-            return await creator.DoCreate(model);
+            return await creator.Create(model);
         }
 
         public async Task<OperationResult> Create<TFormModel>(TFormModel model, Func<IFormModel, Task> validate, Action<TEntity> setEntityValues)
@@ -61,7 +61,7 @@ namespace SavaDev.Base.Data.Managers
                 .SuccessResult(entity => new OperationResult(1, _mapper.Map<TFormModel>(entity)))
                 .ErrorResult((id, errMessage) => new OperationResult(DbOperationRows.OnFailure, id, new OperationExceptionInfo(errMessage)));
 
-            return await creator.DoCreate(model);
+            return await creator.Create(model);
         }
 
         private async Task<OperationResult> DoCreate(TEntity entity)
@@ -97,28 +97,22 @@ namespace SavaDev.Base.Data.Managers
             _logger = _infra.Logger;
         }
 
-        public async Task<OperationResult> Create(TFormModel model)
-        {
-            var creator = new EntityCreator<TEntity>(_dbContext, _logger)
-                .ValidateModel(async (model) => { })
-                .SetValues(async (model) => _mapper.Map<TEntity>(model))
-                .Create(DoCreate)
-                .SuccessResult(entity => new OperationResult(1, _mapper.Map<TFormModel>(entity)))
-                .ErrorResult((id, errMessage) => new OperationResult(DbOperationRows.OnFailure, id, new OperationExceptionInfo(errMessage)));
-
-            return await creator.DoCreate(model);
-        }
-
-        public async Task<OperationResult> Create(TFormModel model, Func<IFormModel, Task> validate, Action<TEntity> setEntityValues)
+        public async Task<OperationResult> Create(TFormModel model, 
+            Func<IFormModel, Task>? validate = null, 
+            Action<TEntity>? setValues = null)
         {
             var creator = new EntityCreator<TEntity>(_dbContext, _logger)
                 .ValidateModel(validate)
-                .SetValues(async (model) => { var entity = _mapper.Map<TEntity>(model); setEntityValues(entity); return entity; })
+                .SetValues(async (model) => 
+                { 
+                    var entity = _mapper.Map<TEntity>(model); 
+                    setValues?.Invoke(entity); 
+                    return entity; 
+                })
                 .Create(DoCreate)
-                .SuccessResult(entity => new OperationResult(1, _mapper.Map<TFormModel>(entity)))
-                .ErrorResult((id, errMessage) => new OperationResult(DbOperationRows.OnFailure, id, new OperationExceptionInfo(errMessage)));
+                .SuccessResult(entity => new OperationResult(_mapper.Map<TFormModel>(entity)));
 
-            return await creator.DoCreate(model);
+            return await creator.Create(model);
         }
 
         private async Task<OperationResult> DoCreate(TEntity entity)
