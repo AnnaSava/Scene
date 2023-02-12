@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Base.Data.Managers
 {
-    public class UpdateAnySelector<TEntity> : IUpdateAnySelector<TEntity>
+    public class UpdateAnySelector<TEntity> : IChangeAnySelector<TEntity>
         where TEntity: class, IAnyEntity, new()
     {
         private readonly IMapper _mapper;
@@ -27,7 +27,7 @@ namespace SavaDev.Base.Data.Managers
             _logger = logger;
         }
 
-        public async Task<TEntity> GetEntityForUpdate(Expression<Func<TEntity, bool>> expression)
+        public async Task<TEntity> GetEntityForChange(Expression<Func<TEntity, bool>> expression)
         {
             var entity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(expression);
 

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Base.Data.Managers
 {
-    public class RestoreSelector<TKey, TEntity> : IUpdateSelector<TKey, TEntity>
+    public class RestoreSelector<TKey, TEntity> : IChangeSelector<TKey, TEntity>
         where TEntity : class, IEntity<TKey>, IEntityRestorable
     {
         private readonly IMapper _mapper;
@@ -26,19 +26,21 @@ namespace SavaDev.Base.Data.Managers
             _logger = logger;
         }
 
-        public async Task<TEntity> GetEntityForUpdate(TKey id)
+        public async Task<TEntity> GetEntityForChange(TKey id)
         {
-            var entity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(m => m.Id.Equals(id) && m.IsDeleted == true);
+            var entity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(m => m.Id.Equals(id));
 
             if (entity == null)
                 throw new EntityNotFoundException();
+            if (!entity.IsDeleted)
+                throw new InvalidOperationException();
 
             entity.LastUpdated = DateTime.UtcNow;
 
             return entity;
         }
 
-        public async Task<TEntity> GetEntityForUpdate(TKey id, Func<IQueryable<TEntity>, IQueryable<TEntity>> include)
+        public async Task<TEntity> GetEntityForChange(TKey id, Func<IQueryable<TEntity>, IQueryable<TEntity>> include)
         {
             throw new NotImplementedException();
         }

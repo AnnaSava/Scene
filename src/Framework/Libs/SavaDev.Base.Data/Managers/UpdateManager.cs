@@ -21,9 +21,9 @@ namespace SavaDev.Base.Data.Managers
         private readonly IMapper _mapper;
         private readonly IDbContext _dbContext;
         private readonly ILogger _logger;
-        private IUpdateSelector<TKey, TEntity> updateSelector;
+        private IChangeSelector<TKey, TEntity> updateSelector;
 
-        public UpdateManager(IDbContext dbContext, IMapper mapper, ILogger logger, IUpdateSelector<TKey, TEntity> selector)
+        public UpdateManager(IDbContext dbContext, IMapper mapper, ILogger logger, IChangeSelector<TKey, TEntity> selector)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -35,7 +35,7 @@ namespace SavaDev.Base.Data.Managers
         {
             var updater = new EntityUpdater<TKey, TEntity>(_dbContext, _logger)
                 .ValidateModel(async (model) => { })
-                .GetEntity(async (id) => await updateSelector.GetEntityForUpdate(id))
+                .GetEntity(async (id) => await updateSelector.GetEntityForChange(id))
                 .SetValues(async (entity, model) => _mapper.Map(model, entity))
                 .Update(DoUpdate)
                 .SuccessResult(entity => new OperationResult(1, _mapper.Map<TFormModel>(entity)))
@@ -48,7 +48,7 @@ namespace SavaDev.Base.Data.Managers
         {
             var updater = new EntityUpdater<TKey, TEntity>(_dbContext, _logger)
                 .ValidateModel(async (model) => { })
-                .GetEntity(async (id) => await updateSelector.GetEntityForUpdate(id))
+                .GetEntity(async (id) => await updateSelector.GetEntityForChange(id))
                 .ValidateEntity(validateEntity)
                 .SetValues(async (entity, model) => _mapper.Map(model, entity))
                 .Update(DoUpdate)

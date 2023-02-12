@@ -107,7 +107,7 @@ namespace SavaDev.Base.Data.Services
         public async Task<OperationResult> Publish(TKey id)
         {
             var updater = new EntityUpdater<TKey, TEntity>(_dbContext, _logger)
-                .GetEntity(async (id) => await UpdateSelector.GetEntityForUpdate(id))
+                .GetEntity(async (id) => await UpdateSelector.GetEntityForChange(id))
                 .ValidateEntity(async (entity) =>
                 {
                     if (entity.Status != DocumentStatus.Draft)
@@ -150,32 +150,7 @@ namespace SavaDev.Base.Data.Services
 
         public async Task<OperationResult> Restore(TKey id)
         {
-            var result = await RestoreManager.SetField(id, entity => entity.IsDeleted = false, async (entity) =>
-            {
-                // TODO я не очень уверена, что это нужно, но пока пусть будет, потому что зачем нам делать лишний запрос к БД на апдейт?
-                if (entity.IsDeleted == false)
-                {
-                    throw new InvalidOperationException($"Cannot restore Legal document id={entity.Id} name={entity.PermName}. Legal document is not deleted");
-                }
-
-                // TODO здесь, возможно, нужно заменять содержимое или удалять более поздний черновик, но пока пусть будет ошибка
-                if (entity.Status == DocumentStatus.Draft)
-                {
-                    if (await _dbContext.Set<TEntity>().AnyAsync(m => m.PermName == entity.PermName && m.Status == DocumentStatus.Draft && m.IsDeleted == false))
-                    {
-                        throw new InvalidOperationException($"Cannot restore Legal document id={entity.Id} name={entity.PermName} status=Draft. Draft already exists.");
-                    }
-                }
-
-                // TODO здесь, возможно, нужно менять статус на Outdated, но пока пусть будет ошибка
-                if (entity.Status == DocumentStatus.Published)
-                {
-                    if (await _dbContext.Set<TEntity>().AnyAsync(m => m.PermName == entity.PermName && m.Status == DocumentStatus.Published && m.IsDeleted == false))
-                    {
-                        throw new InvalidOperationException($"Cannot restore Legal document id={entity.Id} name={entity.PermName} status=Published. Published document already exists.");
-                    }
-                }
-            });
+            var result = await RestoreManager.SetField(id, entity => entity.IsDeleted = false, validateEntity: ValidateRestore);
             return result;
         }
 
@@ -272,6 +247,33 @@ namespace SavaDev.Base.Data.Services
             if (hasDraft)
             {
                 throw new InvalidOperationException($"Draft for document {docModel.PermName} with culture {docModel.Culture} already exists.");
+            }
+        }
+
+        private async Task ValidateRestore(TEntity entity)
+        {
+            // TODO я не очень уверена, что это нужно, но пока пусть будет, потому что зачем нам делать лишний запрос к БД на апдейт?
+            if (entity.IsDeleted == false)
+            {
+                throw new InvalidOperationException($"Cannot restore Legal document id={entity.Id} name={entity.PermName}. Legal document is not deleted");
+            }
+
+            // TODO здесь, возможно, нужно заменять содержимое или удалять более поздний черновик, но пока пусть будет ошибка
+            if (entity.Status == DocumentStatus.Draft)
+            {
+                if (await _dbContext.Set<TEntity>().AnyAsync(m => m.PermName == entity.PermName && m.Status == DocumentStatus.Draft && m.IsDeleted == false))
+                {
+                    throw new InvalidOperationException($"Cannot restore Legal document id={entity.Id} name={entity.PermName} status=Draft. Draft already exists.");
+                }
+            }
+
+            // TODO здесь, возможно, нужно менять статус на Outdated, но пока пусть будет ошибка
+            if (entity.Status == DocumentStatus.Published)
+            {
+                if (await _dbContext.Set<TEntity>().AnyAsync(m => m.PermName == entity.PermName && m.Status == DocumentStatus.Published && m.IsDeleted == false))
+                {
+                    throw new InvalidOperationException($"Cannot restore Legal document id={entity.Id} name={entity.PermName} status=Published. Published document already exists.");
+                }
             }
         }
 

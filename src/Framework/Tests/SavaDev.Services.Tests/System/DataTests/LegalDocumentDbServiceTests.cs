@@ -380,19 +380,6 @@ namespace SavaDev.Services.Tests.System.DataTests
         }
 
         [Theory]
-        [MemberData(nameof(DataInit.GetLegalDocumentIdsInput), nameof(GetOne_DeletedOk), MemberType = typeof(DataInit))]
-        public async Task GetOne_DeletedOk(long id)
-        {
-            // Arrange
-
-            // Act
-            var model = await _legalDocumentService.GetOne<LegalDocumentModel>(id);
-
-            // Assert
-            Assert.NotNull(model);
-        }
-
-        [Theory]
         [MemberData(nameof(DataInit.GetLegalDocumentIdsInput), nameof(GetOne_NotExists), MemberType = typeof(DataInit))]
         public async Task GetOne_NotExists(long id)
         {

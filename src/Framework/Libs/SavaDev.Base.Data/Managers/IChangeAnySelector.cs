@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Base.Data.Managers
 {
-    public interface IUpdateAnySelector<TEntity>
+    public interface IChangeAnySelector<TEntity>
     {
-        Task<TEntity> GetEntityForUpdate(Expression<Func<TEntity, bool>> expression);
+        Task<TEntity> GetEntityForChange(Expression<Func<TEntity, bool>> expression);
     }
 }

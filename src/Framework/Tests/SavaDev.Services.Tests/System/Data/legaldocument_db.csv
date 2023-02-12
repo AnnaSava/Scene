@@ -11,10 +11,10 @@ any test text 9 13;11.02.2023 9:20;en;9;any test text 9 9;True;11.02.2023 9:20;d
 any test text 10 13;11.02.2023 9:20;en;10;any test text 10 11;False;11.02.2023 9:20;doc4;1;any test text 10 14;any test text 10 10
 any test text 11 12;11.02.2023 9:20;en;11;any test text 11 14;False;11.02.2023 9:20;doc5;2;any test text 11 13;any test text 11 12
 any test text 12 13;11.02.2023 9:20;en;12;any test text 12 15;False;11.02.2023 9:20;doc5;1;any test text 12 16;any test text 12 13
-any test text 13 13;11.02.2023 9:20;en;13;any test text 13 16;True;11.02.2023 9:20;doc6;2;any test text 13 14;any test text 13 13
+any test text 13 13;11.02.2023 9:20;en;13;any test text 13 16;False;11.02.2023 9:20;doc6;2;any test text 13 14;any test text 13 13
 any test text 14 18;11.02.2023 9:20;en;14;any test text 14 14;True;11.02.2023 9:20;doc7;0;any test text 14 14;any test text 14 17
 any test text 15 17;11.02.2023 9:20;en;15;any test text 15 18;True;11.02.2023 9:20;doc7;2;any test text 15 16;any test text 15 15
-any test text 16 16;11.02.2023 9:20;en;16;any test text 16 18;False;11.02.2023 9:20;doc7;1;any test text 16 17;any test text 16 16
+any test text 16 16;11.02.2023 9:20;en;16;any test text 16 18;True;11.02.2023 9:20;doc7;1;any test text 16 17;any test text 16 16
 any test text 17 19;11.02.2023 9:20;en;17;any test text 17 21;False;11.02.2023 9:20;doc7;0;any test text 17 21;any test text 17 20
 any test text 18 20;11.02.2023 9:20;en;18;any test text 18 18;True;11.02.2023 9:20;doc8;1;any test text 18 22;any test text 18 21
 any test text 18 21;12.02.2023 9:20;en;19;any test text 18 19;False;12.02.2023 9:20;doc8;1;any test text 18 22;any test text 18 21

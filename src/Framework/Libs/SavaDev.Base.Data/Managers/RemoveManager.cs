@@ -21,9 +21,9 @@ namespace SavaDev.Base.Data.Managers
         private readonly IMapper _mapper;
         private readonly IDbContext _dbContext;
         private readonly ILogger _logger;
-        private IUpdateAnySelector<TEntity> updateSelector;
+        private IChangeAnySelector<TEntity> updateSelector;
 
-        public RemoveManager(IDbContext dbContext, IMapper mapper, ILogger logger,IUpdateAnySelector<TEntity> selector)
+        public RemoveManager(IDbContext dbContext, IMapper mapper, ILogger logger,IChangeAnySelector<TEntity> selector)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -34,7 +34,7 @@ namespace SavaDev.Base.Data.Managers
         public async Task<OperationResult> Remove(Expression<Func<TEntity, bool>> expression)
         {
             var remover = new EntityRemover<bool, TEntity>(_dbContext, _logger) // TODO придумать все же что-то с параметром айдишника
-                .GetEntity(async (exp) => await updateSelector.GetEntityForUpdate(exp))
+                .GetEntity(async (exp) => await updateSelector.GetEntityForChange(exp))
                 .Remove(DoRemove)
                 .SuccessResult(entity => new OperationResult(1))
                 .ErrorResult((errMessage) => new OperationResult((int)DbOperationRows.OnFailure, new OperationExceptionInfo(errMessage)));
@@ -56,9 +56,9 @@ namespace SavaDev.Base.Data.Managers
         private readonly IMapper _mapper;
         private readonly IDbContext _dbContext;
         private readonly ILogger _logger;
-        private IUpdateSelector<TKey, TEntity> updateSelector;
+        private IChangeSelector<TKey, TEntity> updateSelector;
 
-        public RemoveManager(IDbContext dbContext, IMapper mapper, ILogger logger, IUpdateSelector<TKey, TEntity> selector)
+        public RemoveManager(IDbContext dbContext, IMapper mapper, ILogger logger, IChangeSelector<TKey, TEntity> selector)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -69,7 +69,7 @@ namespace SavaDev.Base.Data.Managers
         public async Task<OperationResult> Remove(TKey id)
         {
             var remover = new EntityRemover<TKey, TEntity>(_dbContext, _logger)
-                .GetEntity(async (id) => await updateSelector.GetEntityForUpdate(id))
+                .GetEntity(async (id) => await updateSelector.GetEntityForChange(id))
                 .Remove(DoRemove)
                 .SuccessResult(entity => new OperationResult(1))
                 .ErrorResult((errMessage) => new OperationResult((int)DbOperationRows.OnFailure, new OperationExceptionInfo(errMessage)));
