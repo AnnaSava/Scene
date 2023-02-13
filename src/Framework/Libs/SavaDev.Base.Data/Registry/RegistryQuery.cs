@@ -10,6 +10,7 @@ namespace SavaDev.Base.Data.Registry
 {
     public class RegistryQuery<TFilter> : RegistryQuery
     {
+        [Obsolete]
         public TFilter Filter { get; set; }
 
         public RegistryQuery(RegistryPageInfo pageInfo, string sortString) : base(pageInfo, sortString)

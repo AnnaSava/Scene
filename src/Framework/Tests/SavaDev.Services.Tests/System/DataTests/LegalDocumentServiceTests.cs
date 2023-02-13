@@ -12,7 +12,7 @@ using SavaDev.System.Data.Services;
 
 namespace SavaDev.Services.Tests.System.DataTests
 {
-    public class LegalDocumentDbServiceTests : IDisposable
+    public class LegalDocumentServiceTests : IDisposable
     {
         private IMapper _mapper;
         private ILogger<LegalDocumentService> _logger;
@@ -20,7 +20,7 @@ namespace SavaDev.Services.Tests.System.DataTests
         private LegalDocumentService _legalDocumentService;
         private readonly string[] _cultures = new string[] { "en", "ru" };
 
-        public LegalDocumentDbServiceTests()
+        public LegalDocumentServiceTests()
         {
             _mapper = Dependencies.GetDataMapper();
             _logger = TestsInfrastructure.GetLogger<LegalDocumentService>();
@@ -34,6 +34,7 @@ namespace SavaDev.Services.Tests.System.DataTests
             _mapper = null;
             _context = null;
             _legalDocumentService = null;
+            _logger = null;
         }
 
         #region Create 

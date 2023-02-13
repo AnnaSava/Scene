@@ -142,8 +142,7 @@ namespace SavaDev.Base.Data.Managers.Crud
                 await tran.RollbackAsync();
                 _logger.LogError($"{nameof(DoUpdate)}: {ex.Message} {ex.InnerException?.Message} {ex.StackTrace}");
                 var result = DoOnError(ex.Message);
-                result.Rows = -1; // TODO раз присваиваем здесь, то выпилить из конструктора OperationResultи вызовов методов
-                return result;
+                throw;
             }
         }
 

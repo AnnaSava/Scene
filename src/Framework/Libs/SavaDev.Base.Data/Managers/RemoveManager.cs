@@ -36,8 +36,7 @@ namespace SavaDev.Base.Data.Managers
             var remover = new EntityRemover<bool, TEntity>(_dbContext, _logger) // TODO придумать все же что-то с параметром айдишника
                 .GetEntity(async (exp) => await updateSelector.GetEntityForChange(exp))
                 .Remove(DoRemove)
-                .SuccessResult(entity => new OperationResult(1))
-                .ErrorResult((errMessage) => new OperationResult((int)DbOperationRows.OnFailure, new OperationExceptionInfo(errMessage)));
+                .SuccessResult(entity => new OperationResult(1));
 
             return await remover.DoRemove(expression);
         }

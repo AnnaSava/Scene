@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SavaDev.Base.Data.Context;
 using SavaDev.Base.Data.Managers;
+using SavaDev.Base.Data.Models.Interfaces;
 using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Services;
 using SavaDev.System.Data.Contract;
@@ -26,7 +27,7 @@ namespace SavaDev.System.Data.Services
 
         #region Public Constructors
 
-        public ReservedNameService(IDbContext dbContext, IMapper mapper, ILogger<ReservedName> logger)
+        public ReservedNameService(IDbContext dbContext, IMapper mapper, ILogger<ReservedNameService> logger)
             : base(dbContext, mapper, nameof(ReservedNameService))
         {
             CreateManager = new CreateManager<ReservedName, ReservedNameModel>(dbContext, mapper, logger);
@@ -42,7 +43,7 @@ namespace SavaDev.System.Data.Services
         #region Public Methods: Mutation
 
         public async Task<OperationResult> Create(ReservedNameModel model) 
-            => await CreateManager.Create(model);
+            => await CreateManager.Create(model, validate: Validate);
         public async Task<OperationResult> Update(ReservedNameModel model) 
             => await UpdateManager.Update(m => m.Text == model.Text, model);
         public async Task<OperationResult> Remove(string text) 
@@ -83,6 +84,24 @@ namespace SavaDev.System.Data.Services
         {
             var page = await AllSelector.GetRegistryPage<ReservedNameFilterModel, ReservedNameModel>(query);
             return page;
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private async Task Validate(IFormModel model)
+        {
+            var docModel = model as ReservedNameModel;
+            if (docModel?.Text == null)
+            {
+                throw new ArgumentNullException("Text is null.");
+            }
+            var exists = await CheckExists(docModel.Text);
+            if (exists)
+            {
+                throw new InvalidOperationException($"Reserved name {docModel.Text} already exists.");
+            }
         }
 
         #endregion

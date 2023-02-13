@@ -4,11 +4,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SavaDev.System.Data.Entities
 {
-    public class Permission : IAnyEntity
+    public class Permission : IAnyEntity, ICloneable
     {
         [Key]
         public string Name { get; set; }
 
         public ICollection<PermissionCulture> Cultures { get; set; }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
     }
 }

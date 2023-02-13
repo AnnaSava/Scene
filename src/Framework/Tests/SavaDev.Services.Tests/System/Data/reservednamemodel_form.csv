@@ -1,0 +1,32 @@
+MTDKEY;IncludePlural;Text
+Create_Ok;False;system
+Create_Ok;False;system2
+Create_Ok;False;System
+Create_Ok;False;system 
+Create_Ok;False; system
+Create_Ok;False; system 
+Create_NameExists;False;admin
+Create_NameExists;False;Admin
+Create_NameWrong;False;sp ace
+Create_NameWrong;False;pl+s
+Update_Ok;False;admin
+Update_Ok;False;Admin
+Update_EntityNotFound;False;god
+Remove_Ok;False;admin
+Remove_Ok;False;Admin
+Remove_EntityNotFound;False;god
+Remove_EntityNotFound;False;admins
+CheckIsReserved_True;False;admin
+CheckIsReserved_True;False;admins
+CheckIsReserved_True;False;create
+CheckIsReserved_True;False;Admin
+CheckIsReserved_False;False;creates
+CheckIsReserved_False;False;god
+CheckExists_True;False;admin
+CheckExists_True;False;Admin
+CheckExists_False;False;god
+CheckExists_False;False;admins
+GetOne_Ok;False;admin
+GetOne_Ok;False;Admin
+GetOne_NotFound;False;god
+GetOne_NotFound;False;admins

@@ -17,7 +17,7 @@ namespace SavaDev.System.Data.Services
 
         protected CreateManager<Permission, PermissionModel> CreateManager { get; }
         protected OneSelector<Permission> OneSelector { get; }
-        protected AllSelector<bool, ReservedName> AllSelector { get; } // TODO убрать бул
+        protected AllSelector<bool, Permission> AllSelector { get; } // TODO убрать бул
 
         #endregion
 
@@ -28,7 +28,7 @@ namespace SavaDev.System.Data.Services
         {
             CreateManager = new CreateManager<Permission, PermissionModel>(dbContext, mapper, logger);
             OneSelector = new OneSelector<Permission>(dbContext, mapper, logger);
-            AllSelector = new AllSelector<bool, ReservedName>(dbContext, mapper, logger);
+            AllSelector = new AllSelector<bool, Permission>(dbContext, mapper, logger);
         }
 
         #endregion
@@ -96,6 +96,7 @@ namespace SavaDev.System.Data.Services
 
             return await _dbContext.Set<Permission>().Where(m => normalizedNames.Contains(m.Name.ToLower()))
                 .Select(m => m.Name)
+                .OrderBy(m => m)
                 .ToListAsync();
         }
 

@@ -41,8 +41,7 @@ namespace SavaDev.Base.Data.Managers
                 .GetEntity(async (exp) => await updateSelector.GetEntityForChange(exp))
                 .SetValues(async (entity, model) => _mapper.Map(model, entity))
                 .Update(DoUpdate)
-                .SuccessResult(entity => new OperationResult(1, _mapper.Map<TFormModel>(entity)))
-                .ErrorResult((id, errMessage) => new OperationResult((int)DbOperationRows.OnFailure, id, new OperationExceptionInfo(errMessage)));
+                .SuccessResult(entity => new OperationResult(1, _mapper.Map<TFormModel>(entity)));
 
             return await updater.DoUpdate<TFormModel>(expression, model);
         }

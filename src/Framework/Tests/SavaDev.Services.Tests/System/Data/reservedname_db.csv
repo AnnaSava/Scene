@@ -1,0 +1,5 @@
+IncludePlural;Text
+True;admin
+True;moderator
+False;create
+True;drop

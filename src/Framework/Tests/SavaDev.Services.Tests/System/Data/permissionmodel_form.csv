@@ -1,0 +1,7 @@
+MTDKEY;Name
+CheckExists_True;user.create
+CheckExists_True;User.Create
+CheckExists_False;user.sendtospace
+GetOne_Ok;user.create
+GetOne_Ok;User.Create
+GetOne_NotFound;user.sendtospace
