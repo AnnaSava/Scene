@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SavaDev.Base.Data.Registry.Filter
+namespace SavaDev.Libs.Tests.Base.Data.Managers.Fake
 {
-    public class BaseFilter
+    internal class TestModel
     {
-        // TODO вынести в класс ...Restorable
+        public long Id { get; set; }
+
+        public DateTime LastUpdated { get; set; }
+
         public bool IsDeleted { get; set; }
     }
 }

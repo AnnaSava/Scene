@@ -1,11 +1,14 @@
-using Framework.Helpers.TypeHelpers;
+﻿using SavaDev.Base.Data.Registry.Enums;
+using SavaDev.Base.Data.Registry.Filter;
 using System;
 using System.Collections.Generic;
-using Xunit;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Framework.Helpers.Tests
+namespace SavaDev.Libs.Tests.Base.Data.Registry
 {
-    public class StringTests
+    public class StringExtentionsTests
     {
         [Theory]
         [MemberData(nameof(EnumerationData))]

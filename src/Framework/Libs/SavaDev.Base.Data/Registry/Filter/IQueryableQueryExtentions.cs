@@ -1,4 +1,5 @@
-﻿using SavaDev.Base.Data.Registry.Enums;
+﻿using SavaDev.Base.Data.Entities.Interfaces;
+using SavaDev.Base.Data.Registry.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +15,13 @@ namespace SavaDev.Base.Data.Registry.Filter
     {
         public static IQueryable<T> ApplyFilters<T>(this IQueryable<T> list, BaseFilter filter)
         {
-            if (filter == null) return list;
+            if (filter == null) return list.ApplyIsDeletedFilter(filter);
 
             var filterType = filter.GetType();
             var filterFields = filterType.GetProperties();
 
             return list
+                .ApplyIsDeletedFilter(filter)
                 .ApplyStringFilters(filterFields.Where(f => f.PropertyType.Name == nameof(String)), filter)
                 .ApplyBoolFilters(filterFields.Where(f => f.PropertyType.Name == nameof(Boolean)), filter)
                 .ApplyWordFilters(filterFields.Where(f => f.PropertyType.Name == nameof(WordFilterField)), filter)
@@ -51,6 +53,14 @@ namespace SavaDev.Base.Data.Registry.Filter
             return await list.ToPagedListAsync(pageInfo.PageNumber, pageInfo.RowsCount);
         }
 
+        private static IQueryable<T> ApplyIsDeletedFilter<T>(this IQueryable<T> list, BaseFilter filter)
+        {
+            if(list is IQueryable<IEntityRestorable> && filter == null)
+            {
+                list = list.Where("IsDeleted=false");
+            }
+            return list;
+        }
         private static IQueryable<T> ApplyStringFilters<T>(this IQueryable<T> list, IEnumerable<PropertyInfo> filterFields, BaseFilter filter)
         {
             if (filterFields == null) return list;

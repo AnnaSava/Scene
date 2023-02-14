@@ -13,6 +13,8 @@ namespace SavaDev.Base.Data.Registry
         [Obsolete]
         public TFilter Filter { get; set; }
 
+        public RegistryQuery() { }
+
         public RegistryQuery(RegistryPageInfo pageInfo, string sortString) : base(pageInfo, sortString)
         {
         }
@@ -33,7 +35,7 @@ namespace SavaDev.Base.Data.Registry
 
         public RegistryPageInfo PageInfo { get; set; } = new RegistryPageInfo();
 
-        public List<RegistrySort> Sort { get; private set; } = new List<RegistrySort>();
+        public List<RegistrySort> Sort { get; set; } = new List<RegistrySort>();
 
         public RegistryQuery() { }
 

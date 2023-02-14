@@ -144,7 +144,7 @@ namespace SavaDev.Base.Data.Managers.Crud
         {
             var list = GetList();
 
-            if(RegistryQuery?.Filter0 != null)
+            //if(RegistryQuery?.Filter0 != null)
             {
                 list = list.ApplyFilters(RegistryQuery.Filter0);
             }

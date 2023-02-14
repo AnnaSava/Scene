@@ -21,4 +21,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libs\SavaDev.Base.Data\SavaDev.Base.Data.csproj" />
+    <ProjectReference Include="..\SavaDev.Libs.UnitTestingHelpers\SavaDev.Libs.UnitTestingHelpers.csproj" />
+  </ItemGroup>
+
 </Project>
