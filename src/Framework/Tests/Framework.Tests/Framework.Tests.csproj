@@ -30,4 +30,8 @@
     <ProjectReference Include="..\..\Services\System\SavaDev.System.Data\SavaDev.System.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Base\Actions\" />
+  </ItemGroup>
+
 </Project>

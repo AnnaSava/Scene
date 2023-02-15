@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Libs.Tests.Base.Data.Managers.Fake
 {
-    public class TestFilterModel : BaseFilter
+    public class FakeFilterModel : BaseFilter
     {
         public NumericFilterField<long> Id { get; set; }
     }

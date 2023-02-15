@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Libs.Tests.Base.Data.Managers.Fake
 {
-    internal class TestEntity : IEntity<long>, IEntityRestorable
+    internal class FakeEntity : IEntity<long>, IEntityRestorable
     {
         public long Id { get; set; }
 

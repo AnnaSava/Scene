@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Libs.Tests.Base.Data.Managers.Fake
 {
-    internal class TestDbContext : DbContext, IDbContext
+    internal class FakeContext : DbContext, IDbContext
     {
-        public DbSet<TestEntity> TestEntities { get; set; }
+        public DbSet<FakeEntity> TestEntities { get; set; }
 
-        public TestDbContext() { }
+        public FakeContext() { }
 
-        public TestDbContext(DbContextOptions<TestDbContext> options)
+        public FakeContext(DbContextOptions<FakeContext> options)
             : base(options)
         {
 

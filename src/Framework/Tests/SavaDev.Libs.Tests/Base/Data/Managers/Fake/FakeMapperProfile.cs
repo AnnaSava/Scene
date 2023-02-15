@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Libs.Tests.Base.Data.Managers.Fake
 {
-    internal class TestAutoMapperProfile : Profile
+    internal class FakeMapperProfile : Profile
     {
-        public TestAutoMapperProfile()
+        public FakeMapperProfile()
         {
-            CreateMap<TestEntity, TestModel>();
-            CreateMap<TestModel, TestEntity>();
+            CreateMap<FakeEntity, FakeModel>();
+            CreateMap<FakeModel, FakeEntity>();
         }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using SavaDev.Libs.Tests.Base.Data.Managers.Fake;
+using SavaDev.Libs.Tests.Base.Data.Services.Fake;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SavaDev.Libs.Tests.Base.Data.Managers
+namespace SavaDev.Libs.Tests.Base.Data.Services
 {
     internal class Dependencies
     {

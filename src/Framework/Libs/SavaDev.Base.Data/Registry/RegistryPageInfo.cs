@@ -8,11 +8,30 @@ namespace SavaDev.Base.Data.Registry
 {
     public class RegistryPageInfo
     {
-        public int PageNumber { get; set; }
+        private int pageNumber = 1;
+        private int rowsCount = 20;
 
-        public int RowsCount { get; set; }
+        public int PageNumber
+        {
+            get { return pageNumber; }
+            set
+            {
+                if (value < 1) throw new ArgumentOutOfRangeException(nameof(PageNumber), $"Value must be greater than 0. Value: {value}");
+                pageNumber = value;
+            }
+        }
 
-        public RegistryPageInfo() { PageNumber = 1; RowsCount = 20; }
+        public int RowsCount
+        {
+            get { return rowsCount; }
+            set
+            {
+                if (value < 1) throw new ArgumentOutOfRangeException(nameof(RowsCount), $"Value must be greater than 0. Value: {value}");
+                rowsCount = value;
+            }
+        }
+
+        public RegistryPageInfo() { }
 
         public RegistryPageInfo(int pageNumber, int rowsCount)
         {

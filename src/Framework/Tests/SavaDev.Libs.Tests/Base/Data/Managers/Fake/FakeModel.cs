@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Libs.Tests.Base.Data.Managers.Fake
 {
-    internal class TestModel
+    internal class FakeModel
     {
         public long Id { get; set; }
 

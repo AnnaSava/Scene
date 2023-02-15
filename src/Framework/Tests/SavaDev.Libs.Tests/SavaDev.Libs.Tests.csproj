@@ -23,7 +23,17 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Libs\SavaDev.Base.Data\SavaDev.Base.Data.csproj" />
+    <ProjectReference Include="..\..\Libs\SavaDev.Infrastructure\SavaDev.Infrastructure.csproj" />
     <ProjectReference Include="..\SavaDev.Libs.UnitTestingHelpers\SavaDev.Libs.UnitTestingHelpers.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Base\Data\Services\Fake\Data\fakedocumentmodel_form.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Base\Data\Services\Fake\Data\fakedocument_db.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -18,23 +18,23 @@ namespace SavaDev.Libs.Tests.Base.Data.Managers
     {
         private IMapper _mapper;
         private ILogger<GetRegistryTests> _logger;
-        private TestDbContext _context;
-        private EntitySelector<long, TestEntity, TestModel, TestFilterModel> selector; 
+        private FakeContext _context;
+        private EntitySelector<long, FakeEntity, FakeModel, FakeFilterModel> selector; 
 
         public GetRegistryTests()
         {
             _mapper = Dependencies.GetDataMapper();
             _logger = TestsInfrastructure.GetLogger<GetRegistryTests>();
-            _context = TestsInfrastructure.GetContext<TestDbContext>(x => new TestDbContext(x));
+            _context = TestsInfrastructure.GetContext<FakeContext>(x => new FakeContext(x));
             DataInit.FillContextWithEntities(_context);
             //_legalDocumentService = new LegalDocumentService(_context, _cultures, _mapper, _logger);
-            selector = new EntitySelector<long, TestEntity, TestModel, TestFilterModel>(_context, _mapper, _logger);
+            selector = new EntitySelector<long, FakeEntity, FakeModel, FakeFilterModel>(_context, _mapper, _logger);
         }
 
 
         [Theory]
         [MemberData(nameof(FilterData_CheckCount))]
-        public async Task GetAll_CheckCount(RegistryQuery<TestFilterModel> query, long expectedCount)
+        public async Task ToRegistryPage_CheckCount(RegistryQuery<FakeFilterModel> query, long expectedCount)
         {
             // Arrange
 
@@ -48,12 +48,12 @@ namespace SavaDev.Libs.Tests.Base.Data.Managers
         [Theory]
         [MemberData(nameof(FilterData_Ids))]
         [MemberData(nameof(FilterData_Ids_Ext))]
-        public async Task GetAll_ById_CheckIds(MatchModeNumeric matchMode, List<long> values, long[] expectedIds)
+        public async Task ToRegistryPage_ById_CheckIds(MatchModeNumeric matchMode, List<long> values, long[] expectedIds)
         {
             // Arrange
-            var query = new RegistryQuery<TestFilterModel>
+            var query = new RegistryQuery<FakeFilterModel>
             {
-                Filter0 = new TestFilterModel
+                Filter0 = new FakeFilterModel
                 {
                     Id = new NumericFilterField<long>
                     {
@@ -72,12 +72,12 @@ namespace SavaDev.Libs.Tests.Base.Data.Managers
 
         [Theory]
         [MemberData(nameof(FilterData_Ids_NotFound))]
-        public async Task GetAll_ById_NotFound(MatchModeNumeric matchMode, List<long> values)
+        public async Task ToRegistryPage_ById_NotFound(MatchModeNumeric matchMode, List<long> values)
         {
             // Arrange
-            var query = new RegistryQuery<TestFilterModel>
+            var query = new RegistryQuery<FakeFilterModel>
             {
-                Filter = new TestFilterModel
+                Filter0 = new FakeFilterModel
                 {
                     Id = new NumericFilterField<long>
                     {
@@ -95,12 +95,12 @@ namespace SavaDev.Libs.Tests.Base.Data.Managers
         }
 
         [Fact]
-        public async Task GetAll_ById_MatchModeNotSet()
+        public async Task ToRegistryPage_ById_MatchModeNotSet()
         {
             // Arrange
-            var query = new RegistryQuery<TestFilterModel>
+            var query = new RegistryQuery<FakeFilterModel>
             {
-                Filter = new TestFilterModel
+                Filter = new FakeFilterModel
                 {
                     Id = new NumericFilterField<long>()
                 }
@@ -116,10 +116,10 @@ namespace SavaDev.Libs.Tests.Base.Data.Managers
 
         [Theory]
         [MemberData(nameof(SortData_Fields_CheckFirstId))]
-        public async Task GetAll_Sort_CheckFirstId(string fieldName, SortDirection direction, long expectedFirstId)
+        public async Task ToRegistryPage_Sort_CheckFirstId(string fieldName, SortDirection direction, long expectedFirstId)
         {
             // Arrange
-            var query = new RegistryQuery<TestFilterModel>()
+            var query = new RegistryQuery<FakeFilterModel>()
             {
                 Sort = new List<RegistrySort>()
                 {
@@ -136,10 +136,10 @@ namespace SavaDev.Libs.Tests.Base.Data.Managers
 
         [Theory]
         [MemberData(nameof(SortData_Paging_CheckFirstId))]
-        public async Task GetAll_SortIdAsc_Paging_CheckFirstId(int pageNumber, int rowsCount, long expectedFirstId)
+        public async Task ToRegistryPage_SortIdAsc_Paging_CheckFirstId(int pageNumber, int rowsCount, long expectedFirstId)
         {
             // Arrange
-            var query = new RegistryQuery<TestFilterModel>
+            var query = new RegistryQuery<FakeFilterModel>
             {
                 PageInfo = new RegistryPageInfo
                 {
@@ -160,10 +160,10 @@ namespace SavaDev.Libs.Tests.Base.Data.Managers
 
         [Theory]
         [MemberData(nameof(SortData_Paging_CheckFirstId))]
-        public async Task GetAll_SortDefault_Paging_CheckFirstId(int pageNumber, int rowsCount, long expectedFirstId)
+        public async Task ToRegistryPage_SortDefault_Paging_CheckFirstId(int pageNumber, int rowsCount, long expectedFirstId)
         {
             // Arrange
-            var query = new RegistryQuery<TestFilterModel>
+            var query = new RegistryQuery<FakeFilterModel>
             {
                 PageInfo = new RegistryPageInfo
                 {
@@ -182,10 +182,10 @@ namespace SavaDev.Libs.Tests.Base.Data.Managers
 
         // TODO проработать кейс
         //[Fact]
-        private async Task GetAll_Sort_WrongField_CheckFirstId()
+        private async Task ToRegistryPage_Sort_WrongField_CheckFirstId()
         {
             // Arrange
-            var query = new RegistryQuery<TestFilterModel>
+            var query = new RegistryQuery<FakeFilterModel>
             {
                 Sort = new List<RegistrySort>
                 {
@@ -203,7 +203,7 @@ namespace SavaDev.Libs.Tests.Base.Data.Managers
         [Theory]
         [InlineData(1)]
         [InlineData(3)]
-        public void PageInfoModel_SetPageNumber(int pageNumber)
+        public void RegistryPageInfo_SetPageNumber(int pageNumber)
         {
             // Arrange
             var pageInfo = new RegistryPageInfo();
@@ -218,7 +218,7 @@ namespace SavaDev.Libs.Tests.Base.Data.Managers
         [Theory]
         [InlineData(0)]
         [InlineData(-1)]
-        public void PageInfoModel_SetPageNumber_Wrong(int pageNumber)
+        public void RegistryPageInfo_SetPageNumber_Wrong(int pageNumber)
         {
             // Arrange
             var pageInfo = new RegistryPageInfo();
@@ -234,7 +234,7 @@ namespace SavaDev.Libs.Tests.Base.Data.Managers
         [Theory]
         [InlineData(1)]
         [InlineData(3)]
-        public void PageInfoModel_SetRowsCount(int rowsCount)
+        public void RegistryPageInfo_SetRowsCount(int rowsCount)
         {
             // Arrange
             var pageInfo = new RegistryPageInfo();
@@ -249,7 +249,7 @@ namespace SavaDev.Libs.Tests.Base.Data.Managers
         [Theory]
         [InlineData(0)]
         [InlineData(-1)]
-        public void PageInfoModel_SetRowsCount_Wrong(int rowsCount)
+        public void RegistryPageInfo_SetRowsCount_Wrong(int rowsCount)
         {
             // Arrange
             var pageInfo = new RegistryPageInfo();
@@ -259,17 +259,17 @@ namespace SavaDev.Libs.Tests.Base.Data.Managers
 
             // Assert
             Assert.Throws<ArgumentOutOfRangeException>(action);
-            Assert.Equal(10, pageInfo.RowsCount);
+            Assert.Equal(20, pageInfo.RowsCount);
         }
 
         #region Test Cases
 
         public static IEnumerable<object[]> FilterData_CheckCount => new List<object[]>
         {
-            new object[] { new RegistryQuery<TestFilterModel> (), 8 },
-            new object[] { new RegistryQuery<TestFilterModel> { Filter0 = new TestFilterModel () }, 8 },
-            new object[] { new RegistryQuery<TestFilterModel> { Filter0 = new TestFilterModel { IsDeleted = true } }, 2 },
-            new object[] { new RegistryQuery<TestFilterModel> { Filter0 = new TestFilterModel { IsDeleted = false } }, 8 },
+            new object[] { new RegistryQuery<FakeFilterModel> (), 8 },
+            new object[] { new RegistryQuery<FakeFilterModel> { Filter0 = new FakeFilterModel () }, 8 },
+            new object[] { new RegistryQuery<FakeFilterModel> { Filter0 = new FakeFilterModel { IsDeleted = true } }, 2 },
+            new object[] { new RegistryQuery<FakeFilterModel> { Filter0 = new FakeFilterModel { IsDeleted = false } }, 8 },
         };
 
         public static IEnumerable<object[]> FilterData_Ids => new List<object[]>

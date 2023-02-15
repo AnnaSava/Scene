@@ -20,9 +20,12 @@ namespace SavaDev.Base.Data.Registry.Filter
             var filterType = filter.GetType();
             var filterFields = filterType.GetProperties();
 
+            var t = filterFields.Where(f => f.PropertyType.Name.Contains(nameof(Int64)));
+
             return list
                 .ApplyIsDeletedFilter(filter)
                 .ApplyStringFilters(filterFields.Where(f => f.PropertyType.Name == nameof(String)), filter)
+                .ApplyLongFilters(filterFields.Where(f => f.PropertyType.FullName.Contains(nameof(Int64))), filter)
                 .ApplyBoolFilters(filterFields.Where(f => f.PropertyType.Name == nameof(Boolean)), filter)
                 .ApplyWordFilters(filterFields.Where(f => f.PropertyType.Name == nameof(WordFilterField)), filter)
                 .ApplyNullableBoolFilters(filterFields.Where(f => f.PropertyType.Name == "Nullable`1" && f.PropertyType.FullName.Contains("Boolean")), filter)
@@ -117,6 +120,18 @@ namespace SavaDev.Base.Data.Registry.Filter
             return list;
         }
 
+        private static IQueryable<T> ApplyLongFilters<T>(this IQueryable<T> list, IEnumerable<PropertyInfo> filterFields, BaseFilter filter)
+        {
+            if (filterFields == null) return list;
+
+            foreach (var field in filterFields)
+            {
+                list = ApplyLongFilter(list, field.Name, field.GetValue(filter));
+            }
+
+            return list;
+        }
+
         private static IQueryable<T> ApplyIEnumerableFilters<T>(this IQueryable<T> list, IEnumerable<PropertyInfo> filterFields, BaseFilter filter)
         {
             if (filterFields == null) return list;
@@ -203,6 +218,56 @@ namespace SavaDev.Base.Data.Registry.Filter
                     list = list.Where(str, field.Value);
                     break;
                 case MatchModeWord.NotIn:
+                    str = string.Format("not (it.{0} in @0)", fieldName);
+                    list = list.Where(str, field.Value);
+                    break;
+            }
+
+            return list;
+        }
+
+        private static IQueryable<T> ApplyLongFilter<T>(IQueryable<T> list, string fieldName, object fieldObj)
+        {
+            var field = fieldObj as NumericFilterField<long>;
+            if (field == null || field.Value == null || !field.Value.Any()) return list;
+
+            string str;
+
+            switch (field.MatchMode)
+            {
+                case MatchModeNumeric.Equals:
+                    str = string.Format("{0} == \"{1}\"", fieldName, field.Value.FirstOrDefault());
+                    list = list.Where(str);
+                    break;
+                case MatchModeNumeric.NotEquals:
+                    str = string.Format("{0} != \"{1}\"", fieldName, field.Value.FirstOrDefault());
+                    list = list.Where(str);
+                    break;
+                case MatchModeNumeric.Gt:
+                    str = string.Format("{0} > @0", fieldName);
+                    list = list.Where(str, field.Value.FirstOrDefault());
+                    break;
+                case MatchModeNumeric.Gte:
+                    str = string.Format("{0} >= @0", fieldName);
+                    list = list.Where(str, field.Value.FirstOrDefault());
+                    break;
+                case MatchModeNumeric.Lt:
+                    str = string.Format("{0} < @0", fieldName);
+                    list = list.Where(str, field.Value.FirstOrDefault());
+                    break;
+                case MatchModeNumeric.Lte:
+                    str = string.Format("{0} <= @0)", fieldName);
+                    list = list.Where(str, field.Value.FirstOrDefault());
+                    break;
+                case MatchModeNumeric.Between:
+                    str = string.Format("{0} >= @0 && {0} <= @1", fieldName);
+                    list = list.Where(str, field.Value.FirstOrDefault(), field.Value.LastOrDefault());
+                    break;
+                case MatchModeNumeric.In:
+                    str = string.Format("it.{0} in @0", fieldName);
+                    list = list.Where(str, field.Value);
+                    break;
+                case MatchModeNumeric.NotIn:
                     str = string.Format("not (it.{0} in @0)", fieldName);
                     list = list.Where(str, field.Value);
                     break;

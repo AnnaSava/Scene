@@ -6,58 +6,58 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Libs.Tests.Base.Data.Managers.Fake
 {
-    internal class TestData
+    internal class FakeData
     {
-        internal static IEnumerable<TestEntity> GetNewEntities()
+        internal static IEnumerable<FakeEntity> GetNewEntities()
         {
-            return new List<TestEntity>
+            return new List<FakeEntity>
             {
-                new TestEntity
+                new FakeEntity
                 {
                     Id = 1,
                     IsDeleted = false,
                 },
-                new TestEntity
+                new FakeEntity
                 {
                     Id = 2,
                     IsDeleted = false,
                 },
-                new TestEntity
+                new FakeEntity
                 {
                     Id = 3,
                     IsDeleted = false,
                 },
-                new TestEntity
+                new FakeEntity
                 {
                     Id = 4,
                     IsDeleted = false,
                 },
-                new TestEntity
+                new FakeEntity
                 {
                     Id = 5,
                     IsDeleted = false,
                 },
-                new TestEntity
+                new FakeEntity
                 {
                     Id = 6,
                     IsDeleted = false,
                 },
-                new TestEntity
+                new FakeEntity
                 {
                     Id = 7,
                     IsDeleted = false,
                 },
-                new TestEntity
+                new FakeEntity
                 {
                     Id = 8,
                     IsDeleted = false,
                 },
-                new TestEntity
+                new FakeEntity
                 {
                     Id = 9,
                     IsDeleted = true,
                 },
-                new TestEntity
+                new FakeEntity
                 {
                     Id = 10,
                     IsDeleted = true,

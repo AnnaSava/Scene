@@ -1,0 +1,59 @@
+MTDKEY;Created;Culture;Id;IsDeleted;LastUpdated;PermName;Status;Text;Title
+Create_Ok;11.02.2023 9:20;en;0;False;11.02.2023 9:20;doc99;Draft;any test text 1 1;any test text 1 2
+Create_PermNameExists;11.02.2023 9:20;en;0;False;11.02.2023 9:20;doc1;Draft;any test text 2 5;any test text 2 5
+Create_PermNameExists;11.02.2023 9:20;ru;0;False;11.02.2023 9:20;doc2;Draft;any test text 3 5;any test text 3 3
+Create_PermNameExists;11.02.2023 9:20;en;0;False;11.02.2023 9:20;doc3;Draft;any test text 4 8;any test text 4 4
+Create_PermNameExists;11.02.2023 9:20;ru;0;False;11.02.2023 9:20;doc3;Draft;any test text 5 6;any test text 5 6
+CreateTranslation_Ok;11.02.2023 9:20;ru;0;False;11.02.2023 9:20;doc2;Draft;any test text 6 9;any test text 6 7
+CreateTranslation_Ok;11.02.2023 9:20;ru;0;False;11.02.2023 9:20;doc3;Draft;any test text 7 10;any test text 7 9
+CreateTranslation_Exists;11.02.2023 9:20;en;0;False;11.02.2023 9:20;doc1;Draft;any test text 8 8;any test text 8 10
+CreateTranslation_Exists;11.02.2023 9:20;en;0;False;11.02.2023 9:20;doc3;Draft;any test text 9 9;any test text 9 12
+CreateVersion_Ok;11.02.2023 9:20;en;0;False;11.02.2023 9:20;doc3;Draft;any test text 10 10;any test text 10 11
+CreateVersion_Ok;11.02.2023 9:20;en;0;False;11.02.2023 9:20;doc4;Draft;any test text 11 13;any test text 11 11
+CreateVersion_Ok;11.02.2023 9:20;en;0;False;11.02.2023 9:20;doc5;Draft;any test text 12 16;any test text 12 14
+CreateVersion_DraftExists;11.02.2023 9:20;en;0;False;11.02.2023 9:20;doc1;Draft;any test text 13 17;any test text 13 16
+Update_Ok;11.02.2023 9:20;;3;False;11.02.2023 9:20;doc99;Published;any test text 14 15;any test text 14 17
+Update_Ok;11.02.2023 9:20;ru;3;False;11.02.2023 9:20;any test text 15 19;Draft;any test text 15 19;any test text 15 18
+Update_Ok;01.01.2001 0:00;ru;3;False;01.01.2001 0:00;any test text 16 19;Draft;any test text 16 16;any test text 16 16
+Update_Ok;11.02.2023 9:20;ru;3;True;11.02.2023 9:20;any test text 17 19;Draft;any test text 17 21;any test text 17 20
+Update_NotExists;;;99;;;;;;
+Update_NotExists;;;9;;;;;;
+Update_ErrorStatus;;;11;;;;;;
+Update_ErrorStatus;;;12;;;;;;
+Update_ErrorStatus;;;13;;;;;;
+Publish_Ok;;;3;;;;;;
+Publish_ErrorStatus;;;11;;;;;;
+Publish_ErrorStatus;;;12;;;;;;
+Publish_ErrorStatus;;;13;;;;;;
+Publish_ErrorNotExists;;;99;;;;;;
+Publish_ErrorNotExists;;;9;;;;;;
+Delete_Ok;;;3;;;;;;
+Delete_Ok;;;2;;;;;;
+Delete_Ok;;;1;;;;;;
+Delete_NotExists;;;99;;;;;;
+Delete_NotExists;;;9;;;;;;
+Restore_Ok;;;9;;;;;;
+Restore_Ok;;;15;;;;;;
+Restore_Ok;;;16;;;;;;
+Restore_NotExists;;;99;;;;;;
+Restore_NotDeleted;;;17;;;;;;
+Restore_NotSingleDraft;;;14;;;;;;
+Restore_NotSinglePublished;;;18;;;;;;
+GetOne_Ok;;;3;;;;;;
+GetOne_Ok;;;2;;;;;;
+GetOne_Ok;;;1;;;;;;
+GetOne_NotExists;;;99;;;;;;
+GetActual_Ok;;en;;;;doc8;;;
+GetActual_None;;en;;;;doc3;;;
+GetActual_None;;en;;;;doc7;;;
+CheckDocumentExists_True;;;;;;doc1;;;
+CheckDocumentExists_True;;;;;;doc2;;;
+CheckDocumentExists_True;;;;;;doc3;;;
+CheckDocumentExists_False;;;;;;doc999;;;
+CheckTraslationExists_True;;en;;;;doc1;;;
+CheckTraslationExists_False;;ru;;;;doc2;;;
+CheckHasAllTraslations_True;;;;;;doc1;;;
+CheckHasAllTraslations_False;;;;;;doc2;;;
+GetMissingCultures_Ok;;;;;;doc2;;;
+GetMissingCultures_NotExists;;;;;;doc999;;;
+GetMissingCultures_Full;;;;;;doc1;;;
