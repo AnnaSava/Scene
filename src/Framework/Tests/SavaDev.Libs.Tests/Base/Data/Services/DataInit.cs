@@ -22,8 +22,8 @@ namespace SavaDev.Libs.Tests.Base.Data.Services
         {
             if (IsDataLoaded) return;
 
-            FakeDocuments = FieldsManager.GetModels<FakeDocument>("Services\\Fake");
-            FakeDocumentsInput = FieldsManager.GetModelsWithTestMethods<FakeDocumentModel>("Services\\Fake");
+            FakeDocuments = FieldsManager.GetModels<FakeDocument>("Base\\Data\\Services\\Fake");
+            FakeDocumentsInput = FieldsManager.GetModelsWithTestMethods<FakeDocumentModel>("Base\\Data\\Services\\Fake");
             IsDataLoaded = true;
         }
 

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using SavaDev.Base.User.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.User.DataService.Contract.Models
+namespace SavaDev.Users.Data.Contract.Models
 {
     public class UserModel : BaseUserModel
     {

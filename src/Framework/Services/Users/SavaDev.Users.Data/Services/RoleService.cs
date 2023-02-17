@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SavaDev.Base.Data.Context;
 using SavaDev.Base.User.Data.Services;
+using SavaDev.Users.Data.Contract.Models;
+using SavaDev.Users.Data.Entities;
 
 namespace SavaDev.Users.Data
 {

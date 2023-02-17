@@ -1,5 +1,6 @@
 ﻿using Framework.User.DataService.Entities;
 using SavaDev.Users.Data;
+using SavaDev.Users.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

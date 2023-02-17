@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SavaDev.Base.User.Data.Models.Interfaces
 {
-    public abstract  class BaseRoleModel : IModel<long>, IFormModel
+    public abstract class BaseRoleModel : IModel<long>, IFormModel
     {
         public long Id { get; set; }
 

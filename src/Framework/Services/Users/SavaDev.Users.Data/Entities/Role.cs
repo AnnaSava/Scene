@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SavaDev.Users.Data
+namespace SavaDev.Users.Data.Entities
 {
     public class Role : BaseRole
     {

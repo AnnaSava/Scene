@@ -15,7 +15,7 @@ namespace SavaDev.System.Data
         {
             CreateMap<LegalDocument, LegalDocumentModel>();
             CreateMap<LegalDocumentModel, LegalDocument>()
-                .ForMember(x => x.PermName, y => y.Condition(c => c.Id == 0))
+                .ForMember(x => x.PermName, y => y.Condition(c => c.Id == 0)) // TODO вынести в общий кстомный маппер
                 .ForMember(x => x.Culture, y => y.Condition(c => c.Id == 0))
                 .ForMember(x => x.Status, y => y.Ignore())
                 .ForMember(x => x.IsDeleted, y => y.Ignore())

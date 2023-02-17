@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using SavaDev.Base.Data.Context;
 using SavaDev.Base.User.Data.Services;
 using SavaDev.Users.Data;
+using SavaDev.Users.Data.Contract.Models;
+using SavaDev.Users.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

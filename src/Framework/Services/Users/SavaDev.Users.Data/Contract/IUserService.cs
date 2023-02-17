@@ -1,6 +1,7 @@
 ﻿using Framework.User.DataService.Contract.Interfaces;
 using SavaDev.Base.Data.Services;
 using SavaDev.Base.User.Data.Models;
+using SavaDev.Users.Data.Contract.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

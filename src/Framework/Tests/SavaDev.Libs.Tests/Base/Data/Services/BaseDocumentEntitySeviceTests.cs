@@ -179,7 +179,7 @@ namespace SavaDev.Libs.Tests.Base.Data.Services
         public async Task Update_NotExists(long id)
         {
             // Arrange
-            var legalDocumentModel = new FakeDocumentModel { Id = id, Title = "Title", Text = "Text", Comment = "Comment", Info = "Info" };
+            var legalDocumentModel = new FakeDocumentModel { Id = id, Title = "Title", Text = "Text" };
 
             // Act
             async Task action() => await _fakeBaseDocumentService.Update(legalDocumentModel.Id, legalDocumentModel);
@@ -193,7 +193,7 @@ namespace SavaDev.Libs.Tests.Base.Data.Services
         public async Task Update_ErrorStatus(long id)
         {
             // Arrange
-            var legalDocumentModel = new FakeDocumentModel { Id = id, Title = "Title", Text = "Text", Comment = "Comment", Info = "Info" };
+            var legalDocumentModel = new FakeDocumentModel { Id = id, Title = "Title", Text = "Text" };
 
             // Act
             async Task action() => await _fakeBaseDocumentService.Update(legalDocumentModel.Id, legalDocumentModel);

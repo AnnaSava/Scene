@@ -10,6 +10,7 @@ using SavaDev.Base.Data.Context;
 using SavaDev.Base.Data.Enums;
 using SavaDev.Base.User.Data.Entities;
 using SavaDev.Users.Data;
+using SavaDev.Users.Data.Entities;
 
 namespace SavaDev.Libs.UnitTestingHelpers
 {

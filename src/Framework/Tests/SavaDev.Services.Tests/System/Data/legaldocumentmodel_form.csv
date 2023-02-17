@@ -12,10 +12,10 @@ CreateVersion_Ok;any test text 10 13;11.02.2023 9:20;en;0;any test text 10 13;Fa
 CreateVersion_Ok;any test text 11 11;11.02.2023 9:20;en;0;any test text 11 12;False;11.02.2023 9:20;doc4;Draft;any test text 11 13;any test text 11 11
 CreateVersion_Ok;any test text 12 13;11.02.2023 9:20;en;0;any test text 12 15;False;11.02.2023 9:20;doc5;Draft;any test text 12 16;any test text 12 14
 CreateVersion_DraftExists;any test text 13 16;11.02.2023 9:20;en;0;any test text 13 17;False;11.02.2023 9:20;doc1;Draft;any test text 13 17;any test text 13 16
-Update_Ok;any test text 14 15;11.02.2023 9:20;;3;any test text 14 15;False;11.02.2023 9:20;doc99;Published;any test text 14 15;any test text 14 17
-Update_Ok;any test text 15 17;11.02.2023 9:20;ru;3;any test text 15 15;False;11.02.2023 9:20;any test text 15 19;Draft;any test text 15 19;any test text 15 18
-Update_Ok;any test text 16 18;01.01.2001 0:00;ru;3;any test text 16 20;False;01.01.2001 0:00;any test text 16 19;Draft;any test text 16 16;any test text 16 16
-Update_Ok;any test text 17 18;11.02.2023 9:20;ru;3;any test text 17 19;True;11.02.2023 9:20;any test text 17 19;Draft;any test text 17 21;any test text 17 20
+Update_Ok;any test text 14 15;11.02.2023 9:20;;3;;False;11.02.2023 9:20;;;;
+Update_Ok;any test text 15 17;11.02.2023 9:20;ru;3;any test text 15 15;False;11.02.2023 9:20;doc99;Published;any test text 15 19;any test text 15 18
+Update_Ok;any test text 16 18;01.01.2001 0:00;ru;3;any test text 16 20;False;01.01.2001 0:00;;;;
+Update_Ok;any test text 17 18;11.02.2023 9:20;ru;3;any test text 17 19;True;11.02.2023 9:20;;;;
 Update_NotExists;;;;99;;;;;;;
 Update_NotExists;;;;9;;;;;;;
 Update_ErrorStatus;;;;11;;;;;;;

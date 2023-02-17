@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Libs.Tests.Base.Data.Services.Fake
 {
-    internal class FakeDocumentService : BaseDocumentEntityService<FakeDocument, FakeDocumentModel>
+    public class FakeDocumentService : BaseDocumentEntityService<FakeDocument, FakeDocumentModel>
     {
         public FakeDocumentService(FakeDocumentContext dbContext,
             IEnumerable<string> availableCultures,

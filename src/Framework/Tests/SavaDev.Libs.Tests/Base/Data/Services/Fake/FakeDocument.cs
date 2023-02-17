@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Libs.Tests.Base.Data.Services.Fake
 {
-    internal class FakeDocument : BaseDocumentEntity<long>
+    public class FakeDocument : BaseDocumentEntity<long>
     {
     }
 }

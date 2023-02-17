@@ -9,6 +9,7 @@ using SavaDev.Base.User.Data.Services;
 using SavaDev.Base.Users.Security.Contract;
 using SavaDev.System.Data.Contract;
 using SavaDev.Users.Data;
+using SavaDev.Users.Data.Contract.Models;
 using SavaDev.Users.Front.Contract.Models;
 
 namespace Framework.User.Service.Services

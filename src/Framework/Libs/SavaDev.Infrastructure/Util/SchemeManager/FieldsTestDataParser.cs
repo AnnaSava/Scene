@@ -65,7 +65,14 @@ namespace SavaDev.Infrastructure.Util.TestDataGenerator
 
                 if (parsed != null)
                 {
-                    modelProp.SetValue(model, parsed);
+                    try
+                    {
+                        modelProp.SetValue(model, parsed);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
                 }
             }
         }

@@ -18,7 +18,7 @@ namespace Framework.User.DataService.Entities
 
         public DateTime LockDate { get; set; }
 
-        public DateTimeOffset? LockoutEnd { get; set; }
+        public DateTime? LockoutEnd { get; set; }
 
         public string Reason { get; set; }
     }

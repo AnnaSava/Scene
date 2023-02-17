@@ -1,5 +1,6 @@
 ﻿using SavaDev.Base.User.Data.Entities;
 using SavaDev.Users.Data;
+using SavaDev.Users.Data.Entities;
 
 namespace SavaDev.Services.Tests.Users.DataTests.Data
 {

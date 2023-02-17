@@ -6,6 +6,7 @@ using Sava.Libs.WebModule;
 using SavaDev.Base.Unit.Options;
 using SavaDev.System.Front;
 using SavaDev.Users.Data;
+using SavaDev.Users.Data.Entities;
 using SavaDev.Users.Front;
 using System;
 using System.Threading.Tasks;

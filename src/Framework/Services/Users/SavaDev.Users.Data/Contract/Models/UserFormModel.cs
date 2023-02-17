@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SavaDev.Users.Data
+namespace SavaDev.Users.Data.Contract.Models
 {
     public class UserFormModel : BaseUserModel, IUserModel, IModel<long>
     {

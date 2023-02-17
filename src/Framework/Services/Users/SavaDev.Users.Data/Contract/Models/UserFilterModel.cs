@@ -25,12 +25,12 @@ namespace Framework.User.DataService.Contract.Models
 
         public WordFilterField DisplayNames { get; set; }
 
-        public FilterFieldModel<List<DateTime>> RegDates { get; set; } // TODO разобраться с типом данных
+        public FilterFieldModel<List<DateTime>> RegDates { get; set; }
 
-        public FilterFieldModel<List<DateTime>> Birthdays { get; set; }   // TODO разобраться с типом данных     
+        public FilterFieldModel<List<DateTime>> Birthdays { get; set; }   
 
         public bool? IsBanned { get; set; }
 
-        public FilterFieldModel<List<DateTimeOffset>> BanEnds { get; set; } // TODO разобраться с типом данных
+        public FilterFieldModel<List<DateTime>> BanEnds { get; set; }
     }
 }

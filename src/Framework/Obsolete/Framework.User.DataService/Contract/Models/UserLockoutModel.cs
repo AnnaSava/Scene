@@ -10,7 +10,7 @@ namespace Framework.User.DataService.Contract.Models
     {
         public long Id { get; set; }
 
-        public DateTimeOffset? LockoutEnd { get; set; }
+        public DateTime? LockoutEnd { get; set; }
 
         public string Reason { get; set; }
     }

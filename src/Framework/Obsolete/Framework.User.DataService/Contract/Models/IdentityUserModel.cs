@@ -22,6 +22,6 @@ namespace Framework.User.DataService.Contract.Models
 
         public bool IsBanned { get; set; }
 
-        public DateTimeOffset? BanEnd { get; set; }
+        public DateTime? BanEnd { get; set; }
     }
 }

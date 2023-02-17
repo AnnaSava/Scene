@@ -1,24 +1,25 @@
 ﻿using AutoMapper;
-using Framework.User.DataService.Contract.Models;
-using Framework.User.DataService.Entities;
-using Framework.User.DataService.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SavaDev.Base.Data.Exceptions;
-using SavaDev.Base.Data.Services;
 using SavaDev.Libs.UnitTestingHelpers;
-using SavaDev.Services.Tests.Users.DataTests.Data;
+using SavaDev.Services.Tests.System.Data;
+using SavaDev.Services.Tests.Users;
+using SavaDev.System.Data.Services;
+using SavaDev.System.Data;
 using SavaDev.Users.Data;
-using SavaDev.Users.Data.Contract.Models;
-using SavaDev.Users.Data.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
+using SavaDev.Services.Tests.Users.DataTests.Data;
+using SavaDev.Users.Data.Entities;
+using SavaDev.Users.Data.Contract.Models;
 
 namespace SavaDev.Services.Tests.Users.DataTests
 {
-    public class RoleDbServiceTests : IDisposable
+    public class RoleServiceTests : IDisposable
     {
         private IMapper _mapper;
         private UsersContext _context;
@@ -26,15 +27,14 @@ namespace SavaDev.Services.Tests.Users.DataTests
         private RoleService _roleDbService;
         private ILogger<RoleService> _logger;
 
-        public RoleDbServiceTests()
+        public RoleServiceTests()
         {
             _mapper = Dependencies.GetDataMapper();
+            _logger = TestsInfrastructure.GetLogger<RoleService>();
             _context = TestsInfrastructure.GetContext<UsersContext>(x => new UsersContext(x));
             _roleManager = TestsInfrastructure.GetRoleManager(_context);
-            _logger = TestsInfrastructure.GetLogger<RoleService>();
+            Data.DataInit.FillContextWithEntities(_context);
             _roleDbService = new RoleService(_context, _roleManager, _mapper, _logger);
-            
-            //DataInitializer.FillContextWithRoles(_context);
         }
 
         public void Dispose()
@@ -43,6 +43,7 @@ namespace SavaDev.Services.Tests.Users.DataTests
             _context = null;
             _roleManager = null;
             _roleDbService = null;
+            _logger = null;
         }
 
         [Fact]
@@ -56,7 +57,7 @@ namespace SavaDev.Services.Tests.Users.DataTests
 
             // Assert
             Assert.IsType<RoleModel>(result.ProcessedObject);
-            var model = GetRoleModel(result);
+            var model = result.ProcessedObject as RoleModel;
             Assert.Equal(roleModel.Name, model.Name);
             Assert.Equal(1, _context.RoleClaims.Count(m => m.RoleId == model.Id && m.ClaimType == "permission" && m.ClaimValue == "user.create"));
         }
@@ -85,7 +86,7 @@ namespace SavaDev.Services.Tests.Users.DataTests
 
             // Assert
             Assert.IsType<RoleModel>(result.ProcessedObject);
-            var model = GetRoleModel(result);
+            var model = result.ProcessedObject as RoleModel;
             Assert.Equal(roleModel.Name, model.Name);
             Assert.False(_context.RoleClaims.Any(m => m.RoleId == model.Id && m.ClaimType == "permission"));
         }
@@ -101,7 +102,7 @@ namespace SavaDev.Services.Tests.Users.DataTests
 
             // Assert
             Assert.IsType<RoleModel>(result.ProcessedObject);
-            var model = GetRoleModel(result);
+            var model = result.ProcessedObject as RoleModel;
             Assert.Equal(roleModel.Name, model.Name);
             Assert.Equal(1, _context.RoleClaims.Count(m => m.RoleId == model.Id && m.ClaimType == "permission" && m.ClaimValue == "user.create"));
         }
@@ -113,11 +114,11 @@ namespace SavaDev.Services.Tests.Users.DataTests
             var roleModel = new RoleModel() { Id = 1, Name = "new admin", Permissions = new List<string> { "user.create", "user.delete" } };
 
             // Act
-            var result = await _roleDbService.Update(roleModel.Id, roleModel);            
+            var result = await _roleDbService.Update(roleModel.Id, roleModel);
 
             // Assert
-            Assert.IsType<RoleModel>(result.ProcessedObject);
-            var model = GetRoleModel(result);
+            Assert.IsType<RoleModel>(result);
+            var model = result.ProcessedObject as RoleModel;
             Assert.Equal(roleModel.Id, model.Id);
             Assert.Equal(roleModel.Name, model.Name);
             Assert.Equal(1, _context.RoleClaims.Count(m => m.RoleId == model.Id && m.ClaimType == "permission" && m.ClaimValue == "user.create"));
@@ -162,7 +163,7 @@ namespace SavaDev.Services.Tests.Users.DataTests
 
             // Assert
             Assert.IsType<RoleModel>(result.ProcessedObject);
-            var model = GetRoleModel(result);
+            var model = result.ProcessedObject as RoleModel;
             Assert.Equal(roleModel.Id, model.Id);
             Assert.Equal(roleModel.Name, model.Name);
         }
@@ -177,8 +178,8 @@ namespace SavaDev.Services.Tests.Users.DataTests
             var result = await _roleDbService.Update(roleModel.Id, roleModel);
 
             // Assert
-            Assert.IsType<RoleModel>(result.ProcessedObject);
-            var model = GetRoleModel(result);
+            Assert.IsType<RoleModel>(result);
+            var model = result.ProcessedObject as RoleModel;
             Assert.Equal(roleModel.Id, model.Id);
             Assert.Equal(roleModel.Name, model.Name);
             Assert.False(_context.RoleClaims.Any(m => m.RoleId == model.Id && m.ClaimType == "permission"));
@@ -194,8 +195,8 @@ namespace SavaDev.Services.Tests.Users.DataTests
             var result = await _roleDbService.Update(roleModel.Id, roleModel);
 
             // Assert
-            Assert.IsType<RoleModel>(result.ProcessedObject);
-            var model = GetRoleModel(result);
+            Assert.IsType<RoleModel>(result);
+            var model = result.ProcessedObject as RoleModel;
             Assert.Equal(roleModel.Id, model.Id);
             Assert.Equal(roleModel.Name, model.Name);
             Assert.Equal(1, _context.RoleClaims.Count(m => m.RoleId == model.Id && m.ClaimType == "permission" && m.ClaimValue == "user.create"));
@@ -215,7 +216,7 @@ namespace SavaDev.Services.Tests.Users.DataTests
 
             // Assert
             Assert.IsType<RoleModel>(result.ProcessedObject);
-            var model = GetRoleModel(result);
+            var model = result.ProcessedObject as RoleModel;
             Assert.True(model.IsDeleted);
             Assert.True(updated <= model.LastUpdated);
         }
@@ -231,8 +232,8 @@ namespace SavaDev.Services.Tests.Users.DataTests
             var result = await _roleDbService.Restore(id);
 
             // Assert
-            Assert.IsType<RoleModel>(result);
-            var model = GetRoleModel(result);
+            Assert.IsType<RoleModel>(result.ProcessedObject);
+            var model = result.ProcessedObject as RoleModel;
             Assert.False(model.IsDeleted);
             Assert.True(updated <= model.LastUpdated);
         }
@@ -243,11 +244,11 @@ namespace SavaDev.Services.Tests.Users.DataTests
         {
             // Arrange
 
-            //// Act
-            //var result = await _roleDbService.CheckRoleNameExists(name);
+            // Act
+            var result = await _roleDbService.CheckNameExists(name);
 
-            //// Assert
-            //Assert.True(result);
+            // Assert
+            Assert.True(result);
         }
 
         [Theory]
@@ -257,10 +258,10 @@ namespace SavaDev.Services.Tests.Users.DataTests
             // Arrange
 
             // Act
-            //var result = await _roleDbService.CheckRoleNameExists(name);
+            var result = await _roleDbService.CheckNameExists(name);
 
-            //// Assert
-            //Assert.False(result);
+            // Assert
+            Assert.False(result);
         }
 
         public static IEnumerable<object[]> Data_NameExists => new List<object[]>
@@ -275,10 +276,5 @@ namespace SavaDev.Services.Tests.Users.DataTests
             new object[] { "" },
             new object[] { null },
         };
-
-        private RoleModel? GetRoleModel(OperationResult result)
-        {
-            return result.ProcessedObject as RoleModel;
-        }
     }
 }

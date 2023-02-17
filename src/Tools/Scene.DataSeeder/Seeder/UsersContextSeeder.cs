@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SavaDev.Base.Data.Context;
 using SavaDev.System.Data.Seeder;
 using SavaDev.Users.Data;
+using SavaDev.Users.Data.Entities;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

@@ -29,7 +29,6 @@
     <Folder Include="Files\Data\" />
     <Folder Include="Forums\Data\" />
     <Folder Include="Media\Data\" />
-    <Folder Include="Users\DataTests\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,6 +55,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="System\Data\reservedname_db.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Users\Data\rolemodel_638122306611107196.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Users\Data\role_db.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Users\Data\userformmodel_638122306611743111.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Users\Data\user_db.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

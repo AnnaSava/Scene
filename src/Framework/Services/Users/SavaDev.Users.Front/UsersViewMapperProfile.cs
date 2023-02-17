@@ -4,6 +4,7 @@ using Framework.Base.Types.Registry;
 using Framework.User.DataService.Contract.Models;
 using Framework.User.Service.Contract.Models;
 using SavaDev.Users.Data;
+using SavaDev.Users.Data.Contract.Models;
 using SavaDev.Users.Front.Contract.Models;
 using System;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ namespace SavaDev.Users.Front
             CreateMap<RegisterViewModel, UserFormModel>(MemberList.None)
                 .ForMember(x => x.DisplayName, y => y.MapFrom(s => s.Login));
 
-            CreateMap<SignInResultModel<UserModel>, SignInResultViewModel>();
+            //CreateMap<SignInResultModel<UserModel>, SignInResultViewModel>();
         }
     }
 }

@@ -16,6 +16,7 @@ using SavaDev.Base.Users.Security.Contract;
 using SavaDev.System.Data.Contract;
 using SavaDev.System.Data.Services;
 using SavaDev.Users.Data;
+using SavaDev.Users.Data.Entities;
 
 namespace SavaDev.Users.Front
 {

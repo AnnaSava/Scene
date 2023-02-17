@@ -1,6 +1,7 @@
 ﻿using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Services;
 using SavaDev.Base.User.Data.Models.Interfaces;
+using SavaDev.Users.Data.Contract.Models;
 
 namespace SavaDev.Users.Data
 {

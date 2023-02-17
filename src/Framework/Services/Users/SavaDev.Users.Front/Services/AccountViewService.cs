@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using SavaDev.Base.User.Data.Services;
 using SavaDev.System.Data.Contract;
 using SavaDev.Users.Data;
+using SavaDev.Users.Data.Contract.Models;
 using System.Text;
 using System.Text.Json;
 
@@ -131,8 +132,9 @@ namespace Framework.DefaultUser.Service.Services
         public async Task<SignInResultViewModel> SignIn(LoginViewModel model)
         {
             var mapped = _mapper.Map<LoginModel>(model);
-            var result = await _accountDbService.SignIn<UserModel>(mapped);
-            return _mapper.Map<SignInResultViewModel>(result);
+            throw new NotImplementedException();
+            //var result = await _accountDbService.SignIn<UserModel>(mapped);
+            //return _mapper.Map<SignInResultViewModel>(result);
         }
 
         public async Task SignOut()
