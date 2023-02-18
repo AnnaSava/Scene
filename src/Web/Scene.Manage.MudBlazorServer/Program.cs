@@ -31,8 +31,8 @@ builder.Services.AddMapper();
 
 builder.Services.AddTransient<RegisterTasker>();
 
-builder.Services.AddUsers(builder.Configuration, new UnitOptions(UnitCode.AppUsers, AppSettings.DefaultConnectionStringPattern));
-builder.Services.AddSystem(builder.Configuration, new UnitOptions(UnitCode.System, AppSettings.DefaultConnectionStringPattern));
+builder.Services.AddUsers(builder.Configuration, new UnitOptions(SavaUnitCode.AppUsers, AppSettings.DefaultConnectionStringPattern));
+builder.Services.AddSystem(builder.Configuration, new UnitOptions(SavaUnitCode.System, AppSettings.DefaultConnectionStringPattern));
 
 builder.Services.AddDataProtection()
                 .PersistKeysToFileSystem(new DirectoryInfo(builder.Configuration.GetSection("SessionsPath").Value))

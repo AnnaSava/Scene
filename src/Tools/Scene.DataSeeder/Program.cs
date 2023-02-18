@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Sava.Libs.WebModule;
 using SavaDev.Base.Unit.Options;
 using SavaDev.System.Front;
 using SavaDev.Users.Data;
 using SavaDev.Users.Data.Entities;
 using SavaDev.Users.Front;
+using Scene.Libs.WebModule;
 using System;
 using System.Threading.Tasks;
 
@@ -29,8 +29,8 @@ namespace Scene.DataSeeder
             //services.AddUnitDbContext<AppUserContext>(config, new ModuleSettings("Ap", "IdentityConnection"));
             //services.AddUnitDbContext<MailTemplateContext>(config, new ModuleSettings("Ml", "IdentityConnection"));
 
-            services.AddUsers(config, new UnitOptions(UnitCode.AppUsers, "Default{0}Connection"));
-            services.AddSystem(config, new UnitOptions(UnitCode.System, "Default{0}Connection"));
+            services.AddUsers(config, new UnitOptions(SceneUnitCode.AppUsers, "Default{0}Connection"));
+            services.AddSystem(config, new UnitOptions(SceneUnitCode.System, "Default{0}Connection"));
 
             //services.AddAppUser(config);
             //services.AddMailTemplate(config);

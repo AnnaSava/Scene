@@ -22,7 +22,7 @@
     <ProjectReference Include="..\..\Framework\Services\System\SavaDev.System.Front\SavaDev.System.Front.csproj" />
     <ProjectReference Include="..\..\Framework\Services\Users\SavaDev.Users.Data\SavaDev.Users.Data.csproj" />
     <ProjectReference Include="..\..\Framework\Services\Users\SavaDev.Users.Front\SavaDev.Users.Front.csproj" />
-    <ProjectReference Include="..\..\Libs\Sava.Libs.WebModule\Sava.Libs.WebModule.csproj" />
+    <ProjectReference Include="..\..\Libs\Scene.Libs.WebModule\Scene.Libs.WebModule.csproj" />
     <ProjectReference Include="..\..\Migrations\Scene.Migrations.MsSql\Scene.Migrations.MsSql.csproj" />
     <ProjectReference Include="..\..\Migrations\Scene.Migrations.PostgreSql\Scene.Migrations.PostgreSql.csproj" />
   </ItemGroup>

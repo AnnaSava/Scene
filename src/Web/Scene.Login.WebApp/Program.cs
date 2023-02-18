@@ -6,7 +6,7 @@ using SavaDev.Base.Unit;
 using SavaDev.Mail.Service;
 using SavaDev.System.Front;
 using Scene.Login.WebApp;
-using Sava.Libs.WebModule;
+using Scene.Libs.WebModule;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +27,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.Name = ".Scene.SharedCookie";
 });
 
-builder.Services.AddSystem(builder.Configuration, new UnitOptions(UnitCode.System, AppSettings.DefaultConnectionStringPattern));
+builder.Services.AddSystem(builder.Configuration, new UnitOptions(SceneUnitCode.System, AppSettings.DefaultConnectionStringPattern));
 builder.Services.AddMailRmqService(builder.Configuration);
 
 builder.Services.AddRazorPages();
