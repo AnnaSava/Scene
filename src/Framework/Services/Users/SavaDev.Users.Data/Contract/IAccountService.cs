@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Framework.DefaultUser.Data.Contract
 {
+    [Obsolete]
     public interface IAccountService
     {
         Task<string> GenerateEmailConfirmationToken(string email);

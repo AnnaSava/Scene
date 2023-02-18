@@ -7,6 +7,8 @@ using SavaDev.Mail.Service;
 using SavaDev.System.Front;
 using Scene.Login.WebApp;
 using Scene.Libs.WebModule;
+using SavaDev.Users.Front;
+using Microsoft.AspNetCore.DataProtection.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,8 +17,11 @@ builder.Services.Configure<RabbitMqConfiguration>(builder.Configuration.GetSecti
 // Add services to the container.
 builder.Services.AddMapper();
 
-//builder.Services.AddAppUser(builder.Configuration);
 builder.Services.AddTransient<RegisterTasker>();
+
+builder.Services.AddSystem(builder.Configuration, new UnitOptions(SceneUnitCode.System, AppSettings.DefaultConnectionStringPattern));
+builder.Services.AddUsers(builder.Configuration, new UnitOptions(SceneUnitCode.AppUsers, AppSettings.DefaultConnectionStringPattern));
+builder.Services.AddMailRmqService(builder.Configuration);
 
 builder.Services.AddDataProtection()
                 .PersistKeysToFileSystem(new System.IO.DirectoryInfo(builder.Configuration.GetSection("SessionsPath").Value))
@@ -27,29 +32,33 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.Name = ".Scene.SharedCookie";
 });
 
-builder.Services.AddSystem(builder.Configuration, new UnitOptions(SceneUnitCode.System, AppSettings.DefaultConnectionStringPattern));
-builder.Services.AddMailRmqService(builder.Configuration);
-
 builder.Services.AddRazorPages();
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+try
 {
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    var app = builder.Build();
+
+    // Configure the HTTP request pipeline.
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseExceptionHandler("/Error");
+        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+        app.UseHsts();
+    }
+
+    //app.UseHttpsRedirection();
+    app.UseStaticFiles();
+
+    app.UseRouting();
+
+    app.UseAuthentication();
+    app.UseAuthorization();
+
+    app.MapRazorPages();
+
+    app.Run();
 }
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapRazorPages();
-
-app.Run();
+catch (Exception ex)
+{
+    var t = ex.Message;
+}

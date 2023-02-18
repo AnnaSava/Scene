@@ -12,9 +12,9 @@ namespace Sava.Files
 {
     public static class FilesViewUnit
     {
-        public static void AddFiles(this IServiceCollection services, IConfiguration config, UnitOptions moduleSettings)
+        public static void AddFiles(this IServiceCollection services, IConfiguration config, UnitOptions unitOptions)
         {
-            services.AddUnitDbContext<FilesContext>(config, moduleSettings);
+            services.AddUnitDbContext<FilesContext>(config, unitOptions);
 
             services.AddScoped<IFileService, FileService>();
 

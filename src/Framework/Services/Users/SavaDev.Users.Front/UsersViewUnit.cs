@@ -17,12 +17,14 @@ using SavaDev.System.Data.Contract;
 using SavaDev.System.Data.Services;
 using SavaDev.Users.Data;
 using SavaDev.Users.Data.Entities;
+using SavaDev.Users.Front.Security;
+using SavaDev.Base.Users.Security;
 
 namespace SavaDev.Users.Front
 {
     public static class UsersViewUnit
     {
-        public static void AddUsers (this IServiceCollection services, IConfiguration config, UnitOptions unitOptions)
+        public static void AddUsers(this IServiceCollection services, IConfiguration config, UnitOptions unitOptions)
         {
             services.AddUnitDbContext<IDbContext, UsersContext>(config, unitOptions);
 
@@ -36,18 +38,16 @@ namespace SavaDev.Users.Front
             });
 
             services.AddScoped<IUserService, UserService>();
-
-            services.AddScoped<IAccountService, AccountService<long, User>>();
-
-            services.AddScoped<IReservedNameService, ReservedNameService>();
-
-            services.AddScoped<IPermissionService, PermissionService>();
-
             services.AddScoped<IRoleService, RoleService>();
 
-            services.AddScoped<IAuthDbService, AuthDbService>();
+            services.AddScoped<IAccountService, WebAccountService>();
+            services.AddScoped<ISecurityService, WebSecurityService>();
 
-            services.AddScoped<ILegalDocumentService, LegalDocumentService >();
+            services.AddScoped<IReservedNameService, ReservedNameService>();
+            services.AddScoped<IPermissionService, PermissionService>();
+            services.AddScoped<ILegalDocumentService, LegalDocumentService>();
+
+            services.AddScoped<IAuthDbService, AuthDbService>();
 
             services.AddScoped<IAccountViewService, AccountViewService>();
             //services.AddScoped<IUserViewService, UserViewService>();

@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
-using Framework.DefaultUser.Data.Contract;
 using Framework.DefaultUser.Service.Contract;
-using Framework.User.DataService.Contract.Models;
 using Framework.User.Service.Contract.Models;
 using Microsoft.AspNetCore.WebUtilities;
+using SavaDev.Base.User.Data.Models;
 using SavaDev.Base.User.Data.Services;
+using SavaDev.Base.Users.Security.Contract;
+using SavaDev.Mail.Service.Contract;
 using SavaDev.System.Data.Contract;
 using SavaDev.Users.Data;
 using SavaDev.Users.Data.Contract.Models;
@@ -15,20 +16,22 @@ namespace Framework.DefaultUser.Service.Services
 {
     public class AccountViewService : IAccountViewService
     {
-        private readonly UserService _userDbService;
+        private readonly IUserService _userDbService;
         private readonly IAccountService _accountDbService;
         private readonly IReservedNameService _reservedNameDbService;
         //private readonly RegisterTasker _registerTasker;
+        private readonly IMailSender _mailSender;
         private readonly IMapper _mapper;
 
         public AccountViewService(IUserService userDbService,
-           //IAccountService accountDbService,
+           IAccountService accountDbService,
            IReservedNameService reservedNameDbService,
            //RegisterTasker registerTasker,
+           IMailSender _mailSender,
            IMapper mapper)
         {
-            //_userDbService = userDbService;
-            //_accountDbService = accountDbService;
+            _userDbService = userDbService;
+            _accountDbService = accountDbService;
             _reservedNameDbService = reservedNameDbService;
            // _registerTasker = registerTasker;
             _mapper = mapper;
@@ -36,22 +39,22 @@ namespace Framework.DefaultUser.Service.Services
 
         public async Task<UserViewModel> Register(RegisterViewModel model)
         {
-            throw new NotImplementedException();
-            //// TODO переделать на возврат списка ошибок?
-            //if (await _userDbService.CheckEmailExists(model.Email))
-            //    throw new Exception("Email exists!");
+            // TODO переделать на возврат списка ошибок?
+            if (await _userDbService.CheckEmailExists(model.Email))
+                throw new Exception("Email exists!");
 
-            //if (await _userDbService.CheckUserNameExists(model.Login)) // TODO: может проверять одним запросом к БД?
-            //    throw new Exception("Username exists!");
+            if (await _userDbService.CheckLoginExists(model.Login)) // TODO: может проверять одним запросом к БД?
+                throw new Exception("Username exists!");
 
-            //if (await _reservedNameDbService.CheckIsReserved(model.Login))
-            //    throw new Exception("UserName is forbidden!");
+            if (await _reservedNameDbService.CheckIsReserved(model.Login))
+                throw new Exception("UserName is forbidden!");
 
-            //var newModel = _mapper.Map<AppUserFormModel>(model);
-            //var resultModel = await _userDbService.Create<AppUserModel>(newModel, model.Password);
+            var newModel = _mapper.Map<UserFormModel>(model);
+            var result = await _userDbService.Create(newModel, model.Password);
+            var resultModel = result.ProcessedObject as UserFormModel;
 
-            //if (resultModel == null || resultModel.Id == 0)
-            //    throw new Exception("Registration error");
+            if (resultModel == null || resultModel.Id == 0)
+                throw new Exception("Registration error");
 
             //var token = await _accountDbService.GenerateEmailConfirmationToken(resultModel.Email);
             //byte[] tokenGeneratedBytes = Encoding.UTF8.GetBytes(token);
@@ -78,7 +81,7 @@ namespace Framework.DefaultUser.Service.Services
 
             ////_registerTasker.Send(jsonMessage);
 
-            //return _mapper.Map<AppUserViewModel>(resultModel);
+            return _mapper.Map<UserViewModel>(resultModel);
         }
 
         public async Task<bool> ConfirmEmail(string email, string token)
