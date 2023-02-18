@@ -1,5 +1,4 @@
 ﻿@page "/mailtemplates/create"
-@using Framework.MailTemplate
 @using Framework.User.Service.Contract.Interfaces
 @using Framework.User.Service.Contract.Models
 @inject IMailTemplateService _mailTemplateService
@@ -31,7 +30,7 @@
 
     private async Task OnValidSubmit(EditContext context)
     {
-        await _mailTemplateService.Create(model);
+        //await _mailTemplateService.Create(model);
 
         success = true;
         StateHasChanged();

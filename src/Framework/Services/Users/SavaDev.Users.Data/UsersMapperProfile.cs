@@ -35,7 +35,17 @@ namespace SavaDev.Users.Data
             CreateMap<User, UserFormModel>()
                 .ForMember(x => x.Login, y => y.MapFrom(s => s.UserName));
             CreateMap<UserFormModel, User>(MemberList.Source)
-                .ForMember(x => x.UserName, y => y.MapFrom(s => s.Login));
+                .ForMember(x => x.UserName, y => y.MapFrom(s => s.Login))
+                .ForMember(x => x.LockoutEnabled, y => y.MapFrom(s => s.IsBanned))
+                .ForMember(x => x.LockoutEnd, y => y.MapFrom(s => s.BanEnd))
+                .ForMember(x => x.NormalizedUserName, y => y.Ignore())
+                .ForMember(x => x.NormalizedEmail, y => y.Ignore())
+                .ForMember(x => x.PasswordHash, y => y.Ignore())
+                .ForMember(x => x.SecurityStamp, y => y.Ignore())
+                .ForMember(x => x.ConcurrencyStamp, y => y.Ignore())
+                .ForMember(x => x.TwoFactorEnabled, y => y.Ignore())
+                .ForMember(x => x.AccessFailedCount, y => y.Ignore())
+                .ForMember(x => x.LastUpdated, y => y.Ignore());
 
             CreateMap<Role, RoleModel>(MemberList.None);
             CreateMap<RoleModel, Role>()

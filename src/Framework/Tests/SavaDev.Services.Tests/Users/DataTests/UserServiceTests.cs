@@ -3,6 +3,7 @@ using Framework.User.DataService.Contract.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SavaDev.Base.Data.Exceptions;
+using SavaDev.Base.User.Data.Exceptions;
 using SavaDev.Libs.UnitTestingHelpers;
 using SavaDev.Services.Tests.Users;
 using SavaDev.Services.Tests.Users.DataTests.Data;
@@ -47,15 +48,15 @@ namespace SavaDev.Services.Tests.Users.DataTests
         public async Task Create_Ok()
         {
             // Arrange
-            var userModel = new UserFormModel() { Login = "any", Email = "any@test.ru" };
+            var userModel = new UserFormModel() { Login = "any", Email = "any@test.ru", DisplayName = "any", FirstName = "any", LastName = "any" };
             var password = "Pass123$";
 
             // Act
             var result = await _userDbService.Create(userModel, password);
 
             // Assert
-            Assert.IsType<UserModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as UserModel;
+            Assert.IsType<UserFormModel>(result.ProcessedObject);
+            var model = result.ProcessedObject as UserFormModel;
             Assert.Equal(userModel.Login, model.Login);           
         }
 
@@ -70,8 +71,8 @@ namespace SavaDev.Services.Tests.Users.DataTests
             var result = await _userDbService.Update(userModel.Id, userModel);
 
             // Assert
-            Assert.IsType<UserModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as UserModel;
+            Assert.IsType<UserFormModel>(result.ProcessedObject);
+            var model = result.ProcessedObject as UserFormModel;
             Assert.Equal(userModel.Login, model.Login);
             Assert.True(updated < model.LastUpdated);
         }
@@ -86,7 +87,7 @@ namespace SavaDev.Services.Tests.Users.DataTests
             async Task action() => await _userDbService.Update(userModel.Id, userModel);
 
             // Assert
-            await Assert.ThrowsAsync<EntityNotFoundException>(action);
+            await Assert.ThrowsAsync<UserNotFoundException>(action);
         }
 
         [Fact]
@@ -100,8 +101,8 @@ namespace SavaDev.Services.Tests.Users.DataTests
             var result = await _userDbService.Delete(id);
 
             // Assert
-            Assert.IsType<UserModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as UserModel;
+            Assert.IsType<UserFormModel>(result.ProcessedObject);
+            var model = result.ProcessedObject as UserFormModel;
             Assert.True(model.IsDeleted);
             Assert.True(updated < model.LastUpdated);
         }
@@ -117,8 +118,8 @@ namespace SavaDev.Services.Tests.Users.DataTests
             var result = await _userDbService.Restore(id);
 
             // Assert
-            Assert.IsType<UserModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as UserModel;
+            Assert.IsType<UserFormModel>(result.ProcessedObject);
+            var model = result.ProcessedObject as UserFormModel;
             Assert.False(model.IsDeleted);
             Assert.True(updated < model.LastUpdated);
         }

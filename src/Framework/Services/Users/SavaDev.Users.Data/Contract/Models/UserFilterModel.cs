@@ -1,13 +1,13 @@
-﻿using Framework.Base.DataService.Contract.Models;
+﻿using SavaDev.Base.Data.Registry.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.User.DataService.Contract.Models
+namespace SavaDev.Users.Data.Contract.Models
 {
-    public class UserFilterModel : ListFilterModel
+    public class UserFilterModel : BaseFilter
     {
         public WordFilterField Logins { get; set; }
 
@@ -25,12 +25,12 @@ namespace Framework.User.DataService.Contract.Models
 
         public WordFilterField DisplayNames { get; set; }
 
-        public FilterFieldModel<List<DateTime>> RegDates { get; set; }
+        //public FilterFieldModel<List<DateTime>> RegDates { get; set; }
 
-        public FilterFieldModel<List<DateTime>> Birthdays { get; set; }   
+        //public FilterFieldModel<List<DateTime>> Birthdays { get; set; }   
 
-        public bool? IsBanned { get; set; }
+        //public bool? IsBanned { get; set; }
 
-        public FilterFieldModel<List<DateTime>> BanEnds { get; set; }
+        //public FilterFieldModel<List<DateTime>> BanEnds { get; set; }
     }
 }

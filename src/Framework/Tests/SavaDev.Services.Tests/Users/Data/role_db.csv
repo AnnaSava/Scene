@@ -1,3 +1,4 @@
 ConcurrencyStamp;Id;IsDeleted;LastUpdated;Name;NormalizedName
 any test text 1 4;1;False;17.02.2023 11:37;admin;ADMIN
 any test text 2 3;2;False;17.02.2023 11:37;moderator;MODERATOR
+any test text 2 3;3;True;17.02.2023 11:37;editor;EDITOR

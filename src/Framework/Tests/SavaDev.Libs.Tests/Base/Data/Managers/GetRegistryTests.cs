@@ -27,7 +27,6 @@ namespace SavaDev.Libs.Tests.Base.Data.Managers
             _logger = TestsInfrastructure.GetLogger<GetRegistryTests>();
             _context = TestsInfrastructure.GetContext<FakeContext>(x => new FakeContext(x));
             DataInit.FillContextWithEntities(_context);
-            //_legalDocumentService = new LegalDocumentService(_context, _cultures, _mapper, _logger);
             selector = new EntitySelector<long, FakeEntity, FakeModel, FakeFilterModel>(_context, _mapper, _logger);
         }
 

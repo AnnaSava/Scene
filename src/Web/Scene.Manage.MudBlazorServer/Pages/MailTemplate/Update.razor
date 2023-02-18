@@ -1,5 +1,4 @@
 ﻿@page "/mailtemplates/update/{id}"
-@using Framework.MailTemplate
 @using Framework.User.Service.Contract.Interfaces
 @using Framework.User.Service.Contract.Models
 @inject IMailTemplateService _mailTemplateService
@@ -41,7 +40,7 @@
 
     private async Task OnValidSubmit(EditContext context)
     {
-        await _mailTemplateService.Update(_id, model);
+        //await _mailTemplateService.Update(_id, model);
 
         success = true;
         StateHasChanged();

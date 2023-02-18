@@ -9,7 +9,7 @@ using SavaDev.Base.User.Data.Manager;
 namespace SavaDev.Base.Users.Security
 {
     public class SecurityService<TKey, TUserEntity, TRoleEntity> : ISecurityService
-        where TUserEntity : BaseUser
+        where TUserEntity : BaseUser, new()
         where TRoleEntity : BaseRole, new()
     {
         private readonly UserEntityManager<TKey, TUserEntity> _userManager;

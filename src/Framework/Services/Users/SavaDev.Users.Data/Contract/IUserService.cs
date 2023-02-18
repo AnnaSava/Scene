@@ -12,9 +12,9 @@ namespace SavaDev.Users.Data
 {
     public interface IUserService // : IUserSearchDbService<AppUserModel, AppUserFilterModel>
     {
-        Task<OperationResult<UserFormModel>> Create(UserFormModel model, string password);
+        Task<OperationResult> Create(UserFormModel model, string password);
 
-        Task<OperationResult<UserFormModel>> Update(long id, UserFormModel model);
+        Task<OperationResult> Update(long id, UserFormModel model);
 
         Task<OperationResult> Delete(long id);
 

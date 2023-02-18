@@ -71,8 +71,7 @@ namespace SavaDev.Base.User.Data.Manager
                 .SetValues(async (model) => _mapper.Map<TEntity>(model))
                 .Create(DoCreate)
                 .AfterCreate(async (entity, model) => await CreatePermissions(entity, (model as TFormModel).Permissions))
-                .SuccessResult(entity => new OperationResult(1, _mapper.Map<TFormModel>(entity)))
-                .ErrorResult((id, errMessage) => new OperationResult(DbOperationRows.OnFailure, id, new OperationExceptionInfo(errMessage)));
+                .SuccessResult(entity => new OperationResult(_mapper.Map<TFormModel>(entity)));
 
             return await creator.Create(model);
         }
@@ -80,17 +79,12 @@ namespace SavaDev.Base.User.Data.Manager
         public async Task<OperationResult> Update(TKey id, TFormModel model)
         {
             var updater = new EntityUpdater<TKey, TEntity>(_dbContext, _logger)
-                .ValidateModel(async (model) =>
-                {
-                    if (await CheckRoleNameExists((model as TFormModel).Name))
-                        throw new EntityAlreadyExistsException();
-                })
+                .ValidateModel(async (model) => {})
                 .GetEntity(async (id) => await GetEntityForUpdate(id))
                 .SetValues(async (entity, model) => _mapper.Map(model, entity))
                 .Update(DoUpdate)
                 .AfterUpdate(async (entity, model) => await UpdatePermissions(entity, (model as TFormModel).Permissions))
-                .SuccessResult(entity => new OperationResult(1, _mapper.Map<TFormModel>(entity)))
-                .ErrorResult((id, errMessage) => new OperationResult(DbOperationRows.OnFailure, id, new OperationExceptionInfo(errMessage)));
+                .SuccessResult(entity => new OperationResult(_mapper.Map<TFormModel>(entity)));
 
             return await updater.DoUpdate<TFormModel>(id, model);
         }
@@ -100,11 +94,10 @@ namespace SavaDev.Base.User.Data.Manager
         public async Task<OperationResult> Restore(TKey id)
         {
             var updater = new EntityUpdater<TKey, TEntity>(_dbContext, _logger)
-                .GetEntity(async (id) => await GetEntityForUpdate(id, true))
+                .GetDeletedEntity(async (id) => await GetEntityForUpdate(id, true))
                 .SetValues(async (entity) => entity.IsDeleted = false)
                 .Update(DoUpdate)
-                .SuccessResult(entity => new OperationResult(1, _mapper.Map<TFormModel>(entity)))
-                .ErrorResult((id, errMessage) => new OperationResult(DbOperationRows.OnFailure, id, new OperationExceptionInfo(errMessage)));
+                .SuccessResult(entity => new OperationResult(_mapper.Map<TFormModel>(entity)));
 
             return await updater.DoUpdate(id, true);
         }

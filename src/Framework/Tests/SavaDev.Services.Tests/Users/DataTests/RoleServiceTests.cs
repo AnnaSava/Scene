@@ -117,7 +117,7 @@ namespace SavaDev.Services.Tests.Users.DataTests
             var result = await _roleDbService.Update(roleModel.Id, roleModel);
 
             // Assert
-            Assert.IsType<RoleModel>(result);
+            Assert.IsType<RoleModel>(result.ProcessedObject);
             var model = result.ProcessedObject as RoleModel;
             Assert.Equal(roleModel.Id, model.Id);
             Assert.Equal(roleModel.Name, model.Name);
@@ -178,7 +178,7 @@ namespace SavaDev.Services.Tests.Users.DataTests
             var result = await _roleDbService.Update(roleModel.Id, roleModel);
 
             // Assert
-            Assert.IsType<RoleModel>(result);
+            Assert.IsType<RoleModel>(result.ProcessedObject);
             var model = result.ProcessedObject as RoleModel;
             Assert.Equal(roleModel.Id, model.Id);
             Assert.Equal(roleModel.Name, model.Name);
@@ -195,7 +195,7 @@ namespace SavaDev.Services.Tests.Users.DataTests
             var result = await _roleDbService.Update(roleModel.Id, roleModel);
 
             // Assert
-            Assert.IsType<RoleModel>(result);
+            Assert.IsType<RoleModel>(result.ProcessedObject);
             var model = result.ProcessedObject as RoleModel;
             Assert.Equal(roleModel.Id, model.Id);
             Assert.Equal(roleModel.Name, model.Name);
@@ -225,7 +225,7 @@ namespace SavaDev.Services.Tests.Users.DataTests
         public async Task Restore_Ok()
         {
             // Arrange
-            long id = 1;
+            long id = 3;
             var updated = DateTime.UtcNow;
 
             // Act

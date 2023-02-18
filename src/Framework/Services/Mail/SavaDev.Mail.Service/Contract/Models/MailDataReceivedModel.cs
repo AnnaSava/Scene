@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Mail
+namespace SavaDev.Mail.Service.Contract.Models
 {
     public class MailDataReceivedModel
     {

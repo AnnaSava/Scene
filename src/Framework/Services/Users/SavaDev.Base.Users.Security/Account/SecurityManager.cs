@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SavaDev.Base.Data.Context;
@@ -89,13 +90,19 @@ namespace SavaDev.Base.User.Data.Manager
         public async Task<string> GenerateEmailConfirmationToken(string email)
         {
             var user = await GetOneByEmail(email);
-            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            byte[] tokenGeneratedBytes = Encoding.UTF8.GetBytes(token);
+            var codeEncoded = WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
+            return codeEncoded;
         }
 
         public async Task<bool> ConfirmEmail(string email, string token)
         {
+            var codeDecodedBytes = WebEncoders.Base64UrlDecode(token);
+            var codeDecoded = Encoding.UTF8.GetString(codeDecodedBytes);
+
             var user = await GetOneByEmail(email);
-            var result = await _userManager.ConfirmEmailAsync(user, token);
+            var result = await _userManager.ConfirmEmailAsync(user, codeDecoded);
 
             return user.EmailConfirmed;
         }

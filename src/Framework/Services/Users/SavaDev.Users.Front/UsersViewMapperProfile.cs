@@ -29,7 +29,7 @@ namespace SavaDev.Users.Front
             CreateMap<UserFormViewModel, UserFormModel>();
 
             CreateMap<UserFilterViewModel, UserFilterModel>(MemberList.None)
-                .ForMember(x => x.Ids, y => y.MapFrom(s => s.Id.ToLongListFilterField()))
+                //.ForMember(x => x.Id, y => y.MapFrom(s => s.Id.ToLongListFilterField()))
                 .ForMember(x => x.Logins, y => y.MapFrom(s => s.Login.ToWordListFilterField()))
                 .ForMember(x => x.Emails, y => y.MapFrom(s => s.Email.ToWordListFilterField()))
                 .ForMember(x => x.PhoneNumbers, y => y.MapFrom(s => s.PhoneNumber.ToWordListFilterField()))

@@ -2,17 +2,19 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SavaDev.Base.Data.Context;
+using SavaDev.Base.Data.Managers;
 using SavaDev.Base.Data.Services;
 using SavaDev.Base.User.Data.Entities;
 using SavaDev.Base.User.Data.Manager;
 using SavaDev.Base.User.Data.Models;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace SavaDev.Base.User.Data.Services
 {
     public class BaseUserDbService<TEntity, TFormModel>
-        where TEntity : BaseUser
+        where TEntity : BaseUser, new()
         where TFormModel : BaseUserModel
     {
         #region Protected Fields: Dependencies
@@ -46,9 +48,9 @@ namespace SavaDev.Base.User.Data.Services
 
         #region Public Methods: Mutation
 
-        public async Task<OperationResult<TFormModel>> Create(TFormModel model, string password)
+        public async Task<OperationResult> Create(TFormModel model, string password)
             => await EntityManager.Create(model, password);
-        public async Task<OperationResult<TFormModel>> Update(long id, TFormModel model)
+        public async Task<OperationResult> Update(long id, TFormModel model)
             => await EntityManager.Update(id, model);
         public async Task<OperationResult> Delete(long id)
              => await EntityManager.Delete(id);

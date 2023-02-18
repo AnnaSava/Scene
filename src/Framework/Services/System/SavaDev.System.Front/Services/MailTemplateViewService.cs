@@ -98,6 +98,35 @@ namespace SavaDev.System.Front.Services
 
         public async Task<IEnumerable<string>> GetMissingCultures(string permName) => await _mailTemplateService.GetMissingCultures(permName);
 
+        public async Task<MailTemplateFormattedViewModel> FormatMail(string permName, string culture, IDictionary<string, string> vars)
+        {
+            var template = await _mailTemplateService.GetActual<MailTemplateModel>(permName, culture);
+
+            if (template == null)
+                throw new Exception($"No actual template for {permName} {culture}");
+
+            var mail = new MailTemplateFormattedViewModel
+            {
+                Title = template.Title,
+                Body = FormatBody()
+            };
+
+            string FormatBody()
+            {
+                var body = template.Text;
+
+                // TODO может, регулярку сюда?
+                foreach (var keyVal in vars)
+                {
+                    body = body.Replace(keyVal.Key, keyVal.Value);
+                }
+
+                return body;
+            }
+
+            return mail;
+        }
+
         private async Task FillHasAllTranslations(List<MailTemplateViewModel> items)
         {
             var permNames = items.Select(m => m.PermName);

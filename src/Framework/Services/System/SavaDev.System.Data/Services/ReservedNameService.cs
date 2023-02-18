@@ -7,6 +7,7 @@ using SavaDev.Base.Data.Models.Interfaces;
 using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Services;
 using SavaDev.System.Data.Contract;
+using SavaDev.System.Data.Contract.Context;
 using SavaDev.System.Data.Contract.Models;
 using SavaDev.System.Data.Entities;
 
@@ -27,7 +28,7 @@ namespace SavaDev.System.Data.Services
 
         #region Public Constructors
 
-        public ReservedNameService(IDbContext dbContext, IMapper mapper, ILogger<ReservedNameService> logger)
+        public ReservedNameService(ISystemContext dbContext, IMapper mapper, ILogger<ReservedNameService> logger)
             : base(dbContext, mapper, nameof(ReservedNameService))
         {
             CreateManager = new CreateManager<ReservedName, ReservedNameModel>(dbContext, mapper, logger);

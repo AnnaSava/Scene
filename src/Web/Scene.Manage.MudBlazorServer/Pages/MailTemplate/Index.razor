@@ -1,6 +1,5 @@
 ﻿@page "/mailtemplates"
 @using Framework.Base.Types.Enums;
-@using Framework.MailTemplate;
 @inject IMailTemplateService _mailTemplateService
 @inject NavigationManager NavigationManager
 
@@ -119,9 +118,11 @@
             //Status = searchStatus
         };
 
-        var result = await _mailTemplateService.GetAll(filter, PageHelper.GetPageInfo(state));
+        throw new NotImplementedException();
 
-        return PageHelper.GetTableData<MailTemplateViewModel>(result);
+        //var result = await _mailTemplateService.GetAll(filter, PageHelper.GetPageInfo(state));
+
+        //return PageHelper.GetTableData<MailTemplateViewModel>(result);
     }
 
     private void PageChanged(int i)

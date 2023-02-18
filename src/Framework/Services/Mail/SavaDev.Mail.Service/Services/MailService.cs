@@ -1,30 +1,32 @@
-﻿using Framework.Base.Types.ModelTypes;
-using Framework.Mailer;
-using Framework.MailTemplate;
+﻿using SavaDev.Mail.Service.Contract;
+using SavaDev.Mail.Service.Contract.Models;
+using SavaDev.System.Data.Contract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SavaDev.System.Front.Contract;
 
-namespace Framework.Mail.Services
+namespace SavaDev.Mail.Service.Services
 {
     public class MailService : IMailService
     {
-        private readonly IMailTemplateService _mailTemplateService;
+        private readonly IMailTemplateViewService _mailTemplateService;
         private readonly IEmailClient _emailClient;
 
-        public MailService(IMailTemplateService mailTemplateService, IEmailClient emailClient)
+        public MailService(IMailTemplateViewService mailTemplateService, IEmailClient emailClient)
         {
             _mailTemplateService = mailTemplateService;
             _emailClient = emailClient;
         }
 
-        public async Task FormatAndSendEmail(MailDataReceivedModel data) //Сделать свой тип данных для уменьшения связности?
+        public async Task<MailSendResult> FormatAndSendEmail(MailDataModel data) //Сделать свой тип данных для уменьшения связности?
         {
             var mail = await _mailTemplateService.FormatMail(data.Action, data.Culture, data.Variables.ToDictionary(v => v.Name, v => v.Value));
 
             await _emailClient.SendEmail(data.Email, mail.Title, mail.Body);
+            return new MailSendResult();
         }
     }
 }

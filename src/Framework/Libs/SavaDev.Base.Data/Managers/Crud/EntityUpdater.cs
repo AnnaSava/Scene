@@ -64,6 +64,12 @@ namespace SavaDev.Base.Data.Managers.Crud
             return this;
         }
 
+        public EntityUpdater<TKey, TEntity> GetDeletedEntity(Func<TKey, Task<TEntity>> func)
+        {
+            OnGetToRestore = func;
+            return this;
+        }
+
         public EntityUpdater<TKey, TEntity> ValidateEntity(Func<TEntity, Task> func)
         {
             OnValidatingEntity = func;

@@ -1,6 +1,4 @@
-﻿using Framework.Mailer;
-using Framework.Mailer.Services;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SavaDev.Base.Unit.Options;
 using SavaDev.System.Data;
@@ -23,7 +21,7 @@ namespace SavaDev.System.Front
 
 
             services.AddSingleton<SmtpClient>();
-            services.AddSingleton<IEmailClient, EmailClient>();
+            //services.AddSingleton<IEmailClient, EmailClient>();
                         
             //services.AddScoped<IMailService, MailService>();
         }

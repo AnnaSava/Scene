@@ -1,7 +1,12 @@
 using Framework.User.Service.Contract;
 using Framework.User.Service.Taskers;
 using Microsoft.AspNetCore.DataProtection;
+using SavaDev.Base.Unit.Options;
+using SavaDev.Base.Unit;
+using SavaDev.Mail.Service;
+using SavaDev.System.Front;
 using Scene.Login.WebApp;
+using Sava.Libs.WebModule;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,9 +27,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.Name = ".Scene.SharedCookie";
 });
 
-//builder.Services.AddMailTemplate(builder.Configuration);
-
-//AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+builder.Services.AddSystem(builder.Configuration, new UnitOptions(UnitCode.System, AppSettings.DefaultConnectionStringPattern));
+builder.Services.AddMailRmqService(builder.Configuration);
 
 builder.Services.AddRazorPages();
 

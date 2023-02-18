@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
+using SavaDev.Mail.Service.Contract;
+using SavaDev.Mail.Service.Contract.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +9,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Mailer.Services
+namespace SavaDev.Mail.Service.Services
 {
     public class EmailClient : IEmailClient
     {

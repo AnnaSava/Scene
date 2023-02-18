@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SavaDev.Base.Data.Context;
+using SavaDev.Base.Data.Managers;
+using SavaDev.Base.Data.Managers.Crud;
 using SavaDev.Base.Data.Services;
 using SavaDev.Base.User.Data.Entities;
 using SavaDev.Base.User.Data.Exceptions;
@@ -11,13 +13,14 @@ using SavaDev.Base.User.Data.Models;
 using SavaDev.Base.Users.Data.Manager;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace SavaDev.Base.User.Data.Manager
 {
     public class UserEntityManager<TKey, TEntity>
-        where TEntity : BaseUser
+        where TEntity : BaseUser, new()
     {
         protected readonly IDbContext _dbContext;
         protected readonly UserManager<TEntity> _userManager;
@@ -46,14 +49,9 @@ namespace SavaDev.Base.User.Data.Manager
     }
 
     public class UserEntityManager<TKey, TEntity, TFormModel> : UserEntityManager<TKey, TEntity>
-        where TEntity : BaseUser
+        where TEntity : BaseUser, new()
         where TFormModel : BaseUserModel
     {
-        private readonly IDbContext _dbContext;
-        private readonly UserManager<TEntity> _userManager;
-        private readonly IMapper _mapper;
-        private readonly ILogger<UserEntityManager<TKey, TEntity>> _logger;
-
         public UserEntityManager(IDbContext dbContext, UserManager<TEntity> userManager, IMapper mapper, ILogger logger)
             : base(dbContext, userManager, mapper, logger)
         {
@@ -61,117 +59,79 @@ namespace SavaDev.Base.User.Data.Manager
 
         #region Public Methods: Mutation
 
-        public async Task<OperationResult<TFormModel>> Create(TFormModel model, string password, Action<TEntity> onCreating = null, Action<TEntity> onCreated = null)
+        public async Task<OperationResult> Create(TFormModel model, string password)
         {
-            using var tran = await _dbContext.Database.BeginTransactionAsync();
-            try
-            {
-                var newEntity = _mapper.Map<TEntity>(model);
-                newEntity.RegDate = newEntity.LastUpdated = DateTime.UtcNow;
-
-                onCreating?.Invoke(newEntity);
-                var identityResult = await _userManager.CreateAsync(newEntity, password);
-                onCreated?.Invoke(newEntity);
-
-                if (identityResult.Succeeded)
+            var creator = new EntityCreator<TEntity>(_dbContext, _logger)
+                .SetValues(async (model) =>
                 {
-                    var result = new OperationResult<TFormModel>(1, _mapper.Map<TFormModel>(newEntity));
+                    var entity = _mapper.Map<TEntity>(model);
+                    entity.PasswordHash = password;  // TODO продумать, как красивее прокидывать пароль
+                    entity.RegDate = entity.LastUpdated = DateTime.UtcNow;
+                    return entity;
+                })
+                .Create(DoCreate)
+                .SuccessResult(entity => new OperationResult(_mapper.Map<TFormModel>(entity)));
 
-                    await tran.CommitAsync();
-
-                    return result;
-                }
-                throw new Exception("User not added");
-            }
-            catch (Exception ex)
-            {
-                await tran.RollbackAsync();
-                _logger.LogError($"{nameof(Create)}: {ex.Message} {ex.StackTrace}");
-                var result = new OperationResult<TFormModel>(0, model, new OperationExceptionInfo(ex.Message));
-                return result;
-            }
+            return await creator.Create(model);
         }
 
-        public async Task<OperationResult<TFormModel>> Update(TKey id, TFormModel model, Action<TEntity> onUpdating = null, Action<TEntity> onUpdated = null)
+        private async Task<OperationResult> DoCreate(TEntity entity)
         {
-            using var tran = await _dbContext.Database.BeginTransactionAsync();
-            try
-            {
-                var currentEntity = await FindForUpdate(id);
-                _mapper.Map(model, currentEntity);
-
-                onUpdating?.Invoke(currentEntity);
-                currentEntity.LastUpdated = DateTime.UtcNow;
-                var Identityresult = await _userManager.UpdateAsync(currentEntity);
-                onUpdated?.Invoke(currentEntity);
-
-                var result = new OperationResult<TFormModel>(1, _mapper.Map<TFormModel>(currentEntity));
-
-                await tran.CommitAsync();
-                return result;
-            }
-            catch (Exception ex)
-            {
-                await tran.RollbackAsync();
-                _logger.LogError($"{nameof(Update)}: {ex.Message} {ex.StackTrace}");
-                var result = new OperationResult<TFormModel>(0, model, new OperationExceptionInfo(ex.Message));
-                return result;
-            }
+            var identityResult = await _userManager.CreateAsync(entity, entity.PasswordHash); // TODO продумать, как красивее прокидывать пароль
+            if (!identityResult.Succeeded)
+                throw new Exception("User was not created");
+            return new OperationResult(1);
         }
 
-        public async Task<OperationResult> Delete(TKey id, Action<TEntity> onDeleting = null, Action<TEntity> onDeleted = null)
+        public async Task<OperationResult> Update(TKey id, TFormModel model, Action<TEntity> onUpdating = null, Action<TEntity> onUpdated = null)
         {
-            using var tran = await _dbContext.Database.BeginTransactionAsync();
-            try
-            {
-                var entity = await FindForUpdate(id);
-                if (entity.UserName == "admin") throw new InvalidOperationException("Removing of user admin is forbidden!");
-                entity.IsDeleted = true;
+            var updater = new EntityUpdater<TKey, TEntity>(_dbContext, _logger)
+                .ValidateModel(async (model) => { })
+                .GetEntity(async (id) => await FindForUpdate(id))
+                .SetValues(async (entity, model) => _mapper.Map(model, entity))
+                .Update(DoUpdate)
+                .SuccessResult(entity => new OperationResult(_mapper.Map<TFormModel>(entity)));
 
-                onDeleting?.Invoke(entity);
-                var dbResult = await _userManager.UpdateAsync(entity);
-                onDeleted?.Invoke(entity);
-
-                // TODO
-                var result = new OperationResult(1, id);
-
-                await tran.CommitAsync();
-                return result;
-            }
-            catch (Exception ex)
-            {
-                await tran.RollbackAsync();
-                _logger.LogError($"{nameof(Delete)}: {ex.Message} {ex.StackTrace}");
-                var result = new OperationResult(0, id, new OperationExceptionInfo(ex.Message));
-                return result;
-            }
+            return await updater.DoUpdate<TFormModel>(id, model);
         }
 
-        public async Task<OperationResult> Restore(TKey id, Action<TEntity> onRestoring = null, Action<TEntity> onRestored = null)
+        private async Task<OperationResult> DoUpdate(TEntity entity)
         {
-            using var tran = await _dbContext.Database.BeginTransactionAsync();
-            try
-            {
-                var entity = await FindForUpdate(id);
-                entity.IsDeleted = false;
+            var identityResult = await _userManager.UpdateAsync(entity);
+            if (!identityResult.Succeeded)
+                throw new Exception("User was not update");
+            return new OperationResult(1);
+        }
 
-                onRestoring?.Invoke(entity);
-                var dbResult = await _userManager.UpdateAsync(entity);
-                onRestored?.Invoke(entity);
+        public async Task<OperationResult> Delete(TKey id)
+        {
+            var updater = new EntityUpdater<TKey, TEntity>(_dbContext, _logger)
+                .GetEntity(async (id) =>
+                { 
+                    var entity = await FindForUpdate(id);
+                    if (entity.UserName == "admin") throw new InvalidOperationException("Removing of user admin is forbidden!");
+                    return entity;
+                })
+                .SetValues(async (entity) => { entity.IsDeleted = true; })
+                .Update(DoUpdate)
+                .SuccessResult(entity => new OperationResult(_mapper.Map<TFormModel>(entity)));
 
-                // TODO
-                var result = new OperationResult(1, id);
+            return await updater.DoUpdate(id);
+        }
 
-                await tran.CommitAsync();
-                return result;
-            }
-            catch (Exception ex)
-            {
-                await tran.RollbackAsync();
-                _logger.LogError($"{nameof(Delete)}: {ex.Message} {ex.StackTrace}");
-                var result = new OperationResult(0, id, new OperationExceptionInfo(ex.Message));
-                return result;
-            }
+        public async Task<OperationResult> Restore(TKey id)
+        {
+            var updater = new EntityUpdater<TKey, TEntity>(_dbContext, _logger)
+                .GetEntity(async (id) =>
+                {
+                    var entity = await FindForRestore(id);                    
+                    return entity;
+                })
+                .SetValues(async (entity) => { entity.IsDeleted = false; })
+                .Update(DoUpdate)
+                .SuccessResult(entity => new OperationResult(_mapper.Map<TFormModel>(entity)));
+
+            return await updater.DoUpdate(id);
         }
 
         public async Task<OperationResult<TUserModelOut>> Lock<TUserModelOut>(UserLockoutModel lockoutModel)
@@ -283,6 +243,18 @@ namespace SavaDev.Base.User.Data.Manager
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null || user.IsDeleted) throw new UserNotFoundException();
 
+            user.LastUpdated = DateTime.UtcNow;
+
+            return user;
+        }
+
+        private async Task<TEntity> FindForRestore(TKey userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null) throw new UserNotFoundException();
+
+            user.LastUpdated = DateTime.UtcNow;
+
             return user;
         }
 
@@ -290,6 +262,8 @@ namespace SavaDev.Base.User.Data.Manager
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null || user.IsDeleted) throw new UserNotFoundException();
+
+            user.LastUpdated = DateTime.UtcNow;
 
             return user;
         }
