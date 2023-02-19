@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -13,6 +13,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Services\Mail\SavaDev.Mail.Service\SavaDev.Mail.Service.csproj" />
+    <ProjectReference Include="..\..\Framework\Services\Users\SavaDev.Users.Data\SavaDev.Users.Data.csproj" />
+    <ProjectReference Include="..\..\Framework\Services\Users\SavaDev.Users.Front\SavaDev.Users.Front.csproj" />
     <ProjectReference Include="..\..\Libs\Sava.Libs.WebModule\Sava.Libs.WebModule.csproj" />
   </ItemGroup>
 

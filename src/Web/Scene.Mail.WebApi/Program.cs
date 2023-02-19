@@ -6,8 +6,11 @@ using SavaDev.Mail.Service;
 using SavaDev.Mail.Service.Contract;
 using SavaDev.Mail.Service.Contract.Models;
 using SavaDev.System.Front;
+using Scene.Mail.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddMapper();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

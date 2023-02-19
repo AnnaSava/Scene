@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using SavaDev.Base.User.Data.Models;
 using SavaDev.Base.Users.Security.Contract;
 using SavaDev.Mail.Service.Contract;
+using SavaDev.Mail.Service.Contract.Models;
 using SavaDev.System.Data.Contract;
 using SavaDev.Users.Data;
 using SavaDev.Users.Data.Contract.Models;
@@ -17,21 +18,19 @@ namespace Framework.DefaultUser.Service.Services
         private readonly IUserService _userDbService;
         private readonly IAccountService _accountDbService;
         private readonly IReservedNameService _reservedNameDbService;
-        //private readonly RegisterTasker _registerTasker;
         private readonly IMailSender _mailSender;
         private readonly IMapper _mapper;
 
         public AccountViewService(IUserService userDbService,
            IAccountService accountDbService,
            IReservedNameService reservedNameDbService,
-           //RegisterTasker registerTasker,
-           IMailSender _mailSender,
+           IMailSender mailSender,
            IMapper mapper)
         {
             _userDbService = userDbService;
             _accountDbService = accountDbService;
             _reservedNameDbService = reservedNameDbService;
-           // _registerTasker = registerTasker;
+            _mailSender = mailSender;
             _mapper = mapper;
         }
 
@@ -58,30 +57,26 @@ namespace Framework.DefaultUser.Service.Services
             if (resultModel == null || resultModel.Id == 0)
                 throw new Exception("Registration error");
 
-            //var token = await _accountDbService.GenerateEmailConfirmationToken(resultModel.Email);
-            //byte[] tokenGeneratedBytes = Encoding.UTF8.GetBytes(token);
-            //var codeEncoded = WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
-            //// TODO прокидывать сюда из настроек урл для подтверждения
-            //var confirmUrl = $"https://localhost:5001/account/confirmemail?email={resultModel.Email}&code={codeEncoded}";
+            var token = await _accountDbService.GenerateEmailConfirmationToken(resultModel.Email);
+            // TODO прокидывать сюда из настроек урл для подтверждения
+            var confirmUrl = $"https://localhost:5001/account/confirmemail?email={resultModel.Email}&code={token}";
 
-            //// TODO отправлять письмо с подтверждением
-            //// TODO отрефакторить
-            //var mailData = new MailDataModel
-            //{
-            //    Email = resultModel.Email,
-            //    Action = "registration",
-            //    Culture = "en",
-            //    Variables = new List<MailVariableModel>
-            //    {
-            //        new MailVariableModel{ Name = "<%Email%>", Value=resultModel.Email },
-            //        new MailVariableModel{ Name = "<%UserName%>", Value = resultModel.Login },
-            //        new MailVariableModel{ Name = "<%ConfirmUrl%>", Value = confirmUrl}
-            //    }
-            //};
+            // TODO отправлять письмо с подтверждением
+            // TODO отрефакторить
+            var mailData = new MailDataModel
+            {
+                Email = resultModel.Email,
+                Action = "registration",
+                Culture = "en",
+                Variables = new List<MailVariableModel>
+                {
+                    new MailVariableModel{ Name = "<%Email%>", Value=resultModel.Email },
+                    new MailVariableModel{ Name = "<%UserName%>", Value = resultModel.Login },
+                    new MailVariableModel{ Name = "<%ConfirmUrl%>", Value = confirmUrl}
+                }
+            };
 
-            //var jsonMessage = JsonSerializer.Serialize(mailData);
-
-            ////_registerTasker.Send(jsonMessage);
+            await _mailSender.SendInfo(mailData);
 
             return _mapper.Map<UserViewModel>(resultModel);
         }
