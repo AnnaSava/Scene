@@ -36,27 +36,12 @@ namespace Scene.Migrations.PostgreSql.Users
                     user_id = table.Column<long>(type: "bigint", nullable: false),
                     locked_by_user_id = table.Column<long>(type: "bigint", nullable: false),
                     lock_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    lockout_end = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    lockout_end = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     reason = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_app_lockouts", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "app_role_claims",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    role_id = table.Column<long>(type: "bigint", nullable: false),
-                    claim_type = table.Column<string>(type: "text", nullable: true),
-                    claim_value = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_app_role_claims", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -74,61 +59,6 @@ namespace Scene.Migrations.PostgreSql.Users
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_app_roles", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "app_user_claims",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    user_id = table.Column<long>(type: "bigint", nullable: false),
-                    claim_type = table.Column<string>(type: "text", nullable: true),
-                    claim_value = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_app_user_claims", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "app_user_logins",
-                columns: table => new
-                {
-                    login_provider = table.Column<string>(type: "text", nullable: false),
-                    provider_key = table.Column<string>(type: "text", nullable: false),
-                    user_id = table.Column<long>(type: "bigint", nullable: false),
-                    provider_display_name = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_app_user_logins", x => new { x.login_provider, x.provider_key, x.user_id });
-                });
-
-            migrationBuilder.CreateTable(
-                name: "app_user_roles",
-                columns: table => new
-                {
-                    user_id = table.Column<long>(type: "bigint", nullable: false),
-                    role_id = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_app_user_roles", x => new { x.user_id, x.role_id });
-                });
-
-            migrationBuilder.CreateTable(
-                name: "app_user_tokens",
-                columns: table => new
-                {
-                    user_id = table.Column<long>(type: "bigint", nullable: false),
-                    login_provider = table.Column<string>(type: "text", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: true),
-                    value = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_app_user_tokens", x => new { x.login_provider, x.user_id });
                 });
 
             migrationBuilder.CreateTable(
@@ -165,40 +95,6 @@ namespace Scene.Migrations.PostgreSql.Users
                 });
 
             migrationBuilder.CreateTable(
-                name: "auth_tokens",
-                columns: table => new
-                {
-                    id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    user_id = table.Column<long>(type: "bigint", nullable: false),
-                    auth_jti = table.Column<string>(type: "text", nullable: true),
-                    refresh_jti = table.Column<string>(type: "text", nullable: true),
-                    date_created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    date_updated = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_auth_tokens", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "lockouts",
-                columns: table => new
-                {
-                    id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    user_id = table.Column<long>(type: "bigint", nullable: false),
-                    locked_by_user_id = table.Column<long>(type: "bigint", nullable: false),
-                    lock_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    lockout_end = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    reason = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_lockouts", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "permission",
                 columns: table => new
                 {
@@ -210,7 +106,7 @@ namespace Scene.Migrations.PostgreSql.Users
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetRoleClaims",
+                name: "app_role_claims",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -221,9 +117,9 @@ namespace Scene.Migrations.PostgreSql.Users
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_asp_net_role_claims", x => x.id);
+                    table.PrimaryKey("pk_app_role_claims", x => x.id);
                     table.ForeignKey(
-                        name: "fk_asp_net_role_claims_asp_net_roles_role_id",
+                        name: "fk_app_role_claims_app_roles_role_id",
                         column: x => x.role_id,
                         principalTable: "app_roles",
                         principalColumn: "id",
@@ -231,7 +127,7 @@ namespace Scene.Migrations.PostgreSql.Users
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserClaims",
+                name: "app_user_claims",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -242,9 +138,9 @@ namespace Scene.Migrations.PostgreSql.Users
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_asp_net_user_claims", x => x.id);
+                    table.PrimaryKey("pk_app_user_claims", x => x.id);
                     table.ForeignKey(
-                        name: "fk_asp_net_user_claims_asp_net_users_user_id",
+                        name: "fk_app_user_claims_app_users_user_id",
                         column: x => x.user_id,
                         principalTable: "app_users",
                         principalColumn: "id",
@@ -252,19 +148,19 @@ namespace Scene.Migrations.PostgreSql.Users
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserLogins",
+                name: "app_user_logins",
                 columns: table => new
                 {
                     login_provider = table.Column<string>(type: "text", nullable: false),
                     provider_key = table.Column<string>(type: "text", nullable: false),
-                    provider_display_name = table.Column<string>(type: "text", nullable: true),
-                    user_id = table.Column<long>(type: "bigint", nullable: false)
+                    user_id = table.Column<long>(type: "bigint", nullable: false),
+                    provider_display_name = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_asp_net_user_logins", x => new { x.login_provider, x.provider_key });
+                    table.PrimaryKey("pk_app_user_logins", x => new { x.login_provider, x.provider_key, x.user_id });
                     table.ForeignKey(
-                        name: "fk_asp_net_user_logins_asp_net_users_user_id",
+                        name: "fk_app_user_logins_app_users_user_id",
                         column: x => x.user_id,
                         principalTable: "app_users",
                         principalColumn: "id",
@@ -272,7 +168,7 @@ namespace Scene.Migrations.PostgreSql.Users
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserRoles",
+                name: "app_user_roles",
                 columns: table => new
                 {
                     user_id = table.Column<long>(type: "bigint", nullable: false),
@@ -280,15 +176,15 @@ namespace Scene.Migrations.PostgreSql.Users
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_asp_net_user_roles", x => new { x.user_id, x.role_id });
+                    table.PrimaryKey("pk_app_user_roles", x => new { x.user_id, x.role_id });
                     table.ForeignKey(
-                        name: "fk_asp_net_user_roles_asp_net_roles_role_id",
+                        name: "fk_app_user_roles_app_roles_role_id",
                         column: x => x.role_id,
                         principalTable: "app_roles",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "fk_asp_net_user_roles_asp_net_users_user_id",
+                        name: "fk_app_user_roles_app_users_user_id",
                         column: x => x.user_id,
                         principalTable: "app_users",
                         principalColumn: "id",
@@ -296,19 +192,19 @@ namespace Scene.Migrations.PostgreSql.Users
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserTokens",
+                name: "app_user_tokens",
                 columns: table => new
                 {
                     user_id = table.Column<long>(type: "bigint", nullable: false),
                     login_provider = table.Column<string>(type: "text", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: true),
                     value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_asp_net_user_tokens", x => new { x.user_id, x.login_provider, x.name });
+                    table.PrimaryKey("pk_app_user_tokens", x => new { x.login_provider, x.user_id });
                     table.ForeignKey(
-                        name: "fk_asp_net_user_tokens_asp_net_users_user_id",
+                        name: "fk_app_user_tokens_app_users_user_id",
                         column: x => x.user_id,
                         principalTable: "app_users",
                         principalColumn: "id",
@@ -321,7 +217,7 @@ namespace Scene.Migrations.PostgreSql.Users
                 {
                     permission_name = table.Column<string>(type: "text", nullable: false),
                     culture = table.Column<string>(type: "text", nullable: false),
-                    title = table.Column<string>(type: "text", nullable: true)
+                    title = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -347,10 +243,35 @@ namespace Scene.Migrations.PostgreSql.Users
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "ix_app_role_claims_role_id",
+                table: "app_role_claims",
+                column: "role_id");
+
+            migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "app_roles",
                 column: "normalized_name",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "ix_app_user_claims_user_id",
+                table: "app_user_claims",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_app_user_logins_user_id",
+                table: "app_user_logins",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_app_user_roles_role_id",
+                table: "app_user_roles",
+                column: "role_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_app_user_tokens_user_id",
+                table: "app_user_tokens",
+                column: "user_id");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
@@ -362,26 +283,6 @@ namespace Scene.Migrations.PostgreSql.Users
                 table: "app_users",
                 column: "normalized_user_name",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "ix_asp_net_role_claims_role_id",
-                table: "AspNetRoleClaims",
-                column: "role_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_asp_net_user_claims_user_id",
-                table: "AspNetUserClaims",
-                column: "user_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_asp_net_user_logins_user_id",
-                table: "AspNetUserLogins",
-                column: "user_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_asp_net_user_roles_role_id",
-                table: "AspNetUserRoles",
-                column: "role_id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -406,27 +307,6 @@ namespace Scene.Migrations.PostgreSql.Users
 
             migrationBuilder.DropTable(
                 name: "app_user_tokens");
-
-            migrationBuilder.DropTable(
-                name: "AspNetRoleClaims");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserClaims");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserLogins");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserRoles");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "auth_tokens");
-
-            migrationBuilder.DropTable(
-                name: "lockouts");
 
             migrationBuilder.DropTable(
                 name: "permission_culture");

@@ -1,24 +1,21 @@
-﻿using AutoMapper;
-using Framework.DefaultUser.Service.Contract;
-using Framework.DefaultUser.Service.Services;
-using Framework.User.Service.Contract.Interfaces;
+﻿using Framework.DefaultUser.Service.Services;
 using Framework.User.Service.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SavaDev.Base.Data.Context;
-using SavaDev.Base.Unit.Options;
 using SavaDev.Base.Unit;
+using SavaDev.Base.Unit.Options;
 using SavaDev.Base.User.Data.Services;
 using SavaDev.Base.User.Data.Services.Interfaces;
-using SavaDev.Base.Users.Security.Account;
+using SavaDev.Base.Users.Security;
 using SavaDev.Base.Users.Security.Contract;
 using SavaDev.System.Data.Contract;
 using SavaDev.System.Data.Services;
 using SavaDev.Users.Data;
 using SavaDev.Users.Data.Entities;
+using SavaDev.Users.Front.Contract;
 using SavaDev.Users.Front.Security;
-using SavaDev.Base.Users.Security;
 
 namespace SavaDev.Users.Front
 {

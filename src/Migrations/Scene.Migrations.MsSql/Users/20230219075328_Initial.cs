@@ -35,27 +35,12 @@ namespace Scene.Migrations.MsSql.Users
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     LockedByUserId = table.Column<long>(type: "bigint", nullable: false),
                     LockDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnd = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Reason = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_App.Lockouts", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "App.RoleClaims",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<long>(type: "bigint", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_App.RoleClaims", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -73,47 +58,6 @@ namespace Scene.Migrations.MsSql.Users
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_App.Roles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "App.UserClaims",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_App.UserClaims", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "App.UserLogins",
-                columns: table => new
-                {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_App.UserLogins", x => new { x.LoginProvider, x.ProviderKey, x.UserId });
-                });
-
-            migrationBuilder.CreateTable(
-                name: "App.UserRoles",
-                columns: table => new
-                {
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    RoleId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_App.UserRoles", x => new { x.UserId, x.RoleId });
                 });
 
             migrationBuilder.CreateTable(
@@ -150,54 +94,6 @@ namespace Scene.Migrations.MsSql.Users
                 });
 
             migrationBuilder.CreateTable(
-                name: "App.UserTokens",
-                columns: table => new
-                {
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_App.UserTokens", x => new { x.LoginProvider, x.UserId });
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AuthTokens",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    AuthJti = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RefreshJti = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AuthTokens", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Lockouts",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    LockedByUserId = table.Column<long>(type: "bigint", nullable: false),
-                    LockDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Lockouts", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Permission",
                 columns: table => new
                 {
@@ -209,7 +105,7 @@ namespace Scene.Migrations.MsSql.Users
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetRoleClaims",
+                name: "App.RoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -220,9 +116,9 @@ namespace Scene.Migrations.MsSql.Users
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.PrimaryKey("PK_App.RoleClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetRoleClaims_App.Roles_RoleId",
+                        name: "FK_App.RoleClaims_App.Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "App.Roles",
                         principalColumn: "Id",
@@ -230,7 +126,7 @@ namespace Scene.Migrations.MsSql.Users
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserClaims",
+                name: "App.UserClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -241,9 +137,9 @@ namespace Scene.Migrations.MsSql.Users
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.PrimaryKey("PK_App.UserClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUserClaims_App.Users_UserId",
+                        name: "FK_App.UserClaims_App.Users_UserId",
                         column: x => x.UserId,
                         principalTable: "App.Users",
                         principalColumn: "Id",
@@ -251,19 +147,19 @@ namespace Scene.Migrations.MsSql.Users
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserLogins",
+                name: "App.UserLogins",
                 columns: table => new
                 {
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<long>(type: "bigint", nullable: false)
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.PrimaryKey("PK_App.UserLogins", x => new { x.LoginProvider, x.ProviderKey, x.UserId });
                     table.ForeignKey(
-                        name: "FK_AspNetUserLogins_App.Users_UserId",
+                        name: "FK_App.UserLogins_App.Users_UserId",
                         column: x => x.UserId,
                         principalTable: "App.Users",
                         principalColumn: "Id",
@@ -271,7 +167,7 @@ namespace Scene.Migrations.MsSql.Users
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserRoles",
+                name: "App.UserRoles",
                 columns: table => new
                 {
                     UserId = table.Column<long>(type: "bigint", nullable: false),
@@ -279,15 +175,15 @@ namespace Scene.Migrations.MsSql.Users
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.PrimaryKey("PK_App.UserRoles", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_App.Roles_RoleId",
+                        name: "FK_App.UserRoles_App.Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "App.Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_App.Users_UserId",
+                        name: "FK_App.UserRoles_App.Users_UserId",
                         column: x => x.UserId,
                         principalTable: "App.Users",
                         principalColumn: "Id",
@@ -295,19 +191,19 @@ namespace Scene.Migrations.MsSql.Users
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserTokens",
+                name: "App.UserTokens",
                 columns: table => new
                 {
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.PrimaryKey("PK_App.UserTokens", x => new { x.LoginProvider, x.UserId });
                     table.ForeignKey(
-                        name: "FK_AspNetUserTokens_App.Users_UserId",
+                        name: "FK_App.UserTokens_App.Users_UserId",
                         column: x => x.UserId,
                         principalTable: "App.Users",
                         principalColumn: "Id",
@@ -320,7 +216,7 @@ namespace Scene.Migrations.MsSql.Users
                 {
                     PermissionName = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Culture = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -348,11 +244,31 @@ namespace Scene.Migrations.MsSql.Users
                 filter: "[RefreshJti] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_App.RoleClaims_RoleId",
+                table: "App.RoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "App.Roles",
                 column: "NormalizedName",
                 unique: true,
                 filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_App.UserClaims_UserId",
+                table: "App.UserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_App.UserLogins_UserId",
+                table: "App.UserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_App.UserRoles_RoleId",
+                table: "App.UserRoles",
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
@@ -367,24 +283,9 @@ namespace Scene.Migrations.MsSql.Users
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetRoleClaims_RoleId",
-                table: "AspNetRoleClaims",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserClaims_UserId",
-                table: "AspNetUserClaims",
+                name: "IX_App.UserTokens_UserId",
+                table: "App.UserTokens",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserLogins_UserId",
-                table: "AspNetUserLogins",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserRoles_RoleId",
-                table: "AspNetUserRoles",
-                column: "RoleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -409,27 +310,6 @@ namespace Scene.Migrations.MsSql.Users
 
             migrationBuilder.DropTable(
                 name: "App.UserTokens");
-
-            migrationBuilder.DropTable(
-                name: "AspNetRoleClaims");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserClaims");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserLogins");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserRoles");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "AuthTokens");
-
-            migrationBuilder.DropTable(
-                name: "Lockouts");
 
             migrationBuilder.DropTable(
                 name: "PermissionCulture");

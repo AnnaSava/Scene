@@ -1,12 +1,6 @@
-﻿using Framework.User.Service.Contract.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Framework.User.Service.Contract.Models
+namespace SavaDev.Users.Front.Contract.Models
 {
     public class UserFormViewModel : IUserViewModel
     {

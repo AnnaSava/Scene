@@ -22,7 +22,7 @@ namespace Scene.Migrations.PostgreSql.Users
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Framework.User.DataService.Entities.AuthToken", b =>
+            modelBuilder.Entity("SavaDev.Base.User.Data.Entities.AuthToken", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -65,226 +65,6 @@ namespace Scene.Migrations.PostgreSql.Users
                     b.ToTable("app_auth_tokens", (string)null);
                 });
 
-            modelBuilder.Entity("Framework.User.DataService.Entities.Lockout", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime>("LockDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("lock_date");
-
-                    b.Property<long>("LockedByUserId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("locked_by_user_id");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("lockout_end");
-
-                    b.Property<string>("Reason")
-                        .HasColumnType("text")
-                        .HasColumnName("reason");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_app_lockouts");
-
-                    b.ToTable("app_lockouts", (string)null);
-                });
-
-            modelBuilder.Entity("Framework.User.DataService.Entities.Permission", b =>
-                {
-                    b.Property<string>("Name")
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.HasKey("Name")
-                        .HasName("pk_permission");
-
-                    b.ToTable("permission", (string)null);
-                });
-
-            modelBuilder.Entity("Framework.User.DataService.Entities.PermissionCulture", b =>
-                {
-                    b.Property<string>("PermissionName")
-                        .HasColumnType("text")
-                        .HasColumnName("permission_name");
-
-                    b.Property<string>("Culture")
-                        .HasColumnType("text")
-                        .HasColumnName("culture");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("text")
-                        .HasColumnName("title");
-
-                    b.HasKey("PermissionName", "Culture")
-                        .HasName("pk_permission_culture");
-
-                    b.ToTable("permission_culture", (string)null);
-                });
-
-            modelBuilder.Entity("Framework.User.DataService.Entities.RoleClaim", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("text")
-                        .HasColumnName("claim_type");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("text")
-                        .HasColumnName("claim_value");
-
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("role_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_app_role_claims");
-
-                    b.ToTable("app_role_claims", (string)null);
-                });
-
-            modelBuilder.Entity("Framework.User.DataService.Entities.UserClaim", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("text")
-                        .HasColumnName("claim_type");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("text")
-                        .HasColumnName("claim_value");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_app_user_claims");
-
-                    b.ToTable("app_user_claims", (string)null);
-                });
-
-            modelBuilder.Entity("Framework.User.DataService.Entities.UserLogin", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("text")
-                        .HasColumnName("login_provider");
-
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("text")
-                        .HasColumnName("provider_key");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("user_id");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("text")
-                        .HasColumnName("provider_display_name");
-
-                    b.HasKey("LoginProvider", "ProviderKey", "UserId")
-                        .HasName("pk_app_user_logins");
-
-                    b.ToTable("app_user_logins", (string)null);
-                });
-
-            modelBuilder.Entity("Framework.User.DataService.Entities.UserRole", b =>
-                {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("user_id");
-
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("role_id");
-
-                    b.HasKey("UserId", "RoleId")
-                        .HasName("pk_app_user_roles");
-
-                    b.ToTable("app_user_roles", (string)null);
-                });
-
-            modelBuilder.Entity("Framework.User.DataService.Entities.UserToken", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("text")
-                        .HasColumnName("login_provider");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("user_id");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("text")
-                        .HasColumnName("value");
-
-                    b.HasKey("LoginProvider", "UserId")
-                        .HasName("pk_app_user_tokens");
-
-                    b.ToTable("app_user_tokens", (string)null);
-                });
-
-            modelBuilder.Entity("SavaDev.Base.User.Data.Entities.AuthToken", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("AuthJti")
-                        .HasColumnType("text")
-                        .HasColumnName("auth_jti");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("date_created");
-
-                    b.Property<DateTime?>("DateUpdated")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("date_updated");
-
-                    b.Property<string>("RefreshJti")
-                        .HasColumnType("text")
-                        .HasColumnName("refresh_jti");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_auth_tokens");
-
-                    b.ToTable("auth_tokens", (string)null);
-                });
-
             modelBuilder.Entity("SavaDev.Base.User.Data.Entities.Lockout", b =>
                 {
                     b.Property<long>("Id")
@@ -302,7 +82,7 @@ namespace Scene.Migrations.PostgreSql.Users
                         .HasColumnType("bigint")
                         .HasColumnName("locked_by_user_id");
 
-                    b.Property<DateTimeOffset?>("LockoutEnd")
+                    b.Property<DateTime?>("LockoutEnd")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("lockout_end");
 
@@ -315,9 +95,9 @@ namespace Scene.Migrations.PostgreSql.Users
                         .HasColumnName("user_id");
 
                     b.HasKey("Id")
-                        .HasName("pk_lockouts");
+                        .HasName("pk_app_lockouts");
 
-                    b.ToTable("lockouts", (string)null);
+                    b.ToTable("app_lockouts", (string)null);
                 });
 
             modelBuilder.Entity("SavaDev.Base.User.Data.Entities.RoleClaim", b =>
@@ -342,12 +122,12 @@ namespace Scene.Migrations.PostgreSql.Users
                         .HasColumnName("role_id");
 
                     b.HasKey("Id")
-                        .HasName("pk_asp_net_role_claims");
+                        .HasName("pk_app_role_claims");
 
                     b.HasIndex("RoleId")
-                        .HasDatabaseName("ix_asp_net_role_claims_role_id");
+                        .HasDatabaseName("ix_app_role_claims_role_id");
 
-                    b.ToTable("AspNetRoleClaims", (string)null);
+                    b.ToTable("app_role_claims", (string)null);
                 });
 
             modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserClaim", b =>
@@ -372,12 +152,12 @@ namespace Scene.Migrations.PostgreSql.Users
                         .HasColumnName("user_id");
 
                     b.HasKey("Id")
-                        .HasName("pk_asp_net_user_claims");
+                        .HasName("pk_app_user_claims");
 
                     b.HasIndex("UserId")
-                        .HasDatabaseName("ix_asp_net_user_claims_user_id");
+                        .HasDatabaseName("ix_app_user_claims_user_id");
 
-                    b.ToTable("AspNetUserClaims", (string)null);
+                    b.ToTable("app_user_claims", (string)null);
                 });
 
             modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserLogin", b =>
@@ -390,21 +170,21 @@ namespace Scene.Migrations.PostgreSql.Users
                         .HasColumnType("text")
                         .HasColumnName("provider_key");
 
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("text")
-                        .HasColumnName("provider_display_name");
-
                     b.Property<long>("UserId")
                         .HasColumnType("bigint")
                         .HasColumnName("user_id");
 
-                    b.HasKey("LoginProvider", "ProviderKey")
-                        .HasName("pk_asp_net_user_logins");
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("text")
+                        .HasColumnName("provider_display_name");
+
+                    b.HasKey("LoginProvider", "ProviderKey", "UserId")
+                        .HasName("pk_app_user_logins");
 
                     b.HasIndex("UserId")
-                        .HasDatabaseName("ix_asp_net_user_logins_user_id");
+                        .HasDatabaseName("ix_app_user_logins_user_id");
 
-                    b.ToTable("AspNetUserLogins", (string)null);
+                    b.ToTable("app_user_logins", (string)null);
                 });
 
             modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserRole", b =>
@@ -418,23 +198,23 @@ namespace Scene.Migrations.PostgreSql.Users
                         .HasColumnName("role_id");
 
                     b.HasKey("UserId", "RoleId")
-                        .HasName("pk_asp_net_user_roles");
+                        .HasName("pk_app_user_roles");
 
                     b.HasIndex("RoleId")
-                        .HasDatabaseName("ix_asp_net_user_roles_role_id");
+                        .HasDatabaseName("ix_app_user_roles_role_id");
 
-                    b.ToTable("AspNetUserRoles", (string)null);
+                    b.ToTable("app_user_roles", (string)null);
                 });
 
             modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserToken", b =>
                 {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("user_id");
-
                     b.Property<string>("LoginProvider")
                         .HasColumnType("text")
                         .HasColumnName("login_provider");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("user_id");
 
                     b.Property<string>("Name")
                         .HasColumnType("text")
@@ -444,13 +224,49 @@ namespace Scene.Migrations.PostgreSql.Users
                         .HasColumnType("text")
                         .HasColumnName("value");
 
-                    b.HasKey("UserId", "LoginProvider", "Name")
-                        .HasName("pk_asp_net_user_tokens");
+                    b.HasKey("LoginProvider", "UserId")
+                        .HasName("pk_app_user_tokens");
 
-                    b.ToTable("AspNetUserTokens", (string)null);
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_app_user_tokens_user_id");
+
+                    b.ToTable("app_user_tokens", (string)null);
                 });
 
-            modelBuilder.Entity("SavaDev.Users.Data.Role", b =>
+            modelBuilder.Entity("SavaDev.System.Data.Entities.Parts.PermissionCulture", b =>
+                {
+                    b.Property<string>("PermissionName")
+                        .HasColumnType("text")
+                        .HasColumnName("permission_name");
+
+                    b.Property<string>("Culture")
+                        .HasColumnType("text")
+                        .HasColumnName("culture");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
+                    b.HasKey("PermissionName", "Culture")
+                        .HasName("pk_permission_culture");
+
+                    b.ToTable("permission_culture", (string)null);
+                });
+
+            modelBuilder.Entity("SavaDev.System.Data.Entities.Permission", b =>
+                {
+                    b.Property<string>("Name")
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.HasKey("Name")
+                        .HasName("pk_permission");
+
+                    b.ToTable("permission", (string)null);
+                });
+
+            modelBuilder.Entity("SavaDev.Users.Data.Entities.Role", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -492,7 +308,7 @@ namespace Scene.Migrations.PostgreSql.Users
                     b.ToTable("app_roles", (string)null);
                 });
 
-            modelBuilder.Entity("SavaDev.Users.Data.User", b =>
+            modelBuilder.Entity("SavaDev.Users.Data.Entities.User", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -607,9 +423,66 @@ namespace Scene.Migrations.PostgreSql.Users
                     b.ToTable("app_users", (string)null);
                 });
 
-            modelBuilder.Entity("Framework.User.DataService.Entities.PermissionCulture", b =>
+            modelBuilder.Entity("SavaDev.Base.User.Data.Entities.RoleClaim", b =>
                 {
-                    b.HasOne("Framework.User.DataService.Entities.Permission", "Permission")
+                    b.HasOne("SavaDev.Users.Data.Entities.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_app_role_claims_app_roles_role_id");
+                });
+
+            modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserClaim", b =>
+                {
+                    b.HasOne("SavaDev.Users.Data.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_app_user_claims_app_users_user_id");
+                });
+
+            modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserLogin", b =>
+                {
+                    b.HasOne("SavaDev.Users.Data.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_app_user_logins_app_users_user_id");
+                });
+
+            modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserRole", b =>
+                {
+                    b.HasOne("SavaDev.Users.Data.Entities.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_app_user_roles_app_roles_role_id");
+
+                    b.HasOne("SavaDev.Users.Data.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_app_user_roles_app_users_user_id");
+                });
+
+            modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserToken", b =>
+                {
+                    b.HasOne("SavaDev.Users.Data.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_app_user_tokens_app_users_user_id");
+                });
+
+            modelBuilder.Entity("SavaDev.System.Data.Entities.Parts.PermissionCulture", b =>
+                {
+                    b.HasOne("SavaDev.System.Data.Entities.Permission", "Permission")
                         .WithMany("Cultures")
                         .HasForeignKey("PermissionName")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -619,64 +492,7 @@ namespace Scene.Migrations.PostgreSql.Users
                     b.Navigation("Permission");
                 });
 
-            modelBuilder.Entity("SavaDev.Base.User.Data.Entities.RoleClaim", b =>
-                {
-                    b.HasOne("SavaDev.Users.Data.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_asp_net_role_claims_asp_net_roles_role_id");
-                });
-
-            modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserClaim", b =>
-                {
-                    b.HasOne("SavaDev.Users.Data.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_asp_net_user_claims_asp_net_users_user_id");
-                });
-
-            modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserLogin", b =>
-                {
-                    b.HasOne("SavaDev.Users.Data.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_asp_net_user_logins_asp_net_users_user_id");
-                });
-
-            modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserRole", b =>
-                {
-                    b.HasOne("SavaDev.Users.Data.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_asp_net_user_roles_asp_net_roles_role_id");
-
-                    b.HasOne("SavaDev.Users.Data.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_asp_net_user_roles_asp_net_users_user_id");
-                });
-
-            modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserToken", b =>
-                {
-                    b.HasOne("SavaDev.Users.Data.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_asp_net_user_tokens_asp_net_users_user_id");
-                });
-
-            modelBuilder.Entity("Framework.User.DataService.Entities.Permission", b =>
+            modelBuilder.Entity("SavaDev.System.Data.Entities.Permission", b =>
                 {
                     b.Navigation("Cultures");
                 });

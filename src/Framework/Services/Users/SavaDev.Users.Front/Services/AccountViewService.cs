@@ -1,16 +1,14 @@
 ﻿using AutoMapper;
-using Framework.DefaultUser.Service.Contract;
-using Framework.User.Service.Contract.Models;
 using Microsoft.AspNetCore.WebUtilities;
 using SavaDev.Base.User.Data.Models;
-using SavaDev.Base.User.Data.Services;
 using SavaDev.Base.Users.Security.Contract;
 using SavaDev.Mail.Service.Contract;
 using SavaDev.System.Data.Contract;
 using SavaDev.Users.Data;
 using SavaDev.Users.Data.Contract.Models;
+using SavaDev.Users.Front.Contract;
+using SavaDev.Users.Front.Contract.Models;
 using System.Text;
-using System.Text.Json;
 
 namespace Framework.DefaultUser.Service.Services
 {
@@ -50,6 +48,10 @@ namespace Framework.DefaultUser.Service.Services
                 throw new Exception("UserName is forbidden!");
 
             var newModel = _mapper.Map<UserFormModel>(model);
+            newModel.FirstName = ""; // TODO убрать. Либо разрешить нуллы в БД, либо проставлять где-нибудь, например, в маппере
+            newModel.LastName = "";
+            newModel.DisplayName = "";
+
             var result = await _userDbService.Create(newModel, model.Password);
             var resultModel = result.ProcessedObject as UserFormModel;
 

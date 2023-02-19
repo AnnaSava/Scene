@@ -1,12 +1,7 @@
 ﻿using Framework.Base.Service.ListView;
-using Framework.User.Service.Contract.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SavaDev.Users.Front.Contract.Models;
 
-namespace Framework.User.Service.Contract.Interfaces
+namespace SavaDev.Users.Front.Contract
 {
     public interface IRoleViewService
     {

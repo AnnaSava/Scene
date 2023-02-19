@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
 using Framework.Base.Service.ListView;
-using Framework.User.Service.Contract.Interfaces;
-using Framework.User.Service.Contract.Models;
 using SavaDev.System.Data.Contract;
 using SavaDev.Users.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SavaDev.Users.Front.Contract;
+using SavaDev.Users.Front.Contract.Models;
 
 namespace Framework.User.Service.Services
 {

@@ -1,16 +1,8 @@
 ﻿using AutoMapper;
-using Framework.Base.Service.ListView;
 using Framework.Base.Types.Registry;
 using Framework.User.DataService.Contract.Models;
-using Framework.User.Service.Contract.Models;
-using SavaDev.Users.Data;
 using SavaDev.Users.Data.Contract.Models;
 using SavaDev.Users.Front.Contract.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SavaDev.Users.Front
 {

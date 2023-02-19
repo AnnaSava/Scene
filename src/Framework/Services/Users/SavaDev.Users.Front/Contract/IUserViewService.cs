@@ -1,8 +1,8 @@
 ﻿using Framework.Base.Service.ListView;
 using Framework.Base.Types.Validation;
-using Framework.User.Service.Contract.Models;
+using SavaDev.Users.Front.Contract.Models;
 
-namespace Framework.User.Service.Contract.Interfaces
+namespace SavaDev.Users.Front.Contract
 {
     public interface IUserViewService
     {

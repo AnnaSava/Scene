@@ -4,11 +4,12 @@ using Framework.User.Service.Taskers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using MudBlazor.Services;
-using Sava.Libs.WebModule;
-using SavaDev.Base.Unit.Options;
 using SavaDev.Base.Unit;
+using SavaDev.Base.Unit.Options;
+using SavaDev.Mail.Service;
 using SavaDev.System.Front;
 using SavaDev.Users.Front;
+using Scene.Libs.WebModule;
 using Scene.Manage.UI.MudBlazorServer;
 using Scene.Manage.UI.MudBlazorServer.Data;
 
@@ -31,8 +32,9 @@ builder.Services.AddMapper();
 
 builder.Services.AddTransient<RegisterTasker>();
 
-builder.Services.AddUsers(builder.Configuration, new UnitOptions(SavaUnitCode.AppUsers, AppSettings.DefaultConnectionStringPattern));
-builder.Services.AddSystem(builder.Configuration, new UnitOptions(SavaUnitCode.System, AppSettings.DefaultConnectionStringPattern));
+builder.Services.AddUsers(builder.Configuration, new UnitOptions(SceneUnitCode.AppUsers, AppSettings.DefaultConnectionStringPattern));
+builder.Services.AddSystem(builder.Configuration, new UnitOptions(SceneUnitCode.System, AppSettings.DefaultConnectionStringPattern));
+builder.Services.AddMailRmqService(builder.Configuration);
 
 builder.Services.AddDataProtection()
                 .PersistKeysToFileSystem(new DirectoryInfo(builder.Configuration.GetSection("SessionsPath").Value))

@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Libs\SavaDev.Infrastructure\SavaDev.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Framework\Obsolete\Framework.Base.Types\Framework.Base.Types.csproj" />
     <ProjectReference Include="..\..\Framework\Obsolete\Framework.Helpers\Framework.Helpers.csproj" />
     <ProjectReference Include="..\..\Framework\Services\System\SavaDev.System.Front\SavaDev.System.Front.csproj" />

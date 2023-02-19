@@ -1,19 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using Sava.Users.Front.Contract;
 using SavaDev.Base.Data.Context;
 using SavaDev.Base.Users.Security.Account;
+using SavaDev.Base.Users.Security.Contract;
 using SavaDev.Users.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SavaDev.Users.Front.Security
 {
-    public class WebAccountService : AccountService<long, User>, IWebAccountService
+    public class WebAccountService : AccountService<long, User>, IAccountService
     {
         public WebAccountService(
             IDbContext dbContext,

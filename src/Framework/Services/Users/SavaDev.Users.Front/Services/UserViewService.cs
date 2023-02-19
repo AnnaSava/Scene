@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
 using Framework.Base.Service.ListView;
 using Framework.User.DataService.Contract.Interfaces;
-using Framework.User.DataService.Contract.Models;
-using Framework.User.Service.Contract.Interfaces;
-using Sava.Users.Front.Contract.Models;
 using SavaDev.Base.Data.Models;
-using SavaDev.Base.User.Data.Services;
 using SavaDev.Base.Users.Security.Contract;
 using SavaDev.System.Data.Contract;
 using SavaDev.Users.Data;

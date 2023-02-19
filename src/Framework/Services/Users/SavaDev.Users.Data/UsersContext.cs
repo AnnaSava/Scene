@@ -28,10 +28,5 @@ namespace SavaDev.Users.Data
 
             builder.ConfigureContext(_dbOptionsExtension);
         }
-
-        public async Task<int> SaveChangesAsync()
-        {
-            return await base.SaveChangesAsync();
-        }
     }
 }

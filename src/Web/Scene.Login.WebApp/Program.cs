@@ -1,14 +1,13 @@
 using Framework.User.Service.Contract;
 using Framework.User.Service.Taskers;
 using Microsoft.AspNetCore.DataProtection;
-using SavaDev.Base.Unit.Options;
 using SavaDev.Base.Unit;
+using SavaDev.Base.Unit.Options;
 using SavaDev.Mail.Service;
 using SavaDev.System.Front;
-using Scene.Login.WebApp;
-using Scene.Libs.WebModule;
 using SavaDev.Users.Front;
-using Microsoft.AspNetCore.DataProtection.Repositories;
+using Scene.Libs.WebModule;
+using Scene.Login.WebApp;
 
 var builder = WebApplication.CreateBuilder(args);
 

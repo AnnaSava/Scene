@@ -2,6 +2,7 @@
 using SavaDev.System.Data;
 using SavaDev.System.Front.Mapper;
 using SavaDev.Users.Data;
+using SavaDev.Users.Front;
 
 namespace Scene.Login.WebApp
 {
@@ -15,7 +16,7 @@ namespace Scene.Login.WebApp
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new UsersMapperProfile());
-                //mc.AddProfile(new UserMapperProfile());
+                mc.AddProfile(new UsersViewMapperProfile());
                 mc.AddProfile(new SystemMapperProfile());
                 mc.AddProfile(new SystemViewMapperProfile());
             });

@@ -22,7 +22,7 @@ namespace Scene.Migrations.MsSql.Users
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Framework.User.DataService.Entities.AuthToken", b =>
+            modelBuilder.Entity("SavaDev.Base.User.Data.Entities.AuthToken", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -58,183 +58,6 @@ namespace Scene.Migrations.MsSql.Users
                     b.ToTable("App.AuthTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Framework.User.DataService.Entities.Lockout", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("LockDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("LockedByUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Reason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("App.Lockouts", (string)null);
-                });
-
-            modelBuilder.Entity("Framework.User.DataService.Entities.Permission", b =>
-                {
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Name");
-
-                    b.ToTable("Permission");
-                });
-
-            modelBuilder.Entity("Framework.User.DataService.Entities.PermissionCulture", b =>
-                {
-                    b.Property<string>("PermissionName")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Culture")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("PermissionName", "Culture");
-
-                    b.ToTable("PermissionCulture");
-                });
-
-            modelBuilder.Entity("Framework.User.DataService.Entities.RoleClaim", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("App.RoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Framework.User.DataService.Entities.UserClaim", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("App.UserClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Framework.User.DataService.Entities.UserLogin", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("LoginProvider", "ProviderKey", "UserId");
-
-                    b.ToTable("App.UserLogins", (string)null);
-                });
-
-            modelBuilder.Entity("Framework.User.DataService.Entities.UserRole", b =>
-                {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.ToTable("App.UserRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Framework.User.DataService.Entities.UserToken", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("LoginProvider", "UserId");
-
-                    b.ToTable("App.UserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("SavaDev.Base.User.Data.Entities.AuthToken", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<string>("AuthJti")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateUpdated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("RefreshJti")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AuthTokens");
-                });
-
             modelBuilder.Entity("SavaDev.Base.User.Data.Entities.Lockout", b =>
                 {
                     b.Property<long>("Id")
@@ -249,8 +72,8 @@ namespace Scene.Migrations.MsSql.Users
                     b.Property<long>("LockedByUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("LockoutEnd")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Reason")
                         .HasColumnType("nvarchar(max)");
@@ -260,7 +83,7 @@ namespace Scene.Migrations.MsSql.Users
 
                     b.HasKey("Id");
 
-                    b.ToTable("Lockouts");
+                    b.ToTable("App.Lockouts", (string)null);
                 });
 
             modelBuilder.Entity("SavaDev.Base.User.Data.Entities.RoleClaim", b =>
@@ -284,7 +107,7 @@ namespace Scene.Migrations.MsSql.Users
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims", (string)null);
+                    b.ToTable("App.RoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserClaim", b =>
@@ -308,7 +131,7 @@ namespace Scene.Migrations.MsSql.Users
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims", (string)null);
+                    b.ToTable("App.UserClaims", (string)null);
                 });
 
             modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserLogin", b =>
@@ -319,17 +142,17 @@ namespace Scene.Migrations.MsSql.Users
                     b.Property<string>("ProviderKey")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("LoginProvider", "ProviderKey");
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("LoginProvider", "ProviderKey", "UserId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins", (string)null);
+                    b.ToTable("App.UserLogins", (string)null);
                 });
 
             modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserRole", b =>
@@ -344,29 +167,58 @@ namespace Scene.Migrations.MsSql.Users
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles", (string)null);
+                    b.ToTable("App.UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserToken", b =>
                 {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserId", "LoginProvider", "Name");
+                    b.HasKey("LoginProvider", "UserId");
 
-                    b.ToTable("AspNetUserTokens", (string)null);
+                    b.HasIndex("UserId");
+
+                    b.ToTable("App.UserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SavaDev.Users.Data.Role", b =>
+            modelBuilder.Entity("SavaDev.System.Data.Entities.Parts.PermissionCulture", b =>
+                {
+                    b.Property<string>("PermissionName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Culture")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PermissionName", "Culture");
+
+                    b.ToTable("PermissionCulture");
+                });
+
+            modelBuilder.Entity("SavaDev.System.Data.Entities.Permission", b =>
+                {
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Name");
+
+                    b.ToTable("Permission");
+                });
+
+            modelBuilder.Entity("SavaDev.Users.Data.Entities.Role", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -402,7 +254,7 @@ namespace Scene.Migrations.MsSql.Users
                     b.ToTable("App.Roles", (string)null);
                 });
 
-            modelBuilder.Entity("SavaDev.Users.Data.User", b =>
+            modelBuilder.Entity("SavaDev.Users.Data.Entities.User", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -495,20 +347,9 @@ namespace Scene.Migrations.MsSql.Users
                     b.ToTable("App.Users", (string)null);
                 });
 
-            modelBuilder.Entity("Framework.User.DataService.Entities.PermissionCulture", b =>
-                {
-                    b.HasOne("Framework.User.DataService.Entities.Permission", "Permission")
-                        .WithMany("Cultures")
-                        .HasForeignKey("PermissionName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Permission");
-                });
-
             modelBuilder.Entity("SavaDev.Base.User.Data.Entities.RoleClaim", b =>
                 {
-                    b.HasOne("SavaDev.Users.Data.Role", null)
+                    b.HasOne("SavaDev.Users.Data.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -517,7 +358,7 @@ namespace Scene.Migrations.MsSql.Users
 
             modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserClaim", b =>
                 {
-                    b.HasOne("SavaDev.Users.Data.User", null)
+                    b.HasOne("SavaDev.Users.Data.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -526,7 +367,7 @@ namespace Scene.Migrations.MsSql.Users
 
             modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserLogin", b =>
                 {
-                    b.HasOne("SavaDev.Users.Data.User", null)
+                    b.HasOne("SavaDev.Users.Data.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -535,13 +376,13 @@ namespace Scene.Migrations.MsSql.Users
 
             modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserRole", b =>
                 {
-                    b.HasOne("SavaDev.Users.Data.Role", null)
+                    b.HasOne("SavaDev.Users.Data.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SavaDev.Users.Data.User", null)
+                    b.HasOne("SavaDev.Users.Data.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -550,14 +391,25 @@ namespace Scene.Migrations.MsSql.Users
 
             modelBuilder.Entity("SavaDev.Base.User.Data.Entities.UserToken", b =>
                 {
-                    b.HasOne("SavaDev.Users.Data.User", null)
+                    b.HasOne("SavaDev.Users.Data.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Framework.User.DataService.Entities.Permission", b =>
+            modelBuilder.Entity("SavaDev.System.Data.Entities.Parts.PermissionCulture", b =>
+                {
+                    b.HasOne("SavaDev.System.Data.Entities.Permission", "Permission")
+                        .WithMany("Cultures")
+                        .HasForeignKey("PermissionName")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+                });
+
+            modelBuilder.Entity("SavaDev.System.Data.Entities.Permission", b =>
                 {
                     b.Navigation("Cultures");
                 });

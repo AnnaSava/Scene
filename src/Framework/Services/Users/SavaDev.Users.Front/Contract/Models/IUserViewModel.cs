@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.User.Service.Contract.Interfaces
+namespace SavaDev.Users.Front.Contract.Models
 {
     public interface IUserViewModel
     {
