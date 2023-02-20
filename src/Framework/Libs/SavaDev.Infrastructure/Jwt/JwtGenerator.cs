@@ -1,13 +1,11 @@
-﻿using Framework.User.Helpers.Jwt.Models;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.IdentityModel.Tokens;
+using SavaDev.Infrastructure.Jwt.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 
-namespace Framework.User.Helpers.Jwt
+namespace SavaDev.Infrastructure.Jwt
 {
     public class JwtGenerator
     {

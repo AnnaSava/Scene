@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Framework.Base.Service.Module;
-using Framework.Helpers.Files;
+﻿using Framework.Helpers.Files;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Sava.Files.Data.Services;
@@ -8,8 +6,8 @@ using Sava.Media.Contract;
 using Sava.Media.Data;
 using Sava.Media.Data.Contract;
 using Sava.Media.Services;
-using SavaDev.Base.Unit.Options;
 using SavaDev.Base.Unit;
+using SavaDev.Base.Unit.Options;
 
 namespace Sava.Media
 {

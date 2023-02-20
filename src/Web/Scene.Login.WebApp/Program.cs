@@ -1,8 +1,7 @@
-using Framework.User.Service.Contract;
-using Framework.User.Service.Taskers;
 using Microsoft.AspNetCore.DataProtection;
 using SavaDev.Base.Unit;
 using SavaDev.Base.Unit.Options;
+using SavaDev.Infrastructure;
 using SavaDev.Mail.Service;
 using SavaDev.System.Front;
 using SavaDev.Users.Front;
@@ -15,8 +14,6 @@ builder.Services.Configure<RabbitMqConfiguration>(builder.Configuration.GetSecti
 
 // Add services to the container.
 builder.Services.AddMapper();
-
-builder.Services.AddTransient<RegisterTasker>();
 
 builder.Services.AddSystem(builder.Configuration, new UnitOptions(SceneUnitCode.System, AppSettings.DefaultConnectionStringPattern));
 builder.Services.AddUsers(builder.Configuration, new UnitOptions(SceneUnitCode.AppUsers, AppSettings.DefaultConnectionStringPattern));

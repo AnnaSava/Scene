@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
-using Framework.Base.Service.Module;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Sava.Forums;
 using Sava.Forums.Data;
 using Sava.Forums.Data.Services;
-using Sava.Forums.Services;
-using SavaDev.Base.Unit.Options;
 using SavaDev.Base.Unit;
+using SavaDev.Base.Unit.Options;
 
 namespace Sava.Forums
 {

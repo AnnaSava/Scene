@@ -1,11 +1,10 @@
 using Framework.Helpers.Http;
-using Framework.User.Service.Contract;
-using Framework.User.Service.Taskers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using MudBlazor.Services;
 using SavaDev.Base.Unit;
 using SavaDev.Base.Unit.Options;
+using SavaDev.Infrastructure;
 using SavaDev.Mail.Service;
 using SavaDev.System.Front;
 using SavaDev.Users.Front;
@@ -29,8 +28,6 @@ builder.Services.Configure<RabbitMqConfiguration>(builder.Configuration.GetSecti
 //services.AddCurrentUser();
 
 builder.Services.AddMapper();
-
-builder.Services.AddTransient<RegisterTasker>();
 
 builder.Services.AddUsers(builder.Configuration, new UnitOptions(SceneUnitCode.AppUsers, AppSettings.DefaultConnectionStringPattern));
 builder.Services.AddSystem(builder.Configuration, new UnitOptions(SceneUnitCode.System, AppSettings.DefaultConnectionStringPattern));

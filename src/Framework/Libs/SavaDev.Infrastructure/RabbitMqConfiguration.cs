@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.User.Service.Contract
+namespace SavaDev.Infrastructure
 {
     public class RabbitMqConfiguration
     {

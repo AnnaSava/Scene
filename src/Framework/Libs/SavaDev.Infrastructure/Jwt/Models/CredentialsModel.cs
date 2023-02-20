@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.User.Helpers.Jwt.Models
+namespace SavaDev.Infrastructure.Jwt.Models
 {
     public class CredentialsModel
     {

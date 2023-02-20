@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.User.Helpers.Jwt
+namespace SavaDev.Infrastructure.Jwt
 {
     public class CustomJwtSecurityTokenHandler : ISecurityTokenValidator
     {

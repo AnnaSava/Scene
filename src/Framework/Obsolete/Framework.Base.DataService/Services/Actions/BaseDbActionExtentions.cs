@@ -46,37 +46,6 @@ namespace Framework.Base.DataService.Services
     public static class BaseDbActionExtentions
     {
         [Obsolete]
-        public static async Task<TModel> GetOne<TEntity, TModel>(this IDbContext dbContext, long id, IMapper mapper, IncludeDelegate<TEntity> includeDel, string include)
-            where TEntity : class, IEntity<long>, IEntityRestorable
-           // where TModel : IViewModel
-        {
-            var elQuery = dbContext.Set<TEntity>()
-                .Where(m => m.Id == id && m.IsDeleted == false);
-            includeDel?.Invoke(ref elQuery, include);
-            return await elQuery.ProjectTo<TModel>(mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync();
-        }
-        [Obsolete]
-        public static async Task<TModel> GetOne<TEntity, TModel>(this IDbContext dbContext, Expression<Func<TEntity, bool>> expression, IMapper mapper)
-            where TEntity : class, IAnyEntity
-            where TModel : IAnyModel
-        {
-            var elQuery = dbContext.Set<TEntity>()
-                .Where(expression);
-            return await elQuery.ProjectTo<TModel>(mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync();
-        }
-        [Obsolete]
-        public static async Task<TModel> GetOneByAlias<TEntity, TModel>(this IDbContext dbContext, string alias, IMapper mapper)
-            where TEntity : class, IEntityAliased, IEntityRestorable
-            where TModel : IModelRestorable, IModelAliased
-        {
-            var elQuery = dbContext.Set<TEntity>()
-                .Where(m => m.Alias == alias && m.IsDeleted == false);
-            return await elQuery.ProjectTo<TModel>(mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync();
-        }
-        [Obsolete]
         public static async Task<TModel> Create<TEntity, TModel>(this IDbContext dbContext, TModel model, IMapper mapper, AddingDelegate<TEntity> OnAdding)
             where TEntity : class, IAnyEntity
             where TModel : IAnyModel
@@ -87,81 +56,6 @@ namespace Framework.Base.DataService.Services
             await dbContext.SaveChangesAsync();
 
             return mapper.Map<TModel>(addResult.Entity);
-        }
-        [Obsolete]
-        public static async Task<TModel> Update<TEntity, TModel>(this IDbContext dbContext, TModel model, Expression<Func<TEntity, bool>> expression, IMapper mapper)
-            where TEntity : class, IAnyEntity
-        {
-            var currentEntity = await dbContext.Set<TEntity>().FirstOrDefaultAsync(expression);
-            if (currentEntity == null)
-                throw new EntityNotFoundException();
-
-            mapper.Map(model, currentEntity);
-            await dbContext.SaveChangesAsync();
-
-            return mapper.Map<TModel>(currentEntity);
-        }
-        [Obsolete]
-        public static async Task<TModel> Update<TEntity, TModel>(this IDbContext dbContext, TModel model, long id, IMapper mapper)
-             where TEntity : class, IEntity<long>, IEntityRestorable
-            where TModel : IModelRestorable
-        {
-            var currentEntity = await dbContext.GetEntityForUpdate<TEntity>(id);
-
-            mapper.Map(model, currentEntity);
-            await dbContext.SaveChangesAsync();
-
-            return mapper.Map<TModel>(currentEntity);
-        }
-        [Obsolete]
-        public static async Task<TModel> Delete<TEntity, TModel>(this IDbContext dbContext, long id, IMapper mapper, SavingDelegate<TEntity> OnDeleting)
-            where TEntity : class, IEntity<long>, IEntityRestorable
-        {
-            var entity = await dbContext.GetEntityForUpdate<TEntity>(id);
-
-            entity.IsDeleted = true;
-
-            OnDeleting?.Invoke(entity);
-            await dbContext.SaveChangesAsync();
-
-            return mapper.Map<TModel>(entity);
-        }
-        [Obsolete]
-        public static async Task<TModel> Restore<TEntity, TModel>(this IDbContext dbContext, long id, IMapper mapper)
-            where TEntity : class, IEntity<long>, IEntityRestorable
-        {
-            var entity = await dbContext.GetEntityForRestore<TEntity>(id);
-
-            entity.IsDeleted = false;
-            await dbContext.SaveChangesAsync();
-
-            return mapper.Map<TModel>(entity);
-        }
-        [Obsolete]
-        public static async Task Remove<TEntity>(this IDbContext dbContext, Expression<Func<TEntity, bool>> expression)
-            where TEntity : class, IAnyEntity
-        {
-            var entity = await dbContext.GetEntityForRemove(expression);
-            dbContext.Set<TEntity>().Remove(entity);
-            await dbContext.SaveChangesAsync();
-        }
-        [Obsolete]
-        public static async Task<PageListModel<TModel>> GetAll<TEntity, TModel>(this IDbContext dbContext, int page, int count, IMapper mapper, bool desc = false)
-            where TEntity : class, IEntity<long>
-        {
-            var dbSet = dbContext.Set<TEntity>().AsNoTracking();
-            var ordered = desc ? dbSet.OrderByDescending(m => m.Id) : dbSet.OrderBy(m => m.Id);
-            var res = await ordered.ProjectTo<TModel>(mapper.ConfigurationProvider).ToPagedListAsync(page, count);
-
-            var pageModel = new PageListModel<TModel>()
-            {
-                Items = res,
-                Page = res.PageNumber,
-                TotalPages = res.PageCount,
-                TotalRows = res.TotalItemCount
-            };
-
-            return pageModel;
         }
         [Obsolete]
         public static async Task<PageListModel<TModel>> GetAll<TEntity, TModel, TFilterModel>(this IDbContext dbContext,
@@ -182,40 +76,6 @@ namespace Framework.Base.DataService.Services
             else
             {
                 list = list.OrderBy(m => m.Id);
-            }
-
-            var res = await list.ProjectTo<TModel>(mapper.ConfigurationProvider).ToPagedListAsync(query.PageInfo.PageNumber, query.PageInfo.RowsCount);
-
-            var page = new PageListModel<TModel>()
-            {
-                Items = res,
-                Page = res.PageNumber,
-                TotalPages = res.PageCount,
-                TotalRows = res.TotalItemCount
-            };
-
-            return page;
-        }
-        [Obsolete]
-        public static async Task<PageListModel<TModel>> GetAll<TEntity, TModel, TFilterModel>(this IDbContext dbContext,
-            ListQueryModel<TFilterModel> query,
-            ApplySimpleFiltersDelegate<TEntity, TFilterModel> applyFilters,
-            Expression<Func<TEntity, string>> defaultOrderBy,
-            IMapper mapper)
-            where TEntity : class, IAnyEntity
-            where TFilterModel : IFilter, new()
-        {
-            var list = dbContext.Set<TEntity>().AsQueryable();
-
-            applyFilters?.Invoke(ref list, query.Filter);
-
-            if (query.PageInfo.Sort?.Any() ?? false)
-            {
-                //list = list.OrderBy(query.PageInfo.Sort.Select(s => new OrderByInfo() { Direction = s.Direction, PropertyName = s.FieldName, Initial = s.Initial }));
-            }
-            else
-            {
-                list = list.OrderBy(defaultOrderBy);
             }
 
             var res = await list.ProjectTo<TModel>(mapper.ConfigurationProvider).ToPagedListAsync(query.PageInfo.PageNumber, query.PageInfo.RowsCount);
@@ -303,17 +163,6 @@ namespace Framework.Base.DataService.Services
                           id);
 
             entity.LastUpdated = DateTime.UtcNow;
-
-            return entity;
-        }
-        [Obsolete]
-        public static async Task<TEntity> GetEntityForRemove<TEntity>(this IDbContext dbContext, Expression<Func<TEntity, bool>> expression)
-            where TEntity : class
-        {
-            var entity = await dbContext.Set<TEntity>().FirstOrDefaultAsync(expression);
-
-            if (entity == null)
-                throw new EntityNotFoundException(); // TODO передавать какое-то значение
 
             return entity;
         }

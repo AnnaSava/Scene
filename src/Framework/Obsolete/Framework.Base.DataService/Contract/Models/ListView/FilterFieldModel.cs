@@ -8,14 +8,6 @@ using System.Threading.Tasks;
 namespace Framework.Base.DataService.Contract.Models
 {
     [Obsolete]
-    public class FilterFieldModel<T>
-    {
-        public T Value { get; set; }
-
-        public MatchMode MatchMode { get; set; }
-    }
-
-    [Obsolete]
     public class WordFilterField
     {
         public List<string> Value { get; set; }

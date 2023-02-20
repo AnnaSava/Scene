@@ -1,15 +1,10 @@
-﻿using Framework.User.Helpers.Jwt;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SavaDev.Infrastructure.Jwt;
 
-namespace Framework.User.Service
+namespace SavaDev.Users.Front
 {
     public static class JwtModule
     {

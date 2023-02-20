@@ -23,21 +23,4 @@ namespace Framework.Base.DataService.Contract.Models
 
         public bool IsDeleted { get; set; }
     }
-
-    public class ListFilterModel<TKey> : IFilter, IFilterIsDeleted
-        where TKey : struct
-    {
-        public NumericFilterField<TKey> Ids { get; set; }
-
-        public string SearchText { get; set; }
-
-        public bool StartsWith { get; set; }
-
-        public bool IsDeleted { get; set; }
-    }
-
-    public class SimpleFilterModel : IFilter
-    {
-        public WordFilterField SearchText { get; set; }
-    }
 }

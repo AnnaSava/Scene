@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Libs\SavaDev.Infrastructure\SavaDev.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\Obsolete\Framework.Base.Service\Framework.Base.Service.csproj" />
     <ProjectReference Include="..\..\..\Obsolete\Framework.Base.Types\Framework.Base.Types.csproj" />
     <ProjectReference Include="..\..\Mail\SavaDev.Mail.Service\SavaDev.Mail.Service.csproj" />
