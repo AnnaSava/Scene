@@ -13,8 +13,7 @@ namespace Framework.Base.Service.Mapper
     {
         public BaseServiceAutoMapperProfile()
         {
-            CreateMap<ListPageInfoViewModel, PageInfoModel>()
-                .ConvertUsing<PageInfoTypeConverter>();
+
         }
     }
 }

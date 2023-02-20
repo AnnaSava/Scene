@@ -9,8 +9,6 @@ namespace Framework.Base.DataService.Contract.Models
     [Obsolete]
     public class PageInfoModel
     {
-        public IEnumerable<ListSortModel> Sort { get; set; }
-
         private int pageNumber = 1;
         private int rowsCount = 10;
 

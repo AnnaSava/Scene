@@ -23,9 +23,4 @@ namespace Framework.Base.DataService.Entities
     {
         public bool IsDeleted { get; set; }
     }
-    [Obsolete]
-    public interface IEntityAliased : IAnyEntity
-    {
-        public string Alias { get; set; }
-    }
 }

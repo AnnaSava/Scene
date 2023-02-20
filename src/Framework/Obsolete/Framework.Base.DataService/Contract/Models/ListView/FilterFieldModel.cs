@@ -16,14 +16,6 @@ namespace Framework.Base.DataService.Contract.Models
     }
 
     [Obsolete]
-    public class TextFilterField
-    {
-        public string Value { get; set; }
-
-        public MatchModeText MatchMode { get; set; }
-    }
-
-    [Obsolete]
     public class NumericFilterField<T> where T : struct
     {
         public List<T> Value { get; set; }

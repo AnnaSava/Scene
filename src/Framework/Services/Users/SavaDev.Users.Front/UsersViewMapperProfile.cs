@@ -32,7 +32,7 @@ namespace SavaDev.Users.Front
             //CreateMap<UserRolesFormViewModel, UserRolesModel>();
 
             CreateMap<RoleFilterViewModel, RoleFilterModel>(MemberList.None)
-                .ForMember(x => x.Ids, y => y.MapFrom(s => s.Id.ToLongListFilterField()))
+               // .ForMember(x => x.Ids, y => y.MapFrom(s => s.Id.ToLongListFilterField()))
                 .ForMember(x => x.Names, y => y.MapFrom(s => s.Name.ToWordListFilterField()));
 
             CreateMap<RoleModel, RoleViewModel>();

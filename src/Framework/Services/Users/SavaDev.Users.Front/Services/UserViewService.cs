@@ -17,7 +17,6 @@ namespace Framework.User.Service.Services
 
         private readonly IUserService _userDbService;
         private readonly IAccountService _accountDbService;
-        private readonly ISignInManagerAdapter _signInManagerAdapter;
         private readonly IReservedNameService _reservedNameDbService;
         //private readonly RegisterTasker _registerTasker;
         private readonly IMapper _mapper;

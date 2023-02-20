@@ -19,22 +19,4 @@ namespace Framework.Base.Service.ListView
 
         public long TotalRows { get; set; }
     }
-
-    [Obsolete]
-    public class ListPageViewModel
-    {
-        // TODO возможно, есть способ лучше, но пока так. По крайней мере проще будет отыскать вхождения
-        public static ListPageViewModel<TViewModel> Map<TModel, TViewModel>(PageListModel<TModel> pageList, IMapper mapper)
-        {
-            var vm = new ListPageViewModel<TViewModel>()
-            {
-                Items = pageList.Items.Select(m => mapper.Map<TModel, TViewModel>(m)).ToList(),
-                Page = pageList.Page,
-                TotalPages = pageList.TotalPages,
-                TotalRows = pageList.TotalRows
-            };
-
-            return vm;
-        }
-    }
 }

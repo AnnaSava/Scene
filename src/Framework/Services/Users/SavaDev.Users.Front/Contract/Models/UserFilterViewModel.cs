@@ -1,4 +1,5 @@
 ﻿using Framework.Base.Service.ListView;
+using SavaDev.Base.Data.Registry.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Users.Front.Contract.Models
 {
-    public class UserFilterViewModel : ListFilterViewModel
+    public class UserFilterViewModel : BaseFilter
     {
         public string Login { get; set; }
 

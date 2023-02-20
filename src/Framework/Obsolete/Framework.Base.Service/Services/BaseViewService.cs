@@ -38,7 +38,6 @@ namespace Framework.Base.Service.Services
         }
 
         protected OperationResult<TViewModel> MakeResponseObject<TModel, TViewModel>(OperationResult<TModel> resultModel)
-            where TModel : BaseRestorableModel<long>
         {
             // TODO возвращать айдишник
             return _options.SilentResponce
