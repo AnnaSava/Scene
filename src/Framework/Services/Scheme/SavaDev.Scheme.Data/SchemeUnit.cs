@@ -19,7 +19,7 @@ namespace SavaDev.Scheme.Data
         {
             services.AddUnitDbContext<ISchemeContext, SchemeContext>(config, options);
 
-            services.AddScoped<ITableService, RegistryService>();
+            services.AddScoped<IRegistryService, RegistryService>();
             services.AddScoped<IFilterService, FilterService>();
             services.AddScoped<IColumnService, ColumnService>();
             services.AddScoped<IRegistryConfigService, RegistryConfigService>();

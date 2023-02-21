@@ -15,14 +15,14 @@ namespace SavaDev.Scheme.Front.Services
 {
     public class RegistryViewService : IRegistryViewService
     {
-        protected readonly ITableService _tableService;
+        protected readonly IRegistryService _tableService;
         protected readonly IFilterService _filterService;
         protected readonly IColumnService _columnService;
         protected readonly IRegistryConfigService _columnConfigService;
         protected readonly ISecurityService _securityService;
         protected readonly IMapper _mapper;
 
-        public RegistryViewService(ITableService tableService,
+        public RegistryViewService(IRegistryService tableService,
             IFilterService filterService,
             IColumnService columnService,
             IRegistryConfigService columnConfigService,

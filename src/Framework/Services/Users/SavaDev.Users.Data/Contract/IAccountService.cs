@@ -1,4 +1,4 @@
-﻿using Framework.User.DataService.Contract.Models;
+﻿using SavaDev.Base.User.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

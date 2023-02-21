@@ -8,6 +8,8 @@ using Sava.Media.Data.Contract;
 using Sava.Media.Services;
 using SavaDev.Base.Unit;
 using SavaDev.Base.Unit.Options;
+using SavaDev.Media.Front.Contract;
+using SavaDev.Media.Front.Services;
 
 namespace Sava.Media
 {
@@ -29,6 +31,7 @@ namespace Sava.Media
             services.AddScoped<IGalleryProcessor, GalleryProcessor>();
 
             services.AddScoped<IImageViewService, ImageViewService>();
+            services.AddScoped<IGalleryViewService, GalleryViewService>();
         }
     }
 }

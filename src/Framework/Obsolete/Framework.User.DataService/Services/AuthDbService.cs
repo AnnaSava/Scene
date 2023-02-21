@@ -33,7 +33,7 @@ namespace Framework.User.DataService.Services
         {
             var newEntity = _mapper.Map<AuthToken>(model);
             _dbContext.AuthTokens.Add(newEntity);
-            await _dbContext.SaveChangesAsync();
+            //await _dbContext.SaveChangesAsync();
             return _mapper.Map<AuthTokenModel>(newEntity);
         }
 
@@ -57,7 +57,7 @@ namespace Framework.User.DataService.Services
             token.RefreshJti = newRefreshJti;
             token.DateUpdated = updated;
 
-            await _dbContext.SaveChangesAsync();
+           // await _dbContext.SaveChangesAsync();
         }
     }
 }

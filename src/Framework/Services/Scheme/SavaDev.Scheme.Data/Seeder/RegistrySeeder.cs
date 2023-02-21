@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Scheme.Data.Seeder
 {
-    public class TableSeeder : ISeeder
+    public class RegistrySeeder : ISeeder
     {
         private readonly SchemeContext context;
         private readonly Dictionary<string, string> modulesAndNamespaces;
 
-        public TableSeeder(SchemeContext dbContext, Dictionary<string, string> modulesAndNamespaces)
+        public RegistrySeeder(SchemeContext dbContext, Dictionary<string, string> modulesAndNamespaces)
         {
             context = dbContext;
             this.modulesAndNamespaces = modulesAndNamespaces;

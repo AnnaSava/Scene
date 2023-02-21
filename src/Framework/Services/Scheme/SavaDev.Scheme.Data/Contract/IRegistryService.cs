@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Scheme.Data.Contract
 {
-    public interface ITableService
+    public interface IRegistryService
     {
         Task<OperationResult> Create(RegistryModel model);
 

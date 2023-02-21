@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Scheme.Data.Services
 {
-    public class RegistryService : BaseEntityService<Registry, RegistryModel>, ITableService
+    public class RegistryService : BaseEntityService<Registry, RegistryModel>, IRegistryService
     {
         private readonly CreateManager<Registry, RegistryModel> creatorManager;
 

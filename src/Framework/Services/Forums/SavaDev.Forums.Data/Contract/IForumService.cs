@@ -1,5 +1,4 @@
-﻿using Framework.Base.DataService.Contract.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Sava.Forums.Data

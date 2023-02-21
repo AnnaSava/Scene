@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Sava.Media.Contract.Models;
 using Sava.Media.Data.Contract.Models;
+using SavaDev.Media.Data.Contract.Models;
+using SavaDev.Media.Front.Contract.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +21,17 @@ namespace SavaDev.Media.Front
             CreateMap<ImageFileViewModel, ImageFileModel>();
             CreateMap<ImageFileModel, ImageFileViewModel>();
 
+            CreateMap<ImageFilterViewModel, ImageFilterModel>();
+            CreateMap<ImageFilterModel, ImageFilterViewModel>();
+
             CreateMap<ImageEmbedFormViewModel, ImageModel>();
             CreateMap<ImageModel, ImageEmbedFormViewModel>();
 
             CreateMap<GalleryViewModel, GalleryModel>();
             CreateMap<GalleryModel, GalleryViewModel>();
+
+            CreateMap<GalleryFilterViewModel, GalleryFilterModel>();
+            CreateMap<GalleryFilterModel, GalleryFilterViewModel>();
         }
     }
 }

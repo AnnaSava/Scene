@@ -1,5 +1,7 @@
 ﻿using Sava.Media.Contract.Models;
 using Sava.Media.Data.Contract.Models;
+using SavaDev.Base.Data.Registry;
+using SavaDev.Base.Front.Registry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +15,7 @@ namespace Sava.Media.Contract
         Task<ImageViewModel> SaveImage(Stream stream, Guid? galleryId);
 
         Task<ImageViewModel> DownloadAndSaveImage(string fileUri, Guid? galleryId);
+
+        Task<RegistryPageViewModel<ImageViewModel>> GetRegistryPage(RegistryQuery query);
     }
 }

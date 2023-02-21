@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using Framework.Base.Types.Registry;
 using Framework.User.DataService.Contract.Models;
+using SavaDev.Base.Data.Registry.Filter;
+using SavaDev.Base.User.Data.Models;
 using SavaDev.Users.Data.Contract.Models;
 using SavaDev.Users.Front.Contract.Models;
 

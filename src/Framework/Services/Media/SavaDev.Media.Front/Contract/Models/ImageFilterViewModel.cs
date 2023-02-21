@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.User.DataService.Contract.Models
+namespace SavaDev.Media.Front.Contract.Models
 {
-    public class RoleFilterModel : BaseFilter
+    public class ImageFilterViewModel : BaseFilter
     {
-        public WordFilterField Names { get; set; }
     }
 }

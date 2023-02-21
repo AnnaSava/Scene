@@ -6,7 +6,11 @@ using Sava.Media.Contract;
 using Sava.Media.Contract.Models;
 using Sava.Media.Data.Contract;
 using Sava.Media.Data.Contract.Models;
+using SavaDev.Base.Data.Registry;
+using SavaDev.Base.Front.Registry;
+using SavaDev.Base.Front.Services;
 using SavaDev.Files.Data.Contract.Models;
+using SavaDev.Media.Data.Contract.Models;
 
 namespace Sava.Media.Services
 {
@@ -52,6 +56,13 @@ namespace Sava.Media.Services
             var saved = await SaveImage(response, galleryId);
 
             return saved;
+        }
+
+        public async Task<RegistryPageViewModel<ImageViewModel>> GetRegistryPage(RegistryQuery query)
+        {
+            var manager = new RegistryPageManager<ImageModel, ImageFilterModel>(_imageService, _mapper);
+            var vm = await manager.GetRegistryPage<ImageViewModel>(query);
+            return vm;
         }
 
         private async Task<ImageViewModel> SaveImage(byte[] content, Guid? galleryId)

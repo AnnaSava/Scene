@@ -7,7 +7,10 @@ using Sava.Media.Data;
 using Sava.Media.Data.Contract;
 using Sava.Media.Data.Contract.Models;
 using Sava.Media.Data.Entities;
+using SavaDev.Base.Data.Managers;
+using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Services;
+using SavaDev.Media.Data.Contract.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +26,7 @@ namespace Sava.Files.Data.Services
         private readonly MediaContext _dbContext;
 
         private readonly BaseRestorableEntityService<Guid, Image, ImageModel> entityManager;
+        protected readonly AllSelector<Guid, Image> selectorManager;
 
         public ImageService(MediaContext dbContext, IMapper mapper, ILogger<ImageService> logger) 
         {
@@ -30,6 +34,7 @@ namespace Sava.Files.Data.Services
             _mapper = mapper;
 
             entityManager = new BaseRestorableEntityService<Guid, Image, ImageModel>(dbContext, mapper, logger);
+            selectorManager = new AllSelector<Guid, Image>(dbContext, mapper, logger);
         }
 
         public async Task<OperationResult> Create(ImageModel model)
@@ -79,6 +84,12 @@ namespace Sava.Files.Data.Services
             };
 
             return pageModel;
+        }
+
+        public async Task<RegistryPage<ImageModel>> GetRegistryPage(RegistryQuery<ImageFilterModel> query)
+        {
+            var page = await selectorManager.GetRegistryPage<ImageFilterModel, ImageModel>(query);
+            return page;
         }
     }
 }

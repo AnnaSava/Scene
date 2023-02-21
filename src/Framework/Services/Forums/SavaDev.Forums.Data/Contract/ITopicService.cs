@@ -1,6 +1,4 @@
-﻿using Framework.Base.DataService.Contract.Interfaces;
-using Framework.Base.DataService.Contract.Models.ListView;
-using System;
+﻿using Framework.Base.DataService.Contract.Models.ListView;
 using System.Threading.Tasks;
 
 namespace Sava.Forums.Data

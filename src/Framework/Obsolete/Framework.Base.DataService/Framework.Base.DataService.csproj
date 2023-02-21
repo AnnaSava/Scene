@@ -6,8 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Entities\**" />
     <Compile Remove="Mapper\**" />
+    <EmbeddedResource Remove="Entities\**" />
     <EmbeddedResource Remove="Mapper\**" />
+    <None Remove="Entities\**" />
     <None Remove="Mapper\**" />
   </ItemGroup>
 
