@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Base.Types.Registry
+namespace Savadev.Content.Data.Contract.Enums
 {
-    public abstract class BaseRegistryItemViewModel
+    public enum CommunityOpenness
     {
+        Open,
+        Closed,
+        Hidden
     }
 }

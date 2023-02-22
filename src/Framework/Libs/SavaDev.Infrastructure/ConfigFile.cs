@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Helpers.Config
+namespace SavaDev.Infrastructure
 {
     public static class ConfigFile
     {

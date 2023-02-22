@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Helpers.Http
+namespace SavaDev.Infrastructure
 {
     public static class UriHelpers
     {

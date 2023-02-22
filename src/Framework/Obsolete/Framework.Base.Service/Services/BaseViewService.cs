@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
-using Framework.Base.DataService.Contract.Models;
 using Framework.Base.Types;
-using Framework.Base.Types.Registry;
+using SavaDev.Base.Data.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Framework.Base.Service.Services
 {

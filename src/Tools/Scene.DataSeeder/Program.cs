@@ -1,9 +1,9 @@
-﻿using Framework.Helpers.Config;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SavaDev.Base.Data.Context;
 using SavaDev.Base.Unit.Options;
+using SavaDev.Infrastructure;
 using SavaDev.System.Data;
 using SavaDev.System.Front;
 using SavaDev.Users.Data;

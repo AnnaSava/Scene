@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Libs\SavaDev.Base.Data\SavaDev.Base.Data.csproj" />
     <ProjectReference Include="..\Framework.Base.DataService\Framework.Base.DataService.csproj" />
     <ProjectReference Include="..\Framework.Base.Types\Framework.Base.Types.csproj" />
     <ProjectReference Include="..\Framework.Helpers\Framework.Helpers.csproj" />

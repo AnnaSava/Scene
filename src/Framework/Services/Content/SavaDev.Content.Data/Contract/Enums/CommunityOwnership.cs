@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Base.Types.Fields
+namespace Savadev.Content.Data.Contract.Enums
 {
-    public class FlexFieldFormSettings
+    public enum CommunityOwnership
     {
-        public bool IsEnabled { get; set; }
+        Personal,
+        Common
     }
 }
