@@ -7,7 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EasyNetQ" Version="7.4.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Libs\SavaDev.Base.Unit\SavaDev.Base.Unit.csproj" />
+    <ProjectReference Include="..\..\Framework\Services\Files\SavaDev.Files.Front\SavaDev.Files.Front.csproj" />
+    <ProjectReference Include="..\..\Framework\Services\Files\SavaDev.Files.Service\SavaDev.Files.Service.csproj" />
+    <ProjectReference Include="..\..\Libs\Scene.Libs.WebModule\Scene.Libs.WebModule.csproj" />
   </ItemGroup>
 
 </Project>
