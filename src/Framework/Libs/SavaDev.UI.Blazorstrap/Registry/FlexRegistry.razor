@@ -6,7 +6,8 @@
 @using SavaDev.Scheme.Front.Contract.Models;
 @using SavaDev.Scheme.Front.Contract;
 @using SavaDev.UI.Blazorstrap.Models
-@typeparam T where T: BaseRegistryItemViewModel
+@typeparam TKey
+@typeparam T where T: BaseRegistryItemViewModel<TKey>
 @inject IRegistryViewService tableService
 @inject IColumnViewService columnService
 
@@ -83,6 +84,7 @@
 @if(ViewMode == RegistryViewMode.Table)
 {
     <RegTableView T="T" 
+        TKey="TKey"
         @ref="tableView"
         DisplayedColumns="DisplayedColumns"
         StartPage="StartPage"
@@ -165,7 +167,7 @@ else
 
     #region Provate Fields: Ref
 
-    private RegTableView<T>? tableView;
+    private RegTableView<TKey, T>? tableView;
     private RegistryConfigSelector? columnConfigSelector;
 
     #endregion

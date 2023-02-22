@@ -1,9 +1,9 @@
-﻿using Framework.Helpers.Files;
-using Sava.Files.Contract;
-using SavaDev.Files.Data.Contract;
+﻿using SavaDev.Files.Data.Contract;
 using SavaDev.Files.Data.Contract.Models;
+using SavaDev.Files.Service.Contract;
+using SavaDev.Infrastructure.Util.ImageEditor;
 
-namespace Sava.Files
+namespace SavaDev.Files.Service.Services
 {
     public class FileProcessingService : IFileProcessingService
     {

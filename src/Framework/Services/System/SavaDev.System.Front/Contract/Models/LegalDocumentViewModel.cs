@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.System.Front.Contract.Models
 {
-    public class LegalDocumentViewModel: BaseRegistryItemViewModel
+    public class LegalDocumentViewModel: BaseRegistryItemViewModel<long>
     {
         public long Id { get; set; }
 

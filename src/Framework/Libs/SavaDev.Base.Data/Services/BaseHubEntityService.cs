@@ -41,10 +41,7 @@ namespace SavaDev.Base.Data.Services
 
         public async Task<OperationResult> Create(TFormModel model)
         {
-            // TODO
-            // newEntity.Id = Guid.NewGuid();
-
-            var res =  await CreateManager.Create(model);
+            var res =  await CreateManager.Create(model, setValues: entity => entity.Id = Guid.NewGuid());
             return res;
         }
 

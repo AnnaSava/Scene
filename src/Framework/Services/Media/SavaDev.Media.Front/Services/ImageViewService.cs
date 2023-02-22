@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using Framework.Base.Types.Image;
-using Framework.Helpers.Files;
-using Sava.Files.Contract;
 using Sava.Media.Contract;
 using Sava.Media.Contract.Models;
 using Sava.Media.Data.Contract;
@@ -10,6 +8,9 @@ using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Front.Registry;
 using SavaDev.Base.Front.Services;
 using SavaDev.Files.Data.Contract.Models;
+using SavaDev.Files.Service.Contract;
+using SavaDev.Files.Service.Contract.Models;
+using SavaDev.Infrastructure.Util.ImageEditor;
 using SavaDev.Media.Data.Contract.Models;
 
 namespace Sava.Media.Services
@@ -18,7 +19,7 @@ namespace Sava.Media.Services
     {
         private readonly IImageService _imageService;
         private readonly IGalleryService _galleryService;
-        private readonly IFileProcessingService _fileProcessingService;
+        private readonly IFilesUploader _fileUploader;
         private readonly ImageEditor _imageEditor;
         private readonly IMapper _mapper;
 
@@ -27,13 +28,13 @@ namespace Sava.Media.Services
         public ImageViewService(IImageService imageService,
             IGalleryService galleryService,
             ImageEditor imageEditor,
-            IFileProcessingService fileProcessingService,
+            IFilesUploader fileUploader,
             IMapper mapper)
         {
             _imageService = imageService;
             _galleryService = galleryService;
             _imageEditor = imageEditor;
-            _fileProcessingService = fileProcessingService;
+            _fileUploader = fileUploader;
             _mapper = mapper;
 
             ImageKinds = new ImageResizeKinds().GetImageKinds();
@@ -69,18 +70,18 @@ namespace Sava.Media.Services
         {
             var storedImageFiles = new Dictionary<string, FileModel>();
 
-            var uploadedFileModel = await _fileProcessingService.UploadFilePreventDuplicate(content);
-            storedImageFiles.Add("Original", uploadedFileModel);
+            var uploadedFileModel = await _fileUploader.SendInfo(new FilesDataModel(content));
+            storedImageFiles.Add("Original", uploadedFileModel.SavedFile);
 
-            var resizedFileModel = await ResizeAndSave(uploadedFileModel);
-            storedImageFiles.Add("Resized", resizedFileModel);
+            var resizedFileModel = await ResizeAndSave(uploadedFileModel.SavedFile);
+            storedImageFiles.Add("Resized", resizedFileModel.SavedFile);
 
-            var thumbFileModel = await CropAndSave(resizedFileModel);
-            storedImageFiles.Add("Thumb", thumbFileModel);
+            var thumbFileModel = await CropAndSave(resizedFileModel.SavedFile);
+            storedImageFiles.Add("Thumb", thumbFileModel.SavedFile);
 
             var imageModel = new ImageModel
             {
-                PreviewId = thumbFileModel.Id.ToString(),
+                PreviewId = thumbFileModel.SavedFile.Id.ToString(),
                 Files = new List<ImageFileModel>(),
                 // TODO пробрасывать через параметры
                 OwnerId = ""
@@ -106,33 +107,35 @@ namespace Sava.Media.Services
             else
             {
                 // TODO проперти галереи
-                var createdGallery = await _galleryService.Create(new GalleryModel { OwnerId = "", AttachedToId = "" });
-               // imageModel.GalleryId = createdGallery.Models.First().Id;
+                var result = await _galleryService.Create(new GalleryModel { OwnerId = "", AttachedToId = "", Module = "", Entity = "" });
+                if (result == null)
+                    throw new Exception("Error creating gallery");
+                imageModel.GalleryId = ((GalleryModel)result.ProcessedObject).Id;
             }
 
             var createdImage = await _imageService.Create(imageModel);
             return _mapper.Map<ImageViewModel>(createdImage);
         }
 
-        private async Task<FileModel> ResizeAndSave(FileModel fileModel)
+        private async Task<FilesUploadResult> ResizeAndSave(FileModel fileModel)
         {
             using var ms = new MemoryStream();
             _imageEditor.Resize(fileModel.Content, ms);
 
             var content = ms.ToArray();
 
-            var saved = await _fileProcessingService.UploadFilePreventDuplicate(content);
+            var saved = await _fileUploader.SendInfo(new FilesDataModel(content));
             return saved;
         }
 
-        private async Task<FileModel> CropAndSave(FileModel fileModel)
+        private async Task<FilesUploadResult> CropAndSave(FileModel fileModel)
         {
             using var ms = new MemoryStream();
             _imageEditor.SquareCrop(fileModel.Content, ms);
 
             var content = ms.ToArray();
 
-            var saved = await _fileProcessingService.UploadFilePreventDuplicate(content);
+            var saved = await _fileUploader.SendInfo(new FilesDataModel(content));
             return saved;
         }
     }

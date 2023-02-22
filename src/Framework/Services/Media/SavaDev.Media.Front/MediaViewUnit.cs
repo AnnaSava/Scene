@@ -1,5 +1,4 @@
-﻿using Framework.Helpers.Files;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Sava.Files.Data.Services;
 using Sava.Media.Contract;
@@ -8,6 +7,7 @@ using Sava.Media.Data.Contract;
 using Sava.Media.Services;
 using SavaDev.Base.Unit;
 using SavaDev.Base.Unit.Options;
+using SavaDev.Infrastructure.Util.ImageEditor;
 using SavaDev.Media.Front.Contract;
 using SavaDev.Media.Front.Services;
 

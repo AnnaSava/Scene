@@ -7,6 +7,7 @@ using Sava.Media.Data;
 using Sava.Media.Data.Contract;
 using Sava.Media.Data.Contract.Models;
 using Sava.Media.Data.Entities;
+using SavaDev.Base.Data.Entities.Interfaces;
 using SavaDev.Base.Data.Managers;
 using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Services;
@@ -26,6 +27,9 @@ namespace Sava.Files.Data.Services
         private readonly MediaContext _dbContext;
 
         private readonly BaseRestorableEntityService<Guid, Image, ImageModel> entityManager;
+
+        protected CreateManager<Image, ImageModel> CreateManager { get; set; }
+
         protected readonly AllSelector<Guid, Image> selectorManager;
 
         public ImageService(MediaContext dbContext, IMapper mapper, ILogger<ImageService> logger) 
@@ -35,13 +39,12 @@ namespace Sava.Files.Data.Services
 
             entityManager = new BaseRestorableEntityService<Guid, Image, ImageModel>(dbContext, mapper, logger);
             selectorManager = new AllSelector<Guid, Image>(dbContext, mapper, logger);
+            CreateManager = new CreateManager<Image, ImageModel>(dbContext, mapper,logger);
         }
 
         public async Task<OperationResult> Create(ImageModel model)
         {
-            var res = await entityManager.Create(model,
-                entity => entity.Id = new Guid());
-
+            var res = await CreateManager.Create(model, setValues: entity => entity.Id = Guid.NewGuid());
             return res;
         }
 

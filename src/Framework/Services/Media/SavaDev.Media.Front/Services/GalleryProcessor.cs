@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using Framework.Base.Types.Image;
-using Framework.Helpers.Files;
-using Sava.Files.Contract;
 using Sava.Media.Contract;
 using Sava.Media.Contract.Models;
 using Sava.Media.Data.Contract;
 using Sava.Media.Data.Contract.Models;
 using SavaDev.Files.Data.Contract.Models;
+using SavaDev.Files.Service.Contract;
+using SavaDev.Infrastructure.Util.ImageEditor;
 
 namespace Sava.Media.Services
 {

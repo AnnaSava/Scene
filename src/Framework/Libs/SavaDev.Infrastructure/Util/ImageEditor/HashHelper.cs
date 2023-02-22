@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Helpers.Files
+namespace SavaDev.Infrastructure.Util.ImageEditor
 {
     public class HashHelper
     {

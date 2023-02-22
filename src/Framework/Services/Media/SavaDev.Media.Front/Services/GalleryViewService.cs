@@ -1,8 +1,4 @@
 ﻿using AutoMapper;
-using Framework.Base.Types.Image;
-using Framework.Helpers.Files;
-using Sava.Files.Contract;
-using Sava.Files.Data.Services;
 using Sava.Media.Contract.Models;
 using Sava.Media.Data.Contract;
 using Sava.Media.Data.Contract.Models;
@@ -11,11 +7,6 @@ using SavaDev.Base.Front.Registry;
 using SavaDev.Base.Front.Services;
 using SavaDev.Media.Data.Contract.Models;
 using SavaDev.Media.Front.Contract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SavaDev.Media.Front.Services
 {

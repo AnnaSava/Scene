@@ -2,6 +2,9 @@
 using AutoMapper.QueryableExtensions;
 using Framework.Base.DataService.Contract.Models.ListView;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using SavaDev.Base.Data.Managers;
+using SavaDev.Base.Data.Registry;
 using SavaDev.Files.Data.Contract;
 using SavaDev.Files.Data.Contract.Models;
 using X.PagedList;
@@ -13,16 +16,21 @@ namespace SavaDev.Files.Data.Services
         private readonly IMapper _mapper;
         private readonly FilesContext _dbContext;
 
-        public FileService(FilesContext dbContext, IMapper mapper) 
+        protected readonly AllSelector<Guid, Entities.File> selectorManager;
+
+        public FileService(FilesContext dbContext, IMapper mapper, ILogger<FileService> logger) 
         {
             _dbContext = dbContext;
             _mapper = mapper;
+
+            selectorManager = new AllSelector<Guid, Entities.File>(dbContext, mapper, logger);
         }
 
         public async Task<FileModel> Create(FileModel model)
         {
             var entity = _mapper.Map<Entities.File>(model);
             entity.Id = new Guid();
+            entity.Ext = "";// TODO
 
             _dbContext.Files.Add(entity);
 
@@ -44,21 +52,10 @@ namespace SavaDev.Files.Data.Services
             return _mapper.Map<FileModel>(entity);
         }
 
-        public async Task<PageListModel<FileModel>> GetAll(int page, int count)
+        public async Task<RegistryPage<FileModel>> GetRegistryPage(RegistryQuery<FileFilterModel> query)
         {
-            var dbSet = _dbContext.Set<Entities.File>().AsNoTracking();
-
-            var res = await dbSet.ProjectTo<FileModel>(_mapper.ConfigurationProvider).ToPagedListAsync(page, count);
-
-            var pageModel = new PageListModel<FileModel>()
-            {
-                Items = res,
-                Page = res.PageNumber,
-                TotalPages = res.PageCount,
-                TotalRows = res.TotalItemCount
-            };
-
-            return pageModel;
+            var page = await selectorManager.GetRegistryPage<FileFilterModel, FileModel>(query);
+            return page;
         }
 
         public async Task<bool> AnyByMd5(string md5hash)

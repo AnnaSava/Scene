@@ -1,6 +1,7 @@
 ﻿@using SavaDev.Base.Front.Registry;
-@using SavaDev.Scheme.Front.Contract.Models;
-@typeparam T where T: BaseRegistryItemViewModel
+@using SavaDev.Scheme.Front.Contract.Models
+@typeparam TKey
+@typeparam T where T: BaseRegistryItemViewModel<TKey>
 
 <BSDataTable FetchItems="InvokeFetchItems" PaginationBottom="true" StartPage="StartPage" RowsPerPage="20" Context="item" @ref=table>
     <Header>
@@ -74,7 +75,7 @@
 
     #endregion
 
-    private List<long> SelectedIds = new List<long>();
+    private List<TKey> SelectedIds = new List<TKey>();
     private bool AllIsSelected;
 
     private async Task<(IEnumerable<T>, int)> InvokeFetchItems(DataRequest dataRequest)

@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace Sava.Media.Contract.Models
 {
-    public class GalleryViewModel : BaseRegistryItemViewModel
+    public class GalleryViewModel : BaseRegistryItemViewModel<Guid>
     {
-        public Guid Id { get; set; }
-
         public string Owner { get; set; }
 
         public string AttachedToId { get; set; }

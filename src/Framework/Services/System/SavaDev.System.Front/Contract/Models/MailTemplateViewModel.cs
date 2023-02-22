@@ -3,7 +3,7 @@ using SavaDev.Base.Front.Registry;
 
 namespace SavaDev.System.Front.Contract.Models
 {
-    public class MailTemplateViewModel : BaseRegistryItemViewModel
+    public class MailTemplateViewModel : BaseRegistryItemViewModel<long>
     {
         public long Id { get; set; }
 
