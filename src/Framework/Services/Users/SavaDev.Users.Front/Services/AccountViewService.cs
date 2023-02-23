@@ -36,7 +36,6 @@ namespace Framework.DefaultUser.Service.Services
 
         public async Task<UserViewModel> Register(RegisterViewModel model)
         {
-            // TODO переделать на возврат списка ошибок?
             if (await _userDbService.CheckEmailExists(model.Email))
                 throw new Exception("Email exists!");
 

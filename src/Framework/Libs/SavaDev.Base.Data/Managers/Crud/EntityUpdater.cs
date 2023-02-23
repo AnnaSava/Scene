@@ -70,7 +70,7 @@ namespace SavaDev.Base.Data.Managers.Crud
             return this;
         }
 
-        public EntityUpdater<TKey, TEntity> ValidateEntity(Func<TEntity, Task> func)
+        public EntityUpdater<TKey, TEntity> ValidateEntity(Func<TEntity, Task>? func)
         {
             OnValidatingEntity = func;
             return this;

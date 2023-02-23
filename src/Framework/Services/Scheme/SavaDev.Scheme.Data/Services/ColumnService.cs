@@ -21,7 +21,6 @@ namespace SavaDev.Scheme.Data.Services
     {
         private readonly CreateManager<Column, ColumnModel> creatorManager;
         private readonly UpdateManager<Guid, Column, ColumnModel> updaterManager;
-        private readonly UpdateSelector<Guid, Column> updateSelectorManager;
 
         #region Constructors
 
@@ -29,8 +28,7 @@ namespace SavaDev.Scheme.Data.Services
             : base(dbContext, mapper, nameof(ColumnService))
         {
             creatorManager = new CreateManager<Column, ColumnModel>(dbContext, mapper, logger);
-            updateSelectorManager = new UpdateSelector<Guid, Column>(dbContext, mapper, logger);
-            updaterManager = new UpdateManager<Guid, Column, ColumnModel>(dbContext, mapper, logger, updateSelectorManager);
+            updaterManager = new UpdateManager<Guid, Column, ColumnModel>(dbContext, mapper, logger);
         }
 
         #endregion

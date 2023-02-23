@@ -25,7 +25,7 @@ namespace Savadev.Content.Data.Services
 
         public async Task<OperationResult> SetContentId(Guid id, string contentId)
         {
-            var res = await FieldSetterManager.SetField(id,
+            var res = await UpdateManager.SetField(id,
                 entity => entity.ContentId = contentId
                 );
             return res;

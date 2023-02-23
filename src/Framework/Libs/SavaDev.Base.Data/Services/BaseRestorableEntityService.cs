@@ -21,10 +21,6 @@ namespace SavaDev.Base.Data.Services
 
         protected CreateManager<TEntity, TFormModel> CreateManager { get; }
         protected UpdateManager<TKey, TEntity, TFormModel> UpdateManager { get; }
-        protected UpdateRestorableSelector<TKey, TEntity> UpdateSelector { get; }
-        protected UpdateFieldManager<TKey, TEntity> FieldSetterManager { get; }
-        protected UpdateFieldManager<TKey, TEntity> RestorManager { get; }
-        protected RestoreSelector<TKey, TEntity> RestoreSelector { get; }
         protected OneRestorableSelector<TKey, TEntity> OneSelector { get; }
 
         #endregion
@@ -33,13 +29,8 @@ namespace SavaDev.Base.Data.Services
 
         public BaseRestorableEntityService(IDbContext dbContext, IMapper mapper, ILogger logger) : base (dbContext, mapper, "", logger)
         {
-            //creatorManager = new BaseCreatorManager<TEntity, TFormModel>(dbContext, mapper, logger);
             CreateManager = new CreateManager<TEntity, TFormModel>(GetInftrastructure);
-            UpdateSelector = new UpdateRestorableSelector<TKey, TEntity>(dbContext, mapper, logger);
-            UpdateManager = new UpdateManager<TKey, TEntity, TFormModel>(dbContext, mapper, logger, UpdateSelector);
-            FieldSetterManager = new UpdateFieldManager<TKey, TEntity>(dbContext, mapper, logger, UpdateSelector);
-            RestoreSelector = new RestoreSelector<TKey, TEntity>(dbContext, mapper, logger);
-            RestorManager = new UpdateFieldManager<TKey, TEntity>(dbContext, mapper, logger, RestoreSelector);
+            UpdateManager = new UpdateManager<TKey, TEntity, TFormModel>(dbContext, mapper, logger);
             OneSelector = new OneRestorableSelector<TKey, TEntity>(dbContext, mapper, logger);
         }
 
@@ -88,9 +79,9 @@ namespace SavaDev.Base.Data.Services
             }
         }
 
-        public async Task<OperationResult> Delete(TKey id) => await FieldSetterManager.SetField(id, entity => entity.IsDeleted = true);
+        public async Task<OperationResult> Delete(TKey id) => await UpdateManager.SetField(id, entity => entity.IsDeleted = true);
 
-        public async Task<OperationResult> Restore(TKey id) => await RestorManager.SetField(id, entity => entity.IsDeleted = false);
+        public async Task<OperationResult> Restore(TKey id) => await UpdateManager.Restore(id, entity => entity.IsDeleted = false);
 
         #endregion
 

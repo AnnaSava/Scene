@@ -19,7 +19,6 @@ namespace SavaDev.System.Data.Services
 
         protected CreateManager<ReservedName, ReservedNameModel> CreateManager { get; }
         protected UpdateAnyManager<ReservedName, ReservedNameModel> UpdateManager { get; }
-        protected UpdateAnySelector<ReservedName> UpdateSelector { get; }
         protected RemoveManager<ReservedName> RemoveManager { get; }
         protected OneSelector<ReservedName> OneSelector { get; }
         protected AllSelector<bool, ReservedName> AllSelector { get; } // TODO убрать бул
@@ -32,9 +31,8 @@ namespace SavaDev.System.Data.Services
             : base(dbContext, mapper, nameof(ReservedNameService))
         {
             CreateManager = new CreateManager<ReservedName, ReservedNameModel>(dbContext, mapper, logger);
-            UpdateSelector = new UpdateAnySelector<ReservedName>(dbContext, mapper, logger);
-            UpdateManager = new UpdateAnyManager<ReservedName, ReservedNameModel>(dbContext, mapper, logger, UpdateSelector);
-            RemoveManager = new RemoveManager<ReservedName>(dbContext, mapper, logger, UpdateSelector);
+            UpdateManager = new UpdateAnyManager<ReservedName, ReservedNameModel>(dbContext, mapper, logger);
+            RemoveManager = new RemoveManager<ReservedName>(dbContext, mapper, logger);
             OneSelector = new OneSelector<ReservedName>(dbContext, mapper, logger);
             AllSelector = new AllSelector<bool, ReservedName>(dbContext, mapper, logger);
         }

@@ -21,39 +21,71 @@ namespace SavaDev.Base.Data.Managers
         private readonly IMapper _mapper;
         private readonly IDbContext _dbContext;
         private readonly ILogger _logger;
-        private IChangeSelector<TKey, TEntity> updateSelector;
 
-        public UpdateManager(IDbContext dbContext, IMapper mapper, ILogger logger, IChangeSelector<TKey, TEntity> selector)
+        public UpdateManager(IDbContext dbContext, IMapper mapper, ILogger logger)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _logger = logger;
-            updateSelector = selector;
         }
 
-        public async Task<OperationResult> Update(TKey id, TFormModel model)
+        public async Task<OperationResult> Update(TKey id, TFormModel model, Func<TEntity, Task>? validateEntity = null)
         {
             var updater = new EntityUpdater<TKey, TEntity>(_dbContext, _logger)
                 .ValidateModel(async (model) => { })
-                .GetEntity(async (id) => await updateSelector.GetEntityForChange(id))
-                .SetValues(async (entity, model) => _mapper.Map(model, entity))
-                .Update(DoUpdate)
-                .SuccessResult(entity => new OperationResult(_mapper.Map<TFormModel>(entity)));
-
-            return await updater.DoUpdate<TFormModel>(id, model);
-        }
-
-        public async Task<OperationResult> Update(TKey id, TFormModel model, Func<TEntity, Task> validateEntity)
-        {
-            var updater = new EntityUpdater<TKey, TEntity>(_dbContext, _logger)
-                .ValidateModel(async (model) => { })
-                .GetEntity(async (id) => await updateSelector.GetEntityForChange(id))
+                .GetEntity(async (id) => await _dbContext.GetEntityForChange<TKey, TEntity>(id))
                 .ValidateEntity(validateEntity)
                 .SetValues(async (entity, model) => _mapper.Map(model, entity))
                 .Update(DoUpdate)
                 .SuccessResult(entity => new OperationResult(_mapper.Map<TFormModel>(entity)));
 
             return await updater.DoUpdate<TFormModel>(id, model);
+        }
+
+        public async Task<OperationResult> Restore(TKey id, Func<TEntity, bool> fieldFunc, Func<TEntity, Task>? validateEntity = null)
+        {
+            var updater = new EntityUpdater<TKey, TEntity>(_dbContext, _logger)
+                .GetEntity(async (id) => await _dbContext.GetEntityForChange<TKey, TEntity>(id, restore: true))
+                .ValidateEntity(validateEntity)
+                .SetValues(async (entity, model) => _mapper.Map(model, entity))
+                .Update(DoUpdate)
+                .SuccessResult(entity => new OperationResult(_mapper.Map<TFormModel>(entity)));
+
+            return await updater.DoUpdate(id);
+        }
+
+        public async Task<OperationResult> SetField(TKey id, Func<TEntity, bool> fieldFunc)
+        {
+            var updater = new EntityUpdater<TKey, TEntity>(_dbContext, _logger)
+                .GetEntity(async (id) => await _dbContext.GetEntityForChange<TKey, TEntity>(id))
+                .SetValues(async (entity) => fieldFunc(entity))
+                .Update(DoUpdate)
+                .SuccessResult(entity => new OperationResult(1, id));
+
+            return await updater.DoUpdate(id);
+        }
+
+        public async Task<OperationResult> SetField(TKey id, Func<TEntity, string> fieldFunc)
+        {
+            var updater = new EntityUpdater<TKey, TEntity>(_dbContext, _logger)
+                .GetEntity(async (id) => await _dbContext.GetEntityForChange<TKey, TEntity>(id))
+                .SetValues(async (entity) => fieldFunc(entity))
+                .Update(DoUpdate)
+                .SuccessResult(entity => new OperationResult(1, id));
+
+            return await updater.DoUpdate(id);
+        }
+
+        public async Task<OperationResult> SetField(TKey id, Func<TEntity, bool> fieldFunc, Func<TEntity, Task> validateEntity)
+        {
+            var updater = new EntityUpdater<TKey, TEntity>(_dbContext, _logger)
+                .GetEntity(async (id) => await _dbContext.GetEntityForChange<TKey, TEntity>(id))
+                .ValidateEntity(validateEntity)
+                .SetValues(async (entity) => fieldFunc(entity))
+                .Update(DoUpdate)
+                .SuccessResult(entity => new OperationResult(1, id));
+
+            return await updater.DoUpdate(id);
         }
 
         private async Task<OperationResult> DoUpdate(TEntity entity)

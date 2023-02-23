@@ -21,14 +21,12 @@ namespace SavaDev.Base.Data.Managers
         private readonly IMapper _mapper;
         private readonly IDbContext _dbContext;
         private readonly ILogger _logger;
-        private IChangeAnySelector<TEntity> updateSelector;
 
-        public UpdateAnyManager(IDbContext dbContext, IMapper mapper, ILogger logger, IChangeAnySelector<TEntity> selector)
+        public UpdateAnyManager(IDbContext dbContext, IMapper mapper, ILogger logger)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _logger = logger;
-            updateSelector = selector;
         }
 
         public async Task<OperationResult> Update(Expression<Func<TEntity, bool>> expression, TFormModel model)
@@ -38,7 +36,7 @@ namespace SavaDev.Base.Data.Managers
                 {
 
                 })
-                .GetEntity(async (exp) => await updateSelector.GetEntityForChange(exp))
+                .GetEntity(async (exp) => await _dbContext.GetEntityForChange(exp))
                 .SetValues(async (entity, model) => _mapper.Map(model, entity))
                 .Update(DoUpdate)
                 .SuccessResult(entity => new OperationResult(1, _mapper.Map<TFormModel>(entity)));

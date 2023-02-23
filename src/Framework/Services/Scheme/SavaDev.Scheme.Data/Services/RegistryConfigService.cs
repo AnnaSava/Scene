@@ -22,7 +22,6 @@ namespace SavaDev.Scheme.Data.Services
 
         protected CreateManager<RegistryConfig, RegistryConfigModel> CreateManager { get; }
         protected UpdateManager<long, RegistryConfig, RegistryConfigModel> UpdateManager { get; }
-        protected UpdateSelector<long, RegistryConfig> UpdateSelector { get; }
         protected RemoveManager<long, RegistryConfig> RemoveManager { get; }
         protected OneSelector<RegistryConfig> OneSelector { get; }
         protected AllSelector<long, RegistryConfig> AllSelector { get; } // TODO убрать бул
@@ -35,9 +34,8 @@ namespace SavaDev.Scheme.Data.Services
             : base(dbContext, mapper, nameof(RegistryConfigService))
         {
             CreateManager = new CreateManager<RegistryConfig, RegistryConfigModel>(dbContext, mapper, logger);
-            UpdateSelector = new UpdateSelector<long, RegistryConfig>(dbContext, mapper, logger);
-            UpdateManager = new UpdateManager<long, RegistryConfig, RegistryConfigModel>(dbContext, mapper, logger, UpdateSelector);
-            RemoveManager = new RemoveManager<long, RegistryConfig>(dbContext, mapper, logger, UpdateSelector);
+            UpdateManager = new UpdateManager<long, RegistryConfig, RegistryConfigModel>(dbContext, mapper, logger);
+            RemoveManager = new RemoveManager<long, RegistryConfig>(dbContext, mapper, logger);
             OneSelector = new OneSelector<RegistryConfig>(dbContext, mapper, logger);
             AllSelector = new AllSelector<long, RegistryConfig>(dbContext, mapper, logger);
         }

@@ -28,10 +28,7 @@ namespace Savadev.Content.Data.Services
         #region Protected Properties: Managers
 
         protected CreateManager<TEntity> CreateManager { get; }
-        protected UpdateRestorableSelector<Guid, TEntity> UpdateSelector { get; }
-        protected UpdateFieldManager<Guid, TEntity> FieldSetterManager { get; }
-        protected UpdateFieldManager<Guid, TEntity> RestoreManager { get; }
-        protected RestoreSelector<Guid, TEntity> RestoreSelector { get; }
+        protected UpdateManager<Guid, TEntity, TModel> UpdateManager { get; }
         protected OneRestorableSelector<Guid, TEntity> OneSelector { get; }
         protected AllSelector<Guid, TEntity> AllSelector { get; set; }
 
@@ -60,13 +57,13 @@ namespace Savadev.Content.Data.Services
 
         public async Task<OperationResult> Update<T>(Guid id, T contentModel)
         {
-            var result = await FieldSetterManager.SetField(id, entity => entity.Content = JsonSerializer.Serialize(contentModel));
+            var result = await UpdateManager.SetField(id, entity => entity.Content = JsonSerializer.Serialize(contentModel));
             return result;
         }
 
-        public async Task<OperationResult> Delete(Guid id) => await FieldSetterManager.SetField(id, m=>m.IsDeleted = true);
+        public async Task<OperationResult> Delete(Guid id) => await UpdateManager.SetField(id, m=>m.IsDeleted = true);
 
-        public async Task<OperationResult> Restore(Guid id) => await RestoreManager.SetField(id, m => m.IsDeleted = false);
+        public async Task<OperationResult> Restore(Guid id) => await UpdateManager.Restore(id, m => m.IsDeleted = false);
 
         public async Task<TModel> GetOne(Guid id) => await OneSelector.GetOne<TModel>(id);
 

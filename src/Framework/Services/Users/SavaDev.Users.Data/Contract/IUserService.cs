@@ -1,6 +1,8 @@
 ﻿using Framework.User.DataService.Contract.Interfaces;
 using SavaDev.Base.Data.Services;
+using SavaDev.Base.Data.Services.Interfaces;
 using SavaDev.Base.User.Data.Models;
+using SavaDev.Base.Users.Data.Services.Interfaces;
 using SavaDev.Users.Data.Contract.Models;
 using System;
 using System.Collections.Generic;
@@ -10,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Users.Data
 {
-    public interface IUserService // : IUserSearchDbService<AppUserModel, AppUserFilterModel>
+    public interface IUserService :IBaseUserService// IEntityRegistryService<UserModel, UserFilterModel>, 
     {
-        Task<OperationResult> Create(UserFormModel model, string password);
+        //Task<OperationResult> Create(UserFormModel model, string password);
 
         Task<OperationResult> Update(long id, UserFormModel model);
 

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Mail\SavaDev.Mail.Service\SavaDev.Mail.Service.csproj" />
+    <ProjectReference Include="..\SavaDev.Base.Users.Data\SavaDev.Base.Users.Data.csproj" />
+    <ProjectReference Include="..\SavaDev.Base.Users.Security\SavaDev.Base.Users.Security.csproj" />
+  </ItemGroup>
+
+</Project>

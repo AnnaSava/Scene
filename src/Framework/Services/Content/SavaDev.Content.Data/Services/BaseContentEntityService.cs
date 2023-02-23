@@ -37,8 +37,7 @@ namespace Savadev.Content.Data.Services
         #region Protected Properties: Managers
 
         private CreateManager<TEntity> CreateManager { get; }
-        private UpdateFieldManager<Guid, TEntity> FieldSetterManager { get; }
-        private UpdateSelector<Guid, TEntity> UpdateSelector { get; }
+        private UpdateManager<Guid, TEntity, TModel> UpdateManager { get; }
         protected AllSelector<Guid, TEntity> AllSelector { get; set; }
 
         #endregion
@@ -52,8 +51,7 @@ namespace Savadev.Content.Data.Services
             _logger = logger;
 
             CreateManager = new CreateManager<TEntity> (dbContext, mapper, logger);
-            UpdateSelector =  new UpdateSelector<Guid, TEntity>(dbContext, mapper, logger);
-            FieldSetterManager = new UpdateFieldManager<Guid, TEntity>(dbContext, mapper, logger, UpdateSelector);
+            UpdateManager = new UpdateManager<Guid, TEntity, TModel>(dbContext, mapper, logger);
         }
 
         #endregion
@@ -74,7 +72,7 @@ namespace Savadev.Content.Data.Services
 
         public async Task<OperationResult> Update<T>(Guid id, T contentModel)
         {
-            var res = await FieldSetterManager.SetField(id, e => e.Content = JsonSerializer.Serialize(contentModel));
+            var res = await UpdateManager.SetField(id, e => e.Content = JsonSerializer.Serialize(contentModel));
             return res;
         }
 

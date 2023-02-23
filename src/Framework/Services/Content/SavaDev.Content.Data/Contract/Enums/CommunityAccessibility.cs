@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Base.Types.Enums
+namespace SavaDev.Content.Data.Contract.Enums
 {
-    [Obsolete]
-    public enum CommunityOpenness
+    public enum CommunityAccessibility
     {
         Open,
         Closed,

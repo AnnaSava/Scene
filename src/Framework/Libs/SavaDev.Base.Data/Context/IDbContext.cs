@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using SavaDev.Base.Data.Entities.Interfaces;
+using System.Linq.Expressions;
 
 namespace SavaDev.Base.Data.Context
 {
@@ -13,5 +15,9 @@ namespace SavaDev.Base.Data.Context
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
         DatabaseFacade Database { get; }
+
+        Task<TEntity> GetEntityForChange<TEntity>(Expression<Func<TEntity, bool>> expression) where TEntity : class;
+
+        Task<TEntity> GetEntityForChange<TKey, TEntity>(TKey id, bool restore = false) where TEntity : class, IEntity<TKey>;
     }
 }

@@ -7,6 +7,7 @@ using SavaDev.Base.Data.Services;
 using SavaDev.Base.User.Data.Entities;
 using SavaDev.Base.User.Data.Manager;
 using SavaDev.Base.User.Data.Models;
+using SavaDev.Base.Users.Data.Models.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -48,7 +49,7 @@ namespace SavaDev.Base.User.Data.Services
 
         #region Public Methods: Mutation
 
-        public async Task<OperationResult> Create(TFormModel model, string password)
+        public async Task<OperationResult> Create(IUserFormModel model, string password)
             => await EntityManager.Create(model, password);
         public async Task<OperationResult> Update(long id, TFormModel model)
             => await EntityManager.Update(id, model);

@@ -21,20 +21,18 @@ namespace SavaDev.Base.Data.Managers
         private readonly IMapper _mapper;
         private readonly IDbContext _dbContext;
         private readonly ILogger _logger;
-        private IChangeAnySelector<TEntity> updateSelector;
 
-        public RemoveManager(IDbContext dbContext, IMapper mapper, ILogger logger,IChangeAnySelector<TEntity> selector)
+        public RemoveManager(IDbContext dbContext, IMapper mapper, ILogger logger)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _logger = logger;
-            updateSelector = selector;
         }
 
         public async Task<OperationResult> Remove(Expression<Func<TEntity, bool>> expression)
         {
             var remover = new EntityRemover<bool, TEntity>(_dbContext, _logger) // TODO придумать все же что-то с параметром айдишника
-                .GetEntity(async (exp) => await updateSelector.GetEntityForChange(exp))
+                .GetEntity(async (exp) => await _dbContext.GetEntityForChange(exp))
                 .Remove(DoRemove)
                 .SuccessResult(entity => new OperationResult(1));
 
@@ -55,20 +53,18 @@ namespace SavaDev.Base.Data.Managers
         private readonly IMapper _mapper;
         private readonly IDbContext _dbContext;
         private readonly ILogger _logger;
-        private IChangeSelector<TKey, TEntity> updateSelector;
 
-        public RemoveManager(IDbContext dbContext, IMapper mapper, ILogger logger, IChangeSelector<TKey, TEntity> selector)
+        public RemoveManager(IDbContext dbContext, IMapper mapper, ILogger logger)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _logger = logger;
-            updateSelector = selector;
         }
 
         public async Task<OperationResult> Remove(TKey id)
         {
             var remover = new EntityRemover<TKey, TEntity>(_dbContext, _logger)
-                .GetEntity(async (id) => await updateSelector.GetEntityForChange(id))
+                .GetEntity(async (id) => await _dbContext.GetEntityForChange<TKey, TEntity>(id))
                 .Remove(DoRemove)
                 .SuccessResult(entity => new OperationResult(1))
                 .ErrorResult((errMessage) => new OperationResult((int)DbOperationRows.OnFailure, new OperationExceptionInfo(errMessage)));

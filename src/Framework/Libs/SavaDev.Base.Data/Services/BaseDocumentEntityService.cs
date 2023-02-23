@@ -40,11 +40,7 @@ namespace SavaDev.Base.Data.Services
         #region Protected Properties : Managers
 
         protected CreateManager<TEntity, TFormModel> CreateManager { get; }
-        protected UpdateRestorableSelector<TKey, TEntity> UpdateSelector { get; }
         protected UpdateManager<TKey, TEntity, TFormModel> UpdateManager { get; }
-        protected UpdateFieldManager<TKey, TEntity> FieldSetterManager { get; }
-        protected RestoreSelector<TKey, TEntity> RestoreSelector { get; }
-        protected UpdateFieldManager<TKey, TEntity> RestoreManager { get; }
         protected OneRestorableSelector<TKey, TEntity> OneSelector { get; }
 
         #endregion
@@ -59,12 +55,8 @@ namespace SavaDev.Base.Data.Services
             _availableCultures = availableCultures;
 
             CreateManager = new CreateManager<TEntity, TFormModel>(dbContext, mapper, logger);
-            UpdateSelector = new UpdateRestorableSelector<TKey, TEntity>(dbContext, mapper, logger);
-            UpdateManager = new UpdateManager<TKey, TEntity, TFormModel>(dbContext, mapper, logger, UpdateSelector);
-            FieldSetterManager = new UpdateFieldManager<TKey, TEntity>(dbContext, mapper, logger, UpdateSelector);
-            RestoreSelector = new RestoreSelector<TKey, TEntity>(dbContext, mapper, logger);
+            UpdateManager = new UpdateManager<TKey, TEntity, TFormModel>(dbContext, mapper, logger);
             OneSelector = new OneRestorableSelector<TKey, TEntity>(dbContext, mapper, logger);
-            RestoreManager = new UpdateFieldManager<TKey, TEntity>(dbContext, mapper, logger, RestoreSelector);
         }
 
         #endregion
@@ -107,7 +99,7 @@ namespace SavaDev.Base.Data.Services
         public async Task<OperationResult> Publish(TKey id)
         {
             var updater = new EntityUpdater<TKey, TEntity>(_dbContext, _logger)
-                .GetEntity(async (id) => await UpdateSelector.GetEntityForChange(id))
+                .GetEntity(async (id) => await _dbContext.GetEntityForChange<TKey, TEntity>(id))
                 .ValidateEntity(async (entity) =>
                 {
                     if (entity.Status != DocumentStatus.Draft)
@@ -144,13 +136,13 @@ namespace SavaDev.Base.Data.Services
 
         public async Task<OperationResult> Delete(TKey id)
         {
-            var result = await FieldSetterManager.SetField(id, entity => entity.IsDeleted = true);
+            var result = await UpdateManager.SetField(id, entity => entity.IsDeleted = true);
             return result;
         }
 
         public async Task<OperationResult> Restore(TKey id)
         {
-            var result = await RestoreManager.SetField(id, entity => entity.IsDeleted = false, validateEntity: ValidateRestore);
+            var result = await UpdateManager.Restore(id, entity => entity.IsDeleted = false, validateEntity: ValidateRestore);
             return result;
         }
 

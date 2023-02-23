@@ -20,7 +20,6 @@ namespace SavaDev.Scheme.Data.Services
     {
         private CreateManager<Filter, FilterModel> CreateManager { get; }
         protected UpdateManager<long, Filter, FilterModel> UpdateManager { get; }
-        protected UpdateSelector<long, Filter> UpdateSelector { get; }
         protected RemoveManager<long, Filter> RemoveManager { get; }
         protected OneSelector<Filter> OneSelector { get; }
 
@@ -31,9 +30,8 @@ namespace SavaDev.Scheme.Data.Services
             : base(dbContext, mapper, nameof(ColumnService))
         {
             CreateManager = new CreateManager<Filter, FilterModel>(dbContext, mapper, logger);
-            UpdateSelector = new UpdateSelector<long, Filter>(dbContext, mapper, logger);
-            UpdateManager = new UpdateManager<long, Filter, FilterModel>(dbContext, mapper, logger, UpdateSelector);
-            RemoveManager = new RemoveManager<long, Filter>(dbContext, mapper, logger, UpdateSelector);
+            UpdateManager = new UpdateManager<long, Filter, FilterModel>(dbContext, mapper, logger);
+            RemoveManager = new RemoveManager<long, Filter>(dbContext, mapper, logger);
             OneSelector = new OneSelector<Filter>(dbContext, mapper, logger);
         }
 

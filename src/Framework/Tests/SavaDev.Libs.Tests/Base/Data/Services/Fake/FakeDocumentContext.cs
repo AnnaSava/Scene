@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Libs.Tests.Base.Data.Services.Fake
 {
-    public class FakeDocumentContext : DbContext, IDbContext
+    public class FakeDocumentContext : BaseDbContext, IDbContext
     {
         public DbSet<FakeDocument> FakeDocuments  { get; set; }
 

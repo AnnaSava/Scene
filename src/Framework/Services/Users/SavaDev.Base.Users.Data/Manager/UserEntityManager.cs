@@ -11,6 +11,7 @@ using SavaDev.Base.User.Data.Entities;
 using SavaDev.Base.User.Data.Exceptions;
 using SavaDev.Base.User.Data.Models;
 using SavaDev.Base.Users.Data.Manager;
+using SavaDev.Base.Users.Data.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -59,7 +60,7 @@ namespace SavaDev.Base.User.Data.Manager
 
         #region Public Methods: Mutation
 
-        public async Task<OperationResult> Create(TFormModel model, string password)
+        public async Task<OperationResult> Create(IUserFormModel model, string password)
         {
             var creator = new EntityCreator<TEntity>(_dbContext, _logger)
                 .SetValues(async (model) =>
@@ -72,7 +73,7 @@ namespace SavaDev.Base.User.Data.Manager
                 .Create(DoCreate)
                 .SuccessResult(entity => new OperationResult(_mapper.Map<TFormModel>(entity)));
 
-            return await creator.Create(model);
+            return await creator.Create((TFormModel)model);
         }
 
         private async Task<OperationResult> DoCreate(TEntity entity)
