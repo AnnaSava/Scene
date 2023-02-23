@@ -20,8 +20,6 @@ namespace SavaDev.Base.Data.Registry.Filter
             var filterType = filter.GetType();
             var filterFields = filterType.GetProperties();
 
-            var t = filterFields.Where(f => f.PropertyType.Name.Contains(nameof(Int64)));
-
             return list
                 .ApplyIsDeletedFilter(filter)
                 .ApplyStringFilters(filterFields.Where(f => f.PropertyType.Name == nameof(String)), filter)
@@ -29,7 +27,8 @@ namespace SavaDev.Base.Data.Registry.Filter
                 .ApplyBoolFilters(filterFields.Where(f => f.PropertyType.Name == nameof(Boolean)), filter)
                 .ApplyWordFilters(filterFields.Where(f => f.PropertyType.Name == nameof(WordFilterField)), filter)
                 .ApplyNullableBoolFilters(filterFields.Where(f => f.PropertyType.Name == "Nullable`1" && f.PropertyType.FullName.Contains("Boolean")), filter)
-                .ApplyIEnumerableFilters(filterFields.Where(f => f.PropertyType.Name == "IEnumerable`1"), filter);
+                .ApplyIEnumerableFilters(filterFields.Where(f => f.PropertyType.Name == "IEnumerable`1"), filter)
+                .ApplyEnumFilters(filterFields.Where(f => f.PropertyType.Name == nameof(EnumFilterField)), filter);
         }
 
         public static IQueryable<T> ApplySort<T>(this IQueryable<T> list, IEnumerable<RegistrySort> sorts)
@@ -143,6 +142,18 @@ namespace SavaDev.Base.Data.Registry.Filter
             return list;
         }
 
+        private static IQueryable<T> ApplyEnumFilters<T>(this IQueryable<T> list, IEnumerable<PropertyInfo> filterFields, BaseFilter filter)
+        {
+            if (filterFields == null) return list;
+
+            foreach (var field in filterFields)
+            {
+                list = ApplyEnumFilter(list, field.Name, field.GetValue(filter));
+            }
+
+            return list;
+        }
+
         private static IQueryable<T> ApplyStringFilter<T>(IQueryable<T> list, string fieldName, object fieldObj)
         {
             if (fieldObj == null) return list;
@@ -176,6 +187,18 @@ namespace SavaDev.Base.Data.Registry.Filter
                 str = string.Format("{0} == {1}", fieldName, field.Value);
                 list = list.Where(str);
             }
+
+            return list;
+        }
+
+        private static IQueryable<T> ApplyEnumFilter<T>(IQueryable<T> list, string fieldName, object fieldObj)
+        {
+            if (fieldObj == null) return list;
+            var field = (EnumFilterField)fieldObj;
+            if (field.Value == null) return list;
+
+            var str = string.Format("{0} == {1}", fieldName, field.Value);
+            list = list.Where(str);
 
             return list;
         }

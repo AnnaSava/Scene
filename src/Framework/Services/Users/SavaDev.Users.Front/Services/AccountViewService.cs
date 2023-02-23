@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.WebUtilities;
+using SavaDev.Base.Front.Services;
 using SavaDev.Base.User.Data.Models;
+using SavaDev.Base.Users.Front.Manager;
 using SavaDev.Base.Users.Security.Contract;
 using SavaDev.Mail.Service.Contract;
 using SavaDev.Mail.Service.Contract.Models;
@@ -34,50 +36,11 @@ namespace Framework.DefaultUser.Service.Services
             _mapper = mapper;
         }
 
-        public async Task<UserViewModel> Register(RegisterViewModel model)
+        public async Task<OperationViewResult> Register(RegisterViewModel model)
         {
-            if (await _userDbService.CheckEmailExists(model.Email))
-                throw new Exception("Email exists!");
-
-            if (await _userDbService.CheckLoginExists(model.Login)) // TODO: может проверять одним запросом к БД?
-                throw new Exception("Username exists!");
-
-            if (await _reservedNameDbService.CheckIsReserved(model.Login))
-                throw new Exception("UserName is forbidden!");
-
-            var newModel = _mapper.Map<UserFormModel>(model);
-            newModel.FirstName = ""; // TODO убрать. Либо разрешить нуллы в БД, либо проставлять где-нибудь, например, в маппере
-            newModel.LastName = "";
-            newModel.DisplayName = "";
-
-            var result = await _userDbService.Create(newModel, model.Password);
-            var resultModel = result.ProcessedObject as UserFormModel;
-
-            if (resultModel == null || resultModel.Id == 0)
-                throw new Exception("Registration error");
-
-            var token = await _accountDbService.GenerateEmailConfirmationToken(resultModel.Email);
-            // TODO прокидывать сюда из настроек урл для подтверждения
-            var confirmUrl = $"https://localhost:5001/account/confirmemail?email={resultModel.Email}&code={token}";
-
-            // TODO отправлять письмо с подтверждением
-            // TODO отрефакторить
-            var mailData = new MailDataModel
-            {
-                Email = resultModel.Email,
-                Action = "registration",
-                Culture = "en",
-                Variables = new List<MailVariableModel>
-                {
-                    new MailVariableModel{ Name = "<%Email%>", Value=resultModel.Email },
-                    new MailVariableModel{ Name = "<%UserName%>", Value = resultModel.Login },
-                    new MailVariableModel{ Name = "<%ConfirmUrl%>", Value = confirmUrl}
-                }
-            };
-
-            await _mailSender.SendInfo(mailData);
-
-            return _mapper.Map<UserViewModel>(resultModel);
+            var manager = new RegisterViewManager(_userDbService, _accountDbService, _reservedNameDbService, _mailSender, _mapper);
+            var result = await manager.Register<UserFormModel>(model);
+            return result;
         }
 
         public async Task<bool> ConfirmEmail(string email, string token)

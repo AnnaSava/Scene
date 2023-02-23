@@ -1,4 +1,5 @@
 ﻿using Framework.Base.Types.Validation;
+using SavaDev.Base.Users.Front.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Users.Front.Contract.Models
 {
-    public class RegisterViewModel
+    public class RegisterViewModel : IRegisterViewModel
     {
         [Required]
         [Display(Name = "Логин")]

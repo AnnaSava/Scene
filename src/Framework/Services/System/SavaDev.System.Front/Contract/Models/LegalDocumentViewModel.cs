@@ -10,8 +10,6 @@ namespace SavaDev.System.Front.Contract.Models
 {
     public class LegalDocumentViewModel: BaseRegistryItemViewModel<long>
     {
-        public long Id { get; set; }
-
         public string PermName { get; set; }
 
         public string Culture { get; set; }

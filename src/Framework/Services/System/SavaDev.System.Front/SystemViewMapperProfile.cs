@@ -35,9 +35,11 @@ namespace SavaDev.System.Front.Mapper
             CreateMap<LegalDocumentModel, LegalDocumentFormViewModel>();
 
             CreateMap<LegalDocumentFilterViewModel, LegalDocumentFilterModel>(MemberList.None)
+                .ForMember(x => x.Id, y => y.MapFrom(s => s.Id.ToLongListFilterField()))
                 .ForMember(x => x.PermName, y => y.MapFrom(s => s.PermName.ToWordListFilterField()))
                 .ForMember(x => x.Title, y => y.MapFrom(s => s.Title.ToWordListFilterField()))
-                .ForMember(x => x.Culture, y => y.MapFrom(s => s.Culture.ToWordListFilterField()));
+                .ForMember(x => x.Culture, y => y.MapFrom(s => s.Culture.ToWordListFilterField()))
+                .ForMember(x => x.Status, y => y.MapFrom(s => new EnumFilterField { Value = s.Status == null ? null : (int)s.Status.Value }));
 
             CreateMap<MailTemplateViewModel, MailTemplateModel>();
             CreateMap<MailTemplateModel, MailTemplateViewModel>();

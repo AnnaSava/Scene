@@ -32,11 +32,10 @@ namespace SavaDev.Base.Front.Services
 
                 var queryModel = new RegistryQuery<TFilterModel>(query.PageInfo, query.Sort)
                 {
-                    Filter = filter
+                    Filter0 = filter
                 };
 
                 var page = await _entityService.GetRegistryPage(queryModel);
-
 
                 var vm = RegistryPageMapper.MapRegistry<TItemModel, TItemViewModel>(page, _mapper);
                 return vm;

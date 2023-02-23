@@ -8,21 +8,90 @@
 @using SavaDev.UI.Blazorstrap.Models
 @typeparam TKey
 @typeparam T where T: BaseRegistryItemViewModel<TKey>
-@inject IRegistryViewService tableService
+@inject IRegistryViewService registryService
 @inject IColumnViewService columnService
 
-<p>Registry Guid @Model?.Id</p>
-<p>SelectedRegistryConfigId @SelectedRegistryConfigId</p>
-<p>SelectedFilterId @SelectedFilterId</p>
-<p>ItemsOnPage @ItemsOnPage</p>
+<BSAccordion>
+    <BSAccordionItem>
+        <Header>Info</Header>
+        <Content>
+            <p>Registry Guid @Model?.Id</p>
+            <p>SelectedRegistryConfigId @SelectedRegistryConfigId</p>
+            <p>SelectedFilterId @SelectedFilterId</p>
+            <p>ItemsOnPage @ItemsOnPage</p>
+        </Content>
+    </BSAccordionItem>
+    <BSAccordionItem>
+        <Header>Filters</Header>
+        <Content>
+            <BSTable IsResponsive="true" IsStriped="true">
+                <BSTHead>
+                    <BSTR>
+                        <BSTD>Id</BSTD>
+                        <BSTD>OwnerId</BSTD>
+                        <BSTD>Name</BSTD>
+                        <BSTD>Fields</BSTD>
+                    </BSTR>
+                </BSTHead>
+                <BSTBody>
+                    @if (Model?.Filters != null && Model.Filters.Any())
+                    {
+                        @foreach (var filter in Model.Filters)
+                        {
+                            <BSTR>
+                                <BSTD>@filter.Id</BSTD>
+                                <BSTD>@filter.OwnerId</BSTD>
+                                <BSTD>@filter.Name</BSTD>
+                                <BSTD>@filter.Fields</BSTD>
+                            </BSTR>
+                        }
+                    }
+                </BSTBody>
+            </BSTable>
+        </Content>
+    </BSAccordionItem>
+        <BSAccordionItem>
+        <Header>Configs</Header>
+        <Content>
+            <BSTable IsResponsive="true" IsStriped="true">
+                <BSTHead>
+                    <BSTR>
+                        <BSTD>Id</BSTD>
+                        <BSTD>OwnerId</BSTD>
+                        <BSTD>Name</BSTD>
+                        <BSTD>Columns</BSTD>
+                        <BSTD>ViewMode</BSTD>
+                        <BSTD>ItemsOnPage</BSTD>
+                    </BSTR>
+                </BSTHead>
+                <BSTBody>
+                    @if(Model?.Configs != null && Model.Configs.Any())
+                    {
+                        @foreach(var config in Model.Configs)
+                        {
+                            <BSTR>
+                                <BSTD>@config.Id</BSTD>
+                                <BSTD>@config.OwnerId</BSTD>
+                                <BSTD>@config.Name</BSTD>
+                                <BSTD>@config.Columns</BSTD>
+                                <BSTD>@config.ViewMode</BSTD>
+                                <BSTD>@config.ItemsOnPage</BSTD>
+                            </BSTR>
+                        }
+                    }
+                </BSTBody>
+            </BSTable>
+        </Content>
+    </BSAccordionItem>
+</BSAccordion>
 
 <BSAccordion>
-    <BSAccordionItem DefaultShown="true">
+    <BSAccordionItem DefaultShown="@UiConfig.ExpandAccordion">
         <Header>Filter</Header>
         <Content>
             <div class="row">
                 <div class="col-md-6">
-                    <BSInput InputType="InputType.Text" @bind-Value="FilterIdsString" placeholder="Ids: 1,2,3"/>
+                    <BSInput InputType="InputType.Text" @bind-Value="FilterIdsString" placeholder="@IdsPlaceholder"/>
                 </div>
                 <div class="col-md-2">
                     <div Class="@BS.Form_Check @BS.Form_Switch">
@@ -85,7 +154,7 @@
 {
     <RegTableView T="T" 
         TKey="TKey"
-        @ref="tableView"
+        @ref="@tableView"
         DisplayedColumns="DisplayedColumns"
         StartPage="StartPage"
         FetchItems="FetchItems"
@@ -165,7 +234,7 @@ else
 
     #endregion
 
-    #region Provate Fields: Ref
+    #region Private Fields: Ref
 
     private RegTableView<TKey, T>? tableView;
     private RegistryConfigSelector? columnConfigSelector;
@@ -184,17 +253,28 @@ else
     private long? SelectedRegistryConfigId = 0;
     private long? SelectedFilterId = 0;
 
+    private string IdsPlaceholder = "Ids";
+
     #endregion
 
     #region Protected Methods: Lifecycle
 
     protected override async Task OnInitializedAsync()
     {
-        Model = await tableService.GetOne(ModelPlacement);
+        Model = await registryService.GetOne(ModelPlacement);
         DisplayedColumns = Model.DisplayedColumns;
         AvailableColumns = Model.AvailableColumns;
         SelectedRegistryConfigId = Model?.SelectedConfig?.Id;
         SelectedFilterId = Model?.SelectedFilter?.Id;
+
+        if(typeof(TKey) == typeof(Guid))
+        {
+            IdsPlaceholder += ": " + Guid.Empty;
+        }
+        else
+        {
+            IdsPlaceholder += ": 1,2,3";
+        }
 
         PageInfo = new RegistryPageInfo(StartPage, ItemsOnPage);
     }
@@ -228,7 +308,7 @@ else
             StateHasChanged();
             return;
         }
-        await tableService.ApplyConfig((long)SelectedRegistryConfigId, Model);
+        await registryService.ApplyConfig((long)SelectedRegistryConfigId, Model);
         StateHasChanged();
     }
 
@@ -243,13 +323,13 @@ else
             ForAll = columnConfigSelector.ConfigFormForAll
 
         };
-        var result = await tableService.SaveConfig(model);
+        var result = await registryService.SaveConfig(model);
     }
 
     private async Task OnRemoveConfigClickHandler()
     {
         if (SelectedRegistryConfigId == 0) return;
-        await tableService.RemoveConfig((long)SelectedRegistryConfigId);
+        await registryService.RemoveConfig((long)SelectedRegistryConfigId);
         var config = Model.Configs.FirstOrDefault(m => m.Id == SelectedRegistryConfigId);
         if (config != null) Model.Configs.Remove(config);
     }
@@ -266,7 +346,7 @@ else
             StateHasChanged();
             return;
         }
-        await tableService.ApplyFilter((long)SelectedFilterId, Model);
+        await registryService.ApplyFilter((long)SelectedFilterId, Model);
         StateHasChanged();
     }
 
@@ -278,7 +358,7 @@ else
     private async Task OnRemoveFilterClickHandler()
     {
         if (SelectedFilterId == 0) return;
-        await tableService.RemoveFilter((long)SelectedFilterId);
+        await registryService.RemoveFilter((long)SelectedFilterId);
         var filter = Model.Filters.FirstOrDefault(m => m.Id == SelectedFilterId);
         if (filter != null) Model.Filters.Remove(filter);
     }

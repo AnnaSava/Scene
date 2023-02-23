@@ -15,7 +15,7 @@ namespace SavaDev.Scheme.Front.Services
 {
     public class RegistryViewService : IRegistryViewService
     {
-        protected readonly IRegistryService _tableService;
+        protected readonly IRegistryService _registryService;
         protected readonly IFilterService _filterService;
         protected readonly IColumnService _columnService;
         protected readonly IRegistryConfigService _columnConfigService;
@@ -29,7 +29,7 @@ namespace SavaDev.Scheme.Front.Services
             ISecurityService securityService,
             IMapper mapper) 
         {
-            _tableService= tableService;
+            _registryService= tableService;
             _columnConfigService= columnConfigService;
             _columnService= columnService;
             _filterService= filterService;
@@ -39,7 +39,9 @@ namespace SavaDev.Scheme.Front.Services
 
         public async Task<RegistryViewModel> GetOne(ModelPlacement placement)
         {
-            var model = await _tableService.GetOneByPlacement(placement);
+            var model = await _registryService.GetOneByPlacement(placement);
+            if (model == null)
+                throw new Exception($"Model with placement {placement.Module} {placement.Entity} not found.");
             var vm = _mapper.Map<RegistryViewModel>(model);
 
             var filters = await _filterService.GetAll(model.Id);
