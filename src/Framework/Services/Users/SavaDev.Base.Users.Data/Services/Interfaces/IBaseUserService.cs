@@ -1,4 +1,5 @@
 ﻿using SavaDev.Base.Data.Services;
+using SavaDev.Base.User.Data.Models;
 using SavaDev.Base.Users.Data.Models.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,7 @@ namespace SavaDev.Base.Users.Data.Services.Interfaces
         Task<bool> CheckEmailExists(string email);
 
         Task<bool> CheckLoginExists(string userName);
+
+        Task<TModel> GetOneByLoginOrEmail<TModel>(string loginOrEmail) where TModel : BaseUserModel;
     }
 }

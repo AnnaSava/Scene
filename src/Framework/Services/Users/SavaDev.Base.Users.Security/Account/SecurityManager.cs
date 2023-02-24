@@ -9,6 +9,7 @@ using SavaDev.Base.User.Data.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core.Tokenizer;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -66,7 +67,10 @@ namespace SavaDev.Base.User.Data.Manager
         public async Task<string> GeneratePasswordResetToken(string email)
         {
             var user = await GetOneByEmail(email);
-            return await _userManager.GeneratePasswordResetTokenAsync(user);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            byte[] tokenGeneratedBytes = Encoding.UTF8.GetBytes(token);
+            var codeEncoded = WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
+            return codeEncoded;
         }
 
         public async Task ResetPassword(string email, string token, string newPassword)

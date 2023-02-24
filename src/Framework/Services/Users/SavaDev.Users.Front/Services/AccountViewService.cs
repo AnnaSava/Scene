@@ -2,7 +2,11 @@
 using Microsoft.AspNetCore.WebUtilities;
 using SavaDev.Base.Front.Services;
 using SavaDev.Base.User.Data.Models;
+using SavaDev.Base.User.Data.Models.Interfaces;
+using SavaDev.Base.Users.Data.Models.Interfaces;
 using SavaDev.Base.Users.Front.Manager;
+using SavaDev.Base.Users.Front.Models;
+using SavaDev.Base.Users.Front.Services;
 using SavaDev.Base.Users.Security.Contract;
 using SavaDev.Mail.Service.Contract;
 using SavaDev.Mail.Service.Contract.Models;
@@ -15,40 +19,30 @@ using System.Text;
 
 namespace Framework.DefaultUser.Service.Services
 {
-    public class AccountViewService : IAccountViewService
+    public class AccountViewService : BaseAccountViewService, IAccountViewService
     {
-        private readonly IUserService _userDbService;
-        private readonly IAccountService _accountDbService;
-        private readonly IReservedNameService _reservedNameDbService;
-        private readonly IMailSender _mailSender;
-        private readonly IMapper _mapper;
-
         public AccountViewService(IUserService userDbService,
            IAccountService accountDbService,
            IReservedNameService reservedNameDbService,
            IMailSender mailSender,
-           IMapper mapper)
+           IMapper mapper) : base(userDbService, accountDbService, reservedNameDbService, mailSender, mapper)
         {
-            _userDbService = userDbService;
-            _accountDbService = accountDbService;
-            _reservedNameDbService = reservedNameDbService;
-            _mailSender = mailSender;
-            _mapper = mapper;
         }
 
         public async Task<OperationViewResult> Register(RegisterViewModel model)
         {
-            var manager = new RegisterViewManager(_userDbService, _accountDbService, _reservedNameDbService, _mailSender, _mapper);
-            var result = await manager.Register<UserFormModel>(model);
+            var result = await Register<UserFormModel>(model);
             return result;
         }
 
-        public async Task<bool> ConfirmEmail(string email, string token)
+        protected override IUserFormModel MapForm(IRegisterViewModel model)
         {
-            var codeDecodedBytes = WebEncoders.Base64UrlDecode(token);
-            var codeDecoded = Encoding.UTF8.GetString(codeDecodedBytes);
+            return _mapper.Map<UserFormModel>(model);
+        }
 
-            return await _accountDbService.ConfirmEmail(email, codeDecoded);
+        protected override async Task<IUserModel> GetUser(string loginOrEmail)
+        {
+            return await _userDbService.GetOneByLoginOrEmail<UserModel>(loginOrEmail);
         }
 
         public async Task RequestNewPassword(RequestNewPasswordFormViewModel model)
