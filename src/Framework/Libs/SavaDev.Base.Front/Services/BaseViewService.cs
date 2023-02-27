@@ -15,7 +15,6 @@ namespace SavaDev.Base.Front.Services
 
         protected readonly IMapper _mapper;
         // TODO скорее всего перенести сюда
-        //protected readonly ICurrentUserService _currentUserService;
         //protected readonly ISecurityService _securityService;
 
         protected readonly ServiceOptions _options;
@@ -28,11 +27,19 @@ namespace SavaDev.Base.Front.Services
 
         protected Dictionary<string, string> GetStrings(Type type)
         {
-            var p = type.GetProperties();
-            var p1 = p.Where(f => f.PropertyType == typeof(string));
-            var p2 = p1.ToDictionary(f => f.Name, f => (string)f.GetValue(null));
+            try
+            {
+                var p = type.GetProperties();
+                var p1 = p.Where(f => f.PropertyType == typeof(string));
+                var p2 = p1.ToDictionary(f => f.Name, f => (string)f.GetValue(null));
 
-            return p2;
+                return p2;
+            }
+            catch(Exception ex)
+            {
+                var t = ex.Message;
+                throw;
+            }
         }
 
         protected OperationResult MakeResponseObject<TModel, TViewModel>(OperationResult resultModel)
