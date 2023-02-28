@@ -1,5 +1,5 @@
 ﻿using Framework.Base.Service.ListView;
-using Framework.Base.Types.Validation;
+using SavaDev.Base.Data.Models;
 using SavaDev.Users.Front.Contract.Models;
 
 namespace SavaDev.Users.Front.Contract

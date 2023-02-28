@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Base.Types.Image
+namespace SavaDev.Infrastructure.Util.ImageEditor
 {
     public class ImageResizeKinds
     {

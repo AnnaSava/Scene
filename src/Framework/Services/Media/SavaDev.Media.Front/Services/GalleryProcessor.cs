@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Framework.Base.Types.Image;
 using Sava.Media.Contract;
 using Sava.Media.Contract.Models;
 using Sava.Media.Data.Contract;

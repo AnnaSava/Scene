@@ -6,13 +6,6 @@ namespace Framework.Base.Exceptions
     {
         private const string ExceptionMessageTemplate = "Type: {0}. Method: {1}. Argument: {2}. Value: {3}. Message: {4}";
 
-        public ProjectArgumentException()
-        {
-        }
-
-        public ProjectArgumentException(string message)
-            : base(message) { }
-
         public ProjectArgumentException(
             Type errorLocationType,
             string methodName,
@@ -22,8 +15,5 @@ namespace Framework.Base.Exceptions
             : base(string.Format(ExceptionMessageTemplate, errorLocationType.FullName, methodName, argumentName, value, message))
         {
         }
-
-        public ProjectArgumentException(string message, Exception inner)
-            : base(message, inner) { }
     }
 }

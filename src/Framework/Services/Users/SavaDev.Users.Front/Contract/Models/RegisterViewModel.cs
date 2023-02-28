@@ -1,11 +1,6 @@
-﻿using Framework.Base.Types.Validation;
-using SavaDev.Base.Users.Front.Models;
-using System;
-using System.Collections.Generic;
+﻿using SavaDev.Base.Users.Front.Models;
+using SavaDev.Infrastructure.Validation.Attributes;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SavaDev.Users.Front.Contract.Models
 {

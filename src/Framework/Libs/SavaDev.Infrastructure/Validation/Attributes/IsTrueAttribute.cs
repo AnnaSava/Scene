@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Framework.Base.Types.Validation
+namespace SavaDev.Infrastructure.Validation.Attributes
 {
     public class IsTrueAttribute : ValidationAttribute
     {
