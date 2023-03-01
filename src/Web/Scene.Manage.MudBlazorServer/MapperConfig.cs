@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Framework.Base.Service.Mapper;
 using SavaDev.System.Data;
 using SavaDev.System.Front.Mapper;
 using SavaDev.Users.Data;
@@ -16,7 +15,6 @@ namespace Scene.Manage.UI.MudBlazorServer
             // https://stackoverflow.com/questions/2651613/how-to-scan-and-auto-configure-profiles-in-automapper
             var mappingConfig = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new BaseServiceAutoMapperProfile());
                 mc.AddProfile(new UsersMapperProfile());
                 mc.AddProfile(new UsersViewMapperProfile());
                 mc.AddProfile(new SystemMapperProfile());

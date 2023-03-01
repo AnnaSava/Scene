@@ -1,4 +1,4 @@
-﻿using Framework.Base.Service.Contract.Models;
+﻿using SavaDev.Base.Front.Models;
 
 namespace Sava.Forums
 {

@@ -5,8 +5,6 @@ namespace SavaDev.System.Front.Contract.Models
 {
     public class MailTemplateViewModel : BaseRegistryItemViewModel<long>
     {
-        public long Id { get; set; }
-
         public string PermName { get; set; }
 
         public string Culture { get; set; }
