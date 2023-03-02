@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Framework\Libs\SavaDev.UI.Blazorstrap\SavaDev.UI.Blazorstrap.csproj" />
-    <ProjectReference Include="..\Framework\Services\Media\SavaDev.Media.Front\SavaDev.Media.Front.csproj" />
+    <ProjectReference Include="..\..\..\Libs\SavaDev.UI.Blazorstrap\SavaDev.UI.Blazorstrap.csproj" />
+    <ProjectReference Include="..\SavaDev.Media.Front\SavaDev.Media.Front.csproj" />
   </ItemGroup>
 
 </Project>
