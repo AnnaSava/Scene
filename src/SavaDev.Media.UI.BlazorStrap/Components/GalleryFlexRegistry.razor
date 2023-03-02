@@ -1,0 +1,46 @@
+﻿@using BlazorStrap
+@using Sava.Media.Contract.Models;
+@using SavaDev.Base.Data.Registry;
+@using SavaDev.Media.Front.Contract.Models;
+@using SavaDev.Media.Front.Contract;
+@using SavaDev.UI.Blazorstrap.Registry;
+@using global::BlazorStrap;
+@inject IGalleryViewService _galleryService
+
+<FlexRegistry @ref="registry"
+              T="GalleryViewModel"
+              TKey="Guid"
+              ModelPlacement="@(new SavaDev.Base.Data.Models.ModelPlacement("Gallery","Mda"))"
+              FetchItems="@FetchItems"
+              CreateLink="/media/gallery/create">
+    <Filter>
+
+    </Filter>
+    <Actions Context="item">
+        <BSDropdownItem href="@("/media/gallery/update/" + item.Id)">Update</BSDropdownItem>
+        <BSDropdownItem OnClick="(() => {})">Delete</BSDropdownItem>
+    </Actions>
+</FlexRegistry>
+
+@code {
+    private FlexRegistry<Guid, GalleryViewModel>? registry;
+
+    private async Task<(IEnumerable<GalleryViewModel>, int)> FetchItems(DataRequest dataRequest)
+    {
+        var query = MakeQuery();
+        var result = await _galleryService.GetRegistryPage(query);
+
+        return (result.Items, (int)result.TotalRows);
+    }
+
+    private RegistryQuery MakeQuery()
+    {
+        var query = new RegistryQuery(registry?.PageInfo, registry?.Sort);
+        query.Filter0 = new GalleryFilterViewModel
+        {
+        };
+
+        query.SetNewSort(registry?.Sort);
+        return query;
+    }
+}
