@@ -1,5 +1,10 @@
 ﻿using AutoMapper;
+using SavaDev.Base.Data.Registry;
+using SavaDev.Base.Front.Registry;
+using SavaDev.Base.Front.Services;
 using SavaDev.System.Data.Contract;
+using SavaDev.System.Data.Contract.Models;
+using SavaDev.System.Data.Services;
 using SavaDev.System.Front.Contract;
 using SavaDev.System.Front.Contract.Models;
 using System;
@@ -12,30 +17,25 @@ namespace SavaDev.System.Front.Services
 {
     public class PermissionViewService : IPermissionViewService
     {
-        private readonly IPermissionService _permissionDbService;
+        private readonly IPermissionService _permissionService;
         private readonly IMapper _mapper;
 
         public PermissionViewService(IPermissionService permissionDbService, IMapper mapper)
         {
-            _permissionDbService = permissionDbService;
+            _permissionService = permissionDbService;
             _mapper = mapper;
         }
 
-        //public async Task<ListPageViewModel<PermissionViewModel>> GetAll(PermissionFilterViewModel filter, ListPageInfoViewModel pageInfo)
-        //{
-        //    var filterModel = _mapper.Map<PermissionFilterModel>(filter);
-
-        //    var pageInfoModel = _mapper.Map<PageInfoModel>(pageInfo);
-
-        //    var list = await _permissionDbService.GetAll(new ListQueryModel<PermissionFilterModel> { Filter = filterModel, PageInfo = pageInfoModel });
-
-        //    var vm = ListPageViewModel.Map<PermissionModel, PermissionViewModel>(list, _mapper);
-        //    return vm;
-        //}
+        public async Task<RegistryPageViewModel<PermissionViewModel>> GetRegistryPage(RegistryQuery query)
+        {
+            var manager = new RegistryPageManager<PermissionModel, PermissionFilterModel>(_permissionService, _mapper);
+            var vm = await manager.GetRegistryPage<PermissionViewModel>(query);
+            return vm;
+        }
 
         public async Task<IEnumerable<PermissionTreeNodeViewModel>> GetTree()
         {
-            var dict = await _permissionDbService.GetTree();
+            var dict = await _permissionService.GetTree();
 
             return dict.Select(m => new PermissionTreeNodeViewModel { Group = m.Key, Permissions = m.Value.Select(p => new PermissionViewModel { Name = p }).ToList() });
         }

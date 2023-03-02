@@ -7,10 +7,6 @@ using SavaDev.System.Data.Entities.Parts;
 namespace SavaDev.System.Data
 {
     public class SystemContext : BaseDbContext, ISystemContext
-        //IPermissionContext,
-        //ILegalDocumentContext,
-        //IReservedNameContext
-        //IMailTemplateContext
     {
         public DbSet<MailTemplate> MailTemplates { get; set; }
 

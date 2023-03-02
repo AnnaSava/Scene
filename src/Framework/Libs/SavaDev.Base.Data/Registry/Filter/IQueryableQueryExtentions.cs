@@ -24,7 +24,7 @@ namespace SavaDev.Base.Data.Registry.Filter
                 .ApplyIsDeletedFilter(filter)
                 .ApplyStringFilters(filterFields.Where(f => f.PropertyType.Name == nameof(String)), filter)
                 .ApplyLongFilters(filterFields.Where(f => f.PropertyType.FullName.Contains(nameof(Int64))), filter)
-                .ApplyBoolFilters(filterFields.Where(f => f.PropertyType.Name == nameof(Boolean)), filter)
+                .ApplyBoolFilters(filterFields.Where(f => f.PropertyType.Name == nameof(Boolean) && f.Name != "IsDeleted"), filter)
                 .ApplyWordFilters(filterFields.Where(f => f.PropertyType.Name == nameof(WordFilterField)), filter)
                 .ApplyNullableBoolFilters(filterFields.Where(f => f.PropertyType.Name == "Nullable`1" && f.PropertyType.FullName.Contains("Boolean")), filter)
                 .ApplyIEnumerableFilters(filterFields.Where(f => f.PropertyType.Name == "IEnumerable`1"), filter)

@@ -6,6 +6,7 @@ using SavaDev.Base.Data.Managers;
 using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Services;
 using SavaDev.System.Data.Contract;
+using SavaDev.System.Data.Contract.Context;
 using SavaDev.System.Data.Contract.Models;
 using SavaDev.System.Data.Entities;
 
@@ -23,7 +24,7 @@ namespace SavaDev.System.Data.Services
 
         #region Public Constructors
 
-        public PermissionService(IDbContext dbContext, IMapper mapper, ILogger<PermissionService> logger)
+        public PermissionService(ISystemContext dbContext, IMapper mapper, ILogger<PermissionService> logger)
             : base(dbContext, mapper, nameof(PermissionService))
         {
             CreateManager = new CreateManager<Permission, PermissionModel>(dbContext, mapper, logger);

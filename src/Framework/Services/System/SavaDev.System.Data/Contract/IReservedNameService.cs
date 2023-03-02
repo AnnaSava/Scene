@@ -1,9 +1,10 @@
 ﻿using SavaDev.Base.Data.Services;
+using SavaDev.Base.Data.Services.Interfaces;
 using SavaDev.System.Data.Contract.Models;
 
 namespace SavaDev.System.Data.Contract
 {
-    public interface IReservedNameService
+    public interface IReservedNameService : IEntityRegistryService<ReservedNameModel, ReservedNameFilterModel>
     {
         Task<OperationResult> Create(ReservedNameModel model);
 

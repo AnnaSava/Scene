@@ -1,4 +1,6 @@
-﻿using SavaDev.System.Front.Contract.Models;
+﻿using SavaDev.Base.Data.Registry;
+using SavaDev.Base.Front.Registry;
+using SavaDev.System.Front.Contract.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ namespace SavaDev.System.Front.Contract
 {
     public interface IPermissionViewService
     {
-        //Task<ListPageViewModel<PermissionViewModel>> GetAll(PermissionFilterViewModel filter, ListPageInfoViewModel pageInfo);
+        Task<RegistryPageViewModel<PermissionViewModel>> GetRegistryPage(RegistryQuery query);
 
         Task<IEnumerable<PermissionTreeNodeViewModel>> GetTree();
     }

@@ -1,4 +1,6 @@
 ﻿using SavaDev.Base.Data.Models;
+using SavaDev.Base.Data.Registry;
+using SavaDev.Base.Front.Registry;
 using SavaDev.System.Front.Contract.Models;
 using System;
 using System.Collections.Generic;
@@ -22,7 +24,7 @@ namespace SavaDev.System.Front.Contract
 
         Task<ReservedNameViewModel> Update(string text, ReservedNameFormViewModel model);
 
-        //Task<ListPageViewModel<ReservedNameViewModel>> GetAll(ReservedNameFilterViewModel filter, ListPageInfoViewModel pageInfo);
+        Task<RegistryPageViewModel<ReservedNameViewModel>> GetRegistryPage(RegistryQuery query);
 
         Task<Dictionary<string, bool>> CheckExists(string text);
 

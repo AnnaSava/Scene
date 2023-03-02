@@ -144,10 +144,19 @@ namespace SavaDev.Base.Data.Managers.Crud
         {
             var list = GetList();
 
-            //if(RegistryQuery?.Filter0 != null)
+            if (RegistryQuery?.Filter0 != null)
             {
-                list = list.ApplyFilters(RegistryQuery.Filter0);
+                try
+                {
+
+                    list = list.ApplyFilters(RegistryQuery.Filter0);
+                }
+                catch (Exception ex) 
+                {
+                    throw;
+                }
             }
+
             //if(FilterExpression!= null)
             //{
             //    list = FilterExpression(list);
@@ -193,9 +202,16 @@ namespace SavaDev.Base.Data.Managers.Crud
 
         private IQueryable<TEntity> GetList()
         {
-            return _dbContext.Set<TEntity>()
-                .AsQueryable()
-                .AsNoTracking();
+            try
+            {
+                return _dbContext.Set<TEntity>()
+                    .AsQueryable()
+                    .AsNoTracking();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         private async Task<List<TItemModel>> ProjectToList(IQueryable<TEntity> list)

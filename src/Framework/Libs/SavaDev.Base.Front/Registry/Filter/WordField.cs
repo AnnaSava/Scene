@@ -15,7 +15,7 @@ namespace SavaDev.Base.Front.Registry.Filter
 
         public string ToSearchString()
         {
-            return Match.ToString().ToLower() + "|" + Text;
+            return string.IsNullOrEmpty(Text)? null : Match.ToString().ToLower() + "|" + Text;
         }
     }
 }

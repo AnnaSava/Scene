@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.System.Front.Contract.Models
 {
-    public class LegalDocumentViewModel: BaseRegistryItemViewModel<long>
+    public class LegalDocumentViewModel : BaseRegistryItemViewModel<long>
     {
         public string PermName { get; set; }
 

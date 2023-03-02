@@ -1,4 +1,5 @@
 ﻿using SavaDev.Base.Data.Registry.Filter;
+using SavaDev.Base.Front.Registry.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace SavaDev.System.Front.Contract.Models
 {
-    public class PermissionFilterViewModel : BaseFilter
+    public class PermissionFilterFormViewModel : BaseFilter
     {
-        public string Name { get; set; }
+        public WordField Name { get; set; } = new WordField();
     }
 }

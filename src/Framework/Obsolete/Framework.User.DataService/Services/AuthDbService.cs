@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Framework.Base.Exceptions;
 using Framework.User.DataService.Contract.Interfaces;
 using Framework.User.DataService.Contract.Models;
 using Framework.User.DataService.Entities;
@@ -16,17 +15,8 @@ namespace Framework.User.DataService.Services
 
         public AuthDbService(IAuthTokenContext dbContext, IMapper mapper)
         {
-            _dbContext = dbContext ?? throw new ProjectArgumentException(
-                GetType(),
-                nameof(AuthDbService),
-                nameof(dbContext),
-                null);
-
-            _mapper = mapper ?? throw new ProjectArgumentException(
-                GetType(),
-                nameof(AuthDbService),
-                nameof(mapper),
-                null);
+            _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public async Task<AuthTokenModel> CreateToken(AuthTokenModel model)
