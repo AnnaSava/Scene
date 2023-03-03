@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Savadev.Content.Data.Contract.Models
+namespace SavaDev.Content.Data.Contract.Models
 {
     public abstract class BaseContentModel<T> : IFormModel
     {

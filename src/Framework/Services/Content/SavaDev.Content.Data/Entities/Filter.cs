@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Savadev.Content.Data.Entities
+namespace SavaDev.Content.Data.Entities
 {
     public class Filter
     {

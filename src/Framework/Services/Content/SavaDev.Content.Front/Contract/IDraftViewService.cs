@@ -1,4 +1,4 @@
-﻿namespace Savadev.Content.Contract
+﻿namespace SavaDev.Content.Contract
 {
     public interface IDraftViewService
     {

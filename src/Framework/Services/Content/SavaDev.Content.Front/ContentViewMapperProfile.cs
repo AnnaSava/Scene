@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Savadev.Content.Contract.Models;
-using Savadev.Content.Data;
-using Savadev.Content.Data.Contract.Models;
+using SavaDev.Content.Contract.Models;
+using SavaDev.Content.Data;
+using SavaDev.Content.Data.Contract.Models;
 using SavaDev.Base.Data.Registry.Filter;
 
 namespace SavaDev.Content.Front

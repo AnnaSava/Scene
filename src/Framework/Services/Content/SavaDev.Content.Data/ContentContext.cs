@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Savadev.Content.Data.Entities;
+using SavaDev.Content.Data.Entities;
 using SavaDev.Base.Data.Context;
 using SavaDev.Content.Data;
 

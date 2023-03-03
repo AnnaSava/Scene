@@ -2,17 +2,17 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Savadev.Content.Contract;
-using Savadev.Content.Data;
-using Savadev.Content.Data.Contract;
-using Savadev.Content.Data.Services;
-using Savadev.Content.Services;
+using SavaDev.Content.Contract;
+using SavaDev.Content.Data;
+using SavaDev.Content.Data.Contract;
+using SavaDev.Content.Data.Services;
+using SavaDev.Content.Services;
 using SavaDev.Base.Unit.Options;
 using SavaDev.Base.Unit;
 using SavaDev.Content.Data;
 using SavaDev.Content.Data.Services;
 
-namespace Savadev.Content
+namespace SavaDev.Content
 {
     public static class ContentViewUnit
     {

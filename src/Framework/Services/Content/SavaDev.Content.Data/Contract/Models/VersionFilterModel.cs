@@ -1,6 +1,6 @@
 ﻿using SavaDev.Base.Data.Registry.Filter;
 
-namespace Savadev.Content.Data.Contract.Models
+namespace SavaDev.Content.Data.Contract.Models
 {
     public class VersionFilterModel : BaseFilter
     {

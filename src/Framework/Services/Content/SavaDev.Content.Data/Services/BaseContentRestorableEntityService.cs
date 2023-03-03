@@ -2,7 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Savadev.Content.Data.Entities;
+using SavaDev.Content.Data.Entities;
 using SavaDev.Base.Data.Entities.Interfaces;
 using SavaDev.Base.Data.Managers;
 using SavaDev.Base.Data.Models.Interfaces;
@@ -14,7 +14,7 @@ using SavaDev.Content.Data.Entities;
 using System.Text.Json;
 using X.PagedList;
 
-namespace Savadev.Content.Data.Services
+namespace SavaDev.Content.Data.Services
 {
     public class BaseContentRestorableEntityService<TEntity, TModel, TFilterModel> 
         where TEntity : BaseContentEntity, IEntity<Guid>, IEntityRestorable, new()

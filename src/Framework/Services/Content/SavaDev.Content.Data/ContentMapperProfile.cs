@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Savadev.Content.Data;
-using Savadev.Content.Data.Entities;
+using SavaDev.Content.Data;
+using SavaDev.Content.Data.Entities;
 
 namespace SavaDev.Content.Data
 {

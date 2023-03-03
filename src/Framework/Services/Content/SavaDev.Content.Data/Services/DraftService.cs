@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.Extensions.Logging;
-using Savadev.Content.Data.Contract;
-using Savadev.Content.Data.Contract.Models;
-using Savadev.Content.Data.Entities;
+using SavaDev.Content.Data.Contract;
+using SavaDev.Content.Data.Contract.Models;
+using SavaDev.Content.Data.Entities;
 using SavaDev.Base.Data.Managers;
 using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Services;
@@ -11,7 +11,7 @@ using SavaDev.Content.Data;
 using SavaDev.Content.Data.Contract.Models;
 using X.PagedList;
 
-namespace Savadev.Content.Data.Services
+namespace SavaDev.Content.Data.Services
 {
     public class DraftService : BaseContentRestorableEntityService<Draft, DraftModel, DraftFilterModel> , IDraftService
     {

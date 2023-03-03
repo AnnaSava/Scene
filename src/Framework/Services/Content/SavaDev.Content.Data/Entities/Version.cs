@@ -1,4 +1,4 @@
-﻿using Savadev.Content.Data.Entities;
+﻿using SavaDev.Content.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

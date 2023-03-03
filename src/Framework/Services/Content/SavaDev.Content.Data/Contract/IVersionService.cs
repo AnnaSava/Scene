@@ -1,8 +1,8 @@
-﻿using Savadev.Content.Data.Contract.Models;
+﻿using SavaDev.Content.Data.Contract.Models;
 using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Services;
 
-namespace Savadev.Content.Data.Contract
+namespace SavaDev.Content.Data.Contract
 {
     public interface IVersionService
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Savadev.Content.Data.Contract
+namespace SavaDev.Content.Data.Contract
 {
     public interface IImportService
     {

@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libs\SavaDev.Base.Unit\SavaDev.Base.Unit.csproj" />
-    <ProjectReference Include="..\Savadev.Content.Data\Savadev.Content.Data.csproj" />
+    <ProjectReference Include="..\SavaDev.Content.Data\SavaDev.Content.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>

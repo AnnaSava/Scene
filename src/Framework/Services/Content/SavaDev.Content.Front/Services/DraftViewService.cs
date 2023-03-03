@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Savadev.Content.Contract;
-using Savadev.Content.Data.Contract;
+using SavaDev.Content.Contract;
+using SavaDev.Content.Data.Contract;
 
-namespace Savadev.Content.Services
+namespace SavaDev.Content.Services
 {
     public class DraftViewService : IDraftViewService
     {

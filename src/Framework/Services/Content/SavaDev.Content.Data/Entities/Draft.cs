@@ -1,7 +1,7 @@
 ﻿using SavaDev.Base.Data.Entities.Interfaces;
 using SavaDev.Content.Data.Entities;
 
-namespace Savadev.Content.Data.Entities
+namespace SavaDev.Content.Data.Entities
 {
     public class Draft : BaseContentEntity, IEntityRestorable
     {

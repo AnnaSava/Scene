@@ -1,4 +1,4 @@
-﻿using Savadev.Content.Data.Contract.Models;
+﻿using SavaDev.Content.Data.Contract.Models;
 using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Services;
 using SavaDev.Base.Front.Registry;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Savadev.Content.Data.Contract
+namespace SavaDev.Content.Data.Contract
 {
     public interface IDraftService
     {

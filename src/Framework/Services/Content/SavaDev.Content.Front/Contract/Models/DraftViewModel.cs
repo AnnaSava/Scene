@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Savadev.Content.Contract.Models
+namespace SavaDev.Content.Contract.Models
 {
     public class DraftViewModel
     {
