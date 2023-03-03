@@ -17,7 +17,7 @@ builder.Services.AddMapper();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddGeneral(builder.Configuration, new UnitOptions(SavaUnitCode.System, AppSettings.DefaultConnectionStringPattern));
+builder.Services.AddGeneral(builder.Configuration, new UnitOptions(SavaUnitCode.General, AppSettings.DefaultConnectionStringPattern));
 builder.Services.AddMailRmqService(builder.Configuration);
 
 using (var bus = RabbitHutch.CreateBus("host=localhost"))
