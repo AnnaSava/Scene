@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SavaDev.System.Data;
+using SavaDev.General.Data;
 
 #nullable disable
 
 namespace Scene.Migrations.MsSql.System
 {
-    [DbContext(typeof(SystemContext))]
+    [DbContext(typeof(GeneralContext))]
     partial class SystemContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -22,7 +22,7 @@ namespace Scene.Migrations.MsSql.System
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("SavaDev.System.Data.Entities.LegalDocument", b =>
+            modelBuilder.Entity("SavaDev.General.Data.Entities.LegalDocument", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -68,7 +68,7 @@ namespace Scene.Migrations.MsSql.System
                     b.ToTable("Sys.LegalDocuments", (string)null);
                 });
 
-            modelBuilder.Entity("SavaDev.System.Data.Entities.MailTemplate", b =>
+            modelBuilder.Entity("SavaDev.General.Data.Entities.MailTemplate", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -108,7 +108,7 @@ namespace Scene.Migrations.MsSql.System
                     b.ToTable("Sys.MailTemplates", (string)null);
                 });
 
-            modelBuilder.Entity("SavaDev.System.Data.Entities.Parts.PermissionCulture", b =>
+            modelBuilder.Entity("SavaDev.General.Data.Entities.Parts.PermissionCulture", b =>
                 {
                     b.Property<string>("PermissionName")
                         .HasColumnType("nvarchar(450)");
@@ -125,7 +125,7 @@ namespace Scene.Migrations.MsSql.System
                     b.ToTable("Sys.PermissionCultures", (string)null);
                 });
 
-            modelBuilder.Entity("SavaDev.System.Data.Entities.Permission", b =>
+            modelBuilder.Entity("SavaDev.General.Data.Entities.Permission", b =>
                 {
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
@@ -135,7 +135,7 @@ namespace Scene.Migrations.MsSql.System
                     b.ToTable("Sys.Permissions", (string)null);
                 });
 
-            modelBuilder.Entity("SavaDev.System.Data.Entities.ReservedName", b =>
+            modelBuilder.Entity("SavaDev.General.Data.Entities.ReservedName", b =>
                 {
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(450)");
@@ -148,9 +148,9 @@ namespace Scene.Migrations.MsSql.System
                     b.ToTable("Sys.ReservedNames", (string)null);
                 });
 
-            modelBuilder.Entity("SavaDev.System.Data.Entities.Parts.PermissionCulture", b =>
+            modelBuilder.Entity("SavaDev.General.Data.Entities.Parts.PermissionCulture", b =>
                 {
-                    b.HasOne("SavaDev.System.Data.Entities.Permission", "Permission")
+                    b.HasOne("SavaDev.General.Data.Entities.Permission", "Permission")
                         .WithMany("Cultures")
                         .HasForeignKey("PermissionName")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -159,7 +159,7 @@ namespace Scene.Migrations.MsSql.System
                     b.Navigation("Permission");
                 });
 
-            modelBuilder.Entity("SavaDev.System.Data.Entities.Permission", b =>
+            modelBuilder.Entity("SavaDev.General.Data.Entities.Permission", b =>
                 {
                     b.Navigation("Cultures");
                 });

@@ -6,16 +6,16 @@ using SavaDev.Base.Data.Registry.Enums;
 using SavaDev.Base.Data.Registry.Filter;
 using SavaDev.Libs.UnitTestingHelpers;
 using SavaDev.Services.Tests.System.Data;
-using SavaDev.System.Data;
-using SavaDev.System.Data.Contract.Models;
-using SavaDev.System.Data.Services;
+using SavaDev.General.Data;
+using SavaDev.General.Data.Contract.Models;
+using SavaDev.General.Data.Services;
 
 namespace SavaDev.Services.Tests.System.DataTests
 {
     public class ReservedNameServiceTests : IDisposable
     {
         private IMapper _mapper;
-        private SystemContext _context;
+        private GeneralContext _context;
         private ReservedNameService _reservedNameDbService;
         private ILogger<ReservedNameService> _logger;
 
@@ -23,7 +23,7 @@ namespace SavaDev.Services.Tests.System.DataTests
         {
             _mapper = Dependencies.GetDataMapper();
             _logger = TestsInfrastructure.GetLogger<ReservedNameService>();
-            _context = TestsInfrastructure.GetContext<SystemContext>(x => new SystemContext(x));
+            _context = TestsInfrastructure.GetContext<GeneralContext>(x => new GeneralContext(x));
             DataInit.FillContextWithEntities(_context);
             _reservedNameDbService = new ReservedNameService(_context, _mapper, _logger);
         }

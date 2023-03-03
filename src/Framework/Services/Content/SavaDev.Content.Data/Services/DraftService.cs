@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Savadev.Content.Data.Contract;
 using Savadev.Content.Data.Contract.Models;
 using Savadev.Content.Data.Entities;
-using Savadev.Content.Data.Services.Filters;
 using SavaDev.Base.Data.Managers;
 using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Services;
@@ -49,7 +47,7 @@ namespace Savadev.Content.Data.Services
         {
             var list = _dbContext.Set<Draft>().AsQueryable();
 
-            list = list.ApplyStrictFilters(query.Filter);
+            //list = list.ApplyStrictFilters(query.Filter);
 
             list = list.OrderByDescending(m => m.LastUpdated);
 

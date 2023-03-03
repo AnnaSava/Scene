@@ -5,7 +5,7 @@ using SavaDev.Base.Unit;
 using SavaDev.Base.Unit.Options;
 using SavaDev.Infrastructure;
 using SavaDev.Mail.Service;
-using SavaDev.System.Front;
+using SavaDev.General.Front;
 using SavaDev.Users.Front;
 using Scene.Libs.WebModule;
 using Scene.Manage.UI.MudBlazorServer;
@@ -29,7 +29,7 @@ builder.Services.Configure<RabbitMqConfiguration>(builder.Configuration.GetSecti
 builder.Services.AddMapper();
 
 builder.Services.AddUsers(builder.Configuration, new UnitOptions(SceneUnitCode.AppUsers, AppSettings.DefaultConnectionStringPattern));
-builder.Services.AddSystem(builder.Configuration, new UnitOptions(SceneUnitCode.System, AppSettings.DefaultConnectionStringPattern));
+builder.Services.AddGeneral(builder.Configuration, new UnitOptions(SceneUnitCode.System, AppSettings.DefaultConnectionStringPattern));
 builder.Services.AddMailRmqService(builder.Configuration);
 
 builder.Services.AddDataProtection()

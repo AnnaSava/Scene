@@ -10,7 +10,7 @@ using SavaDev.Base.Users.Front.Services;
 using SavaDev.Base.Users.Security.Contract;
 using SavaDev.Mail.Service.Contract;
 using SavaDev.Mail.Service.Contract.Models;
-using SavaDev.System.Data.Contract;
+using SavaDev.General.Data.Contract;
 using SavaDev.Users.Data;
 using SavaDev.Users.Data.Contract.Models;
 using SavaDev.Users.Front.Contract;

@@ -45,9 +45,11 @@
     {
         var filter = new RoleFilterViewModel { Name =  "contains|" + searchString };
 
-        var result = await _roleService.GetAll(filter, PageHelper.GetPageInfo(state));
+        throw new NotImplementedException();
 
-        return PageHelper.GetTableData<RoleViewModel>(result);
+        //var result = await _roleService.GetAll(filter, PageHelper.GetPageInfo(state));
+
+        //return PageHelper.GetTableData<RoleViewModel>(result);
     }
 
     private void OnSearch(string text)

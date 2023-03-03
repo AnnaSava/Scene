@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using SavaDev.System.Front.Contract;
-using SavaDev.System.Front.Contract.Models;
+using SavaDev.General.Front.Contract;
+using SavaDev.General.Front.Contract.Models;
 
 namespace Scene.Login.WebApp.Pages
 {

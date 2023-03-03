@@ -1,14 +1,8 @@
 ﻿using AutoMapper;
-using Framework.Base.Service.ListView;
 using Savadev.Content.Contract.Models;
 using Savadev.Content.Data;
 using Savadev.Content.Data.Contract.Models;
 using SavaDev.Base.Data.Registry.Filter;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SavaDev.Content.Front
 {

@@ -1,13 +1,10 @@
-﻿using Framework.Base.Service.ListView;
-using SavaDev.Users.Front.Contract.Models;
-
-namespace SavaDev.Users.Front.Contract
+﻿namespace SavaDev.Users.Front.Contract
 {
     public interface IRoleViewService
     {
         //Task<AppRoleViewModel> GetOne(long id);
 
-        Task<ListPageViewModel<RoleViewModel>> GetAll(RoleFilterViewModel filter, ListPageInfoViewModel pageInfo);
+        //Task<ListPageViewModel<RoleViewModel>> GetAll(RoleFilterViewModel filter, ListPageInfoViewModel pageInfo);
 
         //Task<AppRoleViewModel> Create(AppRoleFormViewModel model);
 

@@ -1,5 +1,4 @@
-﻿using Framework.Base.DataService.Contract.Models.ListView;
-using SavaDev.Base.Data.Services.Interfaces;
+﻿using SavaDev.Base.Data.Services.Interfaces;
 using SavaDev.Files.Data.Contract.Models;
 
 namespace SavaDev.Files.Data.Contract

@@ -1,13 +1,6 @@
 ﻿using AutoMapper;
-using Framework.User.DataService.Contract.Models;
-using Framework.User.DataService.Entities;
 using SavaDev.Users.Data.Contract.Models;
 using SavaDev.Users.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SavaDev.Users.Data
 {

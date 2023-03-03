@@ -1,12 +1,12 @@
 ﻿using SavaDev.Mail.Service.Contract;
 using SavaDev.Mail.Service.Contract.Models;
-using SavaDev.System.Data.Contract;
+using SavaDev.General.Data.Contract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SavaDev.System.Front.Contract;
+using SavaDev.General.Front.Contract;
 
 namespace SavaDev.Mail.Service.Services
 {

@@ -18,9 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libs\SavaDev.Base.Data\SavaDev.Base.Data.csproj" />
-    <ProjectReference Include="..\..\..\Obsolete\Framework.Base.DataService\Framework.Base.DataService.csproj" />
-    <ProjectReference Include="..\..\..\Obsolete\Framework.User.DataService\Framework.User.DataService.csproj" />
-    <ProjectReference Include="..\..\System\SavaDev.System.Data\SavaDev.System.Data.csproj" />
+    <ProjectReference Include="..\..\General\SavaDev.General.Data\SavaDev.General.Data.csproj" />
     <ProjectReference Include="..\SavaDev.Base.Users.Data\SavaDev.Base.Users.Data.csproj" />
   </ItemGroup>
 

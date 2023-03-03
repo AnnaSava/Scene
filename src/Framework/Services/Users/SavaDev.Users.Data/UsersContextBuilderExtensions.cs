@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SavaDev.Base.Data.Context;
 using SavaDev.Base.User.Data.Entities;
-using SavaDev.System.Data.Entities;
-using SavaDev.System.Data.Entities.Parts;
+using SavaDev.General.Data.Entities;
+using SavaDev.General.Data.Entities.Parts;
 using SavaDev.Users.Data.Entities;
 using System.Diagnostics.CodeAnalysis;
 

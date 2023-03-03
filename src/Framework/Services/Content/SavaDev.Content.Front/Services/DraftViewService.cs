@@ -1,16 +1,6 @@
 ﻿using AutoMapper;
-using Framework.Base.DataService.Contract.Models;
-using Framework.Base.Service.ListView;
 using Savadev.Content.Contract;
-using Savadev.Content.Contract.Models;
-using Savadev.Content.Data;
 using Savadev.Content.Data.Contract;
-using Savadev.Content.Data.Contract.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Savadev.Content.Services
 {

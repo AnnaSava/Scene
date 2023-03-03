@@ -2,10 +2,10 @@
 using Microsoft.Extensions.Logging;
 using SavaDev.Base.Data.Managers;
 using SavaDev.Base.Data.Services;
-using SavaDev.System.Data.Contract.Context;
-using SavaDev.System.Data.Contract.Models;
-using SavaDev.System.Data.Entities;
-using SavaDev.System.Data.Services;
+using SavaDev.General.Data.Contract.Context;
+using SavaDev.General.Data.Contract.Models;
+using SavaDev.General.Data.Entities;
+using SavaDev.General.Data.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

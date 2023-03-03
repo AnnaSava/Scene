@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using Framework.Base.Service.ListView;
-using Framework.User.DataService.Contract.Interfaces;
 using SavaDev.Base.Data.Models;
 using SavaDev.Base.Users.Security.Contract;
-using SavaDev.System.Data.Contract;
+using SavaDev.General.Data.Contract;
 using SavaDev.Users.Data;
 using SavaDev.Users.Data.Contract.Models;
 using SavaDev.Users.Front.Contract.Models;
@@ -85,19 +83,19 @@ namespace Framework.User.Service.Services
             return _mapper.Map<UserViewModel>(resultModel);
         }
 
-        public async Task<ListPageViewModel<UserViewModel>> GetAll(UserFilterViewModel filter, ListPageInfoViewModel pageInfo)
-        {
-            throw new NotImplementedException();
-            //var filterModel = _mapper.Map<AppUserFilterModel>(filter);
+        //public async Task<ListPageViewModel<UserViewModel>> GetAll(UserFilterViewModel filter, ListPageInfoViewModel pageInfo)
+        //{
+        //    throw new NotImplementedException();
+        //    //var filterModel = _mapper.Map<AppUserFilterModel>(filter);
 
-            //var pageInfoModel = _mapper.Map<PageInfoModel>(pageInfo);
+        //    //var pageInfoModel = _mapper.Map<PageInfoModel>(pageInfo);
 
-            //var list = await _userDbService.GetAll(new ListQueryModel<AppUserFilterModel> { Filter = filterModel, PageInfo = pageInfoModel });
+        //    //var list = await _userDbService.GetAll(new ListQueryModel<AppUserFilterModel> { Filter = filterModel, PageInfo = pageInfoModel });
 
-            //var vm = ListPageViewModel.Map<AppUserModel, AppUserViewModel>(list, _mapper);
+        //    //var vm = ListPageViewModel.Map<AppUserModel, AppUserViewModel>(list, _mapper);
 
-            //return vm;
-        }
+        //    //return vm;
+        //}
 
         public async Task<IUserViewModel> GetOne(long id, string target)
         {

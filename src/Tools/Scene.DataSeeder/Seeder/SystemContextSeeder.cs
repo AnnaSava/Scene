@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using SavaDev.Base.Data.Context;
 using SavaDev.Infrastructure.Reflection;
-using SavaDev.System.Data;
-using SavaDev.System.Data.Seeder;
+using SavaDev.General.Data;
+using SavaDev.General.Data.Seeder;
 using SavaDev.Users.Data.Entities;
 using System;
 using System.Linq;
@@ -14,10 +14,10 @@ namespace Scene.DataSeeder
 {
     internal class SystemContextSeeder : ISeeder
     {
-        private readonly SystemContext context;
+        private readonly GeneralContext context;
         private readonly RoleManager<Role> _roleManager;
 
-        public SystemContextSeeder(SystemContext dbContext, RoleManager<Role> roleManager)
+        public SystemContextSeeder(GeneralContext dbContext, RoleManager<Role> roleManager)
         {
             context = dbContext;
             _roleManager = roleManager;

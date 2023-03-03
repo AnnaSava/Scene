@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using Framework.User.DataService.Contract;
 using SavaDev.Base.Data.Services;
 using SavaDev.Base.User.Data.Services.Interfaces;
-using SavaDev.Community.Data;
 using SavaDev.Community.Data.Contract;
 using SavaDev.Community.Data.Contract.Models;
 using SavaDev.Community.Front.Contract.Models;

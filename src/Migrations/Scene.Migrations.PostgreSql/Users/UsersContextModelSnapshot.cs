@@ -233,7 +233,7 @@ namespace Scene.Migrations.PostgreSql.Users
                     b.ToTable("app_user_tokens", (string)null);
                 });
 
-            modelBuilder.Entity("SavaDev.System.Data.Entities.Parts.PermissionCulture", b =>
+            modelBuilder.Entity("SavaDev.General.Data.Entities.Parts.PermissionCulture", b =>
                 {
                     b.Property<string>("PermissionName")
                         .HasColumnType("text")
@@ -254,7 +254,7 @@ namespace Scene.Migrations.PostgreSql.Users
                     b.ToTable("permission_culture", (string)null);
                 });
 
-            modelBuilder.Entity("SavaDev.System.Data.Entities.Permission", b =>
+            modelBuilder.Entity("SavaDev.General.Data.Entities.Permission", b =>
                 {
                     b.Property<string>("Name")
                         .HasColumnType("text")
@@ -480,9 +480,9 @@ namespace Scene.Migrations.PostgreSql.Users
                         .HasConstraintName("fk_app_user_tokens_app_users_user_id");
                 });
 
-            modelBuilder.Entity("SavaDev.System.Data.Entities.Parts.PermissionCulture", b =>
+            modelBuilder.Entity("SavaDev.General.Data.Entities.Parts.PermissionCulture", b =>
                 {
-                    b.HasOne("SavaDev.System.Data.Entities.Permission", "Permission")
+                    b.HasOne("SavaDev.General.Data.Entities.Permission", "Permission")
                         .WithMany("Cultures")
                         .HasForeignKey("PermissionName")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -492,7 +492,7 @@ namespace Scene.Migrations.PostgreSql.Users
                     b.Navigation("Permission");
                 });
 
-            modelBuilder.Entity("SavaDev.System.Data.Entities.Permission", b =>
+            modelBuilder.Entity("SavaDev.General.Data.Entities.Permission", b =>
                 {
                     b.Navigation("Cultures");
                 });

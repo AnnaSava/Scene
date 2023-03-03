@@ -49,9 +49,11 @@
     {
         var filter = new UserFilterViewModel { Login =  "contains|" + searchString };
 
-        var result = await _userService.GetAll(filter, PageHelper.GetPageInfo(state));
+        throw new NotImplementedException();
 
-        return PageHelper.GetTableData<UserViewModel>(result);
+        //var result = await _userService.GetAll(filter, PageHelper.GetPageInfo(state));
+
+        //return PageHelper.GetTableData<UserViewModel>(result);
     }
 
     private void OnSearch(string text)

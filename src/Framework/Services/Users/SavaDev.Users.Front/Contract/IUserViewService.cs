@@ -1,12 +1,11 @@
-﻿using Framework.Base.Service.ListView;
-using SavaDev.Base.Data.Models;
+﻿using SavaDev.Base.Data.Models;
 using SavaDev.Users.Front.Contract.Models;
 
 namespace SavaDev.Users.Front.Contract
 {
     public interface IUserViewService
     {
-        Task<ListPageViewModel<UserViewModel>> GetAll(UserFilterViewModel filter, ListPageInfoViewModel pageInfo);
+        //Task<ListPageViewModel<UserViewModel>> GetAll(UserFilterViewModel filter, ListPageInfoViewModel pageInfo);
 
         Task<UserViewModel> Create(UserFormViewModel model, string password);
 

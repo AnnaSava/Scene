@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libs\SavaDev.Base.Data\SavaDev.Base.Data.csproj" />
-    <ProjectReference Include="..\..\..\Obsolete\Framework.Base.DataService\Framework.Base.DataService.csproj" />
+    <ProjectReference Include="..\..\..\Obsolete\Framework.Helpers\Framework.Helpers.csproj" />
   </ItemGroup>
 
 </Project>

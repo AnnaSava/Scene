@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BlazorStrap" Version="5.0.106" />
+    <PackageReference Include="BlazorStrap.Extensions.BSDataTable" Version="1.5.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Services\Scheme\SavaDev.Scheme.Front\SavaDev.Scheme.Front.csproj" />
+    <ProjectReference Include="..\SavaDev.Base.Front\SavaDev.Base.Front.csproj" />
+  </ItemGroup>
+
+</Project>

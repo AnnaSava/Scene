@@ -6,9 +6,9 @@ using SavaDev.Base.Data.Exceptions;
 using SavaDev.Base.Data.Services;
 using SavaDev.Libs.UnitTestingHelpers;
 using SavaDev.Services.Tests.System.Data;
-using SavaDev.System.Data;
-using SavaDev.System.Data.Contract.Models;
-using SavaDev.System.Data.Services;
+using SavaDev.General.Data;
+using SavaDev.General.Data.Contract.Models;
+using SavaDev.General.Data.Services;
 
 namespace SavaDev.Services.Tests.System.DataTests
 {
@@ -16,7 +16,7 @@ namespace SavaDev.Services.Tests.System.DataTests
     {
         private IMapper _mapper;
         private ILogger<LegalDocumentService> _logger;
-        private SystemContext _context;
+        private GeneralContext _context;
         private LegalDocumentService _legalDocumentService;
         private readonly string[] _cultures = new string[] { "en", "ru" };
 
@@ -24,7 +24,7 @@ namespace SavaDev.Services.Tests.System.DataTests
         {
             _mapper = Dependencies.GetDataMapper();
             _logger = TestsInfrastructure.GetLogger<LegalDocumentService>();
-            _context = TestsInfrastructure.GetContext<SystemContext>(x => new SystemContext(x));
+            _context = TestsInfrastructure.GetContext<GeneralContext>(x => new GeneralContext(x));
             DataInit.FillContextWithEntities(_context);
             _legalDocumentService = new LegalDocumentService(_context, _cultures, _mapper, _logger);
         }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using SavaDev.System.Data;
-using SavaDev.System.Front.Mapper;
+using SavaDev.General.Data;
+using SavaDev.General.Front.Mapper;
 using SavaDev.Users.Data;
 using SavaDev.Users.Front;
 
@@ -17,8 +17,8 @@ namespace Scene.Manage.UI.MudBlazorServer
             {
                 mc.AddProfile(new UsersMapperProfile());
                 mc.AddProfile(new UsersViewMapperProfile());
-                mc.AddProfile(new SystemMapperProfile());
-                mc.AddProfile(new SystemViewMapperProfile());
+                mc.AddProfile(new GeneralMapperProfile());
+                mc.AddProfile(new GeneralViewMapperProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();

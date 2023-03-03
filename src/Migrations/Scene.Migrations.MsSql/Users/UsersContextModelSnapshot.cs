@@ -191,7 +191,7 @@ namespace Scene.Migrations.MsSql.Users
                     b.ToTable("App.UserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SavaDev.System.Data.Entities.Parts.PermissionCulture", b =>
+            modelBuilder.Entity("SavaDev.General.Data.Entities.Parts.PermissionCulture", b =>
                 {
                     b.Property<string>("PermissionName")
                         .HasColumnType("nvarchar(450)");
@@ -208,7 +208,7 @@ namespace Scene.Migrations.MsSql.Users
                     b.ToTable("PermissionCulture");
                 });
 
-            modelBuilder.Entity("SavaDev.System.Data.Entities.Permission", b =>
+            modelBuilder.Entity("SavaDev.General.Data.Entities.Permission", b =>
                 {
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
@@ -398,9 +398,9 @@ namespace Scene.Migrations.MsSql.Users
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SavaDev.System.Data.Entities.Parts.PermissionCulture", b =>
+            modelBuilder.Entity("SavaDev.General.Data.Entities.Parts.PermissionCulture", b =>
                 {
-                    b.HasOne("SavaDev.System.Data.Entities.Permission", "Permission")
+                    b.HasOne("SavaDev.General.Data.Entities.Permission", "Permission")
                         .WithMany("Cultures")
                         .HasForeignKey("PermissionName")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -409,7 +409,7 @@ namespace Scene.Migrations.MsSql.Users
                     b.Navigation("Permission");
                 });
 
-            modelBuilder.Entity("SavaDev.System.Data.Entities.Permission", b =>
+            modelBuilder.Entity("SavaDev.General.Data.Entities.Permission", b =>
                 {
                     b.Navigation("Cultures");
                 });

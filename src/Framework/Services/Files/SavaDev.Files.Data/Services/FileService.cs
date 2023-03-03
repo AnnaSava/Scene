@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Framework.Base.DataService.Contract.Models.ListView;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SavaDev.Base.Data.Managers;

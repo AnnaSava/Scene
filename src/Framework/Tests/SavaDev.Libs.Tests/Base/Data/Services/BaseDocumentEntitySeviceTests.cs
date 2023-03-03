@@ -5,8 +5,8 @@ using SavaDev.Base.Data.Enums;
 using SavaDev.Base.Data.Exceptions;
 using SavaDev.Libs.Tests.Base.Data.Services.Fake;
 using SavaDev.Libs.UnitTestingHelpers;
-using SavaDev.System.Data;
-using SavaDev.System.Data.Contract.Models;
+using SavaDev.General.Data;
+using SavaDev.General.Data.Contract.Models;
 
 namespace SavaDev.Libs.Tests.Base.Data.Services
 {

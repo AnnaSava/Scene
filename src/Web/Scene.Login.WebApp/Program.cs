@@ -3,7 +3,7 @@ using SavaDev.Base.Unit;
 using SavaDev.Base.Unit.Options;
 using SavaDev.Infrastructure;
 using SavaDev.Mail.Service;
-using SavaDev.System.Front;
+using SavaDev.General.Front;
 using SavaDev.Users.Front;
 using Scene.Libs.WebModule;
 using Scene.Login.WebApp;
@@ -15,7 +15,7 @@ builder.Services.Configure<RabbitMqConfiguration>(builder.Configuration.GetSecti
 // Add services to the container.
 builder.Services.AddMapper();
 
-builder.Services.AddSystem(builder.Configuration, new UnitOptions(SceneUnitCode.System, AppSettings.DefaultConnectionStringPattern));
+builder.Services.AddGeneral(builder.Configuration, new UnitOptions(SceneUnitCode.System, AppSettings.DefaultConnectionStringPattern));
 builder.Services.AddUsers(builder.Configuration, new UnitOptions(SceneUnitCode.AppUsers, AppSettings.DefaultConnectionStringPattern));
 builder.Services.AddMailRmqService(builder.Configuration);
 

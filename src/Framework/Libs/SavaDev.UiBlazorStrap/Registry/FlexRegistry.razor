@@ -1,0 +1,386 @@
+﻿@using SavaDev.Base.Data.Models;
+@using SavaDev.Base.Data.Registry;
+@using SavaDev.Base.Data.Registry.Enums;
+@using SavaDev.Base.Front.Registry
+@using SavaDev.Scheme.Data.Contract.Enums;
+@using SavaDev.Scheme.Front.Contract.Models;
+@using SavaDev.Scheme.Front.Contract;
+@typeparam TKey
+@typeparam T where T: BaseRegistryItemViewModel<TKey>
+@inject IRegistryViewService registryService
+@inject IColumnViewService columnService
+
+<BSAccordion>
+    <BSAccordionItem>
+        <Header>Info</Header>
+        <Content>
+            <p>Registry Guid @Model?.Id</p>
+            <p>SelectedRegistryConfigId @SelectedRegistryConfigId</p>
+            <p>SelectedFilterId @SelectedFilterId</p>
+            <p>ItemsOnPage @ItemsOnPage</p>
+        </Content>
+    </BSAccordionItem>
+    <BSAccordionItem>
+        <Header>Filters</Header>
+        <Content>
+            <BSTable IsResponsive="true" IsStriped="true">
+                <BSTHead>
+                    <BSTR>
+                        <BSTD>Id</BSTD>
+                        <BSTD>OwnerId</BSTD>
+                        <BSTD>Name</BSTD>
+                        <BSTD>Fields</BSTD>
+                    </BSTR>
+                </BSTHead>
+                <BSTBody>
+                    @if (Model?.Filters != null && Model.Filters.Any())
+                    {
+                        @foreach (var filter in Model.Filters)
+                        {
+                            <BSTR>
+                                <BSTD>@filter.Id</BSTD>
+                                <BSTD>@filter.OwnerId</BSTD>
+                                <BSTD>@filter.Name</BSTD>
+                                <BSTD>@filter.Fields</BSTD>
+                            </BSTR>
+                        }
+                    }
+                </BSTBody>
+            </BSTable>
+        </Content>
+    </BSAccordionItem>
+        <BSAccordionItem>
+        <Header>Configs</Header>
+        <Content>
+            <BSTable IsResponsive="true" IsStriped="true">
+                <BSTHead>
+                    <BSTR>
+                        <BSTD>Id</BSTD>
+                        <BSTD>OwnerId</BSTD>
+                        <BSTD>Name</BSTD>
+                        <BSTD>Columns</BSTD>
+                        <BSTD>ViewMode</BSTD>
+                        <BSTD>ItemsOnPage</BSTD>
+                    </BSTR>
+                </BSTHead>
+                <BSTBody>
+                    @if(Model?.Configs != null && Model.Configs.Any())
+                    {
+                        @foreach(var config in Model.Configs)
+                        {
+                            <BSTR>
+                                <BSTD>@config.Id</BSTD>
+                                <BSTD>@config.OwnerId</BSTD>
+                                <BSTD>@config.Name</BSTD>
+                                <BSTD>@config.Columns</BSTD>
+                                <BSTD>@config.ViewMode</BSTD>
+                                <BSTD>@config.ItemsOnPage</BSTD>
+                            </BSTR>
+                        }
+                    }
+                </BSTBody>
+            </BSTable>
+        </Content>
+    </BSAccordionItem>
+</BSAccordion>
+
+<BSAccordion>
+    <BSAccordionItem DefaultShown="@UiConfig.ExpandAccordion">
+        <Header>Filter</Header>
+        <Content>
+            <div class="row">
+                <div class="col-md-6">
+                    <BSInput InputType="InputType.Text" @bind-Value="FilterIdsString" placeholder="@IdsPlaceholder"/>
+                </div>
+                <div class="col-md-2">
+                    <div Class="@BS.Form_Check @BS.Form_Switch">
+                        <BSInputCheckbox @bind-Value="ShowDeleted" CheckedValue=@(true) />
+                        <BSLabel IsCheckLabel="true">Show deleted</BSLabel>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <FilterSelector 
+                        Filters="Model?.Filters" 
+                        SelectedFilter="Model?.SelectedFilter"
+                        OnSelectFilter="@(async (o, e) => OnFilterSelectedHandler(e))"
+                        OnSaveFilterClick="OnSaveFilterClick"
+                        OnRemoveFilterClick="@(async (o, e)=> await OnRemoveFilterClickHandler())"/>
+                </div>
+            </div>
+            @Filter
+            <div class="row">
+
+                <div class="col-md-2">
+                    <BSButton Color="BSColor.Secondary" OnClick="@OnFilterClickHandler">Filter</BSButton>                
+                </div>
+            </div>
+        </Content>
+    </BSAccordionItem>
+</BSAccordion>
+
+<div class="row">
+    <div class="col-md-4">
+        <BSButtonGroup>            
+            <BSLink href="@CreateLink" IsButton="true" Color="BSColor.Primary">Add</BSLink>
+            <BSDropdown>
+                <Toggler><BSToggle Class="btn btn-secondary">Actions</BSToggle></Toggler>
+                <Content>
+                    @BatchActions
+                </Content>
+            </BSDropdown>
+        </BSButtonGroup>
+    </div>
+    <div class="col-md-4">
+        <BSInputGroup MarginBottom="Margins.Medium">
+            <RegistryViewModeSelector OnChange="async(o,e) => await OnRegistryViewChange(e)" />
+            <ItemsOnPageSelector OnSelectItemsOnPage="async(o,e) => await OnItemsOnPageSelected(e)" />
+            <AvailableColumnsSelector
+                AvailableColumns="Model?.AvailableColumns"
+                OnColumnSelect="async(o,e) => await OnAddColumnSelectedHandler(e)" />
+        </BSInputGroup>
+    </div>
+    <div class="col-md-4">
+    <RegistryConfigSelector @ref="@columnConfigSelector"
+        Configs="Model?.Configs"
+        SelectedConfig="Model?.SelectedConfig"
+        OnSelectConfig="@(async (o, e) => OnRegistryConfigSelectedHandler(e))"
+        OnSaveConfigClick="@(async(o,e) => await OnSaveConfigClickHandler())"
+        OnRemoveConfigClick="@(async (o, e)=> await OnRemoveConfigClickHandler())" />
+    </div>
+</div>
+
+@if(ViewMode == RegistryViewMode.Table)
+{
+    <RegTableView T="T" 
+        TKey="TKey"
+        @ref="@tableView"
+        DisplayedColumns="DisplayedColumns"
+        StartPage="StartPage"
+        FetchItems="FetchItems"
+        OnRemoveColumnClick="@(async(o,e) => OnRemoveColumnClickHandler(e))"
+        Context="item">
+        <Actions>
+            @Actions(item)
+        </Actions>
+        </RegTableView>
+}
+else if(ViewMode == RegistryViewMode.Grid)
+{
+    <RegGridView>
+
+    </RegGridView>
+}
+else if(ViewMode == RegistryViewMode.List)
+{
+    <RegListView>
+
+    </RegListView>
+}
+else
+{
+    <RegDetailView>
+
+    </RegDetailView>
+}
+
+@code {
+    #region Public Properties: Parameters
+
+    [Parameter]
+    public RegistryPageViewModel<T>? Page { get; set; }
+    [Parameter]
+    public ModelPlacement ModelPlacement { get; set; }
+    [Parameter]
+    public Func<DataRequest, Task<(IEnumerable<T>, int)>> FetchItems { get; set; }
+    [Parameter]
+    public string CreateLink { get; set; }
+    [Parameter]
+    public RenderFragment? Filter { get; set; }
+    [Parameter]
+    public RenderFragment<T>? Actions { get; set; }
+    [Parameter]
+    public RenderFragment? BatchActions { get; set; }
+    [Parameter]
+    public EventHandler<FilterViewModel>? OnSaveFilterClick { get; set; }
+    [Parameter]
+    public EventHandler<FilterViewModel>? OnFilterClick { get; set; }
+    [Parameter]
+    public EventHandler OnTableStateChanged { get; set; }
+
+    #endregion
+
+    #region Public Properties
+
+    public RegistryViewModel Model { get; set; }
+    public RegistryConfigViewModel SelectedRegistryConfig { get; set; }
+
+    public RegistryPageInfo PageInfo = new RegistryPageInfo(1, 20);
+    public RegistrySort Sort = new RegistrySort("Id", SortDirection.Desc);
+
+    public string FilterFormName { get; set; }
+    public bool FilterFormForAll { get; set; }
+    public bool ShowDeleted { get; set; } = false;
+    public string FilterIdsString { get; set; }
+
+    #endregion
+
+    #region Public Methods
+
+    public async Task Refresh()
+    {
+        await tableView?.Refresh();
+    }
+
+    #endregion
+
+    #region Private Fields: Ref
+
+    private RegTableView<TKey, T>? tableView;
+    private RegistryConfigSelector? columnConfigSelector;
+
+    #endregion
+
+    #region Private Fields: State
+
+    private RegistryViewMode ViewMode;
+    private int StartPage = 1;
+    private int ItemsOnPage = 20;
+
+    private List<ColumnViewModel> DisplayedColumns = new List<ColumnViewModel>();
+    private List<ColumnViewModel> AvailableColumns = new List<ColumnViewModel>();
+
+    private long? SelectedRegistryConfigId = 0;
+    private long? SelectedFilterId = 0;
+
+    private string IdsPlaceholder = "Ids";
+
+    #endregion
+
+    #region Protected Methods: Lifecycle
+
+    protected override async Task OnInitializedAsync()
+    {
+        Model = await registryService.GetOne(ModelPlacement);
+        DisplayedColumns = Model.DisplayedColumns;
+        AvailableColumns = Model.AvailableColumns;
+        SelectedRegistryConfigId = Model?.SelectedConfig?.Id;
+        SelectedFilterId = Model?.SelectedFilter?.Id;
+
+        if(typeof(TKey) == typeof(Guid))
+        {
+            IdsPlaceholder += ": " + Guid.Empty;
+        }
+        else
+        {
+            IdsPlaceholder += ": 1,2,3";
+        }
+
+        PageInfo = new RegistryPageInfo(StartPage, ItemsOnPage);
+    }
+
+    #endregion
+
+    #region Private Methods: Config Handlers
+
+    private async Task OnAddColumnSelectedHandler(Guid? e)
+    {
+        if (e == null) return;
+        var col = AvailableColumns.FirstOrDefault(m => m.Id == e);
+        Model.AvailableColumns.Remove(col);
+        Model.DisplayedColumns.Add(col);
+        StateHasChanged();
+    }
+
+    public void OnRemoveColumnClickHandler(ColumnViewModel col)
+    {
+        if (col == null) return;
+        Model.AvailableColumns.Add(col);
+        Model.DisplayedColumns.Remove(col);
+        StateHasChanged();
+    }
+
+    private async Task OnRegistryConfigSelectedHandler(ChangeEventArgs e)
+    {
+        SelectedRegistryConfigId = int.Parse(e.Value.ToString());
+        if (SelectedRegistryConfigId == 0) 
+        {
+            StateHasChanged();
+            return;
+        }
+        await registryService.ApplyConfig((long)SelectedRegistryConfigId, Model);
+        StateHasChanged();
+    }
+
+    private async Task OnSaveConfigClickHandler()
+    {
+        var model = new RegistryConfigViewModel()
+        {
+            Id = SelectedRegistryConfigId ?? 0,
+            ColumnIds = Model.DisplayedColumns.Select(m => m.Id).ToList(),
+            TableId = Model.Id,
+            Name = columnConfigSelector?.ConfigFormName,
+            ForAll = columnConfigSelector.ConfigFormForAll
+
+        };
+        var result = await registryService.SaveConfig(model);
+    }
+
+    private async Task OnRemoveConfigClickHandler()
+    {
+        if (SelectedRegistryConfigId == 0) return;
+        await registryService.RemoveConfig((long)SelectedRegistryConfigId);
+        var config = Model.Configs.FirstOrDefault(m => m.Id == SelectedRegistryConfigId);
+        if (config != null) Model.Configs.Remove(config);
+    }
+
+    #endregion
+
+    #region Private Methods: Filter Handlers
+
+    private async Task OnFilterSelectedHandler(ChangeEventArgs e)
+    {
+        SelectedFilterId = int.Parse(e.Value.ToString());
+        if (SelectedFilterId == 0)
+        {
+            StateHasChanged();
+            return;
+        }
+        await registryService.ApplyFilter((long)SelectedFilterId, Model);
+        StateHasChanged();
+    }
+
+    private async Task OnSaveFilterClickHandler(FilterViewModel e)
+    {
+        OnSaveFilterClick.Invoke(this, e);
+    }
+
+    private async Task OnRemoveFilterClickHandler()
+    {
+        if (SelectedFilterId == 0) return;
+        await registryService.RemoveFilter((long)SelectedFilterId);
+        var filter = Model.Filters.FirstOrDefault(m => m.Id == SelectedFilterId);
+        if (filter != null) Model.Filters.Remove(filter);
+    }
+
+
+    protected async Task OnFilterClickHandler()
+    {
+        tableView?.Refresh();
+    }
+
+    protected async Task OnRegistryViewChange(ChangeEventArgs e)
+    {
+        ViewMode = (RegistryViewMode)(e?.Value);
+        StateHasChanged();
+    }
+
+    protected async Task OnItemsOnPageSelected(ChangeEventArgs e)
+    {
+        ItemsOnPage = int.Parse(e.Value.ToString());
+        PageInfo.RowsCount = ItemsOnPage;
+        StateHasChanged();
+        OnTableStateChanged?.Invoke(this, e);
+    }
+
+    #endregion
+}

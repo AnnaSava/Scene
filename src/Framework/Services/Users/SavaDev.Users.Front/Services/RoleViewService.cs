@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using Framework.Base.Service.ListView;
-using SavaDev.System.Data.Contract;
+using SavaDev.General.Data.Contract;
 using SavaDev.Users.Data;
 using SavaDev.Users.Front.Contract;
-using SavaDev.Users.Front.Contract.Models;
 
 namespace Framework.User.Service.Services
 {
@@ -57,19 +55,19 @@ namespace Framework.User.Service.Services
         //    return _mapper.Map<AppRoleViewModel>(resultModel);
         //}
 
-        public async Task<ListPageViewModel<RoleViewModel>> GetAll(RoleFilterViewModel filter, ListPageInfoViewModel pageInfo)
-        {
-            throw new NotImplementedException();
+        //public async Task<ListPageViewModel<RoleViewModel>> GetAll(RoleFilterViewModel filter, ListPageInfoViewModel pageInfo)
+        //{
+        //    throw new NotImplementedException();
 
-            //var filterModel = _mapper.Map<AppRoleFilterModel>(filter);
+        //    //var filterModel = _mapper.Map<AppRoleFilterModel>(filter);
 
-            //var pageInfoModel = _mapper.Map<PageInfoModel>(pageInfo);
+        //    //var pageInfoModel = _mapper.Map<PageInfoModel>(pageInfo);
 
-            //var list = await _roleDbService.GetAll(new ListQueryModel<AppRoleFilterModel> { Filter = filterModel, PageInfo = pageInfoModel });
+        //    //var list = await _roleDbService.GetAll(new ListQueryModel<AppRoleFilterModel> { Filter = filterModel, PageInfo = pageInfoModel });
 
-            //var vm = ListPageViewModel.Map<AppRoleModel, AppRoleViewModel>(list, _mapper);
+        //    //var vm = ListPageViewModel.Map<AppRoleModel, AppRoleViewModel>(list, _mapper);
 
-            //return vm;
-        }
+        //    //return vm;
+        //}
     }
 }

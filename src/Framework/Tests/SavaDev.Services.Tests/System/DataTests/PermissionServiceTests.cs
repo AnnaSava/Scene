@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using SavaDev.System.Data.Entities;
-using SavaDev.System.Data.Services;
-using SavaDev.System.Data;
+using SavaDev.General.Data.Entities;
+using SavaDev.General.Data.Services;
+using SavaDev.General.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +10,11 @@ using System.Text;
 using System.Threading.Tasks;
 using SavaDev.Libs.UnitTestingHelpers;
 using SavaDev.Services.Tests.System.Data;
-using SavaDev.System.Data.Contract;
+using SavaDev.General.Data.Contract;
 using Microsoft.Extensions.Logging;
 using SavaDev.Base.Data.Registry.Enums;
 using SavaDev.Base.Data.Registry;
-using SavaDev.System.Data.Contract.Models;
+using SavaDev.General.Data.Contract.Models;
 using SavaDev.Base.Data.Registry.Filter;
 
 namespace SavaDev.Services.Tests.System.DataTests
@@ -22,7 +22,7 @@ namespace SavaDev.Services.Tests.System.DataTests
     public class PermissionServiceTests : IDisposable
     {
         private IMapper _mapper;
-        private SystemContext _context;
+        private GeneralContext _context;
         private PermissionService _permissionDbService;
         private ILogger<PermissionService> _logger;
 
@@ -30,7 +30,7 @@ namespace SavaDev.Services.Tests.System.DataTests
         {
             _mapper = Dependencies.GetDataMapper();
             _logger = TestsInfrastructure.GetLogger<PermissionService>();
-            _context = TestsInfrastructure.GetContext<SystemContext>(x => new SystemContext(x));
+            _context = TestsInfrastructure.GetContext<GeneralContext>(x => new GeneralContext(x));
             DataInit.FillContextWithEntities(_context);
             _permissionDbService = new PermissionService(_context, _mapper, _logger);
         }

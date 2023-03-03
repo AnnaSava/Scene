@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Services\System\SavaDev.System.Data\SavaDev.System.Data.csproj" />
-    <ProjectReference Include="..\..\Framework\Services\System\SavaDev.System.Front\SavaDev.System.Front.csproj" />
+    <ProjectReference Include="..\..\Framework\Services\General\SavaDev.General.Data\SavaDev.General.Data.csproj" />
+    <ProjectReference Include="..\..\Framework\Services\General\SavaDev.General.Front\SavaDev.General.Front.csproj" />
     <ProjectReference Include="..\..\Framework\Services\Users\SavaDev.Users.Data\SavaDev.Users.Data.csproj" />
     <ProjectReference Include="..\..\Framework\Services\Users\SavaDev.Users.Front\SavaDev.Users.Front.csproj" />
     <ProjectReference Include="..\..\Libs\Scene.Libs.WebModule\Scene.Libs.WebModule.csproj" />

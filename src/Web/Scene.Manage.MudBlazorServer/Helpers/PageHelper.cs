@@ -1,17 +1,18 @@
 ﻿using Framework.Base.Service.ListView;
 using MudBlazor;
+using SavaDev.Base.Data.Registry;
 
 namespace Scene.Manage.MudBlazorServer.Helpers
 {
     public static class PageHelper
     {
-        public static ListPageInfoViewModel GetPageInfo(TableState state)
+        public static RegistryPageInfo GetPageInfo(TableState state)
         {
-            return new ListPageInfoViewModel
+            return new RegistryPageInfo
             {
-                Page = state.Page + 1,
-                Rows = state.PageSize,
-                Sort = state.SortDirection == SortDirection.None ? null : state.SortDirection == SortDirection.Descending ? "-" + state.SortLabel : state.SortLabel
+                //Page = state.Page + 1,
+                //Rows = state.PageSize,
+                //Sort = state.SortDirection == SortDirection.None ? null : state.SortDirection == SortDirection.Descending ? "-" + state.SortLabel : state.SortLabel
             };
         }
 

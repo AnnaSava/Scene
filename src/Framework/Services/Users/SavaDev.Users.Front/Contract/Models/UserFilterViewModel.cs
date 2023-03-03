@@ -1,10 +1,4 @@
-﻿using Framework.Base.Service.ListView;
-using SavaDev.Base.Data.Registry.Filter;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SavaDev.Base.Data.Registry.Filter;
 
 namespace SavaDev.Users.Front.Contract.Models
 {

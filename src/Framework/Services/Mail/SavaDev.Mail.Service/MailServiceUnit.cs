@@ -4,8 +4,8 @@ using SavaDev.Base.Unit.Options;
 using SavaDev.Mail.Service.Contract;
 using SavaDev.Mail.Service.Contract.Models;
 using SavaDev.Mail.Service.Services;
-using SavaDev.System.Front.Contract;
-using SavaDev.System.Front.Services;
+using SavaDev.General.Front.Contract;
+using SavaDev.General.Front.Services;
 using System.Net.Mail;
 
 namespace SavaDev.Mail.Service

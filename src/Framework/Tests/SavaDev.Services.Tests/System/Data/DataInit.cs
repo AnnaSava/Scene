@@ -1,8 +1,8 @@
 ﻿using SavaDev.Infrastructure.Util.TestDataGenerator;
 using SavaDev.Libs.UnitTestingHelpers;
-using SavaDev.System.Data;
-using SavaDev.System.Data.Contract.Models;
-using SavaDev.System.Data.Entities;
+using SavaDev.General.Data;
+using SavaDev.General.Data.Contract.Models;
+using SavaDev.General.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +36,7 @@ namespace SavaDev.Services.Tests.System.Data
             IsDataLoaded = true;
         }
 
-        public static void FillContextWithEntities(SystemContext context)
+        public static void FillContextWithEntities(GeneralContext context)
         {
             ReadAllData();
             TestsInfrastructure.FillContextWithEntities(context, LegalDocuments.Select(m => (LegalDocument)m.Clone()));

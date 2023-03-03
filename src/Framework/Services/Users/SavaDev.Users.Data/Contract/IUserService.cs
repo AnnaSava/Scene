@@ -1,14 +1,7 @@
-﻿using Framework.User.DataService.Contract.Interfaces;
-using SavaDev.Base.Data.Services;
-using SavaDev.Base.Data.Services.Interfaces;
+﻿using SavaDev.Base.Data.Services;
 using SavaDev.Base.User.Data.Models;
 using SavaDev.Base.Users.Data.Services.Interfaces;
 using SavaDev.Users.Data.Contract.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SavaDev.Users.Data
 {

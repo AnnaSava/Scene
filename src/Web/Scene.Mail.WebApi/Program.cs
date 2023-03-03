@@ -5,7 +5,7 @@ using SavaDev.Base.Unit.Options;
 using SavaDev.Mail.Service;
 using SavaDev.Mail.Service.Contract;
 using SavaDev.Mail.Service.Contract.Models;
-using SavaDev.System.Front;
+using SavaDev.General.Front;
 using Scene.Mail.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +17,7 @@ builder.Services.AddMapper();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSystem(builder.Configuration, new UnitOptions(SavaUnitCode.System, AppSettings.DefaultConnectionStringPattern));
+builder.Services.AddGeneral(builder.Configuration, new UnitOptions(SavaUnitCode.System, AppSettings.DefaultConnectionStringPattern));
 builder.Services.AddMailRmqService(builder.Configuration);
 
 using (var bus = RabbitHutch.CreateBus("host=localhost"))

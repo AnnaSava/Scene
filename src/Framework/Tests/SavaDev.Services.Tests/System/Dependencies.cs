@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SavaDev.System.Data;
+using SavaDev.General.Data;
 using SavaDev.Users.Data;
 using System;
 using System.Collections.Generic;
@@ -11,6 +11,6 @@ namespace SavaDev.Services.Tests.System
 {
     internal class Dependencies
     {
-        public static IMapper GetDataMapper() => new MapperConfiguration(opts => { opts.AddProfile<SystemMapperProfile>(); }).CreateMapper();
+        public static IMapper GetDataMapper() => new MapperConfiguration(opts => { opts.AddProfile<GeneralMapperProfile>(); }).CreateMapper();
     }
 }

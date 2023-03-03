@@ -1,9 +1,9 @@
 ﻿using SavaDev.Libs.UnitTestingHelpers;
-using SavaDev.System.Data.Entities;
-using SavaDev.System.Data;
+using SavaDev.General.Data.Entities;
+using SavaDev.General.Data;
 using SavaDev.Users.Data;
 using SavaDev.Infrastructure.Util.TestDataGenerator;
-using SavaDev.System.Data.Contract.Models;
+using SavaDev.General.Data.Contract.Models;
 using Framework.User.DataService.Contract.Models;
 using SavaDev.Users.Data.Entities;
 using SavaDev.Users.Data.Contract.Models;
