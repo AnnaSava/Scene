@@ -29,7 +29,7 @@ builder.Services.Configure<RabbitMqConfiguration>(builder.Configuration.GetSecti
 builder.Services.AddMapper();
 
 builder.Services.AddUsers(builder.Configuration, new UnitOptions(SceneUnitCode.AppUsers, AppSettings.DefaultConnectionStringPattern));
-builder.Services.AddGeneral(builder.Configuration, new UnitOptions(SceneUnitCode.System, AppSettings.DefaultConnectionStringPattern));
+builder.Services.AddGeneral(builder.Configuration, new UnitOptions(SceneUnitCode.General, AppSettings.DefaultConnectionStringPattern));
 builder.Services.AddMailRmqService(builder.Configuration);
 
 builder.Services.AddDataProtection()

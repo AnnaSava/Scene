@@ -39,15 +39,19 @@ namespace SavaDev.Content.Data.Services
             _dbContext = dbContext;
             _mapper = mapper;
             _logger = logger;
+
+            CreateManager = new CreateManager<TEntity>(dbContext, mapper, logger);
+            UpdateManager = new UpdateManager<Guid, TEntity, TModel>(dbContext, mapper, logger);
+            OneSelector = new OneRestorableSelector<Guid, TEntity>(dbContext, mapper, logger); 
+            AllSelector = new AllSelector<Guid, TEntity>(dbContext, mapper, logger);
         }
 
         public async Task<OperationResult> Create<T>(TModel model, T contentModel)
         {
-
             var result = await CreateManager.Create(model, setValues: async (entity) =>
             {
                 entity.Id = Guid.NewGuid();
-                entity.Content = JsonSerializer.Serialize(contentModel);
+                entity.Content = JsonSerializer.Serialize(contentModel) ?? "";
                 entity.Created = DateTime.UtcNow;
                 return entity;
             });

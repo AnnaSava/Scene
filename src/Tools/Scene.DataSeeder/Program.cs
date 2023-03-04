@@ -27,7 +27,7 @@ namespace Scene.DataSeeder
             services.AddLogging(); // TODO: без него не работает идентити. разобраться
 
             services.AddUsers(config, new UnitOptions(SceneUnitCode.AppUsers, "Default{0}Connection"));
-            services.AddGeneral(config, new UnitOptions(SceneUnitCode.System, "Default{0}Connection"));
+            services.AddGeneral(config, new UnitOptions(SceneUnitCode.General, "Default{0}Connection"));
 
             using (ServiceProvider serviceProvider = services.BuildServiceProvider())
             {

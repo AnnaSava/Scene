@@ -15,7 +15,7 @@ builder.Services.Configure<RabbitMqConfiguration>(builder.Configuration.GetSecti
 // Add services to the container.
 builder.Services.AddMapper();
 
-builder.Services.AddGeneral(builder.Configuration, new UnitOptions(SceneUnitCode.System, AppSettings.DefaultConnectionStringPattern));
+builder.Services.AddGeneral(builder.Configuration, new UnitOptions(SceneUnitCode.General, AppSettings.DefaultConnectionStringPattern));
 builder.Services.AddUsers(builder.Configuration, new UnitOptions(SceneUnitCode.AppUsers, AppSettings.DefaultConnectionStringPattern));
 builder.Services.AddMailRmqService(builder.Configuration);
 

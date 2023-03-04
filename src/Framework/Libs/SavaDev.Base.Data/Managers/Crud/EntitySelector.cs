@@ -28,7 +28,7 @@ namespace SavaDev.Base.Data.Managers.Crud
         private ByIdsFilter<TKey>? ByIdsFilter { get; set; }
         private ByRelatedFilter<long>? ByRelatedFilter { get; set; }
 
-        //Func<IQueryable<TEntity>, RegistryQuery<TFilter>, IQueryable<TEntity>>? FilterExpression { get; set; }
+        Func<IQueryable<TEntity>, RegistryQuery, IQueryable<TEntity>>? FilterExpression { get; set; }
 
         #endregion
 
@@ -47,7 +47,8 @@ namespace SavaDev.Base.Data.Managers.Crud
 
         public EntitySelector<TKey, TEntity, TItemModel, TFilter> Query(RegistryQuery query)
         {
-            RegistryQuery = query;
+            if (query == null) RegistryQuery = new RegistryQuery();
+            else RegistryQuery = query;
             return this;
         }
 
@@ -58,11 +59,11 @@ namespace SavaDev.Base.Data.Managers.Crud
             return this;
         }
 
-        //public EntitySelector<TKey, TEntity, TItemModel, TFilter> Filter(Func<IQueryable<TEntity>, RegistryQuery<TFilter>, IQueryable<TEntity>> filter)
-        //{
-        //    FilterExpression = filter;
-        //    return this;
-        //}
+        public EntitySelector<TKey, TEntity, TItemModel, TFilter> Filter(Func<IQueryable<TEntity>, RegistryQuery, IQueryable<TEntity>> filter)
+        {
+            FilterExpression = filter;
+            return this;
+        }
 
         public EntitySelector<TKey, TEntity, TItemModel, TFilter> ByIds(ByIdsFilter<TKey> filter)
         {
@@ -148,7 +149,6 @@ namespace SavaDev.Base.Data.Managers.Crud
             {
                 try
                 {
-
                     list = list.ApplyFilters(RegistryQuery.Filter0);
                 }
                 catch (Exception ex) 
@@ -156,11 +156,10 @@ namespace SavaDev.Base.Data.Managers.Crud
                     throw;
                 }
             }
-
-            //if(FilterExpression!= null)
-            //{
-            //    list = FilterExpression(list);
-            //}
+            if (FilterExpression != null)
+            {
+                list = FilterExpression(list, RegistryQuery);
+            }
             if (list is IQueryable<BaseRestorableEntity<TKey>>)
             {
                 list = ApplyFiltersRestorable(list as IQueryable<BaseRestorableEntity<TKey>>);

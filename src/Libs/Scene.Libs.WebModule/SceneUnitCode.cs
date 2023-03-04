@@ -3,7 +3,7 @@
     public class SceneUnitCode
     {
         public const string AppUsers = "App";
-        public const string System = "Sys";
+        public const string General = "Gnr";
         public const string Forums = "Frm";
         public const string Files = "Fls";
         public const string Media = "Mda";

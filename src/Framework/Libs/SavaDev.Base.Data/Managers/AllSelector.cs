@@ -42,16 +42,13 @@ namespace SavaDev.Base.Data.Managers
             return page;
         }
 
-        public async Task<ItemsPage<TItemModel>> GetItemsPage<TFilterModel, TItemModel>(
-        RegistryQuery<TFilterModel> query,
-            Func<IQueryable<TEntity>, RegistryQuery<TFilterModel>, IQueryable<TEntity>> applyFilterExpression)
-            where TFilterModel : BaseFilter
+        public async Task<ItemsPage<TItemModel>> GetItemsPage<TItemModel>(
+            RegistryQuery query,
+            Func<IQueryable<TEntity>, RegistryQuery, IQueryable<TEntity>> applyFilterExpression)
         {
-            var selector = new EntitySelector<TKey, TEntity, TItemModel, TFilterModel>(_dbContext, _mapper, _logger);
+            var selector = new EntitySelector<TKey, TEntity, TItemModel, BaseFilter>(_dbContext, _mapper, _logger);
 
-            // TODO query
-            throw new NotImplementedException();
-            var page = await selector.Query(new RegistryQuery()).ToItemsPage();
+            var page = await selector.Query(query).Filter(applyFilterExpression).ToItemsPage();
             return page;
         }
 

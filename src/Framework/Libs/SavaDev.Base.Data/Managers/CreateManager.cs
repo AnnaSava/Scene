@@ -43,10 +43,9 @@ namespace SavaDev.Base.Data.Managers
         {
             var creator = new EntityCreator<TEntity>(_dbContext, _logger)
                 .ValidateModel(async (model) => { })
-                .SetValues(async (model) => _mapper.Map<TEntity>(model))
+                .SetValues(async (model) => { var entity = _mapper.Map<TEntity>(model); setValues(entity); return entity; })
                 .Create(DoCreate)
-                .SuccessResult(entity => new OperationResult(1, _mapper.Map<TFormModel>(entity)))
-                .ErrorResult((id, errMessage) => new OperationResult(DbOperationRows.OnFailure, id, new OperationExceptionInfo(errMessage)));
+                .SuccessResult(entity => new OperationResult(1, _mapper.Map<TFormModel>(entity)));
 
             return await creator.Create(model);
         }
@@ -58,8 +57,7 @@ namespace SavaDev.Base.Data.Managers
                 .ValidateModel(validate)
                 .SetValues(async (model) => { var entity = _mapper.Map<TEntity>(model); setEntityValues(entity); return entity; })
                 .Create(DoCreate)
-                .SuccessResult(entity => new OperationResult(1, _mapper.Map<TFormModel>(entity)))
-                .ErrorResult((id, errMessage) => new OperationResult(DbOperationRows.OnFailure, id, new OperationExceptionInfo(errMessage)));
+                .SuccessResult(entity => new OperationResult(1, _mapper.Map<TFormModel>(entity)));
 
             return await creator.Create(model);
         }
