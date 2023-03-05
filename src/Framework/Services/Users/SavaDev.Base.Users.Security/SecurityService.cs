@@ -38,6 +38,8 @@ namespace SavaDev.Base.Users.Security
 
         public async Task<bool> IsLocked(string userId)
         {
+            if(string.IsNullOrEmpty(userId)) return false;
+
             if (memCache.ContainsKey(userId) && memCache[userId].IsLocked.HasValue) return memCache[userId].IsLocked.Value;
             // TODO
             var isLocked = false;// await _userManager.IsLocked(userId);
@@ -48,6 +50,7 @@ namespace SavaDev.Base.Users.Security
         // TODO пока не знаю, что сделать, чтобы это было не так больно. 
         public async Task<bool> HasRequiredPermissions(string userId, IEnumerable<string> permissions)
         {
+            if (string.IsNullOrEmpty(userId)) return false;
             if (await IsLocked(userId)) return false;
 
             if (!memCache.ContainsKey(userId) || memCache[userId].Permissions == null || !memCache[userId].Permissions.Any())

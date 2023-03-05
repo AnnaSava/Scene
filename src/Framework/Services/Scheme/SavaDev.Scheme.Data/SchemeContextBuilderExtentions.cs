@@ -21,6 +21,7 @@ namespace SavaDev.Scheme.Data
 
             builder.Entity<Registry>(b =>
             {
+                b.HasIndex(m => new { m.Module, m.Entity }).IsUnique();
                 b.HasMany(m => m.Columns).WithOne(m => m.Table).HasForeignKey(m => m.TableId).IsRequired();
                 b.HasMany(m => m.Configs).WithOne(m => m.Table).HasForeignKey(m => m.TableId).IsRequired();
                 b.HasMany(m => m.Filters).WithOne(m => m.Table).HasForeignKey(m => m.TableId).IsRequired();
@@ -28,6 +29,7 @@ namespace SavaDev.Scheme.Data
 
             builder.Entity<Column>(b =>
             {
+                b.HasIndex(m => new { m.Name, m.TableId }).IsUnique();
                 b.HasMany(m => m.Properties).WithOne(m => m.Column).HasForeignKey(m => m.ColumnId).IsRequired();
                 b.HasMany(m => m.Permissions).WithOne(m => m.Column).HasForeignKey(m => m.ColumnId).IsRequired();
             });

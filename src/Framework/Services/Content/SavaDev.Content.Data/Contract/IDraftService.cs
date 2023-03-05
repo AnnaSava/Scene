@@ -1,13 +1,6 @@
-﻿using SavaDev.Content.Data.Contract.Models;
-using SavaDev.Base.Data.Registry;
+﻿using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Services;
-using SavaDev.Base.Front.Registry;
 using SavaDev.Content.Data.Contract.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SavaDev.Content.Data.Contract
 {
@@ -25,6 +18,6 @@ namespace SavaDev.Content.Data.Contract
 
         Task<RegistryPage<DraftModel>> GetRegistryPage(RegistryQuery<DraftFilterModel> query);
 
-        Task<ItemsPage<DraftModel>> GetAll(RegistryQuery<DraftStrictFilterModel> query);
+        Task<ItemsPage<DraftModel>> GetAll(RegistryQuery query);
     }
 }

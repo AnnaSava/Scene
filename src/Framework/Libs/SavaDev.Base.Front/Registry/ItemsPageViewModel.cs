@@ -11,6 +11,14 @@
 
         public long TotalRows { get; }
 
+        public ItemsPageViewModel()
+        {
+            Items = new List<TModel>();
+            Page = 1;
+            TotalPages = 0;
+            TotalRows = 0;
+        }
+
         public ItemsPageViewModel(IEnumerable<TModel> mappedItems, int page, int totalPages, long totalRows)
         {
             Items = mappedItems.ToList();

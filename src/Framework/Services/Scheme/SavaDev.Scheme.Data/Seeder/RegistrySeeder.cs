@@ -1,4 +1,5 @@
-﻿using SavaDev.Base.Data.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using SavaDev.Base.Data.Context;
 using SavaDev.Infrastructure.Util.SchemeManager;
 using SavaDev.Scheme.Data.Entities;
 using System;
@@ -32,6 +33,9 @@ namespace SavaDev.Scheme.Data.Seeder
 
                 foreach(var table in tablesWithColumns)
                 {
+                    var exists = await context.Registries.AnyAsync(m => m.Module == module.Key && m.Entity == table.Key);
+                    if (exists) continue;
+
                     var objectTable = new Registry
                     {
                         Entity = table.Key,

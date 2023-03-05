@@ -145,6 +145,10 @@ namespace SavaDev.Base.Data.Managers.Crud
         {
             var list = GetList();
 
+            if (FilterExpression != null)
+            {
+                list = FilterExpression(list, RegistryQuery);
+            }
             if (RegistryQuery?.Filter0 != null)
             {
                 try
@@ -155,10 +159,6 @@ namespace SavaDev.Base.Data.Managers.Crud
                 {
                     throw;
                 }
-            }
-            if (FilterExpression != null)
-            {
-                list = FilterExpression(list, RegistryQuery);
             }
             if (list is IQueryable<BaseRestorableEntity<TKey>>)
             {

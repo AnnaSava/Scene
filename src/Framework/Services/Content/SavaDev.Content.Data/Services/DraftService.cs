@@ -1,15 +1,11 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.Extensions.Logging;
-using SavaDev.Content.Data.Contract;
-using SavaDev.Content.Data.Contract.Models;
-using SavaDev.Content.Data.Entities;
 using SavaDev.Base.Data.Managers;
 using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Services;
-using SavaDev.Content.Data;
+using SavaDev.Content.Data.Contract;
 using SavaDev.Content.Data.Contract.Models;
-using X.PagedList;
+using SavaDev.Content.Data.Entities;
 
 namespace SavaDev.Content.Data.Services
 {
@@ -35,27 +31,39 @@ namespace SavaDev.Content.Data.Services
             return page;
         }
 
-        public async Task<ItemsPage<DraftModel>> GetAll(RegistryQuery<DraftStrictFilterModel> query)
+        public async Task<ItemsPage<DraftModel>> GetAll(RegistryQuery query)
         {
             var result = await GetAll(query, _mapper);
 
             return result;
         }
 
-        private async Task<ItemsPage<DraftModel>> GetAll(RegistryQuery<DraftStrictFilterModel> query,
+        private async Task<ItemsPage<DraftModel>> GetAll(RegistryQuery query,
             IMapper mapper)
         {
-            var list = _dbContext.Set<Draft>().AsQueryable();
+            var page = await AllSelector.GetItemsPage<DraftModel>(query, ApplyStrictFilter);
+            return page;
+        }
 
-            //list = list.ApplyStrictFilters(query.Filter);
+        #region Private Query
+
+        private IQueryable<Draft> ApplyStrictFilter(IQueryable<Draft> list, RegistryQuery query)
+        {
+            var filter = query.Filter0 as DraftStrictFilterModel;
+            query.Filter0 = null; // TODO менять где-нибудь в другом месте
+
+            list = list.Where(m => m.OwnerId == filter.OwnerId 
+                && m.IsDeleted == false 
+                && m.Module == filter.Module 
+                && m.Entity == filter.Entity 
+                && m.ContentId == filter.ContentId
+                && m.GroupingKey == filter.GroupingKey);
 
             list = list.OrderByDescending(m => m.LastUpdated);
 
-            var res = await list.ProjectTo<DraftModel>(mapper.ConfigurationProvider).ToPagedListAsync(query.PageInfo.PageNumber, query.PageInfo.RowsCount);
-
-            var page = new ItemsPage<DraftModel>(res);
-
-            return page;
+            return list;
         }
+
+        #endregion
     }
 }
