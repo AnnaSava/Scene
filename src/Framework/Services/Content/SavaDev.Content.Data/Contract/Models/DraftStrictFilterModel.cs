@@ -10,8 +10,8 @@ namespace SavaDev.Content.Data.Contract.Models
 
         public string OwnerId { get; set; }
 
-        public string ContentId { get; set; }
+        public string? ContentId { get; set; }
 
-        public string GroupingKey { get; set; }
+        public string? GroupingKey { get; set; }
     }
 }

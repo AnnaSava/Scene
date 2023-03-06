@@ -52,10 +52,16 @@ namespace SavaDev.Content.Data.Services
             var filter = query.Filter0 as DraftStrictFilterModel;
             query.Filter0 = null; // TODO менять где-нибудь в другом месте
 
-            list = list.Where(m => m.OwnerId == filter.OwnerId 
-                && m.IsDeleted == false 
+            if (filter.ContentId == "0") filter.ContentId = null;
+
+            if(filter.OwnerId != null)
+            {
+                list = list.Where(m => m.OwnerId == filter.OwnerId);
+            }
+
+            list = list.Where(m => m.IsDeleted == false 
                 && m.Module == filter.Module 
-                && m.Entity == filter.Entity 
+                && m.Entity == filter.Entity
                 && m.ContentId == filter.ContentId
                 && m.GroupingKey == filter.GroupingKey);
 
