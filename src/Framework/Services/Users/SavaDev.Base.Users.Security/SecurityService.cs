@@ -14,10 +14,11 @@ namespace SavaDev.Base.Users.Security
     {
         private readonly UserEntityManager<TKey, TUserEntity> _userManager;
         private readonly RoleEntityManager<TKey, TRoleEntity> _roleManager;
+        private readonly IUserProvider _userProvider;
 
         private Dictionary<string, UserInfoCacheModel> memCache = new Dictionary<string, UserInfoCacheModel>();
 
-        public SecurityService(IHttpContextAccessor httpContextAccessor, 
+        public SecurityService(IUserProvider userProvider, 
             IDbContext _dbContext, 
             UserManager<TUserEntity> userManager, 
             RoleManager<TRoleEntity> roleManager, 
@@ -26,14 +27,12 @@ namespace SavaDev.Base.Users.Security
         {
             _userManager = new UserEntityManager<TKey, TUserEntity>(_dbContext, userManager, mapper, logger);
             _roleManager = new RoleEntityManager<TKey, TRoleEntity>(_dbContext, roleManager, logger);
-            _httpContextAccessor = httpContextAccessor;
+            _userProvider = userProvider;
         }
-
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public string GetId()
         {
-            return HttpContextUser.GetId(_httpContextAccessor);
+            return _userProvider.UserId;
         }
 
         public async Task<bool> IsLocked(string userId)

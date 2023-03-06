@@ -11,5 +11,7 @@ namespace SavaDev.Infrastructure
         public string Name { get; set; }
 
         public string Domain { get; set; }
+
+        public string SameSite { get; set; }
     }
 }
