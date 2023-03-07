@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SavaDev.Base.Data.Registry;
+using SavaDev.Base.Front.Services;
 
 namespace SavaDev.Content.Services
 {
@@ -24,16 +26,11 @@ namespace SavaDev.Content.Services
             _mapper = mapper;
         }
 
-        //public async Task<ItemsPageViewModel<VersionViewModel>> GetAll(VersionFilterViewModel filter, ListPageInfoViewModel pageInfo)
-        //{
-        //    var filterModel = _mapper.Map<VersionFilterModel>(filter);
-
-        //    var pageInfoModel = _mapper.Map<PageInfoModel>(pageInfo);
-
-        //    var list = await _versionService.GetAll(new RegistryQuery<VersionFilterModel> { Filter = filterModel, PageInfo = pageInfoModel });
-
-        //    var vm = ItemsPageViewModel.Map<VersionModel, VersionViewModel>(list, _mapper);
-        //    return vm;
-        //}
+        public async Task<RegistryPageViewModel<VersionViewModel>> GetRegistryPage(RegistryQuery query)
+        {
+            var manager = new RegistryPageManager<VersionModel, VersionFilterModel>(_versionService, _mapper);
+            var vm = await manager.GetRegistryPage<VersionViewModel>(query);
+            return vm;
+        }
     }
 }

@@ -1,0 +1,44 @@
+﻿@using BlazorStrap
+@using SavaDev.Base.Data.Registry;
+@using SavaDev.Content.Contract;
+@using SavaDev.Content.Contract.Models;
+@using SavaDev.UiBlazorStrap.Registry;
+@inject IVersionViewService _versionService
+
+<FlexRegistry @ref="registry"
+              T="VersionViewModel"
+              TKey="Guid"
+              ModelPlacement="@(new SavaDev.Base.Data.Models.ModelPlacement("Group","Cmt"))"
+              FetchItems="@FetchItems"
+              CreateLink="">
+    <Filter>
+
+    </Filter>
+    <Actions Context="item">
+        <BSDropdownItem href="@("/content/version/update/" + item.Id)">Update</BSDropdownItem>
+        <BSDropdownItem OnClick="(() => {})">Delete</BSDropdownItem>
+    </Actions>
+</FlexRegistry>
+
+@code {
+    private FlexRegistry<Guid, VersionViewModel>? registry;
+
+    private async Task<(IEnumerable<VersionViewModel>, int)> FetchItems(DataRequest dataRequest)
+    {
+        var query = MakeQuery();
+        var result = await _versionService.GetRegistryPage(query);
+
+        return (result.Items, (int)result.TotalRows);
+    }
+
+    private RegistryQuery MakeQuery()
+    {
+        var query = new RegistryQuery(registry?.PageInfo, registry?.Sort);
+        query.Filter0 = new VersionFilterViewModel
+        {
+        };
+
+        query.SetNewSort(registry?.Sort);
+        return query;
+    }
+}

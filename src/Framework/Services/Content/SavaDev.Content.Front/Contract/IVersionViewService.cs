@@ -1,7 +1,11 @@
-﻿namespace SavaDev.Content.Contract
+﻿using SavaDev.Base.Data.Registry;
+using SavaDev.Base.Front.Registry;
+using SavaDev.Content.Contract.Models;
+
+namespace SavaDev.Content.Contract
 {
     public interface IVersionViewService
     {
-        //Task<ListPageViewModel<VersionViewModel>> GetAll(VersionFilterViewModel filter, ListPageInfoViewModel pageInfo);
+        Task<RegistryPageViewModel<VersionViewModel>> GetRegistryPage(RegistryQuery query);
     }
 }

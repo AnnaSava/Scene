@@ -17,18 +17,10 @@ namespace SavaDev.Content.Data.Services
             AllSelector = new AllSelector<Guid, Entities.Version>(dbContext, mapper, logger);
         }
 
-        public async Task<RegistryPage<DraftModel>> GetRegistryPage(RegistryQuery<DraftFilterModel> query)
+        public async Task<RegistryPage<VersionModel>> GetRegistryPage(RegistryQuery<VersionFilterModel> query)
         {
-            var page = await AllSelector.GetRegistryPage<DraftFilterModel, DraftModel>(query);
+            var page = await AllSelector.GetRegistryPage<VersionFilterModel, VersionModel>(query);
             return page;
-        }
-
-        public async Task<ItemsPage<VersionModel>> GetAll(RegistryQuery<VersionFilterModel> query)
-        {
-            throw new NotImplementedException();
-            //var page = await entityManager.GetAll(query, ApplyFilters);
-
-            //return page;
         }
     }
 }

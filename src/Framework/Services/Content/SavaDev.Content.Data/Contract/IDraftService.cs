@@ -1,10 +1,11 @@
 ﻿using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Services;
+using SavaDev.Base.Data.Services.Interfaces;
 using SavaDev.Content.Data.Contract.Models;
 
 namespace SavaDev.Content.Data.Contract
 {
-    public interface IDraftService
+    public interface IDraftService : IEntityRegistryService<DraftModel, DraftFilterModel>
     {
         Task<OperationResult> Create<T>(DraftModel model, T contentModel);
 
@@ -15,8 +16,6 @@ namespace SavaDev.Content.Data.Contract
         Task<OperationResult> Delete(Guid id);
 
         Task<DraftModel> GetOne(Guid id);
-
-        Task<RegistryPage<DraftModel>> GetRegistryPage(RegistryQuery<DraftFilterModel> query);
 
         Task<ItemsPage<DraftModel>> GetAll(RegistryQuery query);
     }

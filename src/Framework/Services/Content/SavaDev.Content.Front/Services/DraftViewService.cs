@@ -1,6 +1,12 @@
 ﻿using AutoMapper;
+using SavaDev.Base.Data.Registry;
+using SavaDev.Base.Front.Registry;
+using SavaDev.Base.Front.Services;
 using SavaDev.Content.Contract;
+using SavaDev.Content.Contract.Models;
+using SavaDev.Content.Data;
 using SavaDev.Content.Data.Contract;
+using SavaDev.Content.Data.Contract.Models;
 
 namespace SavaDev.Content.Services
 {
@@ -15,16 +21,11 @@ namespace SavaDev.Content.Services
             _mapper = mapper;
         }
 
-        //public async Task<ListPageViewModel<DraftViewModel>> GetAll(DraftFilterViewModel filter, ListPageInfoViewModel pageInfo)
-        //{
-        //    var filterModel = _mapper.Map<DraftFilterModel>(filter);
-
-        //    var pageInfoModel = _mapper.Map<PageInfoModel>(pageInfo);
-
-        //    var list = await _draftService.GetAll(new ListQueryModel<DraftFilterModel> { Filter = filterModel, PageInfo = pageInfoModel });
-
-        //    var vm = ListPageViewModel.Map<DraftModel, DraftViewModel>(list, _mapper);
-        //    return vm;
-        //}
+        public async Task<RegistryPageViewModel<DraftViewModel>> GetRegistryPage(RegistryQuery query)
+        {
+            var manager = new RegistryPageManager<DraftModel, DraftFilterModel>(_draftService, _mapper);
+            var vm = await manager.GetRegistryPage<DraftViewModel>(query);
+            return vm;
+        }
     }
 }

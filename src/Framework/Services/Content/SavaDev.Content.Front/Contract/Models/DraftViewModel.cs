@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SavaDev.Base.Front.Registry;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Content.Contract.Models
 {
-    public class DraftViewModel
+    public class DraftViewModel : BaseRegistryItemViewModel<Guid>
     {
-        public Guid Id { get; set; }
-
         public string Entity { get; set; }
 
         public string Module { get; set; }

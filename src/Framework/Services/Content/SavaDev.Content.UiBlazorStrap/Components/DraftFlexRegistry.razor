@@ -1,0 +1,44 @@
+﻿@using BlazorStrap
+@using SavaDev.Base.Data.Registry;
+@using SavaDev.Content.Contract;
+@using SavaDev.Content.Contract.Models;
+@using SavaDev.UiBlazorStrap.Registry;
+@inject IDraftViewService _draftService
+
+<FlexRegistry @ref="registry"
+              T="DraftViewModel"
+              TKey="Guid"
+              ModelPlacement="@(new SavaDev.Base.Data.Models.ModelPlacement("Draft","Cnt"))"
+              FetchItems="@FetchItems"
+              CreateLink="">
+    <Filter>
+
+    </Filter>
+    <Actions Context="item">
+        <BSDropdownItem href="@("/content/draft/update/" + item.Id)">Update</BSDropdownItem>
+        <BSDropdownItem OnClick="(() => {})">Delete</BSDropdownItem>
+    </Actions>
+</FlexRegistry>
+
+@code {
+    private FlexRegistry<Guid, DraftViewModel>? registry;
+
+    private async Task<(IEnumerable<DraftViewModel>, int)> FetchItems(DataRequest dataRequest)
+    {
+        var query = MakeQuery();
+        var result = await _draftService.GetRegistryPage(query);
+
+        return (result.Items, (int)result.TotalRows);
+    }
+
+    private RegistryQuery MakeQuery()
+    {
+        var query = new RegistryQuery(registry?.PageInfo, registry?.Sort);
+        query.Filter0 = new DraftFilterViewModel
+        {
+        };
+
+        query.SetNewSort(registry?.Sort);
+        return query;
+    }
+}
