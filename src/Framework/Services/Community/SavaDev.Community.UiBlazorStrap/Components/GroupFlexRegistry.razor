@@ -1,0 +1,44 @@
+﻿@using BlazorStrap
+@using SavaDev.Base.Data.Registry;
+@using SavaDev.Community.Front.Contract.Models;
+@using SavaDev.Community.Front.Contract;
+@using SavaDev.UiBlazorStrap.Registry;
+@inject IGroupViewService _groupService
+
+<FlexRegistry @ref="registry"
+              T="GroupViewModel"
+              TKey="Guid"
+              ModelPlacement="@(new SavaDev.Base.Data.Models.ModelPlacement("Group","Cmt"))"
+              FetchItems="@FetchItems"
+              CreateLink="/community/group/create">
+    <Filter>
+
+    </Filter>
+    <Actions Context="item">
+        <BSDropdownItem href="@("/community/group/update/" + item.Id)">Update</BSDropdownItem>
+        <BSDropdownItem OnClick="(() => {})">Delete</BSDropdownItem>
+    </Actions>
+</FlexRegistry>
+
+@code {
+    private FlexRegistry<Guid, GroupViewModel>? registry;
+
+    private async Task<(IEnumerable<GroupViewModel>, int)> FetchItems(DataRequest dataRequest)
+    {
+        var query = MakeQuery();
+        var result = await _groupService.GetRegistryPage(query);
+
+        return (result.Items, (int)result.TotalRows);
+    }
+
+    private RegistryQuery MakeQuery()
+    {
+        var query = new RegistryQuery(registry?.PageInfo, registry?.Sort);
+        query.Filter0 = new GroupFilterViewModel
+        {
+        };
+
+        query.SetNewSort(registry?.Sort);
+        return query;
+    }
+}

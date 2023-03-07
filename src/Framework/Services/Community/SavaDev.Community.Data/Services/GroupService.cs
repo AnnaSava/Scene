@@ -20,9 +20,9 @@ namespace SavaDev.Community.Data.Services
             AllSelector = new AllSelector<Guid, Group>(GetInftrastructure);
         }
 
-        public async Task<RegistryPage<RoleModel>> GetRegistryPage(RegistryQuery<GroupFilterModel> query)
+        public async Task<RegistryPage<GroupModel>> GetRegistryPage(RegistryQuery<GroupFilterModel> query)
         {
-            var page = await AllSelector.GetRegistryPage<GroupFilterModel, RoleModel>(query);
+            var page = await AllSelector.GetRegistryPage<GroupFilterModel, GroupModel>(query);
             return page;
         }
     }

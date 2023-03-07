@@ -9,7 +9,7 @@ using SavaDev.Community.Service.Contract;
 
 namespace SavaDev.Community.Front.Services
 {
-    public class CommunityProcessor<TUserModel> : ICommunityProcessor<TUserModel>
+    public class GroupProcessor<TUserModel> : IGroupProcessor<TUserModel>
     {
         IUserSearchService<TUserModel> _userService;
 
@@ -18,7 +18,7 @@ namespace SavaDev.Community.Front.Services
         ILockoutService _lockoutService;
         IMapper _mapper;
 
-        public CommunityProcessor(
+        public GroupProcessor(
             IGroupService communityService,
             ISubscriptionService subscriptionService,
             ILockoutService lockoutService,
@@ -32,7 +32,7 @@ namespace SavaDev.Community.Front.Services
             _mapper = mapper;
         }
 
-        public async Task<OperationResult> CreateCommunity(CommunitySavingModel model)
+        public async Task<OperationResult> CreateCommunity(GroupSavingModel model)
         {
             var newModel = _mapper.Map<GroupModel>(model);
             var resModel = await _communityService.Create(newModel);

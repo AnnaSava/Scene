@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Community.Front.Services.Contract
 {
-    public interface ICommunityProcessor<TUserModel>
+    public interface IGroupProcessor<TUserModel>
     {
-        Task<OperationResult> CreateCommunity(CommunitySavingModel model);
+        Task<OperationResult> CreateCommunity(GroupSavingModel model);
 
         Task CreateSubscription(SubscriptionFormViewModel model);
 

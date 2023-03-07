@@ -15,11 +15,11 @@ namespace SavaDev.Users.Front.Security
 {
     public class WebSecurityService : SecurityService<long, User, Role>, ISecurityService
     {
-        public WebSecurityService(IHttpContextAccessor httpContextAccessor, IDbContext dbContext,
+        public WebSecurityService(IUserProvider userProvider, IDbContext dbContext,
             UserManager<Data.Entities.User> userManager,
             RoleManager<Role> roleManager,
             IMapper mapper,
-            ILogger<WebSecurityService> logger) : base(httpContextAccessor, dbContext, userManager, roleManager, mapper, logger)
+            ILogger<WebSecurityService> logger) : base(userProvider, dbContext, userManager, roleManager, mapper, logger)
         {
         }
     }

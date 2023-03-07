@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Community.Front.Contract.Models
 {
-    public class CommunityViewModel
+    public class GroupSavingModel
     {
         public Guid Id { get; set; }
 
