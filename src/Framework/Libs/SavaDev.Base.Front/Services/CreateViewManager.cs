@@ -17,10 +17,11 @@ namespace SavaDev.Base.Front.Services
         protected readonly IMapper _mapper;
 
         public Func<Task<bool>>? CheckAccess { get; set; }
+        public Func<TFormModel, Task<bool>>? ValidateModel {get;set;}
         public Action<TFormModel>? SetValues { get; set; }
-        public Func<TFormModel, Task<OperationResult>>? ProcessCommunity { get; set; }
+        public Func<TFormModel, Task<OperationResult>>? ProcessGroup { get; set; }
         public Func<TFormModel, TFormModel, Task<OperationResult>>? ProcessDrafts { get; set; }
-        public Func<TFormModel, Task<OperationResult>> ProcessVersion { get; set; }
+        public Func<TFormModel, Task<OperationResult>>? ProcessVersion { get; set; }
 
         public CreateViewManager(IEntityCrudService<TFormModel> entityService,
             IMapper mapper)
@@ -31,7 +32,11 @@ namespace SavaDev.Base.Front.Services
 
         public async Task<OperationResult> Create(object model)
         {
-            var can = await CheckAccess?.Invoke();
+            if (CheckAccess == null)
+            {
+                throw new NotPermittedException();
+            }
+            var can = await CheckAccess.Invoke();
             if (!can)
             {
                 throw new NotPermittedException();
@@ -39,6 +44,13 @@ namespace SavaDev.Base.Front.Services
 
             var newModel = _mapper.Map<TFormModel>(model);
             SetValues?.Invoke(newModel);
+
+            if (ValidateModel == null)
+            {
+                //   throw new InvalidOperationException("Model validation method must be set");
+            }
+            var isValid = await ValidateModel.Invoke(newModel);
+            if (!isValid) return new OperationResult(0); // TODO возвращать результат валидации
 
             var result = await _entityService.Create(newModel);
 
@@ -52,9 +64,19 @@ namespace SavaDev.Base.Front.Services
             {
                 throw new Exception("ResultModel is null");
             }
-            await ProcessCommunity?.Invoke(resultModel);
-            await ProcessDrafts?.Invoke(newModel, resultModel);
-            await ProcessVersion?.Invoke(resultModel);
+
+            if (ProcessGroup != null)
+            {
+                await ProcessGroup.Invoke(resultModel);
+            }
+            if (ProcessDrafts != null)
+            {
+                await ProcessDrafts.Invoke(newModel, resultModel);
+            }
+            if (ProcessVersion != null)
+            {
+                await ProcessVersion.Invoke(resultModel);
+            }
 
             return result;
         }
