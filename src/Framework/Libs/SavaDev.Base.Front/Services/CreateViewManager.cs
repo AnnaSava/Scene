@@ -4,6 +4,7 @@ using SavaDev.Base.Data.Services.Interfaces;
 using SavaDev.Base.Front.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +33,9 @@ namespace SavaDev.Base.Front.Services
 
         public async Task<OperationResult> Create(object model)
         {
+            if(model == null)
+                throw new ArgumentNullException("model");
+
             if (CheckAccess == null)
             {
                 throw new NotPermittedException();
@@ -43,14 +47,17 @@ namespace SavaDev.Base.Front.Services
             }
 
             var newModel = _mapper.Map<TFormModel>(model);
+            if (model == null)
+                throw new InvalidOperationException("newModel is null");
             SetValues?.Invoke(newModel);
 
-            if (ValidateModel == null)
+            if (ValidateModel != null)
             {
-                //   throw new InvalidOperationException("Model validation method must be set");
+                var isValid = await ValidateModel.Invoke(newModel);
+                if (!isValid) throw new Exception("newModel is not valid");
             }
-            var isValid = await ValidateModel.Invoke(newModel);
-            if (!isValid) return new OperationResult(0); // TODO возвращать результат валидации
+
+            Validate(newModel);
 
             var result = await _entityService.Create(newModel);
 
@@ -79,6 +86,18 @@ namespace SavaDev.Base.Front.Services
             }
 
             return result;
+        }
+
+        private void Validate(TFormModel newModel)
+        {
+            var context = new ValidationContext(newModel);
+            var results = new List<ValidationResult>();
+
+            if (Validator.TryValidateObject(newModel, context, results, true))
+                return;
+
+            var errors = string.Join('\n', results);
+            throw new Exception(errors);
         }
     }
 }
