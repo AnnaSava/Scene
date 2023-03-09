@@ -2,6 +2,7 @@
 using SavaDev.Base.Data.Context;
 using SavaDev.Base.Data.Models.Interfaces;
 using SavaDev.Base.Data.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace SavaDev.Base.Data.Managers.Crud
 {
@@ -80,6 +81,7 @@ namespace SavaDev.Base.Data.Managers.Crud
             if (model == null)
                 throw new ArgumentNullException("model");
 
+            Validate(model);
             await DoValidate(model);
 
             var rows = 0;
@@ -156,6 +158,18 @@ namespace SavaDev.Base.Data.Managers.Crud
                 throw new Exception($"Operation in {methodName} failed", new Exception(result.GetExceptionsString()));
             }
             return result.Rows;
+        }
+
+        private void Validate(IFormModel newModel)
+        {
+            var context = new ValidationContext(newModel);
+            var results = new List<ValidationResult>();
+
+            if (Validator.TryValidateObject(newModel, context, results, true))
+                return;
+
+            var errors = string.Join('\n', results);
+            throw new Exception(errors);
         }
 
         #endregion

@@ -18,7 +18,6 @@ namespace SavaDev.Base.Front.Services
         protected readonly IMapper _mapper;
 
         public Func<Task<bool>>? CheckAccess { get; set; }
-        public Func<TFormModel, Task<bool>>? ValidateModel {get;set;}
         public Action<TFormModel>? SetValues { get; set; }
         public Func<TFormModel, Task<OperationResult>>? ProcessGroup { get; set; }
         public Func<TFormModel, TFormModel, Task<OperationResult>>? ProcessDrafts { get; set; }
@@ -51,14 +50,6 @@ namespace SavaDev.Base.Front.Services
                 throw new InvalidOperationException("newModel is null");
             SetValues?.Invoke(newModel);
 
-            if (ValidateModel != null)
-            {
-                var isValid = await ValidateModel.Invoke(newModel);
-                if (!isValid) throw new Exception("newModel is not valid");
-            }
-
-            Validate(newModel);
-
             var result = await _entityService.Create(newModel);
 
             if (!result.IsSuccess)
@@ -86,18 +77,6 @@ namespace SavaDev.Base.Front.Services
             }
 
             return result;
-        }
-
-        private void Validate(TFormModel newModel)
-        {
-            var context = new ValidationContext(newModel);
-            var results = new List<ValidationResult>();
-
-            if (Validator.TryValidateObject(newModel, context, results, true))
-                return;
-
-            var errors = string.Join('\n', results);
-            throw new Exception(errors);
         }
     }
 }
