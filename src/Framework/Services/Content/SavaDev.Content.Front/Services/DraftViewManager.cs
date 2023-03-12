@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using SavaDev.Base.Data.Models.Interfaces;
 using SavaDev.Base.Data.Registry;
+using SavaDev.Base.Data.Services;
 using SavaDev.Base.Front.Exceptions;
 using SavaDev.Base.Front.Registry;
 using SavaDev.Content.Contract.Models;
@@ -167,6 +169,23 @@ namespace SavaDev.Content.Services
 
             await _draftService.Update(draftId, model);
             return draftId;
+        }
+
+        public async Task<OperationResult> DeleteDrafts<T, T2>(T model, T2 resultModel, bool setContentId = false)
+            where T : IHavingDraftsModel
+            where T2 : IModel<long>
+        {
+            // TODO подумать, что возвращать, когда операция не выполнена за отсутствием такой необходимости
+            var res = new OperationResult(1);
+            if (model.DraftId.HasValue && model.DraftId != Guid.Empty)
+            {
+                if (setContentId)
+                {
+                    await _draftService.SetContentId(model.DraftId.Value, resultModel.Id.ToString());
+                }
+                res = await _draftService.Delete(model.DraftId.Value);
+            }
+            return res;
         }
     }
 }
