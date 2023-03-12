@@ -6,6 +6,7 @@ using SavaDev.Content.Contract.Models;
 using SavaDev.Content.Data;
 using SavaDev.Content.Data.Contract;
 using SavaDev.Content.Data.Contract.Models;
+using SavaDev.Content.Data.Entities;
 using SavaDev.Content.Front.Contract;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Content.Services
 {
-    public class GetFormViewManager<TForm>
+    public class DraftViewManager<TForm>
         where TForm: class, IHavingDraftsFormViewModel, new()
     {
         protected const string ZeroIdString = "0";
@@ -34,7 +35,7 @@ namespace SavaDev.Content.Services
         public Func<DraftModel?, Task<bool>>? CanCreateFromDraft { get; set; }
         public Func<long?, Task<object>>? GetOneForm { get; set; }
 
-        public GetFormViewManager(string Entity, string Module, string UserId, IDraftService draftService, IMapper mapper)
+        public DraftViewManager(string Entity, string Module, string UserId, IDraftService draftService, IMapper mapper)
         {
             _entityCode = Entity;
             _moduleCode = Module;
@@ -102,31 +103,70 @@ namespace SavaDev.Content.Services
 
         public async Task<ItemsPageViewModel<DraftViewModel>> GetDrafts(string contentId, int page, int count)
         {
-            if (string.IsNullOrEmpty(contentId))
-                contentId = ZeroIdString;
-
-            //var canAny = goalId == ZeroIdString ? await HasPermission(PlannerAction.Goal.CreateAny) : await HasPermission(PlannerAction.Goal.UpdateAny);
-            //var canSelf = goalId == ZeroIdString ? await HasPermission(PlannerAction.Goal.CreateSelf) : await HasPermission(PlannerAction.Goal.UpdateSelf);
-
-            var canAny = await CanGetAnyDrafts(contentId);
-            var canSelf = await CanGetSelfDrafts(contentId);
-
-            if (!canAny || !canSelf)
-                throw new NotPermittedException();
-
             var filter = new DraftStrictFilterModel
             {
                 ContentId = contentId,
                 Entity = _entityCode,
                 Module = _moduleCode,
-                OwnerId = canAny ? null : _userId
             };
+            var vm = await GetDrafts(filter, page, count);
+            return vm;
+        }
+
+        public async Task<ItemsPageViewModel<DraftViewModel>> GetDrafts(string contentId, string groupingKey, int page, int count)
+        {
+            var filter = new DraftStrictFilterModel
+            {
+                ContentId = contentId,
+                GroupingKey = groupingKey,
+                Entity = _entityCode,
+                Module = _moduleCode,
+            };
+            var vm = await GetDrafts(filter, page, count);
+            return vm;
+        }
+
+        private async Task<ItemsPageViewModel<DraftViewModel>> GetDrafts(DraftStrictFilterModel filter, int page, int count)
+        {
+            if (string.IsNullOrEmpty(filter.ContentId))
+                filter.ContentId = ZeroIdString;
+
+            var canAny = await CanGetAnyDrafts(filter.ContentId);
+            var canSelf = await CanGetSelfDrafts(filter.ContentId);
+
+            if (!canAny || !canSelf)
+                throw new NotPermittedException();
+
+            filter.OwnerId = canAny ? null : _userId;
 
             var query = new RegistryQuery(page, count);
             query.Filter0 = filter;
             var list = await _draftService.GetAll(query);
             var vm = new ItemsPageViewModel<DraftViewModel>(_mapper.Map<IEnumerable<DraftViewModel>>(list.Items), list.Page, list.TotalPages, list.TotalRows);
             return vm;
+        }
+
+        public async Task<Guid> SaveDraft(Guid draftId, TForm model, long contentId)
+        {
+            if (contentId == 0 && !await CanCreate()) throw new NotPermittedException();
+            if (contentId != 0 && !await CanUpdate(contentId)) throw new NotPermittedException();
+
+            if (draftId == Guid.Empty)
+            {
+                var draft = new DraftModel
+                {
+                    Entity = _entityCode,
+                    Module = _moduleCode,
+                    ContentId = contentId == 0 ? null : contentId.ToString(),
+                    OwnerId = _userId
+                };
+
+                var result = await _draftService.Create(draft, model);
+                return (result.ProcessedObject as DraftModel).Id;
+            }
+
+            await _draftService.Update(draftId, model);
+            return draftId;
         }
     }
 }
