@@ -9,9 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SavaDev.Base.Front.Services
+namespace SavaDev.Content.Front.Managers
 {
-    public class CreateViewManager<TFormModel>
+    public class CreateContentManager<TFormModel>
         where TFormModel : class
     {
         protected readonly IEntityCreateService<TFormModel> _entityService;
@@ -23,7 +23,7 @@ namespace SavaDev.Base.Front.Services
         public Func<TFormModel, TFormModel, Task<OperationResult>>? ProcessDrafts { get; set; }
         public Func<TFormModel, Task<OperationResult>>? ProcessVersion { get; set; }
 
-        public CreateViewManager(IEntityCreateService<TFormModel> entityService,
+        public CreateContentManager(IEntityCreateService<TFormModel> entityService,
             IMapper mapper)
         {
             _entityService = entityService;
@@ -32,7 +32,7 @@ namespace SavaDev.Base.Front.Services
 
         public async Task<OperationResult> Create(object model)
         {
-            if(model == null)
+            if (model == null)
                 throw new ArgumentNullException("model");
 
             if (CheckAccess == null)

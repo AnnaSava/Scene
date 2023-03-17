@@ -6,6 +6,36 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Infrastructure.Util.ImageEditor
 {
+    public enum ImageResizedOrientation
+    {
+        AsOriginal,
+        Horizontal,
+        Vertical,
+        Square
+    }
+
+    public class ImageResizeOptions2
+    {
+        public int LargeSide { get; set; }
+
+        public int SmallSide { get; set; }
+
+        public bool CenterCrop { get; set; }
+
+        public bool IsThumb { get; set; }
+
+        public ImageResizedOrientation Orientation { get; set; }
+
+        public ImageResizeOptions2(int largeSide, int smallSide, bool centerCrop, bool isThumb, ImageResizedOrientation orientation = ImageResizedOrientation.AsOriginal)
+        {
+            LargeSide = largeSide;
+            SmallSide = smallSide;
+            CenterCrop = centerCrop;
+            IsThumb = isThumb;
+            Orientation = orientation;
+        }
+    }
+
     public class ImageResizeKinds
     {
         // TODO
@@ -29,6 +59,13 @@ namespace SavaDev.Infrastructure.Util.ImageEditor
             Thumb = thumb;
             ThumbMobile = thumbMobile;
         }
+
+        public Dictionary<string, ImageResizeOptions2> GetImageKinds2() => new Dictionary<string, ImageResizeOptions2>
+        {
+            { ImageResizeKindName.CenterMiddle3x1, new ImageResizeOptions2 (Middle, Get3x1smallSide(Middle), true, false, ImageResizedOrientation.AsOriginal) },
+            { ImageResizeKindName.CenterThumb3x1, new ImageResizeOptions2 (Thumb, Get3x1smallSide(Thumb), true, true, ImageResizedOrientation.AsOriginal) },
+            { ImageResizeKindName.CenterThumbMobile3x1, new ImageResizeOptions2 (ThumbMobile, Get3x1smallSide(ThumbMobile), true, true, ImageResizedOrientation.AsOriginal) },
+        };
 
         public Dictionary<string, (int, int, bool)> GetImageKinds() => new Dictionary<string, (int, int, bool)>
         {

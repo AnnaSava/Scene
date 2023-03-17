@@ -9,9 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SavaDev.Base.Front.Services
+namespace SavaDev.Content.Front.Managers
 {
-    public class UpdateViewManager<TKey, TFormModel>
+    public class UpdateContentManager<TKey, TFormModel>
         where TFormModel : class
     {
         protected readonly IEntityEditService<TKey, TFormModel> _entityService;
@@ -22,7 +22,7 @@ namespace SavaDev.Base.Front.Services
         public Func<TFormModel, TFormModel, Task<OperationResult>>? ProcessDrafts { get; set; }
         public Func<TFormModel, Task<OperationResult>>? ProcessVersion { get; set; }
 
-        public UpdateViewManager(IEntityEditService<TKey, TFormModel> entityService,
+        public UpdateContentManager(IEntityEditService<TKey, TFormModel> entityService,
             IMapper mapper)
         {
             _entityService = entityService;
@@ -31,7 +31,7 @@ namespace SavaDev.Base.Front.Services
 
         public async Task<OperationResult> Update(TKey id, object model)
         {
-            if(model == null)
+            if (model == null)
                 throw new ArgumentNullException("model");
 
             if (CheckAccess == null)

@@ -74,7 +74,7 @@ namespace SavaDev.Infrastructure.Util.ImageEditor
 
             var resizedSmallSide = origSmallSide * largeSide / origLargeSide;
 
-            var needCrop = resizedSmallSide > smallSide;
+            var needCrop = false;// resizedSmallSide > smallSide;
 
             var resized = imageFile.Clone(ctx => ctx.Resize(isVertical ? largeSide : resizedSmallSide, isVertical ? resizedSmallSide : largeSide));
 
@@ -97,6 +97,84 @@ namespace SavaDev.Infrastructure.Util.ImageEditor
                 // TODO учитывать формат картинки
                 resized.Save(outStream, new JpegEncoder());
             }
+        }
+
+        public void CropResize(byte[] content, Stream outStream, ImageResizeOptions2 options)
+        {
+            var imageFile = Image.Load(content);
+            if (options.LargeSide == 0)
+            {
+                imageFile.Save(outStream, new JpegEncoder());
+                return;
+            }
+
+            var sides = CountResize(imageFile.Width, imageFile.Height, options);
+            var resized = imageFile.Clone(ctx => ctx.Resize(sides.Item1, sides.Item2));
+            var rect = CountCrop(resized.Width, resized.Height, options);
+
+            var cropped = resized.Clone(ctx => ctx.Crop(rect));
+
+            // TODO учитывать формат картинки
+            cropped.Save(outStream, new JpegEncoder());
+        }
+
+        public (int, int) CountResize(int origWidth, int origHeight, ImageResizeOptions2 options)
+        {
+            var result = (0, 0);
+
+            if (options.Orientation == ImageResizedOrientation.AsOriginal)
+            {
+                var origLargeSide = Math.Max(origWidth, origHeight);
+                var origSmallSide = Math.Min(origWidth, origHeight);
+                var origIsVertical = origHeight > origWidth;
+
+                var resizedSmallSide = origSmallSide * options.LargeSide / origLargeSide;
+                result = (origIsVertical ? resizedSmallSide : options.LargeSide, origIsVertical ? options.LargeSide : resizedSmallSide);
+            }
+            else if (options.Orientation == ImageResizedOrientation.Horizontal)
+            {
+                var resized2ndSide = options.LargeSide * origHeight / origWidth;
+                result = (options.LargeSide, resized2ndSide);
+            }
+
+            return result;
+        }
+
+        public Rectangle CountCrop(int resWidth, int resHeight, ImageResizeOptions2 options)
+        {
+            int top_bottom = 0, left_right = 0;
+            var rect = new Rectangle();
+
+            if (options.Orientation == ImageResizedOrientation.AsOriginal)
+            {
+                var origIsVertical = resHeight > resWidth;
+
+                var diff = Math.Abs(origIsVertical ? resWidth - options.SmallSide : resHeight - options.SmallSide);
+                if (options.CenterCrop)
+                {
+                    diff = diff / 2;
+                    if (origIsVertical)
+                    {
+                        left_right += diff;
+                    }
+                    else
+                    {
+                        top_bottom += diff;
+                    }
+                }
+
+                rect = new Rectangle(left_right, top_bottom, origIsVertical ? options.SmallSide : options.LargeSide, origIsVertical ? options.LargeSide : options.SmallSide);
+            }
+            else if (options.Orientation == ImageResizedOrientation.Horizontal)
+            {
+                if (options.CenterCrop)
+                {
+                    top_bottom = (resHeight - options.SmallSide) / 2;
+                }
+
+                rect = new Rectangle(left_right, top_bottom, options.LargeSide, options.SmallSide);
+            }
+            return rect;
         }
 
         public (int, int) GetSize(byte[] content)

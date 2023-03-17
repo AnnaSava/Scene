@@ -31,6 +31,7 @@ namespace Sava.Media.Services
         };
 
         private readonly Dictionary<string, (int, int, bool)> ImageKinds;
+        private readonly Dictionary<string, ImageResizeOptions2> ImageKinds2;
 
         public GalleryProcessor(IImageService imageService,
             IGalleryService galleryService,
@@ -45,6 +46,7 @@ namespace Sava.Media.Services
             _mapper = mapper;
 
             ImageKinds = new ImageResizeKinds().GetImageKinds();
+            ImageKinds2 = new ImageResizeKinds().GetImageKinds2();
         }
 
         public void Configure(ImageProcessorOptions options)
@@ -78,11 +80,17 @@ namespace Sava.Media.Services
             var uploadedFileModel = await _fileProcessingService.UploadFilePreventDuplicate(model.Content);
             storedImageFiles.Add("Original", uploadedFileModel);
 
-            foreach (var kind in options.ImageResizeKinds)
+            foreach(var kind in options.ImageResizeKinds)
             {
-                var resizedFileModel = await ResizeAndSave(uploadedFileModel, ImageKinds[kind]);
+                var resizedFileModel = await ResizeAndSave(uploadedFileModel, ImageKinds2[kind]);
                 storedImageFiles.Add(kind, resizedFileModel);
             }
+
+            //foreach (var kind in options.ImageResizeKinds)
+            //{
+            //    var resizedFileModel = await ResizeAndSave(uploadedFileModel, ImageKinds[kind]);
+            //    storedImageFiles.Add(kind, resizedFileModel);
+            //}
 
             var imageModel = new ImageModel
             {
@@ -111,11 +119,13 @@ namespace Sava.Media.Services
             else
             {
                 // TODO проперти галереи
-                var createdGallery = await _galleryService.Create(new GalleryModel { OwnerId = model.OwnerId, AttachedToId = "" });
-               // imageModel.GalleryId = createdGallery.Models.First().Id;
+                var result = await _galleryService.Create(new GalleryModel { OwnerId = model.OwnerId, AttachedToId = "", Entity = "", Module = "" });
+                var galleryModel = result.ProcessedObject as GalleryModel;
+                imageModel.GalleryId = galleryModel.Id;
             }
 
-            var createdImage = await _imageService.Create(imageModel);
+            var resultImage = await _imageService.Create(imageModel);
+            var createdImage = resultImage.ProcessedObject as ImageModel;
             return _mapper.Map<ImageViewModel>(createdImage);
         }
 
@@ -123,6 +133,17 @@ namespace Sava.Media.Services
         {
             using var ms = new MemoryStream();
             _imageEditor.CropResize(fileModel.Content, ms, options.Item1, options.Item2, options.Item3);
+
+            var content = ms.ToArray();
+
+            var saved = await _fileProcessingService.UploadFilePreventDuplicate(content);
+            return saved;
+        }
+
+        private async Task<FileModel> ResizeAndSave(FileModel fileModel, ImageResizeOptions2 options)
+        {
+            using var ms = new MemoryStream();
+            _imageEditor.CropResize(fileModel.Content, ms, options);
 
             var content = ms.ToArray();
 

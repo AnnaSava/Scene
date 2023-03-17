@@ -17,10 +17,10 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace SavaDev.Content.Services
+namespace SavaDev.Content.Front.Managers
 {
-    public class DraftViewManager<TForm>
-        where TForm: class, IHavingDraftsFormViewModel, new()
+    public class DraftContentManager<TForm>
+        where TForm : class, IHavingDraftsFormViewModel, new()
     {
         protected const string ZeroIdString = "0";
 
@@ -37,7 +37,7 @@ namespace SavaDev.Content.Services
         public Func<DraftModel?, Task<bool>>? CanCreateFromDraft { get; set; }
         public Func<long?, Task<object>>? GetOneForm { get; set; }
 
-        public DraftViewManager(string Entity, string Module, string UserId, IDraftService draftService, IMapper mapper)
+        public DraftContentManager(string Entity, string Module, string UserId, IDraftService draftService, IMapper mapper)
         {
             _entityCode = Entity;
             _moduleCode = Module;
