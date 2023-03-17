@@ -56,6 +56,8 @@ namespace SavaDev.Libs.Tests.Infrastructure.Util.ImageEditor
             new object[] { 1000, 800, new ImageResizeOptions2(700, 233, true, false, ImageResizedOrientation.AsOriginal), (700, 560) },
             new object[] { 800, 1000, new ImageResizeOptions2(700, 233, true, false, ImageResizedOrientation.Horizontal), (700, 875) },
             new object[] { 800, 1000, new ImageResizeOptions2(700, 233, true, false, ImageResizedOrientation.AsOriginal), (560, 700) },
+            new object[] { 1000, 800, new ImageResizeOptions2(700, 233, true, false, ImageResizedOrientation.Vertical), (875, 700) },
+            new object[] { 1000, 800, new ImageResizeOptions2(700, 700, true, false, ImageResizedOrientation.Square), (875, 700) },
         };
 
         public static IEnumerable<object[]> CropData => new List<object[]>

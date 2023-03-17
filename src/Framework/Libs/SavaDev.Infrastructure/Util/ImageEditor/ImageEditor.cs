@@ -136,6 +136,20 @@ namespace SavaDev.Infrastructure.Util.ImageEditor
                 var resized2ndSide = options.LargeSide * origHeight / origWidth;
                 result = (options.LargeSide, resized2ndSide);
             }
+            else if (options.Orientation == ImageResizedOrientation.Vertical)
+            {
+                var resized2ndSide = options.LargeSide * origWidth / origHeight;
+                result = (resized2ndSide, options.LargeSide);
+            }
+            else if (options.Orientation == ImageResizedOrientation.Square)
+            {
+                var origLargeSide = Math.Max(origWidth, origHeight);
+                var origSmallSide = Math.Min(origWidth, origHeight);
+                var origIsVertical = origHeight > origWidth;
+                var resized2ndSide = origIsVertical ? options.LargeSide * origSmallSide / origLargeSide : options.LargeSide * origLargeSide / origSmallSide;
+
+                result = (origIsVertical ? options.LargeSide : resized2ndSide, origIsVertical ? resized2ndSide : options.LargeSide);
+            }
 
             return result;
         }
