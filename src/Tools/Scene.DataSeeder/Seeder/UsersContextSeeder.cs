@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SavaDev.Base.Data.Context;
+using SavaDev.Base.Data.Seeder;
 using SavaDev.General.Data.Seeder;
 using SavaDev.Users.Data;
 using SavaDev.Users.Data.Entities;

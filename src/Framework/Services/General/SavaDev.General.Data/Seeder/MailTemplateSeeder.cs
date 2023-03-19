@@ -1,5 +1,5 @@
-﻿using SavaDev.Base.Data.Context;
-using SavaDev.Base.Data.Enums;
+﻿using SavaDev.Base.Data.Enums;
+using SavaDev.Base.Data.Seeder;
 using SavaDev.General.Data.Entities;
 using SavaDev.General.Data.Seeder.Data;
 

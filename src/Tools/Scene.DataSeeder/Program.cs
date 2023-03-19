@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SavaDev.Base.Data.Context;
 using SavaDev.Base.Unit.Options;
 using SavaDev.Infrastructure;
 using SavaDev.General.Data;
@@ -13,6 +12,7 @@ using Scene.Libs.WebModule;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SavaDev.Base.Data.Seeder;
 
 namespace Scene.DataSeeder
 {

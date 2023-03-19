@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SavaDev.Base.Data.Context;
 using SavaDev.Infrastructure;
 using System;
 using System.Collections.Generic;

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SavaDev.Base.Data.Context;
 using SavaDev.Infrastructure.Reflection;
 using SavaDev.General.Data;
 using SavaDev.General.Data.Seeder;
@@ -9,6 +8,7 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using SavaDev.Base.Data.Seeder;
 
 namespace Scene.DataSeeder
 {

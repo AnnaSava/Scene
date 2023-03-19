@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SavaDev.Base.Data.Context
+namespace SavaDev.Base.Data.Seeder
 {
     public interface ISeeder
     {

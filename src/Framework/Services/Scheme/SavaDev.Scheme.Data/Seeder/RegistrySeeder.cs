@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SavaDev.Base.Data.Context;
+using SavaDev.Base.Data.Seeder;
 using SavaDev.Infrastructure.Util.SchemeManager;
 using SavaDev.Scheme.Data.Entities;
 using System;
