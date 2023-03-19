@@ -1,0 +1,106 @@
+﻿@using SavaDev.Base.Data.Enums;
+@using SavaDev.Base.Data.Registry;
+@using SavaDev.General.Front.Contract;
+@using SavaDev.General.Front.Contract.Models;
+@using SavaDev.Scheme.Front.Contract.Models;
+@using SavaDev.Scheme.Front.Contract;
+@using SavaDev.UiBlazorStrap.Registry;
+@using SavaDev.UiBlazorStrap.Registry.Filter;
+@using BlazorStrap
+@inject ILegalDocumentViewService _legalDocumentService
+@inject IRegistryViewService registryService
+
+<FlexRegistry @ref="registry"
+              T="LegalDocumentViewModel"
+              TKey="long"
+              ModelPlacement="@(new SavaDev.Base.Data.Models.ModelPlacement("LegalDocument","Gnr"))"
+              FetchItems="@FetchItems"
+              OnSaveFilterClick="@(async(o,e) => await OnSaveFilterClickHandler(e))"
+              CreateLink="/legaldocument/create">
+    <Filter>
+        <div class="row">
+            <div class="col-md-4">
+                <div>
+                    <MatchModeWordFilterInput @bind-Field="@FilterForm.PermName" Placeholder="PermName" />
+                </div>
+                <div>
+                    <MatchModeWordFilterInput @bind-Field="@FilterForm.Title" Placeholder="Title" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div>
+                    <BSInput InputType="InputType.Select" @bind-Value="FilterForm.Culture.Text">
+                        <option value="">Choose culture</option>
+                        <option value="En">En</option>
+                        <option value="Ru">Ru</option>
+                    </BSInput>
+                </div>
+                <div>
+                    <BSInput InputType="InputType.Select" @bind-Value="FilterForm.Status">
+                        <option value="">Choose status</option>
+                        <option value="@DocumentStatus.Published">@DocumentStatus.Published</option>
+                        <option value="@DocumentStatus.Draft">@DocumentStatus.Draft</option>
+                        <option value="@DocumentStatus.Outdated">@DocumentStatus.Outdated</option>
+                    </BSInput>
+                </div>
+            </div>
+        </div>
+    </Filter>
+    <Actions Context="item">
+        <BSDropdownItem href="@("/legaldocument/update/" + item.Id)">Update</BSDropdownItem>
+        <BSDropdownItem OnClick="(() => {})">Delete</BSDropdownItem>
+    </Actions>
+</FlexRegistry>
+
+@code {
+    private FlexRegistry<long, LegalDocumentViewModel>? registry;
+    private LegalDocumentFilterFormViewModel FilterForm = new LegalDocumentFilterFormViewModel();
+
+    private async Task<(IEnumerable<LegalDocumentViewModel>, int)> FetchItems(DataRequest dataRequest)
+    {
+        var query = MakeQuery();
+        var result = await _legalDocumentService.GetRegistryPage(query);
+
+        return (result.Items, (int)result.TotalRows);
+    }
+
+    private RegistryQuery MakeQuery()
+    {
+        var query = new RegistryQuery(registry?.PageInfo, registry?.Sort);
+        query.Filter0 = new LegalDocumentFilterViewModel
+            {
+                Id = string.IsNullOrEmpty(registry?.FilterIdsString) ? null : "in|" + registry.FilterIdsString,
+                PermName = FilterForm.PermName.ToSearchString(),
+                Title = FilterForm.Title.ToSearchString(),
+                Culture = string.IsNullOrEmpty(FilterForm.Culture.Text) ? null : "equals|" + FilterForm.Culture.Text.ToLower(),
+                Status = FilterForm.Status,
+                IsDeleted = registry?.ShowDeleted ?? false
+            };
+
+        query.SetNewSort(registry?.Sort);
+        return query;
+    }
+
+    private async Task OnClickPublish(LegalDocumentViewModel el)
+    {
+        await _legalDocumentService.Publish(el.Id);
+        await registry?.Refresh();
+    }
+    private async Task OnClickDelete(LegalDocumentViewModel el)
+    {
+        await _legalDocumentService.Delete(el.Id);
+        await registry?.Refresh();
+    }
+
+    private async Task OnClickRestore(LegalDocumentViewModel el)
+    {
+        await _legalDocumentService.Restore(el.Id);
+        await registry?.Refresh();
+    }
+
+    private async Task OnSaveFilterClickHandler(FilterViewModel m)
+    {
+        m.TableId = registry.Model.Id;
+        await registryService.SaveFilter(m, FilterForm);
+    }
+}

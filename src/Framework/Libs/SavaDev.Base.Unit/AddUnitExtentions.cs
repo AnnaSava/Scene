@@ -1,10 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SavaDev.Base.Data.Context;
 using SavaDev.Base.Data.Enums;
 using SavaDev.Base.Unit.Options;
+using SavaDev.Infrastructure;
 
 namespace SavaDev.Base.Unit
 {
@@ -22,6 +26,51 @@ namespace SavaDev.Base.Unit
         {
             var parameters = new Parameters(config, unitOptions);
             services.AddDbContext<TInterface, TContext>(options => SetOptions(options, parameters));
+        }
+
+        public static void SetSharedCookie(this IServiceCollection services, IConfiguration config, string appName)
+        {
+            var sharedCookie = config.GetSection("SharedCookie").Get<SharedCookieConfiguration>();
+            services.AddScoped(s => sharedCookie);
+
+            services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(config.GetSection("SessionsPath").Value))
+                .SetApplicationName(appName);
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = sharedCookie.Name;
+                if (!string.IsNullOrEmpty(sharedCookie.SameSite))
+                {
+                    Enum.TryParse(sharedCookie.SameSite, out SameSiteMode sameSiteMode);
+                    options.Cookie.SameSite = sameSiteMode;
+                }
+                if (!string.IsNullOrEmpty(sharedCookie.Domain))
+                {
+                    options.Cookie.Domain = sharedCookie.Domain;
+                }
+            });
+        }
+
+        public static void SetAcceptSharedCookie(this IServiceCollection services, IConfiguration config, string appName)
+        {
+            services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(config.GetSection("SessionsPath").Value))
+                .SetApplicationName(appName);
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = config["Cookie:Name"];
+                options.Events = new CookieAuthenticationEvents()
+                {
+                    OnRedirectToLogin = (context) =>
+                    {
+                        var uri = UriHelpers.MakeLoginRedirectUri(context.Request, config["Cookie:LoginUrl"]);
+                        context.HttpContext.Response.Redirect(uri);
+                        return Task.CompletedTask;
+                    }
+                };
+            });
         }
 
         private static DbContextOptionsBuilder SetOptions(DbContextOptionsBuilder options, Parameters p)

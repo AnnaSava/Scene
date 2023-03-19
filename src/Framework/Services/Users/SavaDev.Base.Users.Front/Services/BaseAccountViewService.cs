@@ -44,9 +44,6 @@ namespace SavaDev.Base.Users.Front.Services
             await ValidateRegistration(model);
 
             var newModel = MapForm(model); // _mapper.Map<TUserForm>(model);
-            //newModel.FirstName = ""; // TODO убрать. Либо разрешить нуллы в БД, либо проставлять где-нибудь, например, в маппере
-            //newModel.LastName = "";
-            //newModel.DisplayName = "";
 
             var result = await _userDbService.Create(newModel, model.Password);
             var resultModel = HandleRegistrationResult(result);
