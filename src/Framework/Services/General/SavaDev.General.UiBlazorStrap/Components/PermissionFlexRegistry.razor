@@ -1,0 +1,50 @@
+﻿@using BlazorStrap;
+@using SavaDev.Base.Data.Registry;
+@using SavaDev.General.Front.Contract.Models;
+@using SavaDev.General.Front.Contract;
+@using SavaDev.UiBlazorStrap.Registry;
+@inject IPermissionViewService _permissionService
+<FlexRegistry @ref="registry"
+              T="PermissionViewModel"
+              TKey="long"
+              ModelPlacement="@(new SavaDev.Base.Data.Models.ModelPlacement("Permission", UnitCode))"
+              FetchItems="@FetchItems"
+              CreateLink="/permission/create">
+    <Filter>
+
+    </Filter>
+    <Actions Context="item">
+        <BSDropdownItem href="@("/permission/update/" + item.Id)">Update</BSDropdownItem>
+        <BSDropdownItem OnClick="(() => {})">Delete</BSDropdownItem>
+    </Actions>
+</FlexRegistry>
+
+@code {
+    [Parameter]
+    public string UnitCode { get; set; }
+
+    private FlexRegistry<long, PermissionViewModel>? registry;
+    private PermissionFilterFormViewModel FilterForm = new PermissionFilterFormViewModel();
+
+    private async Task<(IEnumerable<PermissionViewModel>, int)> FetchItems(DataRequest dataRequest)
+    {
+        var query = MakeQuery();
+        var result = await _permissionService.GetRegistryPage(query);
+
+        return (result.Items, (int)result.TotalRows);
+    }
+
+    private RegistryQuery MakeQuery()
+    {
+        registry.Sort = new RegistrySort("Name");
+
+        var query = new RegistryQuery(registry?.PageInfo, registry?.Sort);
+        query.Filter0 = new PermissionFilterViewModel
+            {
+                Name = FilterForm.Name.ToSearchString(),
+            };
+
+        query.SetNewSort(registry?.Sort);
+        return query;
+    }
+}

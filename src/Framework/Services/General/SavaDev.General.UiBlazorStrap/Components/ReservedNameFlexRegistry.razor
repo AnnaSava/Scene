@@ -1,0 +1,60 @@
+﻿@using BlazorStrap;
+@using SavaDev.Base.Data.Registry;
+@using SavaDev.General.Front.Contract.Models;
+@using SavaDev.General.Front.Contract;
+@using SavaDev.UiBlazorStrap.Registry;
+@inject IReservedNameViewService _reservedNameService
+<!--<BSTD>
+    <BSInputCheckbox CheckedValue="@(true)" @onchange="@(c=>HandleCheckedChanged(c, item))" @bind-Value="item.IncludePlural" />
+</BSTD>-->
+
+<FlexRegistry @ref="registry"
+              T="ReservedNameViewModel"
+              TKey="long"
+              ModelPlacement="@(new SavaDev.Base.Data.Models.ModelPlacement("ReservedName", UnitCode))"
+              FetchItems="@FetchItems"
+              CreateLink="/permission/create">
+    <Filter>
+
+    </Filter>
+    <Actions Context="item">
+        <BSDropdownItem href="@("/permission/update/" + item.Id)">Update</BSDropdownItem>
+        <BSDropdownItem OnClick="(() => {})">Delete</BSDropdownItem>
+    </Actions>
+</FlexRegistry>
+
+@code {
+    [Parameter]
+    public string UnitCode { get; set; }
+
+    private FlexRegistry<long, ReservedNameViewModel>? registry;
+    private ReservedNameFilterFormViewModel FilterForm = new ReservedNameFilterFormViewModel();
+
+    private async Task<(IEnumerable<ReservedNameViewModel>, int)> FetchItems(DataRequest dataRequest)
+    {
+        var query = MakeQuery();
+        var result = await _reservedNameService.GetRegistryPage(query);
+
+        return (result.Items, (int)result.TotalRows);
+    }
+
+    private RegistryQuery MakeQuery()
+    {
+        registry.Sort = new RegistrySort("Text");
+
+        var query = new RegistryQuery(registry?.PageInfo, registry?.Sort);
+        query.Filter0 = new ReservedNameFilterViewModel
+            {
+                Text = FilterForm.Text.ToSearchString(),
+            };
+
+        query.SetNewSort(registry?.Sort);
+        return query;
+    }
+
+    private async Task HandleCheckedChanged(ChangeEventArgs args, ReservedNameViewModel sender)
+    { 
+        var model = new ReservedNameFormViewModel { IncludePlural = sender.IncludePlural };
+        await _reservedNameService.Update(sender.Text, model);
+    }
+}

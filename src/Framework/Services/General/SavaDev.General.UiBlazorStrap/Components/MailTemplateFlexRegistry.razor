@@ -7,16 +7,15 @@
 @using SavaDev.UiBlazorStrap.Registry;
 @using SavaDev.UiBlazorStrap.Registry.Filter;
 @using BlazorStrap
-@inject ILegalDocumentViewService _legalDocumentService
+@inject IMailTemplateViewService _mailTemplateService
 @inject IRegistryViewService registryService
 
 <FlexRegistry @ref="registry"
-              T="LegalDocumentViewModel"
+              T="SavaDev.General.Front.Contract.Models.MailTemplateViewModel"
               TKey="long"
-              ModelPlacement="@(new SavaDev.Base.Data.Models.ModelPlacement("LegalDocument", UnitCode))"
+              ModelPlacement="@(new SavaDev.Base.Data.Models.ModelPlacement("MailTemplate", UnitCode))"
               FetchItems="@FetchItems"
-              OnSaveFilterClick="@(async(o,e) => await OnSaveFilterClickHandler(e))"
-              CreateLink="/legaldocument/create">
+              CreateLink="/mailtemplate/create">
     <Filter>
         <div class="row">
             <div class="col-md-4">
@@ -47,7 +46,7 @@
         </div>
     </Filter>
     <Actions Context="item">
-        <BSDropdownItem href="@("/legaldocument/update/" + item.Id)">Update</BSDropdownItem>
+        <BSDropdownItem href="@("/mailtemplate/update/" + item.Id)">Update</BSDropdownItem>
         <BSDropdownItem OnClick="(() => {})">Delete</BSDropdownItem>
     </Actions>
 </FlexRegistry>
@@ -56,13 +55,13 @@
     [Parameter]
     public string UnitCode { get; set; }
 
-    private FlexRegistry<long, LegalDocumentViewModel>? registry;
-    private LegalDocumentFilterFormViewModel FilterForm = new LegalDocumentFilterFormViewModel();
+    private FlexRegistry<long, MailTemplateViewModel>? registry;
+    private MailTemplateFilterFormViewModel FilterForm = new MailTemplateFilterFormViewModel();
 
-    private async Task<(IEnumerable<LegalDocumentViewModel>, int)> FetchItems(DataRequest dataRequest)
+    private async Task<(IEnumerable<MailTemplateViewModel>, int)> FetchItems(DataRequest dataRequest)
     {
         var query = MakeQuery();
-        var result = await _legalDocumentService.GetRegistryPage(query);
+        var result = await _mailTemplateService.GetRegistryPage(query);
 
         return (result.Items, (int)result.TotalRows);
     }
@@ -70,7 +69,7 @@
     private RegistryQuery MakeQuery()
     {
         var query = new RegistryQuery(registry?.PageInfo, registry?.Sort);
-        query.Filter0 = new LegalDocumentFilterViewModel
+        query.Filter0 = new MailTemplateFilterViewModel
             {
                 Id = string.IsNullOrEmpty(registry?.FilterIdsString) ? null : "in|" + registry.FilterIdsString,
                 PermName = FilterForm.PermName.ToSearchString(),
@@ -84,26 +83,26 @@
         return query;
     }
 
-    private async Task OnClickPublish(LegalDocumentViewModel el)
+    private async Task OnClickPublish(MailTemplateViewModel el)
     {
-        await _legalDocumentService.Publish(el.Id);
-        await registry?.Refresh();
-    }
-    private async Task OnClickDelete(LegalDocumentViewModel el)
-    {
-        await _legalDocumentService.Delete(el.Id);
+        await _mailTemplateService.Publish(el.Id);
         await registry?.Refresh();
     }
 
-    private async Task OnClickRestore(LegalDocumentViewModel el)
+    private async Task OnClickDelete(MailTemplateViewModel el)
     {
-        await _legalDocumentService.Restore(el.Id);
+        await _mailTemplateService.Delete(el.Id);
         await registry?.Refresh();
     }
 
-    private async Task OnSaveFilterClickHandler(FilterViewModel m)
+    private async Task OnClickRestore(MailTemplateViewModel el)
     {
-        m.TableId = registry.Model.Id;
-        await registryService.SaveFilter(m, FilterForm);
+        await _mailTemplateService.Restore(el.Id);
+        await registry?.Refresh();
+    }
+
+    private async Task OnDeletedCheckedChanged(bool args)
+    {
+        registry?.Refresh();
     }
 }
