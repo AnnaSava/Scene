@@ -8,7 +8,7 @@
 <FlexRegistry @ref="registry"
               T="DraftViewModel"
               TKey="Guid"
-              ModelPlacement="@(new SavaDev.Base.Data.Models.ModelPlacement("Draft","Cnt"))"
+              ModelPlacement="@(new SavaDev.Base.Data.Models.ModelPlacement("Draft", UnitCode))"
               FetchItems="@FetchItems"
               CreateLink="">
     <Filter>
@@ -21,6 +21,9 @@
 </FlexRegistry>
 
 @code {
+    [Parameter]
+    public string UnitCode { get; set; }
+
     private FlexRegistry<Guid, DraftViewModel>? registry;
 
     private async Task<(IEnumerable<DraftViewModel>, int)> FetchItems(DataRequest dataRequest)
