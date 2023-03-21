@@ -1,0 +1,45 @@
+﻿@using BlazorStrap;
+@using SavaDev.Base.Data.Registry;
+@using SavaDev.Files.Front.Contract;
+@using SavaDev.Files.Front.Contract.Models;
+@using SavaDev.UiBlazorStrap.Registry;
+@inject IFileViewService _fileService
+
+<FlexRegistry @ref="registry"
+              T="FileViewModel"
+              TKey="Guid"
+              ModelPlacement="@(new SavaDev.Base.Data.Models.ModelPlacement("File","Fls"))"
+              FetchItems="@FetchItems"
+              CreateLink="/file/upload">
+    <Filter>
+
+    </Filter>
+    <Actions Context="item">
+        <BSDropdownItem href="@("/file/update/" + item.Id)">Update</BSDropdownItem>
+        <BSDropdownItem OnClick="(() => {})">Delete</BSDropdownItem>
+    </Actions>
+</FlexRegistry>
+@code {
+    [Parameter]
+    public string UnitCode { get; set; }
+    private FlexRegistry<Guid, FileViewModel>? registry;
+
+    private async Task<(IEnumerable<FileViewModel>, int)> FetchItems(DataRequest dataRequest)
+    {
+        var query = MakeQuery();
+        var result = await _fileService.GetRegistryPage(query);
+
+        return (result.Items, (int)result.TotalRows);
+    }
+
+    private RegistryQuery MakeQuery()
+    {
+        var query = new RegistryQuery(registry?.PageInfo, registry?.Sort);
+        query.Filter0 = new FileFilterViewModel
+        {
+        };
+
+        query.SetNewSort(registry?.Sort);
+        return query;
+    }
+}

@@ -1,22 +1,22 @@
-﻿@using BlazorStrap
+﻿@using BlazorStrap;
 @using Sava.Media.Contract.Models;
+@using Sava.Media.Contract;
 @using SavaDev.Base.Data.Registry;
 @using SavaDev.Media.Front.Contract.Models;
-@using SavaDev.Media.Front.Contract;
 @using SavaDev.UiBlazorStrap.Registry;
-@inject IGalleryViewService _galleryService
+@inject IImageViewService _imageService
 
 <FlexRegistry @ref="registry"
-              T="GalleryViewModel"
+              T="ImageViewModel"
               TKey="Guid"
-              ModelPlacement="@(new SavaDev.Base.Data.Models.ModelPlacement("Gallery","Mda"))"
+              ModelPlacement="@(new SavaDev.Base.Data.Models.ModelPlacement("Image", UnitCode))"
               FetchItems="@FetchItems"
-              CreateLink="/media/gallery/create">
+              CreateLink="/media/image/upload">
     <Filter>
 
     </Filter>
     <Actions Context="item">
-        <BSDropdownItem href="@("/media/gallery/update/" + item.Id)">Update</BSDropdownItem>
+        <BSDropdownItem href="@("/media/image/update/" + item.Id)">Update</BSDropdownItem>
         <BSDropdownItem OnClick="(() => {})">Delete</BSDropdownItem>
     </Actions>
 </FlexRegistry>
@@ -25,12 +25,12 @@
     [Parameter]
     public string UnitCode { get; set; }
 
-    private FlexRegistry<Guid, GalleryViewModel>? registry;
+    private FlexRegistry<Guid, ImageViewModel>? registry;
 
-    private async Task<(IEnumerable<GalleryViewModel>, int)> FetchItems(DataRequest dataRequest)
+    private async Task<(IEnumerable<ImageViewModel>, int)> FetchItems(DataRequest dataRequest)
     {
         var query = MakeQuery();
-        var result = await _galleryService.GetRegistryPage(query);
+        var result = await _imageService.GetRegistryPage(query);
 
         return (result.Items, (int)result.TotalRows);
     }
@@ -38,7 +38,7 @@
     private RegistryQuery MakeQuery()
     {
         var query = new RegistryQuery(registry?.PageInfo, registry?.Sort);
-        query.Filter0 = new GalleryFilterViewModel
+        query.Filter0 = new ImageFilterViewModel
         {
         };
 
