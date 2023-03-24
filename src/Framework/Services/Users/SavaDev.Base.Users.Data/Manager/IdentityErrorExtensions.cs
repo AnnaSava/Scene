@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Base.Users.Data.Manager
 {
-    public static class IdentityErrorExtentions
+    public static class IdentityErrorExtensions
     {
         public static string GetString(this IEnumerable<IdentityError> list)
         {

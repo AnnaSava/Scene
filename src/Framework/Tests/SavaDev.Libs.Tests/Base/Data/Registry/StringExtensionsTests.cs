@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Libs.Tests.Base.Data.Registry
 {
-    public class StringExtentionsTests
+    public class StringExtensionsTests
     {
         [Theory]
         [MemberData(nameof(EnumerationData))]

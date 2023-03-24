@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Extentions\**" />
+    <Compile Remove="Extensions\**" />
     <Compile Remove="Mapper\**" />
-    <EmbeddedResource Remove="Extentions\**" />
+    <EmbeddedResource Remove="Extensions\**" />
     <EmbeddedResource Remove="Mapper\**" />
-    <None Remove="Extentions\**" />
+    <None Remove="Extensions\**" />
     <None Remove="Mapper\**" />
   </ItemGroup>
 

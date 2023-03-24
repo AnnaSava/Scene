@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Base.Unit
 {
-    public static class ConfigExtentions
+    public static class ConfigExtensions
     {
         public static string GetDbProvider(this IConfiguration config)
         {

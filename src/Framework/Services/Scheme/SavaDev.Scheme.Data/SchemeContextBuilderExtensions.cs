@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Scheme.Data
 {
-    public static class SchemeContextBuilderExtentions
+    public static class SchemeContextBuilderExtensions
     {
         public static void ConfigureContext(
             [NotNull] this ModelBuilder builder,

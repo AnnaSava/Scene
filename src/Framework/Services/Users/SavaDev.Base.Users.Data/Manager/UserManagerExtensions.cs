@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Base.Users.Data.Manager
 {
-    public static class UserManagerExtentions
+    public static class UserManagerExtensions
     {
         public static async Task<TEntity> GetOneByLoginOrEmail<TEntity>(this UserManager<TEntity> userManager, string loginOrEmail)
             where TEntity : BaseUser

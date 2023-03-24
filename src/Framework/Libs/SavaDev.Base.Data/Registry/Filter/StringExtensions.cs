@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Base.Data.Registry.Filter
 {
-    public static class StringExtentions
+    public static class StringExtensions
     {
         const char DefaultArraySeparator = ',';
         const int FragmentLength = 50;

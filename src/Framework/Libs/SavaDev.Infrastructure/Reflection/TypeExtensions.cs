@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Infrastructure.Reflection
 {
-    public static class TypeExtentions
+    public static class TypeExtensions
     {
         public static List<T> GetAllPublicConstantValues<T>(this Type type)
         {

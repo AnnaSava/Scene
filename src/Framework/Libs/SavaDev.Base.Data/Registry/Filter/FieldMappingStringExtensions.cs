@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Base.Data.Registry.Filter
 {
-    public static class FieldMappingStringExtentions
+    public static class FieldMappingStringExtensions
     {
         const char SortArraySeparator = ',';
         const char DescSortSign = '-';

@@ -11,7 +11,7 @@ using X.PagedList;
 
 namespace SavaDev.Base.Data.Registry.Filter
 {
-    public static class IQueryableQueryExtentions
+    public static class IQueryableQueryExtensions
     {
         public static IQueryable<T> ApplyFilters<T>(this IQueryable<T> list, BaseFilter filter)
         {

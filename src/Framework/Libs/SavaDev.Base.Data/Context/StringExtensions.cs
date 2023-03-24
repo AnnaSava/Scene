@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Base.Data.Context
 {
-    public static class StringExtentions
+    public static class StringExtensions
     {
         public static string ToSnakeCase(this string inputString)
         {

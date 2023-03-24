@@ -12,7 +12,7 @@ using SavaDev.Infrastructure;
 
 namespace SavaDev.Base.Unit
 {
-    public static class AddUnitExtentions
+    public static class AddUnitExtensions
     {
         public static void AddUnitDbContext<TContext> (this IServiceCollection services, IConfiguration config, UnitOptions unitOptions)
             where TContext : DbContext
