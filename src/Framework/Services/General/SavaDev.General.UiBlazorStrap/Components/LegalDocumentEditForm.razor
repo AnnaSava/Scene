@@ -1,0 +1,116 @@
+﻿@using BlazorStrap
+@using Microsoft.AspNetCore.Components.Forms
+@using SavaDev.General.Front.Contract.Models;
+@using SavaDev.General.Front.Contract;
+@using SavaDev.General.Front.Enums;
+@inject ILegalDocumentViewService _legalDocumentService
+
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator/>
+
+    <div class="mb-3">
+        <BSLabel>Permanent name</BSLabel>
+        @if (EditMode == DocumentEditMode.CreateNew)
+        {
+            <BSInput InputType="InputType.Text"  @bind-Value="model.PermName"/>
+        }
+        else
+        {
+            <BSInput InputType="InputType.Text" @bind-Value="model.PermName" IsDisabled />
+        }
+    </div>
+
+    @if (EditMode == DocumentEditMode.CreateNew || EditMode == DocumentEditMode.CreateTranslation)
+    {
+        <BSInput InputType="InputType.Select" @bind-Value="model.Culture" >
+            <option value="En">En</option>
+            <option value="Ru">Ru</option>
+        </BSInput>
+    }
+    else
+    {
+        <BSInput InputType="InputType.Select" @bind-Value="model.Culture" IsDisabled>
+            <option value="En">En</option>
+            <option value="Ru">Ru</option>
+        </BSInput>
+    }
+
+    <div class="mb-3">
+        <BSLabel>Title</BSLabel>
+        <BSInput InputType="InputType.Text"  @bind-Value="model.Title"/>
+    </div>
+
+    <div class="mb-3">
+        <BSLabel>Info</BSLabel>
+        <BSInput InputType="InputType.TextArea"  @bind-Value="model.Info"/>
+    </div>
+
+    <BSNav IsTabs="true">
+        <BSNavItem>
+            <TabLabel>Text</TabLabel>
+            <TabContent>
+                <div class="mb-3">
+                    <BSLabel>Text</BSLabel>
+                    <BSInput InputType="InputType.TextArea"  @bind-Value="model.Text"/>
+                </div>
+            </TabContent>
+        </BSNavItem>
+        <BSNavItem>
+            <TabLabel>Comment</TabLabel>
+            <TabContent>
+                <div class="mb-3">
+                    <BSLabel>Comment</BSLabel>
+                    <BSInput InputType="InputType.TextArea"  @bind-Value="model.Comment"/>
+                </div>
+            </TabContent>
+        </BSNavItem>
+    </BSNav>
+
+    <BSButton Color="BSColor.Primary" IsSubmit>Save</BSButton>
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public DocumentEditMode EditMode { get; set; } = DocumentEditMode.CreateNew;
+    [Parameter]
+    public string PermName { get; set; } = string.Empty;
+    [Parameter]
+    public string Culture { get; set; } = string.Empty;
+
+    LegalDocumentFormViewModel model = new LegalDocumentFormViewModel();
+    IEnumerable<string> Cultures = new List<string>();
+    bool success;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (EditMode == DocumentEditMode.CreateTranslation)
+        {
+            model.PermName = PermName;
+            Cultures = await _legalDocumentService.GetMissingCultures(PermName);
+        }
+        else if (EditMode == DocumentEditMode.CreateVersion)
+        {
+            model = await _legalDocumentService.GetActual<LegalDocumentFormViewModel>(PermName, Culture.ToLower());
+        }
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        if (EditMode == DocumentEditMode.CreateNew)
+        {
+            await _legalDocumentService.Create(model);
+        }
+        else if(EditMode == DocumentEditMode.CreateTranslation)
+        {
+            await _legalDocumentService.CreateTranslation(model);
+        }
+        else if(EditMode == DocumentEditMode.CreateVersion)
+        {
+            await _legalDocumentService.CreateVersion(model);
+        }
+
+        success = true;
+        StateHasChanged();
+    }
+}

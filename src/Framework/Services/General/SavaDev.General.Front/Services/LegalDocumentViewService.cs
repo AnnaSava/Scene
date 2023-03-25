@@ -42,7 +42,7 @@ namespace SavaDev.General.Front.Services
             var entity = _mapper.Map<LegalDocumentModel>(model);
             entity.Culture = entity.Culture.ToLower();
             var created = await _legalDocumentService.Create(entity);
-            return _mapper.Map<LegalDocumentViewModel>(created);
+            return _mapper.Map<LegalDocumentViewModel>(created.ProcessedObject);
         }
 
         public async Task<LegalDocumentViewModel> CreateTranslation(LegalDocumentFormViewModel model)
@@ -50,7 +50,7 @@ namespace SavaDev.General.Front.Services
             var entity = _mapper.Map<LegalDocumentModel>(model);
             entity.Culture = entity.Culture.ToLower();
             var created = await _legalDocumentService.CreateTranslation(entity);
-            return _mapper.Map<LegalDocumentViewModel>(created);
+            return _mapper.Map<LegalDocumentViewModel>(created.ProcessedObject);
         }
 
         public async Task<LegalDocumentViewModel> Update(long id, LegalDocumentFormViewModel model)
@@ -58,7 +58,7 @@ namespace SavaDev.General.Front.Services
             var newModel = _mapper.Map<LegalDocumentModel>(model);
             newModel.Id = id;
             var resultModel = await _legalDocumentService.Update(id, newModel);
-            return _mapper.Map<LegalDocumentViewModel>(resultModel);
+            return _mapper.Map<LegalDocumentViewModel>(resultModel.ProcessedObject);
         }
 
         public async Task Publish(long id)
@@ -71,7 +71,7 @@ namespace SavaDev.General.Front.Services
             var entity = _mapper.Map<LegalDocumentModel>(model);
             entity.Culture = entity.Culture.ToLower();
             var created = await _legalDocumentService.CreateVersion(entity);
-            return _mapper.Map<LegalDocumentViewModel>(created);
+            return _mapper.Map<LegalDocumentViewModel>(created.ProcessedObject);
         }
 
         public async Task<LegalDocumentViewModel> Delete(long id)

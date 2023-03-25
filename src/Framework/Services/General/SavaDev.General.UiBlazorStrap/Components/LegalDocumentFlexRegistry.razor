@@ -47,6 +47,8 @@
         </div>
     </Filter>
     <Actions Context="item">
+        <BSDropdownItem href="@("/legaldocument/"+item.PermName+"/createtranslation/")">Create translation</BSDropdownItem>
+        <BSDropdownItem href="@("/legaldocument/"+item.PermName + "/" + item.Culture +"/createversion/")">Create version</BSDropdownItem>
         <BSDropdownItem href="@("/legaldocument/update/" + item.Id)">Update</BSDropdownItem>
         <BSDropdownItem OnClick="(() => {})">Delete</BSDropdownItem>
     </Actions>
