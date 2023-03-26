@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Services\Users\SavaDev.Base.Users.Security\SavaDev.Base.Users.Security.csproj" />
     <ProjectReference Include="..\SavaDev.Base.Data\SavaDev.Base.Data.csproj" />
   </ItemGroup>
 

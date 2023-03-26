@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using SavaDev.Base.Data.Models;
 using SavaDev.Base.Data.Services;
+using SavaDev.Base.Users.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,15 +16,15 @@ namespace SavaDev.Base.Front.Services
         protected const string ZeroIdString = "0";
 
         protected readonly IMapper _mapper;
-        // TODO скорее всего перенести сюда
-        //protected readonly ISecurityService _securityService;
+        protected readonly IUserProvider _userProvider;
 
         protected readonly ServiceOptions _options;
 
-        public BaseViewService(IMapper mapper, ServiceOptions options)
+        public BaseViewService(IUserProvider userProvider, IMapper mapper, ServiceOptions options)
         {
             _mapper = mapper;
             _options = options;
+            _userProvider = userProvider;
         }
 
         protected Dictionary<string, string> GetStrings(Type type)

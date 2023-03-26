@@ -38,7 +38,7 @@ namespace SavaDev.Base.Data.Services
 
         #region Public Methods: Mutation
 
-        public async Task<OperationResult> Create(TFormModel model, Action<TEntity> onCreating = null, Action<TEntity> onCreated = null)
+        public async Task<OperationResult> Create(TFormModel model)
         {
             return await CreateManager.Create(model);
         }
@@ -90,6 +90,9 @@ namespace SavaDev.Base.Data.Services
         // TODO возможно, include тут не нужен. Вроде как этапы и чекпойнты выбираются вместе с целью и так.
         public async Task<TModel> GetOne<TModel>(TKey id, Func<IQueryable<TEntity>, IQueryable<TEntity>> includeFunc = null)
             => await OneSelector.GetOne<TModel>(id, includeFunc);
+
+        public async Task<TFormModel> GetOneForm(TKey id)
+            => await OneSelector.GetOne<TFormModel>(id);
 
         #endregion
 
