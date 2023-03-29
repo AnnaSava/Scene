@@ -6,6 +6,7 @@ using SavaDev.Base.Data.Context;
 using SavaDev.Base.Data.Entities;
 using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Registry.Filter;
+using System.Linq.Expressions;
 using X.PagedList;
 
 namespace SavaDev.Base.Data.Managers.Crud
@@ -27,6 +28,8 @@ namespace SavaDev.Base.Data.Managers.Crud
 
         private ByIdsFilter<TKey>? ByIdsFilter { get; set; }
         private ByRelatedFilter<long>? ByRelatedFilter { get; set; }
+
+        private Expression<Func<TEntity, bool>>? FilterExpression0 { get; set; }
 
         Func<IQueryable<TEntity>, RegistryQuery, IQueryable<TEntity>>? FilterExpression { get; set; }
 
@@ -56,6 +59,12 @@ namespace SavaDev.Base.Data.Managers.Crud
         {
             if (RegistryQuery == null) RegistryQuery = new RegistryQuery();
             RegistryQuery.Filter0 = filter;
+            return this;
+        }
+
+        public EntitySelector<TKey, TEntity, TItemModel, TFilter> Filter(Expression<Func<TEntity, bool>> filterExpression)
+        {
+            FilterExpression0 = filterExpression;
             return this;
         }
 
@@ -149,21 +158,27 @@ namespace SavaDev.Base.Data.Managers.Crud
             {
                 list = FilterExpression(list, RegistryQuery);
             }
+            if (FilterExpression0 != null)
+            {
+                list = list.Where(FilterExpression0);
+            }
             if (RegistryQuery?.Filter0 != null)
             {
                 try
                 {
                     list = list.ApplyFilters(RegistryQuery.Filter0);
                 }
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
                     throw;
                 }
             }
-            if (list is IQueryable<BaseRestorableEntity<TKey>>)
-            {
-                list = ApplyFiltersRestorable(list as IQueryable<BaseRestorableEntity<TKey>>);
-            }
+            //if (list is IQueryable<BaseRestorableEntity<TKey>>)
+            //{
+            //    var list0 = list as IQueryable<BaseRestorableEntity<TKey>>;
+            //    list0 = ApplyFiltersRestorable(list0);
+            //    //list = list0;
+            //}
             if (RegistryQuery?.Sort != null)
             {
                 list = list.ApplySort(RegistryQuery.Sort);
@@ -175,7 +190,7 @@ namespace SavaDev.Base.Data.Managers.Crud
 
         #region Private Methods
 
-        private IQueryable<TEntity> ApplyFiltersRestorable(IQueryable<BaseRestorableEntity<TKey>> list)
+        private IQueryable<BaseRestorableEntity<TKey>> ApplyFiltersRestorable(IQueryable<BaseRestorableEntity<TKey>> list)
         {
             if (ByIdsFilter != null)
             {
@@ -196,7 +211,7 @@ namespace SavaDev.Base.Data.Managers.Crud
                     list = list.Where(m => !m.IsDeleted);
                 }
             }
-            return (IQueryable<TEntity>)list;
+            return list;
         }
 
         private IQueryable<TEntity> GetList()

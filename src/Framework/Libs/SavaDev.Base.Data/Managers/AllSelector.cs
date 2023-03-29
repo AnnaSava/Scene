@@ -5,11 +5,12 @@ using SavaDev.Base.Data.Managers.Crud;
 using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Registry.Filter;
 using SavaDev.Base.Data.Services;
+using System.Linq.Expressions;
 
 namespace SavaDev.Base.Data.Managers
 {
     public class AllSelector<TKey, TEntity>
-        where TEntity: class
+        where TEntity : class
     {
         protected readonly IDbContext _dbContext;
         protected readonly IMapper _mapper;
@@ -60,12 +61,22 @@ namespace SavaDev.Base.Data.Managers
             return list;
         }
 
+        [Obsolete]
         public async Task<IEnumerable<TItemModel>> GetAllByRelated<TItemModel>(ByRelatedFilter<long> filter)
         {
             var selector = new EntitySelector<TKey, TEntity, TItemModel, ByRelatedFilter<long>>(_dbContext, _mapper, _logger);
 
             var list = await selector.ByRelated(filter).ToEnumerable();
             return list;
+        }
+
+        public async Task<IEnumerable<TItemModel>> GetAllByExpr<TItemModel>(
+            Expression<Func<TEntity, bool>> filterExpression)
+        {
+            var selector = new EntitySelector<TKey, TEntity, TItemModel, BaseFilter>(_dbContext, _mapper, _logger);
+
+            var page = await selector.Filter(filterExpression).ToEnumerable();
+            return page;
         }
     }
 }
