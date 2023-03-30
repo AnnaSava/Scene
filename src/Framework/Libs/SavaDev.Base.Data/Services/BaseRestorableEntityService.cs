@@ -87,8 +87,11 @@ namespace SavaDev.Base.Data.Services
 
         #region Public Methods: Query One
 
+        public async Task<TModel> GetOne<TModel>(TKey id)
+            => await OneSelector.GetOne<TModel>(id);
+
         // TODO возможно, include тут не нужен. Вроде как этапы и чекпойнты выбираются вместе с целью и так.
-        public async Task<TModel> GetOne<TModel>(TKey id, Func<IQueryable<TEntity>, IQueryable<TEntity>> includeFunc = null)
+        public async Task<TModel> GetOne<TModel>(TKey id, Func<IQueryable<TEntity>, IQueryable<TEntity>> includeFunc)
             => await OneSelector.GetOne<TModel>(id, includeFunc);
 
         public async Task<TFormModel> GetOneForm(TKey id)
