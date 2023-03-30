@@ -1,0 +1,57 @@
+﻿@using SavaDev.Scheme.Front.Contract.Models;
+<BSModal DataId="filtersModal" Size="Size.ExtraLarge" @ref="@bsModal" OnHidden="OnModalHiddenHandler">
+    <Header>FiltersModal</Header>
+    <Content>
+        <BSTable IsResponsive="true" IsStriped="true">
+                <BSTHead>
+                    <BSTR>
+                        <BSTD>Id</BSTD>
+                        <BSTD>OwnerId</BSTD>
+                        <BSTD>Name</BSTD>
+                        <BSTD>Fields</BSTD>
+                        <BSTD></BSTD>
+                    </BSTR>
+                </BSTHead>
+                <BSTBody>
+                @if (Filters != null && Filters.Any())
+                {
+                    @foreach (var filter in Filters)
+                    {
+                        <BSTR>
+                            <BSTD>@filter.Id</BSTD>
+                            <BSTD>@filter.OwnerId</BSTD>
+                            <BSTD>@filter.Name</BSTD>
+                            <BSTD>@filter.Fields</BSTD>
+                            <BSTD><BSButton Color="BSColor.Primary" OnClick="() => OnChooseClick(filter)">Choose</BSButton></BSTD>
+                        </BSTR>
+                    }
+                }
+                </BSTBody>
+            </BSTable>
+    </Content>
+    <Footer Context="modal">
+        <BSButton MarginStart="Margins.Auto" Color="BSColor.Secondary" @onclick="modal.HideAsync">Close</BSButton>
+    </Footer>
+</BSModal>
+
+@code {
+    [Parameter]
+    public List<FilterViewModel> Filters { get; set; } = new List<FilterViewModel>();
+    [Parameter]
+    public EventHandler<FilterViewModel>? OnModalHidden { get; set; }
+
+    public FilterViewModel? SelectedFilter { get; set; }
+
+    private BSModal? bsModal;
+
+    private async Task OnChooseClick(FilterViewModel filter)
+    {
+        SelectedFilter = filter;
+        bsModal?.HideAsync();
+    }
+
+    private void OnModalHiddenHandler()
+    {
+        OnModalHidden?.Invoke(this, SelectedFilter);
+    }
+}

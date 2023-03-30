@@ -15,6 +15,8 @@ namespace SavaDev.Scheme.Front.Contract
     {
         Task<RegistryViewModel> GetOne(ModelPlacement placement);
 
+        Task<List<FilterViewModel>> GetAllFilters(Guid registryId);
+
         Task ApplyFilter(long filterId, RegistryViewModel vm);
 
         Task ApplyConfig(long configId, RegistryViewModel vm);

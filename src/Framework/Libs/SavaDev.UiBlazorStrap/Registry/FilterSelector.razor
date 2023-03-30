@@ -1,16 +1,10 @@
 ﻿@using SavaDev.Scheme.Front.Contract.Models;
 <BSInputGroup MarginBottom="Margins.Medium">      
-    <BSInput InputType="InputType.Select" Value="SelectedFilterId" @onchange="@((e) => OnFilterSelectedHandler(e))">
-        <option value="0">New filter</option>
-        @if (Filters != null && Filters.Any())
-        {
-            @foreach (var conf in Filters)
-            {
-                <option value="@conf.Id" selected="@(SelectedFilter?.Id == conf.Id)">@conf.Name</option>
-            }
-        }
-    </BSInput>
-    <BSButton Color="BSColor.Light" Target="filter-edit-modal" OnClick="OnModalConfigClickHandler">
+    <BSInput InputType="InputType.Text" @bind-Value="SelectedFilterName" />
+
+    <BSButton Color="BSColor.Primary" Target="filtersModal1">Choose filter</BSButton>
+
+    <BSButton Color="BSColor.Light" Target="filter-edit-modal" OnClick="OnSaveModalClickHandler">
         <i class="bi-save2"></i>
     </BSButton>
     <BSButton Color="BSColor.Light" OnClick="((e) => OnRemoveFilterClickHandler(e))">
@@ -36,32 +30,78 @@
     </Footer>
 </BSModal>
 
+<BSModal DataId="filtersModal1" Size="Size.ExtraLarge" @ref="@bsModal">
+    <Header>FiltersModal</Header>
+    <Content>
+        <BSTable IsResponsive="true" IsStriped="true">
+            <BSTHead>
+                <BSTR>
+                    <BSTD>Id</BSTD>
+                    <BSTD>OwnerId</BSTD>
+                    <BSTD>Name</BSTD>
+                    <BSTD>Fields</BSTD>
+                    <BSTD></BSTD>
+                </BSTR>
+            </BSTHead>
+            <BSTBody>
+                @if (Filters != null && Filters.Any())
+                {
+                    @foreach (var filter in Filters)
+                    {
+                        <BSTR>
+                            <BSTD>@filter.Id</BSTD>
+                            <BSTD>@filter.OwnerId</BSTD>
+                            <BSTD>@filter.Name</BSTD>
+                            <BSTD>@filter.Fields</BSTD>
+                            <BSTD><BSButton Color="BSColor.Primary" OnClick="() => OnFilterSelectedHandler(filter)">Choose</BSButton></BSTD>
+                        </BSTR>
+                    }
+                }
+            </BSTBody>
+        </BSTable>
+    </Content>
+    <Footer Context="modal">
+        <BSButton MarginStart="Margins.Auto" Color="BSColor.Secondary" @onclick="modal.HideAsync">Close</BSButton>
+    </Footer>
+</BSModal>
+
 @code {
     [Parameter]
     public List<FilterViewModel> Filters { get; set; } = new List<FilterViewModel>();
     [Parameter]
     public FilterViewModel? SelectedFilter { get; set; }
     [Parameter]
-    public EventHandler<ChangeEventArgs> OnSelectFilter { get; set; }
+    public EventHandler<FilterViewModel> OnSelectFilter { get; set; }
     [Parameter]
     public EventHandler<FilterViewModel>? OnSaveFilterClick { get; set; }
     [Parameter]
     public EventHandler? OnRemoveFilterClick { get; set; }
 
     private int? SelectedFilterId = 0;
+    private string? SelectedFilterName = "";
     public string? FilterFormName { get; set; }
     public bool FilterFormForAll { get; set; }
 
+    private BSModal? bsModal;
+
     private BSModal? modal;
 
-    private async Task OnFilterSelectedHandler(ChangeEventArgs e)
+    protected override async Task OnParametersSetAsync()
     {
+        SelectedFilterName = SelectedFilter?.Name;
+    }
+
+    private async Task OnFilterSelectedHandler(FilterViewModel e)
+    {
+        SelectedFilter = e;
+        SelectedFilterName = e?.Name;
+        bsModal?.HideAsync();
         OnSelectFilter.Invoke(this, e);
     }
 
-    private async Task OnModalConfigClickHandler(EventArgs e)
+    private async Task OnSaveModalClickHandler(EventArgs e)
     {
-        SetForm(SelectedFilterId ?? 0);
+        FilterFormName = SelectedFilterName;
     }
 
     private async Task OnSaveFilterClickHandler(EventArgs e)
@@ -80,17 +120,10 @@
         OnRemoveFilterClick?.Invoke(this, e);
     }
 
-    private void SetForm(long id)
+    private async Task OnChooseClick(FilterViewModel filter)
     {
-        if (id == 0)
-        {
-            FilterFormName = "";
-            FilterFormForAll = false;
-            return;
-        }
-        var filter = Filters.FirstOrDefault(m => m.Id == id);
-        if (filter == null) return;
-        FilterFormName = filter.Name;
-        FilterFormForAll = filter.ForAll;
+        SelectedFilter = filter;
+        SelectedFilterName = filter?.Name;
+        bsModal?.HideAsync();
     }
 }

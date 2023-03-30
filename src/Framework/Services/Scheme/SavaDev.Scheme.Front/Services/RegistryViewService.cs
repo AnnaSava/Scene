@@ -57,6 +57,13 @@ namespace SavaDev.Scheme.Front.Services
             return vm;
         }
 
+        public async Task<List<FilterViewModel>> GetAllFilters(Guid registryId)
+        {
+            var filters = await _filterService.GetAll(registryId);
+            var vm = _mapper.Map<IEnumerable<FilterViewModel>>(filters).ToList();
+            return vm;
+        }
+
         public async Task ApplyFilter(long filterId, RegistryViewModel vm)
         {
             var filter = await _filterService.GetOne(filterId);
@@ -145,9 +152,7 @@ namespace SavaDev.Scheme.Front.Services
                 newModel.OwnerId = _securityService.GetId();
             }
 
-            var resultModel = model.Id == 0
-                ? await _filterService.Create(newModel)
-                : await _filterService.Update(model.Id, newModel);
+            var resultModel = await _filterService.Create(newModel);
             return new OperationViewResult(resultModel.Details);
         }
 

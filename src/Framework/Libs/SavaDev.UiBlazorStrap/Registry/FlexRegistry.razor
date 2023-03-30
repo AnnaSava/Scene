@@ -20,35 +20,6 @@
             <p>ItemsOnPage @ItemsOnPage</p>
         </Content>
     </BSAccordionItem>
-    <BSAccordionItem>
-        <Header>Filters</Header>
-        <Content>
-            <BSTable IsResponsive="true" IsStriped="true">
-                <BSTHead>
-                    <BSTR>
-                        <BSTD>Id</BSTD>
-                        <BSTD>OwnerId</BSTD>
-                        <BSTD>Name</BSTD>
-                        <BSTD>Fields</BSTD>
-                    </BSTR>
-                </BSTHead>
-                <BSTBody>
-                    @if (Model?.Filters != null && Model.Filters.Any())
-                    {
-                        @foreach (var filter in Model.Filters)
-                        {
-                            <BSTR>
-                                <BSTD>@filter.Id</BSTD>
-                                <BSTD>@filter.OwnerId</BSTD>
-                                <BSTD>@filter.Name</BSTD>
-                                <BSTD>@filter.Fields</BSTD>
-                            </BSTR>
-                        }
-                    }
-                </BSTBody>
-            </BSTable>
-        </Content>
-    </BSAccordionItem>
         <BSAccordionItem>
         <Header>Configs</Header>
         <Content>
@@ -251,6 +222,8 @@ else
 
     private long? SelectedRegistryConfigId = 0;
     private long? SelectedFilterId = 0;
+    private FilterViewModel? SelectedFilter;
+    private string? SelectedFilterName;
 
     private string IdsPlaceholder = "Ids";
 
@@ -337,9 +310,9 @@ else
 
     #region Private Methods: Filter Handlers
 
-    private async Task OnFilterSelectedHandler(ChangeEventArgs e)
+    private async Task OnFilterSelectedHandler(FilterViewModel e)
     {
-        SelectedFilterId = int.Parse(e.Value.ToString());
+        SelectedFilterId = e?.Id;
         if (SelectedFilterId == 0)
         {
             StateHasChanged();
@@ -360,8 +333,9 @@ else
         await registryService.RemoveFilter((long)SelectedFilterId);
         var filter = Model.Filters.FirstOrDefault(m => m.Id == SelectedFilterId);
         if (filter != null) Model.Filters.Remove(filter);
+        Model.SelectedFilter = new FilterViewModel();
+        StateHasChanged();
     }
-
 
     protected async Task OnFilterClickHandler()
     {
