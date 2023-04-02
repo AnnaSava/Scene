@@ -43,7 +43,7 @@ namespace SavaDev.Base.Data.Services
             return await CreateManager.Create(model);
         }
 
-        public async Task<OperationResult> Update(TKey id, TFormModel model)
+        public virtual async Task<OperationResult> Update(TKey id, TFormModel model)
         {
             return await UpdateManager.Update(id, model);
         }

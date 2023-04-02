@@ -44,6 +44,11 @@ namespace SavaDev.Base.Data.Seeder
 
         protected abstract List<ISeeder> SetSeeders(IServiceScope scope);
 
+        protected virtual Task MigrateData(IServiceScope scope)
+        {
+            return Task.CompletedTask;
+        }
+
         private async Task Seed(IServiceScope scope)
         {
             var seeders = SetSeeders(scope);
@@ -62,6 +67,10 @@ namespace SavaDev.Base.Data.Seeder
                     Console.WriteLine(ex.InnerException);
                 }
             }
+
+            Console.WriteLine("Start migrating data");
+            await MigrateData(scope);
+            Console.WriteLine("End migrating data");
         }
     }
 }

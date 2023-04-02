@@ -21,7 +21,7 @@ namespace SavaDev.Base.Data.Services
         protected readonly IDbContext _dbContext;
         protected readonly IMapper _mapper;
         private readonly string serviceName;
-        private readonly ILogger _logger;
+        protected readonly ILogger _logger;
 
         public BaseEntityService([NotNull] IDbContext dbContext, [NotNull] IMapper mapper, [NotNull] string serviceName)
         {
