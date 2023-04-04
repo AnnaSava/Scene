@@ -78,5 +78,13 @@ namespace SavaDev.Base.Data.Managers
             var page = await selector.Filter(filterExpression).ToEnumerable();
             return page;
         }
+
+        public async Task<IEnumerable<TItemModel>> GetAll<TItemModel>()
+        {
+            var selector = new EntitySelector<TKey, TEntity, TItemModel, BaseFilter>(_dbContext, _mapper, _logger);
+
+            var page = await selector.ToEnumerable();
+            return page;
+        }
     }
 }

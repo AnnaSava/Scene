@@ -86,9 +86,9 @@ namespace SavaDev.Content.Front.Managers
             {
                 if (!await CanUpdate(id.Value)) throw new NotPermittedException();
 
-                var goal = await GetOneForm(id.Value);
+                var entityForm = await GetOneForm(id.Value);
 
-                var form = _mapper.Map<TForm>(goal);
+                var form = _mapper.Map<TForm>(entityForm);
 
                 var drafts = await GetDrafts(id.ToString(), 1, 30);
                 form.Drafts = drafts?.Items.ToList();

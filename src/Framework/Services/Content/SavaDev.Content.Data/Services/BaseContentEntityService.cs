@@ -10,7 +10,6 @@ using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Registry.Filter;
 using SavaDev.Base.Data.Services;
 using SavaDev.Content.Data;
-using SavaDev.Content.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
