@@ -35,6 +35,11 @@ namespace SavaDev.Base.Data.Context
                 word = word.Substring(0, word.Length - 1) + "ies";
                 return word;
             }
+            else if(word.EndsWith("sh"))
+            {
+                word = word + "es";
+                return word;
+            }
             else if (word.EndsWith('x'))
             {
                 word = word.Substring(0, word.Length - 1) + "es";
