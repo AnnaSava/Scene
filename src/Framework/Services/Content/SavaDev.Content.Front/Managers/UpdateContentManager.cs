@@ -53,7 +53,7 @@ namespace SavaDev.Content.Front.Managers
 
             if (!result.IsSuccess)
             {
-                throw new Exception($"Creating an object of type {model.GetType().Name} failed");
+                throw new Exception($"Updating an object of type {model.GetType().Name} id {id} failed");
             }
 
             var resultModel = result.ProcessedObject as TFormModel;
