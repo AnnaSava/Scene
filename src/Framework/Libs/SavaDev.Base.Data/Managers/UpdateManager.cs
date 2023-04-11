@@ -45,13 +45,17 @@ namespace SavaDev.Base.Data.Managers
         public async Task<OperationResult> Restore(TKey id, Func<TEntity, bool> fieldFunc, Func<TEntity, Task>? validateEntity = null)
         {
             var updater = new EntityUpdater<TKey, TEntity>(_dbContext, _logger)
-                .GetEntity(async (id) => await _dbContext.GetEntityForChange<TKey, TEntity>(id, restore: true))
+                .GetDeletedEntity(async (id) =>
+                {
+                    var entity = await _dbContext.GetEntityForChange<TKey, TEntity>(id, restore: true);
+                    return entity;
+                })
                 .ValidateEntity(validateEntity)
-                .SetValues(async (entity, model) => _mapper.Map(model, entity))
+                .SetValues(async (entity) => fieldFunc(entity))
                 .Update(DoUpdate)
-                .SuccessResult(entity => new OperationResult(_mapper.Map<TFormModel>(entity)));
+                .SuccessResult(entity => new OperationResult(1, id));
 
-            return await updater.DoUpdate(id);
+            return await updater.DoUpdate(id, restore: true);
         }
 
         public async Task<OperationResult> SetField(TKey id, Func<TEntity, bool> fieldFunc)
