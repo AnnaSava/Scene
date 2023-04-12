@@ -1,0 +1,78 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+<BSModal DataId="UploadImageModal" OnShow="async ()=> await OnModalShow()">
+    <Header>Modal Title</Header>
+    <Content>
+        <BSNav IsTabs="true">
+            <BSNavItem>
+                <TabLabel>File</TabLabel>
+                <TabContent>
+                    @if (Multiple.HasValue && Multiple.Value)
+                    {
+                        <InputFile OnChange="@OnInputFileChange" multiple />
+                    }
+                    else
+                    {
+                        <InputFile OnChange="@OnInputFileChange" />
+                    }
+                    @if (hasImage)
+                    {
+                        <img src="@UploadedImageSrc" />
+                    }
+                </TabContent>
+            </BSNavItem>
+            <BSNavItem>
+                <TabLabel>Url</TabLabel>
+                <TabContent>
+                    <BSInput class="form-control" @bind-Value="@FileUri" />
+                    <button @onclick="UpdateFileUri">Upload</button>
+                    @if (hasImage)
+                    {
+                        <img src="@UploadedImageSrc" />
+                    }
+                </TabContent>
+            </BSNavItem>
+        </BSNav>
+    </Content>
+    <Footer Context="modal">
+        <BSButton MarginStart="Margins.Auto" Color="BSColor.Secondary" @onclick="modal.HideAsync">Close</BSButton>
+        <BSButton Color="BSColor.Primary" OnClick="() => OnModalSave(modal)">Save changes</BSButton>
+    </Footer>
+</BSModal>
+
+@code {
+    [Parameter]
+    public string FileUri { get; set; }
+
+    [Parameter]
+    public EventCallback<string> FileUriChanged { get; set; }
+
+    [Parameter]
+    public string UploadedImageSrc { get; set; }
+
+    [Parameter]
+    public EventCallback<InputFileChangeEventArgs> OnInputFileChange { get; set; }
+
+    [Parameter]
+    public EventCallback OnInputFileUpload { get; set; }
+
+    [Parameter]
+    public bool? Multiple { get; set; }
+
+    private bool hasImage { get { return !string.IsNullOrEmpty(UploadedImageSrc); } }
+
+    private async Task OnModalShow()
+    {
+
+    }
+
+    private async Task OnModalSave(BSModal modal)
+    {
+
+    }
+
+    private async Task UpdateFileUri()
+    {
+        await FileUriChanged.InvokeAsync(FileUri);
+        await OnInputFileUpload.InvokeAsync();
+    }
+}

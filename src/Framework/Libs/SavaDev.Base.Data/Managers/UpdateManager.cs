@@ -80,6 +80,17 @@ namespace SavaDev.Base.Data.Managers
             return await updater.DoUpdate(id);
         }
 
+        public async Task<OperationResult> SetField(TKey id, Func<TEntity, Guid?> fieldFunc)
+        {
+            var updater = new EntityUpdater<TKey, TEntity>(_dbContext, _logger)
+                .GetEntity(async (id) => await _dbContext.GetEntityForChange<TKey, TEntity>(id))
+                .SetValues(async (entity) => fieldFunc(entity))
+                .Update(DoUpdate)
+                .SuccessResult(entity => new OperationResult(1, id));
+
+            return await updater.DoUpdate(id);
+        }
+
         public async Task<OperationResult> SetField(TKey id, Func<TEntity, bool> fieldFunc, Func<TEntity, Task> validateEntity)
         {
             var updater = new EntityUpdater<TKey, TEntity>(_dbContext, _logger)
