@@ -13,7 +13,7 @@ namespace Sava.Media.Services
     {
         private readonly IImageService _imageService;
         private readonly IGalleryService _galleryService;
-        private readonly IFileProcessingService _fileProcessingService;
+        private readonly IFilesUploader _filesUploader;
         private readonly ImageEditor _imageEditor;
         private readonly IMapper _mapper;
 
@@ -36,13 +36,13 @@ namespace Sava.Media.Services
         public GalleryProcessor(IImageService imageService,
             IGalleryService galleryService,
             ImageEditor imageEditor,
-            IFileProcessingService fileProcessingService,
+            IFilesUploader filesUploader,
             IMapper mapper)
         {
             _imageService = imageService;
             _galleryService = galleryService;
             _imageEditor = imageEditor;
-            _fileProcessingService = fileProcessingService;
+            _filesUploader = filesUploader;
             _mapper = mapper;
 
             ImageKinds = new ImageResizeKinds().GetImageKinds();
@@ -77,7 +77,7 @@ namespace Sava.Media.Services
         {
             var storedImageFiles = new Dictionary<string, FileModel>();
 
-            var uploadedFileModel = await _fileProcessingService.UploadFilePreventDuplicate(model.Content);
+            var uploadedFileModel = await Upload(model.Content);            
             storedImageFiles.Add("Original", uploadedFileModel);
 
             foreach(var kind in options.ImageResizeKinds)
@@ -129,17 +129,6 @@ namespace Sava.Media.Services
             return _mapper.Map<ImageViewModel>(createdImage);
         }
 
-        private async Task<FileModel> ResizeAndSave(FileModel fileModel, (int, int, bool) options)
-        {
-            using var ms = new MemoryStream();
-            _imageEditor.CropResize(fileModel.Content, ms, options.Item1, options.Item2, options.Item3);
-
-            var content = ms.ToArray();
-
-            var saved = await _fileProcessingService.UploadFilePreventDuplicate(content);
-            return saved;
-        }
-
         private async Task<FileModel> ResizeAndSave(FileModel fileModel, ImageResizeOptions2 options)
         {
             using var ms = new MemoryStream();
@@ -147,8 +136,14 @@ namespace Sava.Media.Services
 
             var content = ms.ToArray();
 
-            var saved = await _fileProcessingService.UploadFilePreventDuplicate(content);
+            var saved = await Upload(content);
             return saved;
+        }
+
+        private async Task<FileModel> Upload(byte[] content)
+        {
+            var uploadedFileModel = await _filesUploader.SendInfo(new SavaDev.Files.Service.Contract.Models.FilesDataModel(content));
+            return uploadedFileModel.SavedFile;
         }
     }
 }

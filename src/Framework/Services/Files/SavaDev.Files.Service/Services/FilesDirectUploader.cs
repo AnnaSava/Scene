@@ -12,9 +12,9 @@ namespace SavaDev.Files.Service.Services
     {
         private readonly IFileProcessingService _fileProcessingService;
 
-        public FilesDirectUploader(IFileProcessingService mailService)
+        public FilesDirectUploader(IFileProcessingService fileProcessingService)
         {
-            _fileProcessingService = mailService;
+            _fileProcessingService = fileProcessingService;
         }
 
         public async Task<FilesUploadResult> SendInfo(FilesDataModel info)
