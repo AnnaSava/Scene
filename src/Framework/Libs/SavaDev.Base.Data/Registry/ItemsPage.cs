@@ -24,5 +24,13 @@ namespace SavaDev.Base.Data.Registry
             TotalPages = pagedList.PageCount;
             TotalRows = pagedList.TotalItemCount;
         }
+
+        public ItemsPage(List<TModel> items, int page, int totalPages, long totalRows)
+        {
+            Items = items;
+            Page = page;
+            TotalPages = totalPages;
+            TotalRows = totalRows;
+        }
     }
 }
