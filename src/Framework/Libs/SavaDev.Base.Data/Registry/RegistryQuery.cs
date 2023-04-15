@@ -33,6 +33,8 @@ namespace SavaDev.Base.Data.Registry
     {
         public BaseFilter Filter0 { get; set; }
 
+        public BaseFilter CultureFilter { get; set; }
+
         public RegistryPageInfo PageInfo { get; set; } = new RegistryPageInfo();
 
         public List<RegistrySort> Sort { get; set; } = new List<RegistrySort>();
