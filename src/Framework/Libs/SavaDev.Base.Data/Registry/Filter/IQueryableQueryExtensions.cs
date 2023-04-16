@@ -31,6 +31,23 @@ namespace SavaDev.Base.Data.Registry.Filter
                 .ApplyEnumFilters(filterFields.Where(f => f.PropertyType.Name == nameof(EnumFilterField)), filter);
         }
 
+        public static IQueryable<T> ApplyCultureFilters<T>(this IQueryable<T> list, BaseFilter filter)
+        {
+            if (filter == null) return list.ApplyIsDeletedFilter(filter);
+
+            var filterType = filter.GetType();
+            var filterFields = filterType.GetProperties();
+
+            return list
+                .ApplyStringFilters(filterFields.Where(f => f.PropertyType.Name == nameof(String)), filter)
+                .ApplyLongFilters(filterFields.Where(f => f.PropertyType.FullName.Contains(nameof(Int64))), filter)
+                .ApplyBoolFilters(filterFields.Where(f => f.PropertyType.Name == nameof(Boolean) && f.Name != "IsDeleted"), filter)
+                .ApplyWordFilters(filterFields.Where(f => f.PropertyType.Name == nameof(WordFilterField)), filter)
+                .ApplyNullableBoolFilters(filterFields.Where(f => f.PropertyType.Name == "Nullable`1" && f.PropertyType.FullName.Contains("Boolean")), filter)
+                .ApplyIEnumerableFilters(filterFields.Where(f => f.PropertyType.Name == "IEnumerable`1"), filter)
+                .ApplyEnumFilters(filterFields.Where(f => f.PropertyType.Name == nameof(EnumFilterField)), filter);
+        }
+
         public static IQueryable<T> ApplySort<T>(this IQueryable<T> list, IEnumerable<RegistrySort> sorts)
         {
             var sort = sorts.FirstOrDefault();
@@ -160,7 +177,7 @@ namespace SavaDev.Base.Data.Registry.Filter
 
             var field = (string)fieldObj;
 
-            var str = string.Format("{0} == {1}", fieldName, field);
+            var str = string.Format("{0} == \"{1}\"", fieldName, field);
             list = list.Where(str);
 
             return list;
