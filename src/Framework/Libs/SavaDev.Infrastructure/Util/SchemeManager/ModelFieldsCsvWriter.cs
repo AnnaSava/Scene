@@ -18,18 +18,18 @@ namespace SavaDev.Infrastructure.Util.TestDataGenerator
             _options = options;
         }
 
-        public async Task WriteTestDataToFile<T>()
+        public async Task WriteTestDataToFile<T>(int rowsCount = 30)
             where T : class, new()
         {
             string? resultString;
             if (_options.UseMethodNameColumn)
             {
-                var data = _dataGenerator.ProvideTestDataWithMethodColumn<T>(1000);
+                var data = _dataGenerator.ProvideTestDataWithMethodColumn<T>(rowsCount);
                 resultString = MakeTestDataWithMethodCsvString(data);
             }
             else
             {
-                var data = _dataGenerator.ProvideTestData<T>(1000);
+                var data = _dataGenerator.ProvideTestData<T>(rowsCount);
                 resultString = MakeTestDataCsvString(data);
             }
             await WriteFile<T>(resultString);
