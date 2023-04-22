@@ -45,7 +45,7 @@ namespace SavaDev.Base.Front.Services
         }
 
         protected OperationViewResult MakeResponseObject<TModel, TViewModel>(OperationResult resultModel)
-            where TModel : BaseRestorableModel<long>
+            where TModel : BaseRestorableFormModel<long>
         {
             var result =_options.SilentResponse ? new OperationViewResult(resultModel.Rows)
                 : new OperationViewResult(resultModel.Rows, _mapper.Map<TViewModel>(resultModel.ProcessedObject));
