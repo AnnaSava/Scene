@@ -23,7 +23,7 @@ namespace SavaDev.Content.Front.Managers
         }
 
         public async Task<OperationResult> CreateVersion<T>(T model)
-            where T : IModel<long>
+            where T : IModel<long>, IContentJsonSerializable
         {
             var placement = new ModelPlacement(typeof(T));
 

@@ -57,7 +57,7 @@ namespace SavaDev.Content.Data.Services
 
         #region Public Methods: Mutation
 
-        public async Task<OperationResult> Create<T>(TModel model, T contentModel)
+        public async Task<OperationResult> Create<T>(TModel model, T contentModel) where T : IContentJsonSerializable
         {
             var res = await CreateManager.Create(model, setValues: async (entity) =>
             {

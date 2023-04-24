@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Base.Data.Models
 {
-    public class BaseRestorableFormModel<TKey> : IModel<TKey>
+    public class BaseRestorableFormModel<TKey> : IModel<TKey>, IContentJsonSerializable
     {
         public TKey Id { get; set; }
     }
