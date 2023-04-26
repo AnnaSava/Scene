@@ -169,7 +169,7 @@ namespace SavaDev.Base.Data.Managers.Crud
                 return;
 
             var errors = string.Join('\n', results);
-            throw new Exception(errors);
+            throw new ValidationException(errors);
         }
 
         #endregion
