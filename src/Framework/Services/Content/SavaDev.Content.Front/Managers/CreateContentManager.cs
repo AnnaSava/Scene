@@ -18,6 +18,7 @@ namespace SavaDev.Content.Front.Managers
         protected readonly IMapper _mapper;
 
         public Func<Task<bool>>? CheckAccess { get; set; }
+        public Func<TFormModel, Task<IEnumerable<ValidationResult>>>? Validate { get; set; }
         public Action<TFormModel>? SetValues { get; set; }
         public Func<TFormModel, Task<OperationResult>>? ProcessGroup { get; set; }
         public Func<TFormModel, TFormModel, Task<OperationResult>>? ProcessDrafts { get; set; }
@@ -43,12 +44,22 @@ namespace SavaDev.Content.Front.Managers
             if (!can)
             {
                 throw new NotPermittedException();
-            }
+            }            
 
             var newModel = _mapper.Map<TFormModel>(model);
             if (model == null)
                 throw new InvalidOperationException("newModel is null");
             SetValues?.Invoke(newModel);
+
+            if (Validate == null)
+                throw new InvalidOperationException();
+            var validationErrors = await Validate.Invoke(newModel);
+
+            if (validationErrors != null && validationErrors.Any())
+            {
+                // TODO что-то делать с ошибками валидации
+                return new OperationResult(0);
+            }
 
             var result = await _entityService.Create(newModel);
 

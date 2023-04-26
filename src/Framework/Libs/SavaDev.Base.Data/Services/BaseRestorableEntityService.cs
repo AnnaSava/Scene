@@ -88,6 +88,9 @@ namespace SavaDev.Base.Data.Services
 
         #region Public Methods: Query One
 
+        public async Task<bool> Exists(TKey id)
+            => await OneSelector.Exists(id);
+
         public async Task<TModel> GetOne<TModel>(TKey id)
             => await OneSelector.GetOne<TModel>(id);
 

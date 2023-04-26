@@ -34,6 +34,14 @@ namespace SavaDev.Base.Data.Managers
             return await new OneSelector<TEntity>(_dbContext, _mapper, _logger).GetOne<TModel>(expression);
         }
 
+        public async Task<bool> Exists(TKey id)
+        {
+            var elQuery = _dbContext.Set<TEntity>()
+                .Where(m => m.Id.Equals(id) && m.IsDeleted == false);
+
+            return await elQuery.AnyAsync();
+        }
+
         public async Task<TModel> GetOne<TModel>(TKey id)
         {
             var elQuery = _dbContext.Set<TEntity>()
