@@ -9,6 +9,7 @@ using SavaDev.Base.Data.Managers;
 using SavaDev.Base.Data.Models.Interfaces;
 using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Registry.Filter;
+using System.ComponentModel.DataAnnotations;
 using X.PagedList;
 
 namespace SavaDev.Base.Data.Services
@@ -40,7 +41,7 @@ namespace SavaDev.Base.Data.Services
 
         public async Task<OperationResult> Create(TFormModel model)
         {
-            return await CreateManager.Create(model);
+            return await CreateManager.Create(model, validate: ValidateCreate);
         }
 
         public virtual async Task<OperationResult> Update(TKey id, TFormModel model)
@@ -144,6 +145,16 @@ namespace SavaDev.Base.Data.Services
                 list = list.Where(m => !m.IsDeleted);
             }
             return list;
+        }
+
+        private async Task ValidateCreate(IFormModel model)
+        {
+            var results = new List<ValidationResult>();
+            var context = new ValidationContext(model);
+            if(!Validator.TryValidateObject(model, context, results, true))
+            {
+                throw new Exception("Invalid model");
+            }
         }
     }
 }
