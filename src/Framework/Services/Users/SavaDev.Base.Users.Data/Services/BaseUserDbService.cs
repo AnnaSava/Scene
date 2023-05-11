@@ -71,7 +71,7 @@ namespace SavaDev.Base.User.Data.Services
 
         #endregion
 
-        #region Public Methods^ Query One
+        #region Public Methods Query One
 
         public async Task<TModel> GetOneByLoginOrEmail<TModel>(string loginOrEmail) where TModel : BaseUserModel
             => await EntityManager.GetOneByLoginOrEmail<TModel>(loginOrEmail);
@@ -85,6 +85,8 @@ namespace SavaDev.Base.User.Data.Services
             => await EntityManager.CheckLoginExists(login);
         public async Task<bool> IsLocked(string id)
             => await EntityManager.IsLocked(id);
+        public async Task<IEnumerable<string>> GetRoleNames(long id)
+            => await EntityManager.GetRoleNames(id);
 
         #endregion
 

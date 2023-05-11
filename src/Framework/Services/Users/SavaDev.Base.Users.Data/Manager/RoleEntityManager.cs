@@ -183,6 +183,7 @@ namespace SavaDev.Base.User.Data.Manager
         private async Task<OperationResult> DoUpdate(TEntity entity)
         {
             var result = await _roleManager.UpdateAsync(entity);
+            // TODO добавить сообщение об ошибке
             return new OperationResult(result.Succeeded ? 1 : (int)DbOperationRows.OnFailure);
         }
 

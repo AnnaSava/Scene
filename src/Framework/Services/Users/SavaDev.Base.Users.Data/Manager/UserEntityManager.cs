@@ -44,8 +44,16 @@ namespace SavaDev.Base.User.Data.Manager
 
         public async Task<IList<string>> GetRoleNames(long id)
         {
-            var user = await _userManager.FindByIdAsync(id.ToString());
+            var user = await Find(id.ToString());
             return await _userManager.GetRolesAsync(user);
+        }
+
+        protected async Task<TEntity> Find(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null || user.IsDeleted) throw new UserNotFoundException();
+
+            return user;
         }
     }
 

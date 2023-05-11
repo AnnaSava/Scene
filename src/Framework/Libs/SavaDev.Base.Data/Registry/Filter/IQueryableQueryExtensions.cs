@@ -223,7 +223,7 @@ namespace SavaDev.Base.Data.Registry.Filter
         private static IQueryable<T> ApplyWordFilter<T>(IQueryable<T> list, string fieldName, object fieldObj)
         {
             var field = fieldObj as WordFilterField;
-            if (field == null) return list;
+            if (field == null || field.Value == null || !field.Value.Any()) return list;
 
             string str;
 
