@@ -210,7 +210,7 @@ namespace SavaDev.Base.User.Data.Manager
             if (rolesToAdd.Any())
             {
                 // TODO
-                var result = await _userManager.AddToRolesAsync(user, userRoles);
+                var result = await _userManager.AddToRolesAsync(user, rolesToAdd);
             }
 
             var rolesToRemove = userRoles.Except(model.RoleNames);
