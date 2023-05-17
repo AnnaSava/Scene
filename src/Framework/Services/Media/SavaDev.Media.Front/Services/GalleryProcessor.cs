@@ -3,6 +3,7 @@ using Sava.Media.Contract;
 using Sava.Media.Contract.Models;
 using Sava.Media.Data.Contract;
 using Sava.Media.Data.Contract.Models;
+using SavaDev.Base.Users.Security;
 using SavaDev.Files.Data.Contract.Models;
 using SavaDev.Files.Service.Contract;
 using SavaDev.Infrastructure.Util.ImageEditor;
@@ -15,6 +16,7 @@ namespace Sava.Media.Services
         private readonly IGalleryService _galleryService;
         private readonly IFilesUploader _filesUploader;
         private readonly ImageEditor _imageEditor;
+        private readonly IUserProvider _userProvider;
         private readonly IMapper _mapper;
 
         private ImageProcessorOptions options = new ImageProcessorOptions { 
@@ -37,12 +39,14 @@ namespace Sava.Media.Services
             IGalleryService galleryService,
             ImageEditor imageEditor,
             IFilesUploader filesUploader,
+            IUserProvider userProvider,
             IMapper mapper)
         {
             _imageService = imageService;
             _galleryService = galleryService;
             _imageEditor = imageEditor;
             _filesUploader = filesUploader;
+            _userProvider = userProvider;
             _mapper = mapper;
 
             ImageKinds = new ImageResizeKinds().GetImageKinds();
@@ -92,10 +96,10 @@ namespace Sava.Media.Services
             //    storedImageFiles.Add(kind, resizedFileModel);
             //}
 
-            var imageModel = new ImageModel
+            var imageModel = new ImageFormModel
             {
                 PreviewId = storedImageFiles[options.PreviewImageKind].Id.ToString(),
-                Files = new List<ImageFileModel>(),
+                Files = new List<ImageFileFormModel>(),
                 OwnerId = model.OwnerId
             };
 
@@ -103,7 +107,7 @@ namespace Sava.Media.Services
             {
                 var size = _imageEditor.GetSize(image.Value.Content);
 
-                var imgFile = new ImageFileModel
+                var imgFile = new ImageFileFormModel
                 {
                     FileId = image.Value.Id.ToString(),
                     Kind = image.Key,
@@ -120,12 +124,12 @@ namespace Sava.Media.Services
             {
                 // TODO проперти галереи
                 var result = await _galleryService.Create(new GalleryModel { OwnerId = model.OwnerId, AttachedToId = "", Entity = "", Module = "" });
-                var galleryModel = result.ProcessedObject as GalleryModel;
+                var galleryModel = result.GetProcessedObject<GalleryModel>();
                 imageModel.GalleryId = galleryModel.Id;
             }
 
             var resultImage = await _imageService.Create(imageModel);
-            var createdImage = resultImage.ProcessedObject as ImageModel;
+            var createdImage = resultImage.GetProcessedObject<ImageFormModel>();
             return _mapper.Map<ImageViewModel>(createdImage);
         }
 
@@ -142,7 +146,7 @@ namespace Sava.Media.Services
 
         private async Task<FileModel> Upload(byte[] content)
         {
-            var uploadedFileModel = await _filesUploader.SendInfo(new SavaDev.Files.Service.Contract.Models.FilesDataModel(content));
+            var uploadedFileModel = await _filesUploader.SendInfo(new SavaDev.Files.Service.Contract.Models.FilesDataModel(content, _userProvider.UserId));
             return uploadedFileModel.SavedFile;
         }
     }

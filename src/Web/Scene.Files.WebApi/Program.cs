@@ -34,7 +34,7 @@ async Task<FilesUploadResult> HandleMessage(FilesDataModel data)
     {
         var fileProcessingService = serviceProvider.GetService<IFileProcessingService>();
 
-        var resultModel = await fileProcessingService.UploadFilePreventDuplicate(data.Content);
+        var resultModel = await fileProcessingService.UploadFilePreventDuplicate(data);
 
         return new FilesUploadResult { SavedFile = resultModel };
     }

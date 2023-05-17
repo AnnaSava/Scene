@@ -14,19 +14,28 @@ namespace SavaDev.Base.Front.Services
 
         public bool NotChanged { get { return Rows == 0; } }
 
-        public object? ProcessedObject { get; }
+        public IList<object>? ProcessedObjects { get; set; } = new List<object>();
 
         public OperationViewResult(int rows) { Rows = rows; }
 
         public OperationViewResult(int rows, object processedObject) : this(rows)
         {
-            ProcessedObject = processedObject;
+            ProcessedObjects.Add(processedObject);
         }
 
+        [Obsolete]
         public OperationViewResult((int, object) details)
         {
             Rows = details.Item1;
-            ProcessedObject= details.Item2;
+            ProcessedObjects.Add(details.Item2);
+        }
+
+        public T? GetProcessedObject<T>() where T : class
+        {
+            if (!ProcessedObjects.Any()) return null;
+
+            var obj = ProcessedObjects.First() as T;
+            return obj;
         }
     }
 }

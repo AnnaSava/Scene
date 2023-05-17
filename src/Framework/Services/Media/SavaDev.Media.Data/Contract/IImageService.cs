@@ -14,7 +14,7 @@ namespace Sava.Media.Data.Contract
 {
     public interface IImageService : IEntityRegistryService<ImageModel, ImageFilterModel>
     {
-        Task<OperationResult> Create(ImageModel model);
+        Task<OperationResult> Create(ImageFormModel model);
 
         Task<ImageModel> GetOne(Guid id);
 

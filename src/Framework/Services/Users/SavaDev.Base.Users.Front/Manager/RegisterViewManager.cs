@@ -53,7 +53,7 @@ namespace SavaDev.Base.Users.Front.Manager
             //newModel.DisplayName = "";
 
             var result = await _userDbService.Create(newModel, model.Password);
-            var resultModel = result.ProcessedObject as TUserForm;
+            var resultModel = result.GetProcessedObject<TUserForm>();
 
             if (resultModel == null || resultModel.Id == 0)
                 throw new Exception("Registration error");

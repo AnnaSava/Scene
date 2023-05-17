@@ -105,7 +105,7 @@ namespace SavaDev.Base.Users.Front.Services
 
         protected virtual IUserFormModel HandleRegistrationResult(OperationResult result)
         {
-            var resultModel = result.ProcessedObject as IUserFormModel;
+            var resultModel = result.GetProcessedObject<IUserFormModel>();
 
             if (resultModel == null || resultModel.Id == 0)
                 throw new Exception("Registration error");

@@ -68,7 +68,7 @@ namespace SavaDev.Content.Front.Managers
                 throw new Exception($"Creating an object of type {model.GetType().Name} failed");
             }
 
-            var resultModel = result.ProcessedObject as TFormModel;
+            var resultModel = result.GetProcessedObject<TFormModel>();
             if (resultModel == null)
             {
                 throw new Exception("ResultModel is null");

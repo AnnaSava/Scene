@@ -19,8 +19,18 @@ namespace SavaDev.Media.Data
             CreateMap<ImageFile, ImageFileModel>();
             CreateMap<ImageFileModel, ImageFile>();
 
+            CreateMap<Image, ImageFormModel>();
+            CreateMap<ImageFormModel, Image>()
+                .ForMember(x => x.Id, y => y.Ignore())
+                .ForMember(x => x.Created, y => { y.PreCondition(s => s.Id == Guid.Empty); y.MapFrom(s => DateTime.UtcNow); })
+                .ForMember(x => x.LastUpdated, y => y.MapFrom(s => DateTime.UtcNow));
+
+            CreateMap<ImageFile, ImageFileFormModel>();
+            CreateMap<ImageFileFormModel, ImageFile>();
+
             CreateMap<Gallery, GalleryModel>();
             CreateMap<GalleryModel, Gallery>();
+
         }
     }
 }

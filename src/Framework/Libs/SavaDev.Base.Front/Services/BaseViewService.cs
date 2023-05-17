@@ -48,7 +48,7 @@ namespace SavaDev.Base.Front.Services
             where TModel : BaseRestorableFormModel<long>
         {
             var result =_options.SilentResponse ? new OperationViewResult(resultModel.Rows)
-                : new OperationViewResult(resultModel.Rows, _mapper.Map<TViewModel>(resultModel.ProcessedObject));
+                : new OperationViewResult(resultModel.Rows, _mapper.Map<TViewModel>(resultModel.GetProcessedObject<TModel>()));
             return result;
         }
     }

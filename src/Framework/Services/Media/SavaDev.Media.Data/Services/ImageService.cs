@@ -28,7 +28,7 @@ namespace Sava.Files.Data.Services
 
         private readonly BaseRestorableEntityService<Guid, Image, ImageModel> entityManager;
 
-        protected CreateManager<Image, ImageModel> CreateManager { get; set; }
+        protected CreateManager<Image, ImageFormModel> CreateManager { get; set; }
 
         protected readonly AllSelector<Guid, Image> selectorManager;
 
@@ -39,10 +39,10 @@ namespace Sava.Files.Data.Services
 
             entityManager = new BaseRestorableEntityService<Guid, Image, ImageModel>(dbContext, mapper, logger);
             selectorManager = new AllSelector<Guid, Image>(dbContext, mapper, logger);
-            CreateManager = new CreateManager<Image, ImageModel>(dbContext, mapper,logger);
+            CreateManager = new CreateManager<Image, ImageFormModel>(dbContext, mapper,logger);
         }
 
-        public async Task<OperationResult> Create(ImageModel model)
+        public async Task<OperationResult> Create(ImageFormModel model)
         {
             var res = await CreateManager.Create(model, setValues: entity => entity.Id = Guid.NewGuid());
             return res;

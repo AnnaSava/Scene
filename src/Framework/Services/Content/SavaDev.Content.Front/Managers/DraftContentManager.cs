@@ -164,7 +164,7 @@ namespace SavaDev.Content.Front.Managers
                 };
 
                 var result = await _draftService.Create(draft, model);
-                return (result.ProcessedObject as DraftModel).Id;
+                return result.GetProcessedObject<DraftModel>().Id;
             }
 
             await _draftService.Update(draftId, model);

@@ -56,7 +56,7 @@ namespace SavaDev.Content.Front.Managers
                 throw new Exception($"Updating an object of type {model.GetType().Name} id {id} failed");
             }
 
-            var resultModel = result.ProcessedObject as TFormModel;
+            var resultModel = result.GetProcessedObject<TFormModel>();
             if (resultModel == null)
             {
                 throw new Exception("ResultModel is null");

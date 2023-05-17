@@ -19,7 +19,7 @@ namespace SavaDev.Files.Service.Services
 
         public async Task<FilesUploadResult> SendInfo(FilesDataModel info)
         {
-            var resultModel = await _fileProcessingService.UploadFilePreventDuplicate(info.Content);
+            var resultModel = await _fileProcessingService.UploadFilePreventDuplicate(info);
 
             return new FilesUploadResult { SavedFile = resultModel };
         }

@@ -41,7 +41,7 @@ namespace SavaDev.Libs.Tests.Base.Data.Services
 
             // Assert
             Assert.IsType<FakeDocumentModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as FakeDocumentModel;
+            var model = result.GetProcessedObject<FakeDocumentModel>();
             Assert.Equal(legalDocumentModel.PermName, model.PermName);
             Assert.Equal(DocumentStatus.Draft, model.Status);
             Assert.False(model.IsDeleted);
@@ -79,7 +79,7 @@ namespace SavaDev.Libs.Tests.Base.Data.Services
 
             // Assert
             Assert.IsType<FakeDocumentModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as FakeDocumentModel;
+            var model = result.GetProcessedObject<FakeDocumentModel>();
             Assert.Equal(legalDocumentModel.PermName, model.PermName);
             Assert.Equal(legalDocumentModel.Culture, model.Culture);
             Assert.Equal(DocumentStatus.Draft, model.Status);
@@ -118,7 +118,7 @@ namespace SavaDev.Libs.Tests.Base.Data.Services
 
             // Assert
             Assert.IsType<FakeDocumentModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as FakeDocumentModel;
+            var model = result.GetProcessedObject<FakeDocumentModel>();
             Assert.Equal(legalDocumentModel.PermName, model.PermName);
             Assert.Equal(legalDocumentModel.Culture, model.Culture);
             Assert.Equal(DocumentStatus.Draft, model.Status);
@@ -159,7 +159,7 @@ namespace SavaDev.Libs.Tests.Base.Data.Services
 
             // Assert
             Assert.IsType<FakeDocumentModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as FakeDocumentModel;
+            var model = result.GetProcessedObject<FakeDocumentModel>();
             Assert.Equal(oldModel.PermName, model.PermName);
             Assert.Equal(oldModel.Culture, model.Culture);
             Assert.Equal(DocumentStatus.Draft, model.Status);

@@ -18,6 +18,8 @@ namespace Sava.Media.Data.Entities
 
         public string OwnerId { get; set; }
 
+        public DateTime Created { get; set; }
+
         public virtual ICollection<ImageFile> Files { get; set; }
     }
 }

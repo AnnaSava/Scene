@@ -1,6 +1,7 @@
 ﻿using SavaDev.Files.Data.Contract;
 using SavaDev.Files.Data.Contract.Models;
 using SavaDev.Files.Service.Contract;
+using SavaDev.Files.Service.Contract.Models;
 using SavaDev.Infrastructure.Util.ImageEditor;
 
 namespace SavaDev.Files.Service.Services
@@ -20,9 +21,9 @@ namespace SavaDev.Files.Service.Services
             _hashHelper = hashHelper;
         }
 
-        public async Task<FileModel> UploadFilePreventDuplicate(byte[] content)
+        public async Task<FileModel> UploadFilePreventDuplicate(FilesDataModel model)
         {
-            var fileModel = MakeFileModelToUpload(content);
+            var fileModel = MakeFileModelToUpload(model);
 
 #if !DEBUG
 
@@ -56,8 +57,9 @@ namespace SavaDev.Files.Service.Services
             return uploadedFile;
         }
 
-        private FileModel MakeFileModelToUpload(byte[] content)
+        private FileModel MakeFileModelToUpload(FilesDataModel filesModel)
         {
+            var content = filesModel.Content;
             var mimeType = _mimeTypeChecker.GetMimeType(content);
 
             var model = new FileModel
@@ -68,9 +70,10 @@ namespace SavaDev.Files.Service.Services
                 Sha1 = _hashHelper.GetSha1Hash(content),
                 Ext = _mimeTypeChecker.GetExtention(mimeType),
                 Size = content.Length,
-                // TODO Name наверно сделать nullable, овнера прокидывать из сервиса изображений (это юзер, загружающий фото)
+                DateUploaded = DateTime.UtcNow,
+                // TODO Name наверно сделать nullable
                 Name = "",
-                Owner = ""
+                Owner = filesModel.OwnerId
             };
 
             return model;

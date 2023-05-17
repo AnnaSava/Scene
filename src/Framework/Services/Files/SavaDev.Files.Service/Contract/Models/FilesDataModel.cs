@@ -10,9 +10,12 @@ namespace SavaDev.Files.Service.Contract.Models
     {
         public byte[] Content { get; set; }
 
-        public FilesDataModel(byte[] content)
+        public string OwnerId { get; set; }
+
+        public FilesDataModel(byte[] content, string ownerId)
         {
             Content = content;
+            OwnerId = ownerId;
         }
     }
 }

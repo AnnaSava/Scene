@@ -21,6 +21,10 @@ namespace SavaDev.Media.Front
             CreateMap<ImageFileViewModel, ImageFileModel>();
             CreateMap<ImageFileModel, ImageFileViewModel>();
 
+            CreateMap<ImageFormModel, ImageViewModel>();
+
+            CreateMap<ImageFileFormModel, ImageFileViewModel>();
+
             CreateMap<ImageFilterViewModel, ImageFilterModel>();
             CreateMap<ImageFilterModel, ImageFilterViewModel>();
 

@@ -6,6 +6,7 @@ using Sava.Media.Data.Contract.Models;
 using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Front.Registry;
 using SavaDev.Base.Front.Services;
+using SavaDev.Base.Users.Security;
 using SavaDev.Files.Data.Contract.Models;
 using SavaDev.Files.Service.Contract;
 using SavaDev.Files.Service.Contract.Models;
@@ -20,6 +21,7 @@ namespace Sava.Media.Services
         private readonly IGalleryService _galleryService;
         private readonly IFilesUploader _fileUploader;
         private readonly ImageEditor _imageEditor;
+        private readonly IUserProvider _userProvider;
         private readonly IMapper _mapper;
 
         private readonly Dictionary<string, (int, int, bool)> ImageKinds;
@@ -28,12 +30,14 @@ namespace Sava.Media.Services
             IGalleryService galleryService,
             ImageEditor imageEditor,
             IFilesUploader fileUploader,
+            IUserProvider userProvider,
             IMapper mapper)
         {
             _imageService = imageService;
             _galleryService = galleryService;
             _imageEditor = imageEditor;
             _fileUploader = fileUploader;
+            _userProvider = userProvider;
             _mapper = mapper;
 
             ImageKinds = new ImageResizeKinds().GetImageKinds();
@@ -69,7 +73,7 @@ namespace Sava.Media.Services
         {
             var storedImageFiles = new Dictionary<string, FileModel>();
 
-            var uploadedFileModel = await _fileUploader.SendInfo(new FilesDataModel(content));
+            var uploadedFileModel = await _fileUploader.SendInfo(new FilesDataModel(content, _userProvider.UserId));
             storedImageFiles.Add("Original", uploadedFileModel.SavedFile);
 
             var resizedFileModel = await ResizeAndSave(uploadedFileModel.SavedFile);
@@ -78,19 +82,18 @@ namespace Sava.Media.Services
             var thumbFileModel = await CropAndSave(resizedFileModel.SavedFile);
             storedImageFiles.Add("Thumb", thumbFileModel.SavedFile);
 
-            var imageModel = new ImageModel
+            var imageModel = new ImageFormModel
             {
                 PreviewId = thumbFileModel.SavedFile.Id.ToString(),
-                Files = new List<ImageFileModel>(),
-                // TODO пробрасывать через параметры
-                OwnerId = ""
+                Files = new List<ImageFileFormModel>(),
+                OwnerId = _userProvider.UserId
             };
 
             foreach (var image in storedImageFiles)
             {
                 var size = _imageEditor.GetSize(image.Value.Content);
 
-                var imgFile = new ImageFileModel
+                var imgFile = new ImageFileFormModel
                 {
                     FileId = image.Value.Id.ToString(),
                     Kind = image.Key,
@@ -106,10 +109,10 @@ namespace Sava.Media.Services
             else
             {
                 // TODO проперти галереи
-                var result = await _galleryService.Create(new GalleryModel { OwnerId = "", AttachedToId = "", Module = "", Entity = "" });
+                var result = await _galleryService.Create(new GalleryModel { OwnerId = _userProvider.UserId, AttachedToId = "", Module = "", Entity = "" });
                 if (result == null)
                     throw new Exception("Error creating gallery");
-                imageModel.GalleryId = ((GalleryModel)result.ProcessedObject).Id;
+                imageModel.GalleryId = result.GetProcessedObject<GalleryModel>().Id;
             }
 
             var createdImage = await _imageService.Create(imageModel);
@@ -123,7 +126,7 @@ namespace Sava.Media.Services
 
             var content = ms.ToArray();
 
-            var saved = await _fileUploader.SendInfo(new FilesDataModel(content));
+            var saved = await _fileUploader.SendInfo(new FilesDataModel(content, _userProvider.UserId));
             return saved;
         }
 
@@ -134,7 +137,7 @@ namespace Sava.Media.Services
 
             var content = ms.ToArray();
 
-            var saved = await _fileUploader.SendInfo(new FilesDataModel(content));
+            var saved = await _fileUploader.SendInfo(new FilesDataModel(content, _userProvider.UserId));
             return saved;
         }
     }

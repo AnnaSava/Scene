@@ -17,11 +17,16 @@ namespace SavaDev.Base.Data.Services
 
         public bool NotChanged { get { return Rows == 0; } }
 
+        [Obsolete]
         public object? ProcessedObject { get; }
+
+        public IList<object>? ProcessedObjects { get; set; } = new List<object>();
+
         [Obsolete]
         public object? Model { get; }
 
-        public (int, object?) Details { get { return (Rows, ProcessedObject); } } 
+        [Obsolete]
+        public (int, object?) Details { get { return (Rows, ProcessedObject); } }
 
         public List<object> ModelIds { get; set; } = new List<object>();
 
@@ -36,22 +41,25 @@ namespace SavaDev.Base.Data.Services
 
         public OperationResult(int rows) { Rows = rows; }
 
-        public OperationResult(IFormModel processedObject)            
+        public OperationResult(IFormModel processedObject)
         {
             Rows = 1;
             ProcessedObject = processedObject;
+            ProcessedObjects.Add(processedObject);
         }
 
         public OperationResult(int rows, IFormModel processedObject)
             : this(rows)
         {
             ProcessedObject = processedObject;
+            ProcessedObjects.Add(processedObject);
         }
 
         public OperationResult(int rows, object processedObject)
            : this(rows)
         {
             ProcessedObject = processedObject;
+            ProcessedObjects.Add(processedObject);
         }
 
         public OperationResult(int rows, IEnumerable<object> modelIds)
@@ -70,6 +78,7 @@ namespace SavaDev.Base.Data.Services
             : this(rows)
         {
             ProcessedObject = processedObject;
+            ProcessedObjects.Add(processedObject);
             Exceptions.Add(ex);
         }
 
@@ -77,6 +86,7 @@ namespace SavaDev.Base.Data.Services
         {
             Rows = (int)rows;
             ProcessedObject = processedObject;
+            ProcessedObjects.Add(processedObject);
             Exceptions.Add(ex);
         }
 
@@ -84,6 +94,14 @@ namespace SavaDev.Base.Data.Services
         {
             var strings = Exceptions.Select(m => m.Message);
             return string.Join('\n', strings);
+        }
+
+        public T? GetProcessedObject<T>() where T : class
+        {
+            if (!ProcessedObjects.Any()) return null;
+
+            var obj = ProcessedObjects.First() as T;
+            return obj;
         }
     }
 
