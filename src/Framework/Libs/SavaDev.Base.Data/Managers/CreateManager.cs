@@ -117,7 +117,7 @@ namespace SavaDev.Base.Data.Managers
         {
             var addResult = await _dbContext.Set<TEntity>().AddAsync(entity);
             var rows = await _dbContext.SaveChangesAsync();
-            return new OperationResult(rows); // не уверена, что так красиво
+            return new OperationResult(rows); //TODO не уверена, что так красиво
         }
     }
 }

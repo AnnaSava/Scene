@@ -7,6 +7,7 @@ using SavaDev.Base.Data.Services;
 using SavaDev.Base.User.Data.Entities;
 using SavaDev.Base.User.Data.Manager;
 using SavaDev.Base.User.Data.Models.Interfaces;
+using SavaDev.Base.Users.Data.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace SavaDev.Base.User.Data.Services
 {
     public abstract class BaseRoleDbService<TEntity, TFormModel>
         where TEntity : BaseRole, new()
-        where TFormModel : BaseRoleModel
+        where TFormModel : BaseRoleFormModel
     {
         #region Protected Fields: Dependencies
 

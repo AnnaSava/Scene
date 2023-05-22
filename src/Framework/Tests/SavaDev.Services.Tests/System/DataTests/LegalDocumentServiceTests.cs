@@ -50,8 +50,8 @@ namespace SavaDev.Services.Tests.System.DataTests
             var result = await _legalDocumentService.Create(legalDocumentModel);            
 
             // Assert
-            Assert.IsType<LegalDocumentModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as LegalDocumentModel;
+            Assert.IsType<LegalDocumentModel>(result.GetProcessedObject());
+            var model = result.GetProcessedObject<LegalDocumentModel>();
             Assert.Equal(legalDocumentModel.PermName, model.PermName);
             Assert.Equal(DocumentStatus.Draft, model.Status);
             Assert.False(model.IsDeleted);
@@ -88,8 +88,8 @@ namespace SavaDev.Services.Tests.System.DataTests
             var result = await _legalDocumentService.CreateTranslation(legalDocumentModel);            
 
             // Assert
-            Assert.IsType<LegalDocumentModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as LegalDocumentModel;
+            Assert.IsType<LegalDocumentModel>(result.GetProcessedObject());
+            var model = result.GetProcessedObject<LegalDocumentModel>();
             Assert.Equal(legalDocumentModel.PermName, model.PermName);
             Assert.Equal(legalDocumentModel.Culture, model.Culture);
             Assert.Equal(DocumentStatus.Draft, model.Status);
@@ -127,8 +127,8 @@ namespace SavaDev.Services.Tests.System.DataTests
             var result = await _legalDocumentService.CreateVersion(legalDocumentModel);
             
             // Assert
-            Assert.IsType<LegalDocumentModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as LegalDocumentModel;
+            Assert.IsType<LegalDocumentModel>(result.GetProcessedObject());
+            var model = result.GetProcessedObject<LegalDocumentModel>();
             Assert.Equal(legalDocumentModel.PermName, model.PermName);
             Assert.Equal(legalDocumentModel.Culture, model.Culture);
             Assert.Equal(DocumentStatus.Draft, model.Status);
@@ -168,8 +168,8 @@ namespace SavaDev.Services.Tests.System.DataTests
             var result = await _legalDocumentService.Update(legalDocumentModel.Id, legalDocumentModel);
             
             // Assert
-            Assert.IsType<LegalDocumentModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as LegalDocumentModel;
+            Assert.IsType<LegalDocumentModel>(result.GetProcessedObject());
+            var model = result.GetProcessedObject<LegalDocumentModel>();
             Assert.Equal(oldModel.PermName, model.PermName);
             Assert.Equal(oldModel.Culture, model.Culture);
             Assert.Equal(DocumentStatus.Draft, model.Status);

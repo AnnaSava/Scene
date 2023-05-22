@@ -8,7 +8,7 @@ using SavaDev.Users.Data.Entities;
 
 namespace SavaDev.Users.Data
 {
-    public class RoleService : BaseRoleDbService<Role, RoleModel>, IRoleService
+    public class RoleService : BaseRoleDbService<Role, RoleFormModel>, IRoleService
     {
         public RoleService(
             IDbContext dbContext,

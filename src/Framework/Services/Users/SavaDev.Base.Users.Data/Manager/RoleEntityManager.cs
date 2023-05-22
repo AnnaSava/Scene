@@ -11,6 +11,7 @@ using SavaDev.Base.Data.Services;
 using SavaDev.Base.User.Data.Entities;
 using SavaDev.Base.User.Data.Models.Interfaces;
 using SavaDev.Base.Users.Data.Manager;
+using SavaDev.Base.Users.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +48,7 @@ namespace SavaDev.Base.User.Data.Manager
 
     public class RoleEntityManager<TKey, TEntity, TFormModel> : RoleEntityManager<TKey, TEntity>
         where TEntity : BaseRole, new()
-        where TFormModel : BaseRoleModel
+        where TFormModel : BaseRoleFormModel
     {
         const string PermissionClaimType = "permission";
         private readonly IMapper _mapper;

@@ -23,11 +23,9 @@ namespace SavaDev.Base.Front.Services
             ProcessedObjects.Add(processedObject);
         }
 
-        [Obsolete]
-        public OperationViewResult((int, object) details)
+        public OperationViewResult(object processedObject) : this(1)
         {
-            Rows = details.Item1;
-            ProcessedObjects.Add(details.Item2);
+            ProcessedObjects.Add(processedObject);
         }
 
         public T? GetProcessedObject<T>() where T : class

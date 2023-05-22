@@ -40,7 +40,7 @@ namespace SavaDev.Libs.Tests.Base.Data.Services
             var result = await _fakeBaseDocumentService.Create(legalDocumentModel);
 
             // Assert
-            Assert.IsType<FakeDocumentModel>(result.ProcessedObject);
+            Assert.IsType<FakeDocumentModel>(result.GetProcessedObject());
             var model = result.GetProcessedObject<FakeDocumentModel>();
             Assert.Equal(legalDocumentModel.PermName, model.PermName);
             Assert.Equal(DocumentStatus.Draft, model.Status);
@@ -78,7 +78,7 @@ namespace SavaDev.Libs.Tests.Base.Data.Services
             var result = await _fakeBaseDocumentService.CreateTranslation(legalDocumentModel);
 
             // Assert
-            Assert.IsType<FakeDocumentModel>(result.ProcessedObject);
+            Assert.IsType<FakeDocumentModel>(result.GetProcessedObject());
             var model = result.GetProcessedObject<FakeDocumentModel>();
             Assert.Equal(legalDocumentModel.PermName, model.PermName);
             Assert.Equal(legalDocumentModel.Culture, model.Culture);
@@ -117,7 +117,7 @@ namespace SavaDev.Libs.Tests.Base.Data.Services
             var result = await _fakeBaseDocumentService.CreateVersion(legalDocumentModel);
 
             // Assert
-            Assert.IsType<FakeDocumentModel>(result.ProcessedObject);
+            Assert.IsType<FakeDocumentModel>(result.GetProcessedObject());
             var model = result.GetProcessedObject<FakeDocumentModel>();
             Assert.Equal(legalDocumentModel.PermName, model.PermName);
             Assert.Equal(legalDocumentModel.Culture, model.Culture);
@@ -158,7 +158,7 @@ namespace SavaDev.Libs.Tests.Base.Data.Services
             var result = await _fakeBaseDocumentService.Update(legalDocumentModel.Id, legalDocumentModel);
 
             // Assert
-            Assert.IsType<FakeDocumentModel>(result.ProcessedObject);
+            Assert.IsType<FakeDocumentModel>(result.GetProcessedObject());
             var model = result.GetProcessedObject<FakeDocumentModel>();
             Assert.Equal(oldModel.PermName, model.PermName);
             Assert.Equal(oldModel.Culture, model.Culture);

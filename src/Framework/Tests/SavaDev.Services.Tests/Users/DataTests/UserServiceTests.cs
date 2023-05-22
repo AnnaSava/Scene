@@ -55,8 +55,8 @@ namespace SavaDev.Services.Tests.Users.DataTests
             var result = await _userDbService.Create(userModel, password);
 
             // Assert
-            Assert.IsType<UserFormModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as UserFormModel;
+            Assert.IsType<UserFormModel>(result.GetProcessedObject());
+            var model = result.GetProcessedObject<UserFormModel>();
             Assert.Equal(userModel.Login, model.Login);           
         }
 
@@ -71,8 +71,8 @@ namespace SavaDev.Services.Tests.Users.DataTests
             var result = await _userDbService.Update(userModel.Id, userModel);
 
             // Assert
-            Assert.IsType<UserFormModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as UserFormModel;
+            Assert.IsType<UserFormModel>(result.GetProcessedObject());
+            var model = result.GetProcessedObject<UserFormModel>();
             Assert.Equal(userModel.Login, model.Login);
             Assert.True(updated < model.LastUpdated);
         }
@@ -101,8 +101,8 @@ namespace SavaDev.Services.Tests.Users.DataTests
             var result = await _userDbService.Delete(id);
 
             // Assert
-            Assert.IsType<UserFormModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as UserFormModel;
+            Assert.IsType<UserFormModel>(result.GetProcessedObject());
+            var model = result.GetProcessedObject<UserFormModel>();
             Assert.True(model.IsDeleted);
             Assert.True(updated < model.LastUpdated);
         }
@@ -118,8 +118,8 @@ namespace SavaDev.Services.Tests.Users.DataTests
             var result = await _userDbService.Restore(id);
 
             // Assert
-            Assert.IsType<UserFormModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as UserFormModel;
+            Assert.IsType<UserFormModel>(result.GetProcessedObject());
+            var model = result.GetProcessedObject<UserFormModel>();
             Assert.False(model.IsDeleted);
             Assert.True(updated < model.LastUpdated);
         }

@@ -3,19 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SavaDev.Base.Data.Exceptions;
 using SavaDev.Libs.UnitTestingHelpers;
-using SavaDev.Services.Tests.System.Data;
-using SavaDev.Services.Tests.Users;
-using SavaDev.General.Data.Services;
-using SavaDev.General.Data;
 using SavaDev.Users.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
-using SavaDev.Services.Tests.Users.DataTests.Data;
-using SavaDev.Users.Data.Entities;
 using SavaDev.Users.Data.Contract.Models;
+using SavaDev.Users.Data.Entities;
 
 namespace SavaDev.Services.Tests.Users.DataTests
 {
@@ -50,14 +40,14 @@ namespace SavaDev.Services.Tests.Users.DataTests
         public async Task Create_Ok()
         {
             // Arrange
-            var roleModel = new RoleModel() { Name = "any", Permissions = new List<string> { "user.create" } };
+            var roleModel = new RoleFormModel() { Name = "any", Permissions = new List<string> { "user.create" } };
 
             // Act
             var result = await _roleDbService.Create(roleModel);
 
             // Assert
-            Assert.IsType<RoleModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as RoleModel;
+            Assert.IsType<RoleFormModel>(result.GetProcessedObject());
+            var model = result.GetProcessedObject<RoleFormModel>();
             Assert.Equal(roleModel.Name, model.Name);
             Assert.Equal(1, _context.RoleClaims.Count(m => m.RoleId == model.Id && m.ClaimType == "permission" && m.ClaimValue == "user.create"));
         }
@@ -66,7 +56,7 @@ namespace SavaDev.Services.Tests.Users.DataTests
         public async Task Create_AlreadyExists()
         {
             // Arrange
-            var roleModel = new RoleModel() { Name = "admin", Permissions = new List<string> { "user.create" } };
+            var roleModel = new RoleFormModel() { Name = "admin", Permissions = new List<string> { "user.create" } };
 
             // Act
             async Task action() => await _roleDbService.Create(roleModel);
@@ -79,14 +69,14 @@ namespace SavaDev.Services.Tests.Users.DataTests
         public async Task Create_NoPermissions_Ok()
         {
             // Arrange
-            var roleModel = new RoleModel() { Name = "any" };
+            var roleModel = new RoleFormModel() { Name = "any" };
 
             // Act
             var result = await _roleDbService.Create(roleModel);
 
             // Assert
-            Assert.IsType<RoleModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as RoleModel;
+            Assert.IsType<RoleFormModel>(result.GetProcessedObject());
+            var model = result.GetProcessedObject<RoleFormModel>();
             Assert.Equal(roleModel.Name, model.Name);
             Assert.False(_context.RoleClaims.Any(m => m.RoleId == model.Id && m.ClaimType == "permission"));
         }
@@ -95,14 +85,14 @@ namespace SavaDev.Services.Tests.Users.DataTests
         public async Task Create_DuplicatePermissions_Distinct_Ok()
         {
             // Arrange
-            var roleModel = new RoleModel() { Name = "any", Permissions = new List<string> { "user.create", "user.create" } };
+            var roleModel = new RoleFormModel() { Name = "any", Permissions = new List<string> { "user.create", "user.create" } };
 
             // Act
             var result = await _roleDbService.Create(roleModel);
 
             // Assert
-            Assert.IsType<RoleModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as RoleModel;
+            Assert.IsType<RoleFormModel>(result.GetProcessedObject());
+            var model = result.GetProcessedObject<RoleFormModel>();
             Assert.Equal(roleModel.Name, model.Name);
             Assert.Equal(1, _context.RoleClaims.Count(m => m.RoleId == model.Id && m.ClaimType == "permission" && m.ClaimValue == "user.create"));
         }
@@ -111,14 +101,14 @@ namespace SavaDev.Services.Tests.Users.DataTests
         public async Task Update_Ok()
         {
             // Arrange
-            var roleModel = new RoleModel() { Id = 1, Name = "new admin", Permissions = new List<string> { "user.create", "user.delete" } };
+            var roleModel = new RoleFormModel() { Id = 1, Name = "new admin", Permissions = new List<string> { "user.create", "user.delete" } };
 
             // Act
             var result = await _roleDbService.Update(roleModel.Id, roleModel);
 
             // Assert
-            Assert.IsType<RoleModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as RoleModel;
+            Assert.IsType<RoleFormModel>(result.GetProcessedObject());
+            var model = result.GetProcessedObject<RoleFormModel>();
             Assert.Equal(roleModel.Id, model.Id);
             Assert.Equal(roleModel.Name, model.Name);
             Assert.Equal(1, _context.RoleClaims.Count(m => m.RoleId == model.Id && m.ClaimType == "permission" && m.ClaimValue == "user.create"));
@@ -130,7 +120,7 @@ namespace SavaDev.Services.Tests.Users.DataTests
         public async Task Update_NotFound()
         {
             // Arrange
-            var roleModel = new RoleModel() { Id = 100, Name = "new admin" };
+            var roleModel = new RoleFormModel() { Id = 100, Name = "new admin" };
 
             // Act
             async Task action() => await _roleDbService.Update(roleModel.Id, roleModel);
@@ -143,7 +133,7 @@ namespace SavaDev.Services.Tests.Users.DataTests
         public async Task Update_NameAlreadyExists()
         {
             // Arrange
-            var roleModel = new RoleModel() { Id = 1, Name = "moderator" };
+            var roleModel = new RoleFormModel() { Id = 1, Name = "moderator" };
 
             // Act
             async Task action() => await _roleDbService.Update(roleModel.Id, roleModel);
@@ -156,14 +146,14 @@ namespace SavaDev.Services.Tests.Users.DataTests
         public async Task Update_NameNotChanged_Ok()
         {
             // Arrange
-            var roleModel = new RoleModel() { Id = 1, Name = "admin", Permissions = new List<string> { "user.create", "user.delete" } };
+            var roleModel = new RoleFormModel() { Id = 1, Name = "admin", Permissions = new List<string> { "user.create", "user.delete" } };
 
             // Act
             var result = await _roleDbService.Update(roleModel.Id, roleModel);
 
             // Assert
-            Assert.IsType<RoleModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as RoleModel;
+            Assert.IsType<RoleFormModel>(result.GetProcessedObject());
+            var model = result.GetProcessedObject<RoleFormModel>();
             Assert.Equal(roleModel.Id, model.Id);
             Assert.Equal(roleModel.Name, model.Name);
         }
@@ -172,14 +162,14 @@ namespace SavaDev.Services.Tests.Users.DataTests
         public async Task Update_NoPermissions_Ok()
         {
             // Arrange
-            var roleModel = new RoleModel() { Id = 1, Name = "new admin" };
+            var roleModel = new RoleFormModel() { Id = 1, Name = "new admin" };
 
             // Act
             var result = await _roleDbService.Update(roleModel.Id, roleModel);
 
             // Assert
-            Assert.IsType<RoleModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as RoleModel;
+            Assert.IsType<RoleFormModel>(result.GetProcessedObject());
+            var model = result.GetProcessedObject<RoleFormModel>();
             Assert.Equal(roleModel.Id, model.Id);
             Assert.Equal(roleModel.Name, model.Name);
             Assert.False(_context.RoleClaims.Any(m => m.RoleId == model.Id && m.ClaimType == "permission"));
@@ -189,14 +179,14 @@ namespace SavaDev.Services.Tests.Users.DataTests
         public async Task Update_DuplicatePermissions_Distinct_Ok()
         {
             // Arrange
-            var roleModel = new RoleModel() { Id = 1, Name = "new admin", Permissions = new List<string> { "user.create", "user.create", "user.delete", "user.delete" } };
+            var roleModel = new RoleFormModel() { Id = 1, Name = "new admin", Permissions = new List<string> { "user.create", "user.create", "user.delete", "user.delete" } };
 
             // Act
             var result = await _roleDbService.Update(roleModel.Id, roleModel);
 
             // Assert
-            Assert.IsType<RoleModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as RoleModel;
+            Assert.IsType<RoleFormModel>(result.GetProcessedObject());
+            var model = result.GetProcessedObject<RoleFormModel>();
             Assert.Equal(roleModel.Id, model.Id);
             Assert.Equal(roleModel.Name, model.Name);
             Assert.Equal(1, _context.RoleClaims.Count(m => m.RoleId == model.Id && m.ClaimType == "permission" && m.ClaimValue == "user.create"));
@@ -215,8 +205,8 @@ namespace SavaDev.Services.Tests.Users.DataTests
             var result = await _roleDbService.Delete(id);
 
             // Assert
-            Assert.IsType<RoleModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as RoleModel;
+            Assert.IsType<RoleModel>(result.GetProcessedObject());
+            var model = result.GetProcessedObject<RoleModel>();
             Assert.True(model.IsDeleted);
             Assert.True(updated <= model.LastUpdated);
         }
@@ -232,8 +222,8 @@ namespace SavaDev.Services.Tests.Users.DataTests
             var result = await _roleDbService.Restore(id);
 
             // Assert
-            Assert.IsType<RoleModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as RoleModel;
+            Assert.IsType<RoleModel>(result.GetProcessedObject());
+            var model = result.GetProcessedObject<RoleModel>();
             Assert.False(model.IsDeleted);
             Assert.True(updated <= model.LastUpdated);
         }

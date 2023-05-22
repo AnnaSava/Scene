@@ -17,16 +17,7 @@ namespace SavaDev.Base.Data.Services
 
         public bool NotChanged { get { return Rows == 0; } }
 
-        [Obsolete]
-        public object? ProcessedObject { get; }
-
         public IList<object>? ProcessedObjects { get; set; } = new List<object>();
-
-        [Obsolete]
-        public object? Model { get; }
-
-        [Obsolete]
-        public (int, object?) Details { get { return (Rows, ProcessedObject); } }
 
         public List<object> ModelIds { get; set; } = new List<object>();
 
@@ -41,25 +32,21 @@ namespace SavaDev.Base.Data.Services
 
         public OperationResult(int rows) { Rows = rows; }
 
-        public OperationResult(IFormModel processedObject)
+        public OperationResult(IFormModel processedObject) : this(1)
         {
-            Rows = 1;
-            ProcessedObject = processedObject;
-            ProcessedObjects.Add(processedObject);
+            ProcessedObjects?.Add(processedObject);
         }
 
         public OperationResult(int rows, IFormModel processedObject)
             : this(rows)
         {
-            ProcessedObject = processedObject;
-            ProcessedObjects.Add(processedObject);
+            ProcessedObjects?.Add(processedObject);
         }
 
         public OperationResult(int rows, object processedObject)
            : this(rows)
-        {
-            ProcessedObject = processedObject;
-            ProcessedObjects.Add(processedObject);
+        {           
+            ProcessedObjects?.Add(processedObject);
         }
 
         public OperationResult(int rows, IEnumerable<object> modelIds)
@@ -77,16 +64,14 @@ namespace SavaDev.Base.Data.Services
         public OperationResult(int rows, object processedObject, OperationExceptionInfo ex)
             : this(rows)
         {
-            ProcessedObject = processedObject;
-            ProcessedObjects.Add(processedObject);
+            ProcessedObjects?.Add(processedObject);
             Exceptions.Add(ex);
         }
 
         public OperationResult(DbOperationRows rows, object processedObject, OperationExceptionInfo ex)
         {
             Rows = (int)rows;
-            ProcessedObject = processedObject;
-            ProcessedObjects.Add(processedObject);
+            ProcessedObjects?.Add(processedObject);
             Exceptions.Add(ex);
         }
 
@@ -98,42 +83,31 @@ namespace SavaDev.Base.Data.Services
 
         public T? GetProcessedObject<T>() where T : class
         {
-            if (!ProcessedObjects.Any()) return null;
+            if (ProcessedObjects == null || !ProcessedObjects.Any()) return null;
 
             var obj = ProcessedObjects.First() as T;
             return obj;
         }
+
+        public object? GetProcessedObject()
+        {
+            if (ProcessedObjects == null || !ProcessedObjects.Any()) return null;
+
+            var obj = ProcessedObjects.First();
+            return obj;
+        }
     }
 
+    [Obsolete]
     public class OperationResult<TModel> : OperationResult
     {
         public List<TModel> Models { get; set; } = new List<TModel>();
 
-        public TModel Model { get { return Models.First(); } }
-
-        public object Model0 { get { return Models.First(); } }
-
+        [Obsolete]
         public OperationResult(int rows, TModel model)
             : base(rows)
         {
             Models.Add(model);
-        }
-
-        public OperationResult(int rows, IEnumerable<TModel> models)
-            : base(rows)
-        {
-            Models.AddRange(models);
-        }
-
-        public OperationResult(int rows, TModel model, OperationExceptionInfo ex)
-            : base(rows)
-        {
-            Models.Add(model);
-            Exceptions.Add(ex);
-        }
-
-        public OperationResult(OperationResult res) : base(res)
-        {
         }
     }
 }

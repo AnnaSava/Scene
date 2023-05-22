@@ -127,13 +127,13 @@ namespace SavaDev.Scheme.Front.Services
             var resultModel = model.Id == 0
                 ? await _columnConfigService.Create(newModel)
                 : await _columnConfigService.Update(model.Id, newModel);
-            return new OperationViewResult(resultModel.Details);
+            return new OperationViewResult(resultModel.GetProcessedObject());
         }
 
         public async Task<OperationViewResult> RemoveConfig(long id)
         {
             var result = await _columnConfigService.Remove(id);
-            return new OperationViewResult(result.Details);
+            return new OperationViewResult(result.GetProcessedObject());
         }
 
         public async Task<RegistryConfigViewModel> GetLastConfig(Guid tableId)
@@ -153,13 +153,13 @@ namespace SavaDev.Scheme.Front.Services
             }
 
             var resultModel = await _filterService.Create(newModel);
-            return new OperationViewResult(resultModel.Details);
+            return new OperationViewResult(resultModel.GetProcessedObject());
         }
 
         public async Task<OperationViewResult> RemoveFilter(long id)
         {
             var result = await _filterService.Remove(id);
-            return new OperationViewResult(result.Rows, result.ProcessedObject);
+            return new OperationViewResult(result.GetProcessedObject());
         }
     }
 }

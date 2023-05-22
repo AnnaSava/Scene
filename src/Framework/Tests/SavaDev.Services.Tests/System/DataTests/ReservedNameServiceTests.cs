@@ -48,8 +48,8 @@ namespace SavaDev.Services.Tests.System.DataTests
             var result = await _reservedNameDbService.Create(rnModel);            
 
             // Assert
-            Assert.IsType<ReservedNameModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as ReservedNameModel;
+            Assert.IsType<ReservedNameModel>(result.GetProcessedObject());
+            var model = result.GetProcessedObject<ReservedNameModel>();
             Assert.Equal(text.ToLower().Trim(), model.Text);
         }
 
@@ -119,8 +119,8 @@ namespace SavaDev.Services.Tests.System.DataTests
             var result = await _reservedNameDbService.Update(rnModel);
 
             //Assert
-            Assert.IsType<ReservedNameModel>(result.ProcessedObject);
-            var model = result.ProcessedObject as ReservedNameModel;
+            Assert.IsType<ReservedNameModel>(result.GetProcessedObject());
+            var model = result.GetProcessedObject<ReservedNameModel>();
             Assert.Equal(rnModel.IncludePlural, model.IncludePlural);
         }
 

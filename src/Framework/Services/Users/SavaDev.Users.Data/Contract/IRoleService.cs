@@ -7,9 +7,9 @@ namespace SavaDev.Users.Data
 {
     public interface IRoleService 
     {
-        Task<OperationResult> Create(RoleModel model);
+        Task<OperationResult> Create(RoleFormModel model);
 
-        Task<OperationResult> Update(long id, RoleModel model);
+        Task<OperationResult> Update(long id, RoleFormModel model);
 
         Task<OperationResult> Delete(long id);
 
