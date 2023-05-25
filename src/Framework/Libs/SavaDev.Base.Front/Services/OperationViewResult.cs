@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SavaDev.Base.Data.Models.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,6 +35,14 @@ namespace SavaDev.Base.Front.Services
 
             var obj = ProcessedObjects.First() as T;
             return obj;
+        }
+
+        public object? GetProcessedObjectId<T>() where T: class, IModel<long>
+        {
+            var obj = GetProcessedObject<T>();
+            if(obj == null) return null;
+
+            return obj.Id;
         }
     }
 }
