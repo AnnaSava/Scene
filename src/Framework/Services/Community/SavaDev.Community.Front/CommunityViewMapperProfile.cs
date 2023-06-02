@@ -11,8 +11,8 @@ namespace SavaDev.Community.Front
             CreateMap<GroupViewModel, GroupModel>();
             CreateMap<GroupModel, GroupViewModel>();
 
-            CreateMap<GroupSavingModel, GroupModel>();
-            CreateMap<GroupModel, GroupSavingModel>();
+            CreateMap<GroupFormViewModel, GroupModel>();
+            CreateMap<GroupModel, GroupFormViewModel>();
 
             CreateMap<SubscriptionViewModel, SubscriptionModel>();
             CreateMap<SubscriptionModel, SubscriptionViewModel>();

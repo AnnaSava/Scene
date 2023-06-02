@@ -1,4 +1,6 @@
-﻿using SavaDev.Base.Data.Services;
+﻿using SavaDev.Base.Data.Models.Interfaces;
+using SavaDev.Base.Data.Services;
+using SavaDev.Base.Data.Services.Interfaces;
 using SavaDev.Community.Front.Contract.Models;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,11 @@ namespace SavaDev.Community.Front.Services.Contract
 {
     public interface IGroupProcessor<TUserModel>
     {
-        Task<OperationResult> CreateCommunity(GroupSavingModel model);
+        Task<OperationResult> CreateInitialGroup<T, TService>(T resultModel, TService service)
+            where T : IHavingGroupModel<long>
+            where TService : IHavingGroupService;
+
+        Task<OperationResult> CreateCommunity(GroupFormViewModel model);
 
         Task CreateSubscription(SubscriptionFormViewModel model);
 

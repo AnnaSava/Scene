@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using SavaDev.Base.Data.Models.Interfaces;
+using SavaDev.Base.Data.Models;
 using SavaDev.Base.Data.Services;
+using SavaDev.Base.Data.Services.Interfaces;
 using SavaDev.Base.User.Data.Services.Interfaces;
 using SavaDev.Community.Data.Contract;
 using SavaDev.Community.Data.Contract.Models;
@@ -32,7 +35,29 @@ namespace SavaDev.Community.Front.Services
             _mapper = mapper;
         }
 
-        public async Task<OperationResult> CreateCommunity(GroupSavingModel model)
+        public async Task<OperationResult> CreateInitialGroup<T, TService>(T resultModel, TService service)
+            where T : IHavingGroupModel<long>
+            where TService : IHavingGroupService
+        {
+            var placement = new ModelPlacement(typeof(T));
+
+            var newCommunity = new GroupFormViewModel
+            {
+                AttachedToId = resultModel.Id.ToString(),
+                Entity = placement.Entity,
+                Module = placement.Module,
+                OwnerId = resultModel.OwnerId,
+            };
+            var result = await CreateCommunity(newCommunity);
+            var resultCommunity = result.GetProcessedObject<GroupModel>();
+
+            var res = await service.SetGroupId(resultModel.Id, resultCommunity.Id);
+            resultModel.GroupId = resultCommunity.Id;
+
+            return res;
+        }
+
+        public async Task<OperationResult> CreateCommunity(GroupFormViewModel model)
         {
             var newModel = _mapper.Map<GroupModel>(model);
             var resModel = await _communityService.Create(newModel);
