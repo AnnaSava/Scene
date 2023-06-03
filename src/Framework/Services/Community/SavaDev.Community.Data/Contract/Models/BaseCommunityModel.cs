@@ -10,6 +10,6 @@ namespace SavaDev.Community.Data
     {
         public long Id { get; set; }
 
-        public Guid CommunityId { get; set; }
+        public Guid GroupId { get; set; }
     }
 }

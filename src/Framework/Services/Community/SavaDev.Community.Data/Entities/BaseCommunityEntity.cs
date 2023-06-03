@@ -10,8 +10,8 @@ namespace SavaDev.Community.Data.Entities
     {
         public long Id { get; set; }
 
-        public Guid CommunityId { get; set; }
+        public Guid GroupId { get; set; }
 
-        public virtual Group Community { get; set; }
+        public virtual Group Group { get; set; }
     }
 }

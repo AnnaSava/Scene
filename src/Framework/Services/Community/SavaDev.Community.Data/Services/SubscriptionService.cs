@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using SavaDev.Base.Data.Entities.Interfaces;
+using SavaDev.Base.Data.Managers;
 using SavaDev.Base.Data.Services;
 using SavaDev.Community.Data;
 using SavaDev.Community.Data.Contract;
@@ -10,21 +12,23 @@ namespace SavaDev.Community.Data.Services
 {
     public class SubscriptionService : BaseEntityService<Subscription, SubscriptionModel>, ISubscriptionService
     {
+        protected CreateManager<Subscription, SubscriptionModel> CreateManager { get; }
+
         public SubscriptionService(CommunityContext dbContext, IMapper mapper)
             : base(dbContext, mapper, nameof(SubscriptionService))
         {
-
+            CreateManager = new CreateManager<Subscription, SubscriptionModel>(GetInftrastructure);
         }
 
-        public async Task<SubscriptionModel> Create(SubscriptionModel model)
+        public async Task<OperationResult> Create(SubscriptionModel model)
         {
-            throw new NotImplementedException();
+            return await CreateManager.Create(model);
         }
 
         public async Task Delete(SubscriptionModel model)
         {
             var entity = await _dbContext.Set<Subscription>()
-                .Where(m => m.UserId == model.UserId && m.CommunityId == model.CommunityId  && !m.IsDeleted)
+                .Where(m => m.UserId == model.UserId && m.GroupId == model.GroupId  && !m.IsDeleted)
                 .FirstOrDefaultAsync();
 
             if (entity == null) return;
@@ -39,7 +43,7 @@ namespace SavaDev.Community.Data.Services
         {
             var check = await _dbContext.Set<Subscription>()
                 .Where(m => m.UserId == model.UserId 
-                    && m.CommunityId == model.CommunityId
+                    && m.GroupId == model.GroupId
                     && m.IsApprovedByOwner 
                     && m.IsApprovedByUser
                     && !m.IsDeleted)
@@ -51,14 +55,14 @@ namespace SavaDev.Community.Data.Services
         public async Task<IEnumerable<Guid>> GetAllActiveSubscriptions(SubscriptionModel model, string entityName, string module)
         {
             var ids = await _dbContext.Set<Subscription>()
-                .Include(m => m.Community)
+                .Include(m => m.Group)
                 .Where(m => m.UserId == model.UserId
-                    && m.Community.Entity == entityName
-                    && m.Community.Module == module
+                    && m.Group.Entity == entityName
+                    && m.Group.Module == module
                     && m.IsApprovedByOwner
                     && m.IsApprovedByUser
                     && !m.IsDeleted)
-                .Select(m => m.CommunityId)
+                .Select(m => m.GroupId)
                 .ToListAsync();
 
             return ids;
@@ -68,7 +72,7 @@ namespace SavaDev.Community.Data.Services
         public async Task<IEnumerable<string>> GetAllActualSubscriberIds(Guid communityId)
         {
             var list = await _dbContext.Set<Subscription>()
-                .Where(m => m.CommunityId == communityId && m.IsApprovedByOwner && m.IsApprovedByUser && !m.IsDeleted)
+                .Where(m => m.GroupId == communityId && m.IsApprovedByOwner && m.IsApprovedByUser && !m.IsDeleted)
                 .Select(m => m.UserId)
                 .ToListAsync();
 
@@ -79,7 +83,7 @@ namespace SavaDev.Community.Data.Services
         public async Task<IEnumerable<string>> GetAllRequestedSubscriberIds(Guid communityId)
         {
             var list = await _dbContext.Set<Subscription>()
-                .Where(m => m.CommunityId == communityId && !m.IsApprovedByOwner && m.IsApprovedByUser && !m.IsDeleted)
+                .Where(m => m.GroupId == communityId && !m.IsApprovedByOwner && m.IsApprovedByUser && !m.IsDeleted)
                 .Select(m => m.UserId)
                 .ToListAsync();
 
@@ -90,7 +94,7 @@ namespace SavaDev.Community.Data.Services
         public async Task<IEnumerable<string>> GetAllInvitedSubscriberIds(Guid communityId)
         {
             var list = await _dbContext.Set<Subscription>()
-                .Where(m => m.CommunityId == communityId && m.IsApprovedByOwner && !m.IsApprovedByUser && !m.IsDeleted)
+                .Where(m => m.GroupId == communityId && m.IsApprovedByOwner && !m.IsApprovedByUser && !m.IsDeleted)
                 .Select(m => m.UserId)
                 .ToListAsync();
 

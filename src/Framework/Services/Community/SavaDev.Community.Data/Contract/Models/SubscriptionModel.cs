@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Community.Data.Contract.Models
 {
-    public class SubscriptionModel : BaseCommunityModel, IAnyModel
+    public class SubscriptionModel : BaseCommunityModel, IAnyModel, IFormModel
     {
         public string UserId { get; set; }
 

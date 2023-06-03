@@ -84,7 +84,7 @@ namespace SavaDev.Community.Front.Services
             var model = new SubscriptionModel
             {
                 UserId = userId,
-                CommunityId = communityId,
+                GroupId = communityId,
             };
 
             return await _subscriptionService.IsSubscribed(model);

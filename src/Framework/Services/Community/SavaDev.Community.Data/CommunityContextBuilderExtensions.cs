@@ -18,16 +18,16 @@ namespace SavaDev.Community.Data
                 b.ToTable(helper.GetTableName(nameof(Entities.Group)));
 
                 b.HasMany(b => b.Lockouts)
-                   .WithOne(b => b.Community)
-                   .HasForeignKey(b => b.CommunityId);
+                   .WithOne(b => b.Group)
+                   .HasForeignKey(b => b.GroupId);
 
                 b.HasMany(b => b.Roles)
-                   .WithOne(b => b.Community)
-                   .HasForeignKey(b => b.CommunityId);
+                   .WithOne(b => b.Group)
+                   .HasForeignKey(b => b.GroupId);
 
                 b.HasMany(b => b.Subscriptions)
-                   .WithOne(b => b.Community)
-                   .HasForeignKey(b => b.CommunityId);
+                   .WithOne(b => b.Group)
+                   .HasForeignKey(b => b.GroupId);
             });
 
             builder.Entity<Lockout>(b =>

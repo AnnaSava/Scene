@@ -1,4 +1,5 @@
-﻿using SavaDev.Community.Data.Contract.Models;
+﻿using SavaDev.Base.Data.Services;
+using SavaDev.Community.Data.Contract.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace SavaDev.Community.Data.Contract
 {
     public interface ISubscriptionService
     {
-        Task<SubscriptionModel> Create(SubscriptionModel model);
+        Task<OperationResult> Create(SubscriptionModel model);
 
         Task Delete(SubscriptionModel model);
 

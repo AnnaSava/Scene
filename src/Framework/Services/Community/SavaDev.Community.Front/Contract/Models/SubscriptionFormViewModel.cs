@@ -10,7 +10,7 @@ namespace SavaDev.Community.Front.Contract.Models
     {
         public long Id { get; set; }
 
-        public Guid GropupId { get; set; }
+        public Guid GroupId { get; set; }
 
         public string UserId { get; set; }
 
