@@ -296,3 +296,4 @@ __pycache__/
 #Sava
 Sava.*
 Sava*.slnf
+appsettings.Development.json
