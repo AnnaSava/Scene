@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
+[assembly: InternalsVisibleTo("SavaDev.DevTools.Tests")]
 namespace SavaDev.MigrationsMaker
 {
     internal class MigrationsProfile
@@ -31,13 +33,16 @@ namespace SavaDev.MigrationsMaker
             _solutionServices = solutionServices ?? throw new ArgumentNullException(nameof(solutionServices));
             ModelHasChangesOnly = modelHasChangesOnly;
 
-            ProcessArgs(args);            
+            ProcessArgs(args ?? throw new ArgumentNullException());            
             if (!CheckProfile())
-                throw new Exception("Incorrect command");
+                throw new IncorrectCommandException();
         }
 
         private void ProcessArgs(IEnumerable<string> args)
         {
+            if (args.Count() == 0 || args.Count() > 3)
+                throw new IncorrectCommandException();
+
             foreach (var el in args)
             {
                 switch (el.ToLower())
@@ -51,21 +56,37 @@ namespace SavaDev.MigrationsMaker
                     default:
                         if (_singleService != null)
                         {
-                            MigrationsName = el;
+                            InitMigrationsName(el);
                         }
                         else
                         {
                             _singleService = _solutionServices.FirstOrDefault(s => s.Name.Equals(el, StringComparison.InvariantCultureIgnoreCase));
-                            if(_singleService == null)
+                            if (_singleService == null)
                             {
-                                MigrationsName = el;
+                                InitMigrationsName(el);
                             }
                         }
                         break;
                 }
             }
 
+            void InitMigrationsName(string name)
+            {
+                if (string.IsNullOrEmpty(MigrationsName))
+                {
+                    MigrationsName = name;
+                }
+                else
+                {
+                    throw new IncorrectCommandException();
+                }
+            }
+
             MigrationsName = GetOrCreateMigrationsName();
+            if(Reset && _singleService == null)
+            {
+                _all = true;
+            }
         }
 
         private bool CheckProfile()
