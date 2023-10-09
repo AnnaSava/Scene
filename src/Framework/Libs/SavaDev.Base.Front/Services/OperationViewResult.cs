@@ -17,6 +17,8 @@ namespace SavaDev.Base.Front.Services
 
         public IList<object>? ProcessedObjects { get; set; } = new List<object>();
 
+        public OperationViewResult() { }
+
         public OperationViewResult(int rows) { Rows = rows; }
 
         public OperationViewResult(int rows, object processedObject) : this(rows)

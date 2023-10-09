@@ -27,5 +27,10 @@ namespace SavaDev.Content.Services
             var vm = await manager.GetRegistryPage<DraftViewModel>(query);
             return vm;
         }
+
+        public async Task<OperationViewResult> Create(DraftViewModel model)
+        {
+            return new OperationViewResult(12);
+        }
     }
 }
