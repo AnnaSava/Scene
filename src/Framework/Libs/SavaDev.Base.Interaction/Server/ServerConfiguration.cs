@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SavaDev.Infrastructure.Appsettings
+namespace SavaDev.Base.Interaction.Server
 {
     public class ServerConfiguration
     {

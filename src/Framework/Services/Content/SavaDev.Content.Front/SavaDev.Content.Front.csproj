@@ -18,9 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\SavaDev.Content.Front.Contract\SavaDev.Content.Front.Contract.csproj" />
     <ProjectReference Include="..\..\..\Libs\SavaDev.Base.Unit\SavaDev.Base.Unit.csproj" />
     <ProjectReference Include="..\SavaDev.Content.Data\SavaDev.Content.Data.csproj" />
+    <ProjectReference Include="..\SavaDev.Content.Front.Contract\SavaDev.Content.Front.Contract.csproj" />
   </ItemGroup>
 
 </Project>

@@ -24,9 +24,12 @@ namespace SavaDev.Content
             services.AddScoped<IImportService, ImportService>();
         }
 
-        public static void AddContentView(this IServiceCollection services)
+        public static void AddContentView(this IServiceCollection services, bool draft = true)
         {
-            services.AddScoped<IDraftViewService, DraftViewService>();
+            if (draft)
+            {
+                services.AddScoped<IDraftViewService, DraftViewService>();
+            }
             services.AddScoped<IVersionViewService, VersionViewService>();
         }
     }

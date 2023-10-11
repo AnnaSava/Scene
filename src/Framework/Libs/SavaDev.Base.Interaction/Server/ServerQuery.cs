@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-namespace SavaDev.Infrastructure.Server
+namespace SavaDev.Base.Interaction.Server
 {
     public class ServerQuery
     {

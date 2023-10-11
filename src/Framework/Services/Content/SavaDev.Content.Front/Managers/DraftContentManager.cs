@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 
 namespace SavaDev.Content.Front.Managers
 {
+    [Obsolete]
     public class DraftContentManager<TForm>
         where TForm : class, IHavingDraftsFormViewModel, new()
     {
