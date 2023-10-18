@@ -1,20 +1,18 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using SavaDev.Content.Contract;
+using SavaDev.Base.Unit;
+using SavaDev.Base.Unit.Options;
 using SavaDev.Content.Data;
 using SavaDev.Content.Data.Contract;
 using SavaDev.Content.Data.Services;
-using SavaDev.Content.Services;
-using SavaDev.Base.Unit.Options;
-using SavaDev.Base.Unit;
+using SavaDev.Content.View.Contract;
+using SavaDev.Content.View.Services;
 
-namespace SavaDev.Content
+namespace SavaDev.Content.View
 {
     public static class ContentViewUnit
     {
-        public static void AddContent (this IServiceCollection services, IConfiguration config, UnitOptions unitOptions)
+        public static void AddContent(this IServiceCollection services, IConfiguration config, UnitOptions unitOptions)
         {
             services.AddUnitDbContext<ContentContext>(config, unitOptions);
 
@@ -24,12 +22,9 @@ namespace SavaDev.Content
             services.AddScoped<IImportService, ImportService>();
         }
 
-        public static void AddContentView(this IServiceCollection services, bool draft = true)
+        public static void AddContentView(this IServiceCollection services)
         {
-            if (draft)
-            {
-                services.AddScoped<IDraftViewService, DraftViewService>();
-            }
+            services.AddScoped<IDraftViewService, DraftViewService>();
             services.AddScoped<IVersionViewService, VersionViewService>();
         }
     }

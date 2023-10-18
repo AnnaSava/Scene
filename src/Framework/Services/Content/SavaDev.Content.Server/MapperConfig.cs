@@ -15,7 +15,7 @@ namespace SavaDev.Content.Server
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new ContentMapperProfile());
-                mc.AddProfile(new ContentViewMapperProfile());
+                mc.AddProfile(new ContentFrontMapperProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();

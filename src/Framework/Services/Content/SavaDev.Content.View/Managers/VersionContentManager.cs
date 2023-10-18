@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SavaDev.Content.Data.Contract;
 
-namespace SavaDev.Content.Front.Managers
+namespace SavaDev.Content.View.Managers
 {
     public class VersionContentManager
     {

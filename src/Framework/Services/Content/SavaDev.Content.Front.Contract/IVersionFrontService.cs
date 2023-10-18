@@ -4,7 +4,7 @@ using SavaDev.Content.Contract.Models;
 
 namespace SavaDev.Content.Contract
 {
-    public interface IVersionViewService
+    public interface IVersionFrontService
     {
         Task<RegistryPageViewModel<VersionViewModel>> GetRegistryPage(RegistryQuery query);
     }

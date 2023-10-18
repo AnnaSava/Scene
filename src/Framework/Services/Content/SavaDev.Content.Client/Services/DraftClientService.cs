@@ -17,7 +17,7 @@ using SavaDev.Base.Interaction.Server;
 
 namespace SavaDev.Content.Client.Services
 {
-    public class DraftClientService : IDraftViewService
+    public class DraftClientService : IDraftFrontService
     {
         public async Task<RegistryPageViewModel<DraftViewModel>> GetRegistryPage(RegistryQuery query)
         {

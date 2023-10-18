@@ -4,20 +4,14 @@ using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Data.Services;
 using SavaDev.Base.Front.Exceptions;
 using SavaDev.Base.Front.Registry;
-using SavaDev.Content.Contract.Models;
 using SavaDev.Content.Data;
 using SavaDev.Content.Data.Contract;
 using SavaDev.Content.Data.Contract.Models;
-using SavaDev.Content.Data.Entities;
-using SavaDev.Content.Front.Contract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using SavaDev.Content.View.Contract;
+using SavaDev.Content.View.Contract.Models;
 using System.Text.Json;
-using System.Threading.Tasks;
 
-namespace SavaDev.Content.Front.Managers
+namespace SavaDev.Content.View.Managers
 {
     [Obsolete]
     public class DraftContentManager<TForm>

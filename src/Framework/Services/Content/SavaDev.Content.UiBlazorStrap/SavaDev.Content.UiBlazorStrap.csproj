@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libs\SavaDev.UiBlazorStrap\SavaDev.UiBlazorStrap.csproj" />
-    <ProjectReference Include="..\SavaDev.Content.Front\SavaDev.Content.Front.csproj" />
+    <ProjectReference Include="..\SavaDev.Content.View\SavaDev.Content.View.csproj" />
   </ItemGroup>
 
 </Project>

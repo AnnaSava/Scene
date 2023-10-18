@@ -13,14 +13,14 @@ using SavaDev.Content.Front.Contract.Models;
 
 namespace SavaDev.Content.Services
 {
-    public class DraftViewService : IDraftViewService
+    public class DraftFrontService : IDraftFrontService
     {
         protected const string ZeroIdString = "0";
 
         private readonly IDraftService _draftService;
         private readonly IMapper _mapper;
 
-        public DraftViewService(IDraftService draftService, IMapper mapper)
+        public DraftFrontService(IDraftService draftService, IMapper mapper)
         {
             _draftService = draftService;
             _mapper = mapper;

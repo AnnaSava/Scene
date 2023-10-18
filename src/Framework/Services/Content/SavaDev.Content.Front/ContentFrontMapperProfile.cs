@@ -6,9 +6,9 @@ using SavaDev.Base.Data.Registry.Filter;
 
 namespace SavaDev.Content.Front
 {
-    public class ContentViewMapperProfile : Profile
+    public class ContentFrontMapperProfile : Profile
     {
-        public ContentViewMapperProfile()
+        public ContentFrontMapperProfile()
         {
             CreateMap<DraftViewModel, DraftModel>();
             CreateMap<DraftModel, DraftViewModel>();

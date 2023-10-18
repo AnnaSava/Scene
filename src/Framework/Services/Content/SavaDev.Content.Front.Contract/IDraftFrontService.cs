@@ -6,7 +6,7 @@ using SavaDev.Content.Front.Contract.Models;
 
 namespace SavaDev.Content.Contract
 {
-    public interface IDraftViewService
+    public interface IDraftFrontService
     {
         const string Name = "Draft";
 

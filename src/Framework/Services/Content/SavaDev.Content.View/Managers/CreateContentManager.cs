@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SavaDev.Content.Front.Managers
+namespace SavaDev.Content.View.Managers
 {
     public class CreateContentManager<TFormModel>
         where TFormModel : class

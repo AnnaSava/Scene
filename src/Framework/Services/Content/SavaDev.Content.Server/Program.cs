@@ -28,7 +28,7 @@ services.AddSingleton(sp =>
 services.AddMapper();
 services.AddLogging();
 services.AddContent(config, new UnitOptions("Cnt", AppSettings.DefaultConnectionStringPattern));
-services.AddContentView();
+services.AddContentFront();
 
 ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
 var logger = loggerFactory.CreateLogger("SavaDev.Content.Server");
@@ -40,8 +40,8 @@ using (ServiceProvider sp = services.BuildServiceProvider())
         var serverConfig = sp.GetService<ServerConfiguration>();
         var activeServices = new Dictionary<string, object>()
         {
-            { "Draft", sp.GetService(typeof(IDraftViewService)) },
-            { "Version", sp.GetService(typeof(IVersionViewService)) }
+            { "Draft", sp.GetService(typeof(IDraftFrontService)) },
+            { "Version", sp.GetService(typeof(IVersionFrontService)) }
         };
         IServiceContainer container = new ServiceContainer(activeServices);
         var server = new SocketServer(serverConfig, container, logger);
