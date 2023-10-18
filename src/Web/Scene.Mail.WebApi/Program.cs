@@ -1,11 +1,11 @@
 using EasyNetQ;
-using Sava.Libs.WebModule;
 using SavaDev.Base.Unit;
 using SavaDev.Base.Unit.Options;
+using SavaDev.General.Front;
 using SavaDev.Mail.Service;
 using SavaDev.Mail.Service.Contract;
 using SavaDev.Mail.Service.Contract.Models;
-using SavaDev.General.Front;
+using Scene.Libs.WebModule;
 using Scene.Mail.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +17,7 @@ builder.Services.AddMapper();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddGeneral(builder.Configuration, new UnitOptions(SavaUnitCode.General, AppSettings.DefaultConnectionStringPattern));
+builder.Services.AddGeneral(builder.Configuration, new UnitOptions(SceneUnitCode.General, AppSettings.DefaultConnectionStringPattern));
 builder.Services.AddMailRmqService(builder.Configuration);
 
 using (var bus = RabbitHutch.CreateBus("host=localhost"))
