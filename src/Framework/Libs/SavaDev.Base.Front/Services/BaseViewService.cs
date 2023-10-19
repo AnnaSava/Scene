@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using SavaDev.Base.Data.Models;
 using SavaDev.Base.Data.Services;
+using SavaDev.Base.Front.Models;
 using SavaDev.Base.Users.Security;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace SavaDev.Base.Front.Services
             _mapper = mapper;
             _options = options;
             _userProvider = userProvider;
-        }
+        }        
 
         protected Dictionary<string, string> GetStrings(Type type)
         {

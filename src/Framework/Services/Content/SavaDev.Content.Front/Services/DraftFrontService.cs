@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SavaDev.Base.Data.Registry;
 using SavaDev.Base.Front.Exceptions;
+using SavaDev.Base.Front.Models;
 using SavaDev.Base.Front.Registry;
 using SavaDev.Base.Front.Services;
 using SavaDev.Content.Contract;
@@ -25,6 +26,8 @@ namespace SavaDev.Content.Services
             _draftService = draftService;
             _mapper = mapper;
         }
+
+        public async Task<ServiceCheckOk> Check(ServiceCheckQuery query) => CheckFrontService.Check(query);
 
         public async Task<RegistryPageViewModel<DraftViewModel>> GetRegistryPage(RegistryQuery query)
         {

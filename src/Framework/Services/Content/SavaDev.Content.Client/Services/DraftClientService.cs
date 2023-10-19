@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using SavaDev.Content.Front.Contract.Models;
 using SavaDev.Base.Interaction.Server;
+using SavaDev.Base.Front.Models;
 
 namespace SavaDev.Content.Client.Services
 {
@@ -22,6 +23,18 @@ namespace SavaDev.Content.Client.Services
         public async Task<RegistryPageViewModel<DraftViewModel>> GetRegistryPage(RegistryQuery query)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ServiceCheckOk> Check(ServiceCheckQuery query)
+        {
+            var serverQuery = new ServerQuery<ServiceCheckQuery>()
+            {
+                Service = "Draft",
+                Action = nameof(Check),
+                Data = query
+            };
+            var result = Send<ServiceCheckOk>(serverQuery);
+            return result;
         }
 
         public async Task<OperationViewResult> Create(DraftViewModel model)
