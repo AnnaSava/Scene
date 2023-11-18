@@ -42,10 +42,12 @@ namespace SavaDev.Base.Interaction.Server
                     byte[] clientData = new byte[1024 * _settings.MaxDataSize];
                     int receivedBytes = client.Receive(clientData);
                     var arr = clientData.Take(receivedBytes).ToArray();
+                    _logger.LogInformation("Data received");
                     try
                     {
                         var data = await _handler.Invoke(arr);
                         client.Send(data);
+                        _logger.LogInformation("Data sent");
                     }
                     catch (Exception exInvoke)
                     {
