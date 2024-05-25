@@ -9,5 +9,7 @@ namespace SavaDev.Base.Unit
     public static class AppSettings
     {
         public const string DefaultConnectionStringPattern = "Default{0}Connection";
+        public const string TelegramConnectionStringPattern = "Telegram{0}Connection";
+        public const string WildberriesConnectionStringPattern = "Wildberries{0}Connection";
     }
 }

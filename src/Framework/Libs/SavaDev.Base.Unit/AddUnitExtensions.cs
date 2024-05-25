@@ -3,13 +3,17 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SavaDev.Base.Data.Context;
 using SavaDev.Base.Data.Enums;
 using SavaDev.Base.Unit.Options;
+using SavaDev.Cache;
+using SavaDev.Cache.Redis;
 using SavaDev.Infrastructure;
 using SavaDev.Infrastructure.Appsettings;
+using StackExchange.Redis;
 
 namespace SavaDev.Base.Unit
 {
@@ -72,6 +76,18 @@ namespace SavaDev.Base.Unit
                     }
                 };
             });
+        }
+
+        public static void AddRedisCache(this IServiceCollection services, IConfiguration config)
+        {
+            var conn = config["Redis:ConnectionString"];
+            var db = int.Parse(config["Redis:Database"]);
+
+            services.AddSingleton<ConnectionMultiplexer>(ConnectionMultiplexer.Connect(conn));
+            services.AddScoped<StackExchange.Redis.IDatabase>(provider => provider.GetRequiredService<ConnectionMultiplexer>().GetDatabase(db));
+
+            services.AddScoped<IConverter, JsonTypeConverter>();
+            services.AddScoped<ICacheService, RedisCacheService>();
         }
 
         private static DbContextOptionsBuilder SetOptions(DbContextOptionsBuilder options, Parameters p)

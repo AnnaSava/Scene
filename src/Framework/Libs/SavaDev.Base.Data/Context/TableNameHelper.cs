@@ -30,19 +30,19 @@ namespace SavaDev.Base.Data.Context
 
         private string GetMultipleWord(string word)
         {
-            if (word.EndsWith('y'))
+            if (word.EndsWith('y') && !word.EndsWith("oy")) // "oy" для toy
             {
                 word = word.Substring(0, word.Length - 1) + "ies";
                 return word;
             }
-            else if(word.EndsWith("sh"))
+            else if(word.EndsWith("sh") || word.EndsWith("ch") || word.EndsWith('z'))
             {
                 word = word + "es";
                 return word;
             }
-            else if (word.EndsWith('x'))
+            else if (word.EndsWith('x')) //TODO проверить, где используется это условие, и почему было + "es". Возможно, объединить с условием на "sh"
             {
-                word = word.Substring(0, word.Length - 1) + "es";
+                word = word.Substring(0, word.Length - 1) + "xes";
                 return word;
             }
 
